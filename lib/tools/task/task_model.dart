@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -61,7 +62,11 @@ abstract class TaskModel {
     return null;
   }
 
-  ExecutionResult execute(BuildContext context);
+  /*
+   * Execute the task. Is "isNewAssignment" then the assignment itself is required to be created. If not, then the assignment
+   * needs to be updated (in case changes have been made to it).
+   */
+  ExecutionResult execute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment);
 }
 
 /*
@@ -104,16 +109,22 @@ abstract class TaskModel {
    manual_paid_membership : request_membership > manual_payment member (ManualPayment 20 GBP) > approve_manual_payment (ApproveManualPayment) > activate_membership (ActivateMembership)
    auto_membership: request_membership (RequestMembership) > activate_membership (ActivateMembership)
    buy: manual_or_other_payment (ChoiceOfPaymentsIncludingManual) > approve_and_ship
+   become_friends: confirm_request_friendship > request_approval_friendship
  */
 
 /* How it works:
    A button is clicked.
-   If this is a specific context, like make a friend context, then a bloc with that friend is constructed.
-   If the action behind the button is for example initiating a workflow, then the workflow is started and the first action run first.
-   The first action does it's thing.
+   If this is a specific context, like make a friend context, then a friendbloc with that friend is constructed.
+   If the action behind the button is for example initiating a workflow, then the workflow is started.
+   This in itself creates an assignment for the first
+   It creates an instance Assignment then executes the first task in the workflow. In this case the isNewAssignment is true
+   instructing the task to store the assignment as a new assignment.
 
-   I think it must sometimes be a MakeFriendAction, not with a bloc. This actually construct the first Assignment with the right
-   member to make as a friend.
+   The assignment does it's thing, in this case it asks for a confirmation to make friends.
+   It could be that it gets some data from the context, eg. finds out if there's a friendbloc around. If not "exception"
+   On success, ie. when the user confirms the task, then an assignment is created. In this example, this assignment is
+
+   If the user confirms to make friends, it stores/creates the assignment as well as create a new assignment, i.e. for the next task of the workflow.
  */
 
 class ExampleTaskModel1 extends TaskModel {
@@ -122,7 +133,7 @@ class ExampleTaskModel1 extends TaskModel {
   ExampleTaskModel1({this.extraParameter}) : super(taskString: ExampleTaskEntity1.label);
 
   @override
-  ExecutionResult execute(context) {
+  ExecutionResult execute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment) {
     // open dialog box with some stuff
     throw UnimplementedError();
   }

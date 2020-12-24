@@ -63,14 +63,6 @@
       "group": "Workflow"
     },
     {
-      "fieldName": "triggeringAssignment",
-      "remarks": "The assignment that triggered this assignment",
-      "displayName": "Triggering Assignment",
-      "fieldType": "Assignment",
-      "association": true,
-      "group": "Assignment"
-    },
-    {
       "fieldName": "timestamp",
       "displayName": "Timestamp",
       "fieldType": "ServerTimestamp",
