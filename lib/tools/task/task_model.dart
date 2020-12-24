@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'package:eliud_pkg_workflow/tools/task_entity.dart';
+import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ExecutionResult { success, failure, decline, delay }

@@ -1,4 +1,4 @@
-import 'package:eliud_pkg_workflow/tools/task_model.dart';
+import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class TaskEntity /*extends Equatable */{
