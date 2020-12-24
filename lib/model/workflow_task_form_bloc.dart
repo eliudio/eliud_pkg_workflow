@@ -73,12 +73,6 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
 
         return;
       }
-      if (event is ChangedWorkflowTaskWho) {
-        newValue = currentState.value.copyWith(who: event.value);
-        yield SubmittableWorkflowTaskForm(value: newValue);
-
-        return;
-      }
     }
   }
 

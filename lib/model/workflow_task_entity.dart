@@ -21,16 +21,15 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class WorkflowTaskEntity {
   final TaskEntity task;
-  final int who;
 
-  WorkflowTaskEntity({this.task, this.who, });
+  WorkflowTaskEntity({this.task, });
 
 
-  List<Object> get props => [task, who, ];
+  List<Object> get props => [task, ];
 
   @override
   String toString() {
-    return 'WorkflowTaskEntity{task: $task, who: $who}';
+    return 'WorkflowTaskEntity{task: $task}';
   }
 
   static WorkflowTaskEntity fromMap(Map map) {
@@ -43,7 +42,6 @@ class WorkflowTaskEntity {
 
     return WorkflowTaskEntity(
       task: taskFromMap, 
-      who: map['who'], 
     );
   }
 
@@ -55,8 +53,6 @@ class WorkflowTaskEntity {
     Map<String, Object> theDocument = HashMap();
     if (task != null) theDocument["task"] = taskMap;
       else theDocument["task"] = null;
-    if (who != null) theDocument["who"] = who;
-      else theDocument["who"] = null;
     return theDocument;
   }
 

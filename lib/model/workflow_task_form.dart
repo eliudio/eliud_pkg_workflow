@@ -123,7 +123,6 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   WorkflowTaskFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
-  int _whoSelectedRadioTile;
 
 
   _MyWorkflowTaskFormState(this.formAction);
@@ -133,7 +132,6 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
     super.initState();
     _myFormBloc = BlocProvider.of<WorkflowTaskFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
-    _whoSelectedRadioTile = 0;
   }
 
   @override
@@ -150,10 +148,6 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
           _documentIDController.text = state.value.documentID.toString();
         else
           _documentIDController.text = "";
-        if (state.value.who != null)
-          _whoSelectedRadioTile = state.value.who.index;
-        else
-          _whoSelectedRadioTile = 0;
       }
       if (state is WorkflowTaskFormInitialized) {
         List<Widget> children = List();
@@ -166,47 +160,6 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                 ));
 
 
-        children.add(
-
-                RadioListTile(
-                    value: 0,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
-                    groupValue: _whoSelectedRadioTile,
-                    title: Text("Owner", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("Owner", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
-                      setSelectionWho(val);
-                    },
-                ),
-          );
-        children.add(
-
-                RadioListTile(
-                    value: 1,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
-                    groupValue: _whoSelectedRadioTile,
-                    title: Text("Myself", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("Myself", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
-                      setSelectionWho(val);
-                    },
-                ),
-          );
-        children.add(
-
-                RadioListTile(
-                    value: 2,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
-                    groupValue: _whoSelectedRadioTile,
-                    title: Text("OtherMember", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("OtherMember", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
-                      setSelectionWho(val);
-                    },
-                ),
-          );
-
-
         children.add(Container(height: 20.0));
         children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
@@ -214,10 +167,11 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Text('Action',
+                  child: Text('Task',
                       style: TextStyle(
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
+
 
 
         children.add(Container(height: 20.0));
@@ -236,14 +190,12 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                           UpdateWorkflowTaskList(value: state.value.copyWith(
                               documentID: state.value.documentID, 
                               task: state.value.task, 
-                              who: state.value.who, 
                         )));
                       } else {
                         BlocProvider.of<WorkflowTaskListBloc>(context).add(
                           AddWorkflowTaskList(value: WorkflowTaskModel(
                               documentID: state.value.documentID, 
                               task: state.value.task, 
-                              who: state.value.who, 
                           )));
                       }
                       if (widget.submitAction != null) {
@@ -279,14 +231,6 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
   void _onDocumentIDChanged() {
     _myFormBloc.add(ChangedWorkflowTaskDocumentID(value: _documentIDController.text));
-  }
-
-
-  void setSelectionWho(int val) {
-    setState(() {
-      _whoSelectedRadioTile = val;
-    });
-    _myFormBloc.add(ChangedWorkflowTaskWho(value: toSourceImage(val)));
   }
 
 

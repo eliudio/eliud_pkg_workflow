@@ -1,15 +1,19 @@
 import 'package:eliud_pkg_workflow/tools/task_model.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class TaskEntity extends Equatable {
+abstract class TaskEntity /*extends Equatable */{
   final String taskString;
 
   const TaskEntity( { this.taskString });
-  Map<String, Object> toJson();
+//  Map<String, Object> toJson();
+/*
   @override
   List<Object> get props;
+*/
+/*
   @override
   String toString();
+*/
   Map<String, Object> toDocument();
 
   static TaskEntity fromMap(Map snap) {
@@ -29,6 +33,7 @@ class ExampleTaskEntity1 extends TaskEntity {
 
   ExampleTaskEntity1({ this.extraParameter }) : super(taskString: label);
 
+/*
   Map<String, Object> toJson() {
     return <String, dynamic>{
       "taskString": taskString,
@@ -36,6 +41,7 @@ class ExampleTaskEntity1 extends TaskEntity {
     };
   }
 
+*/
   @override
   List<Object> get props => [ taskString, extraParameter ];
 
@@ -45,4 +51,5 @@ class ExampleTaskEntity1 extends TaskEntity {
       "extraParameter": extraParameter
     };
   }
+
 }

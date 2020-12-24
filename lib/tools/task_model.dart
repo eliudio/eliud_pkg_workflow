@@ -1,16 +1,11 @@
 import 'dart:collection';
-
-import 'package:eliud_core/model/menu_def_model.dart';
-
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/action_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ExecutionResult { success, failure, decline, delay }
 
 class TaskModelRegistry {
-  final Map<String, TaskModelToEntityMapper> mappers = HashMap();
+  final Map<String, TaskModelMapper> mappers = HashMap();
   static TaskModelRegistry _instance;
 
   TaskModelRegistry._internal() {
@@ -22,20 +17,18 @@ class TaskModelRegistry {
     return _instance;
   }
 
-  void addEntityToModelMapping(String taskString, TaskModelToEntityMapper mapper) {
+  void addEntityToModelMapping(String taskString, TaskModelMapper mapper) {
     mappers[taskString] = mapper;
   }
 
-  TaskModelToEntityMapper getMapper(String taskString) {
+  TaskModelMapper getMapper(String taskString) {
     return mappers[taskString];
   }
-
 }
 
-abstract class TaskModelToEntityMapper {
+abstract class TaskModelMapper {
   TaskModel fromEntity(TaskEntity entity);
-  TaskEntity toEntity({String appId});
-  Future<TaskModel> fromEntityPlus(TaskEntity entity, {String appId});
+  TaskModel fromEntityPlus(TaskEntity entity);
   TaskEntity fromMap(Map snap);
 }
 
@@ -124,6 +117,9 @@ abstract class TaskModel {
  */
 
 class ExampleTaskModel1 extends TaskModel {
+  final String extraParameter;
+
+  ExampleTaskModel1({this.extraParameter}) : super(taskString: ExampleTaskEntity1.label);
 
   @override
   ExecutionResult execute(context) {
@@ -136,23 +132,18 @@ class ExampleTaskModel1 extends TaskModel {
     return ExampleTaskEntity1();
   }
 
+  static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) => ExampleTaskModel1(extraParameter: entity.extraParameter, );
+  static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(extraParameter: snap["extraParameter"]);
 }
 
-class ExampleTaskModel1ToEntityMapper implements TaskModelToEntityMapper {
+class ExampleTaskModel1Mapper implements TaskModelMapper {
   @override
-  TaskModel fromEntity(TaskEntity entity) {
-  }
+  TaskModel fromEntity(TaskEntity entity) => ExampleTaskModel1.fromEntity(entity);
 
   @override
-  Future<TaskModel> fromEntityPlus(TaskEntity entity, {String appId}) {
-  }
+  TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);
 
   @override
-  TaskEntity fromMap(Map snap) {
-  }
-
-  @override
-  TaskEntity toEntity({String appId}) {
-  }
+  TaskEntity fromMap(Map map) => ExampleTaskModel1.fromMap(map);
 
 }

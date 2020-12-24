@@ -29,38 +29,22 @@ import 'package:eliud_pkg_workflow/model/workflow_task_entity.dart';
 
 import 'package:eliud_core/tools/random.dart';
 
-enum SourceImage {
-  Owner, Myself, OtherMember, Unknown
-}
-
-
-SourceImage toSourceImage(int index) {
-  switch (index) {
-    case 0: return SourceImage.Owner;
-    case 1: return SourceImage.Myself;
-    case 2: return SourceImage.OtherMember;
-  }
-  return SourceImage.Unknown;
-}
 
 
 class WorkflowTaskModel {
   String documentID;
-
-  // This task string corresponds to a class. This class can be a standard eliud_pkg_workflow action class or a plugin action.
   TaskModel task;
-  SourceImage who;
 
-  WorkflowTaskModel({this.documentID, this.task, this.who, })  {
+  WorkflowTaskModel({this.documentID, this.task, })  {
     assert(documentID != null);
   }
 
-  WorkflowTaskModel copyWith({String documentID, TaskModel task, SourceImage who, }) {
-    return WorkflowTaskModel(documentID: documentID ?? this.documentID, task: task ?? this.task, who: who ?? this.who, );
+  WorkflowTaskModel copyWith({String documentID, TaskModel task, }) {
+    return WorkflowTaskModel(documentID: documentID ?? this.documentID, task: task ?? this.task, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ task.hashCode ^ who.hashCode;
+  int get hashCode => documentID.hashCode ^ task.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -68,18 +52,16 @@ class WorkflowTaskModel {
           other is WorkflowTaskModel &&
           runtimeType == other.runtimeType && 
           documentID == other.documentID &&
-          task == other.task &&
-          who == other.who;
+          task == other.task;
 
   @override
   String toString() {
-    return 'WorkflowTaskModel{documentID: $documentID, task: $task, who: $who}';
+    return 'WorkflowTaskModel{documentID: $documentID, task: $task}';
   }
 
   WorkflowTaskEntity toEntity({String appId}) {
     return WorkflowTaskEntity(
           task: (task != null) ? task.toEntity(appId: appId) : null, 
-          who: (who != null) ? who.index : null, 
     );
   }
 
@@ -89,7 +71,6 @@ class WorkflowTaskModel {
           documentID: documentID, 
           task: 
             TaskModel.fromEntity(entity.task), 
-          who: toSourceImage(entity.who), 
     );
   }
 
@@ -100,7 +81,6 @@ class WorkflowTaskModel {
           documentID: documentID, 
           task: 
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 
-          who: toSourceImage(entity.who), 
     );
   }
 

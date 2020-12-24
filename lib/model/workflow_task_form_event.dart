@@ -79,15 +79,3 @@ class ChangedWorkflowTaskTask extends WorkflowTaskFormEvent {
   String toString() => 'ChangedWorkflowTaskTask{ value: $value }';
 }
 
-class ChangedWorkflowTaskWho extends WorkflowTaskFormEvent {
-  final SourceImage value;
-
-  ChangedWorkflowTaskWho({this.value});
-
-  @override
-  List<Object> get props => [ value ];
-
-  @override
-  String toString() => 'ChangedWorkflowTaskWho{ value: $value }';
-}
-
