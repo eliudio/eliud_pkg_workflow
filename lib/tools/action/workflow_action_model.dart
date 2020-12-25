@@ -1,15 +1,15 @@
 import 'package:eliud_core/tools/action/action_entity.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
+import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 
 // Start a workflow
 class WorkflowAction extends ActionModel {
   final WorkflowModel workflow;
 
-  WorkflowAction({String appId, this.workflow}) : super(appId, actionType: WorkflowActionEntity.label);
+  WorkflowAction(String appId, { this.workflow, ReadCondition readCondition, int privilegeLevelRequired, String packageCondition} ) : super(appId, actionType: WorkflowActionEntity.label, readCondition: readCondition, privilegeLevelRequired: privilegeLevelRequired, packageCondition: packageCondition);
 
   @override
   ActionEntity toEntity({String appId}) {
@@ -21,7 +21,10 @@ class WorkflowAction extends ActionModel {
   static ActionModel fromEntity(WorkflowActionEntity entity) {
     if (entity == null) return null;
     return WorkflowAction(
-      appId: entity.appID,
+      entity.appID,
+      readCondition: toReadCondition(entity.readCondition),
+      privilegeLevelRequired: entity.privilegeLevelRequired,
+      packageCondition: entity.packageCondition,
     );
   }
   static Future<ActionModel> fromEntityPlus(WorkflowActionEntity entity, { String appId}) async {
@@ -35,8 +38,11 @@ class WorkflowAction extends ActionModel {
     }
 
     return WorkflowAction(
-      appId: entity.appID,
-      workflow: workFlowModel
+        entity.appID,
+        readCondition: toReadCondition(entity.readCondition),
+        privilegeLevelRequired: entity.privilegeLevelRequired,
+        packageCondition: entity.packageCondition,
+        workflow: workFlowModel
     );
   }
 

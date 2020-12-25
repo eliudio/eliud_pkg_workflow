@@ -16,7 +16,10 @@ abstract class WorkflowPackage extends Package {
   BlocProvider createMainBloc(NavigatorBloc navigatorBloc, AccessBloc accessBloc) => null;
 
   @override
-  Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner) async => null;
+  Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner, int privilegeLevel) async => null;
+
+  @override
+  List<String> retrieveAllPackageConditions() => null;
 
   @override
   void init() {
