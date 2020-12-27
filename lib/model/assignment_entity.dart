@@ -16,6 +16,7 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'abstract_repository_singleton.dart';
 import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
@@ -26,22 +27,22 @@ class AssignmentEntity {
   final String assigneeId;
   final TaskEntity task;
   final String workflowId;
-  final String triggeringAssignmentId;
   final Object timestamp;
   final List<AssignmentResultEntity> results;
+  final String triggeredById;
 
-  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.triggeringAssignmentId, this.timestamp, this.results, });
+  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.timestamp, this.results, this.triggeredById, });
 
   AssignmentEntity copyWith({Object timestamp, }) {
-    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, triggeringAssignmentId: triggeringAssignmentId, timestamp : timestamp, results: results, );
+    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, timestamp : timestamp, results: results, triggeredById: triggeredById, );
   }
-  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, triggeringAssignmentId, timestamp, results, ];
+  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, timestamp, results, triggeredById, ];
 
   @override
   String toString() {
     String resultsCsv = (results == null) ? '' : results.join(', ');
 
-    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, triggeringAssignmentId: $triggeringAssignmentId, timestamp: $timestamp, results: AssignmentResult[] { $resultsCsv }}';
+    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, timestamp: $timestamp, results: AssignmentResult[] { $resultsCsv }, triggeredById: $triggeredById}';
   }
 
   static AssignmentEntity fromMap(Map map) {
@@ -62,9 +63,9 @@ class AssignmentEntity {
       assigneeId: map['assigneeId'], 
       task: taskFromMap, 
       workflowId: map['workflowId'], 
-      triggeringAssignmentId: map['triggeringAssignmentId'], 
-      timestamp: map['timestamp']?.toDate(), 
+      timestamp: assignmentRepository().timeStampToString(map['timestamp']), 
       results: resultsList, 
+      triggeredById: map['triggeredById'], 
     );
   }
 
@@ -87,11 +88,11 @@ class AssignmentEntity {
       else theDocument["task"] = null;
     if (workflowId != null) theDocument["workflowId"] = workflowId;
       else theDocument["workflowId"] = null;
-    if (triggeringAssignmentId != null) theDocument["triggeringAssignmentId"] = triggeringAssignmentId;
-      else theDocument["triggeringAssignmentId"] = null;
     theDocument["timestamp"] = timestamp;
     if (results != null) theDocument["results"] = resultsListMap;
       else theDocument["results"] = null;
+    if (triggeredById != null) theDocument["triggeredById"] = triggeredById;
+      else theDocument["triggeredById"] = null;
     return theDocument;
   }
 

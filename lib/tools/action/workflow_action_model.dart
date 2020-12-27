@@ -15,6 +15,9 @@ class WorkflowAction extends ActionModel {
   ActionEntity toEntity({String appId}) {
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow.documentID : null,
+        readCondition: readCondition == null ? null : readCondition.index,
+        privilegeLevelRequired: privilegeLevelRequired,
+        packageCondition: packageCondition,
         appId: appId);
   }
 

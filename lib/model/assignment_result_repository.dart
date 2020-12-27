@@ -45,6 +45,8 @@ abstract class AssignmentResultRepository {
   StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   void flush();
+  
+  String timeStampToString(dynamic timeStamp);
 
   dynamic getSubCollection(String documentId, String name);
 

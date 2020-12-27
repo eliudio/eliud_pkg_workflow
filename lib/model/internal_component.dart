@@ -123,7 +123,7 @@ class ListComponent extends StatelessWidget with HasFab {
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
             BlocProvider.of<AccessBloc>(context), 
-            assignmentRepository: assignmentRepository(),
+            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context)),
           )..add(LoadAssignmentList()),
         )
       ],
@@ -173,7 +173,7 @@ class DropdownButtonComponent extends StatelessWidget {
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
             BlocProvider.of<AccessBloc>(context), 
-            assignmentRepository: assignmentRepository(),
+            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context)),
           )..add(LoadAssignmentList()),
         )
       ],

@@ -18,7 +18,7 @@ class TaskModelRegistry {
     return _instance;
   }
 
-  void addEntityToModelMapping(String taskString, TaskModelMapper mapper) {
+  void addMapper(String taskString, TaskModelMapper mapper) {
     mappers[taskString] = mapper;
   }
 
@@ -117,8 +117,8 @@ abstract class TaskModel {
    If this is a specific context, like make a friend context, then a friendbloc with that friend is constructed.
    If the action behind the button is for example initiating a workflow, then the workflow is started.
    This in itself creates an assignment for the first
-   It creates an instance Assignment then executes the first task in the workflow. In this case the isNewAssignment is true
-   instructing the task to store the assignment as a new assignment.
+   It creates an instance Assignment then executes the first task in the workflow with the assignment.
+   In this case the isNewAssignment is true instructing the task to store the assignment as a new assignment.
 
    The assignment does it's thing, in this case it asks for a confirmation to make friends.
    It could be that it gets some data from the context, eg. finds out if there's a friendbloc around. If not "exception"

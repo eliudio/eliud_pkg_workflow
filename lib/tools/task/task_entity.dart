@@ -5,15 +5,7 @@ abstract class TaskEntity /*extends Equatable */{
   final String taskString;
 
   const TaskEntity( { this.taskString });
-//  Map<String, Object> toJson();
-/*
-  @override
-  List<Object> get props;
-*/
-/*
-  @override
-  String toString();
-*/
+
   Map<String, Object> toDocument();
 
   static TaskEntity fromMap(Map snap) {
@@ -33,15 +25,6 @@ class ExampleTaskEntity1 extends TaskEntity {
 
   ExampleTaskEntity1({ this.extraParameter }) : super(taskString: label);
 
-/*
-  Map<String, Object> toJson() {
-    return <String, dynamic>{
-      "taskString": taskString,
-      "extraParameter": extraParameter,
-    };
-  }
-
-*/
   @override
   List<Object> get props => [ taskString, extraParameter ];
 

@@ -16,20 +16,22 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'abstract_repository_singleton.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class WorkflowTaskEntity {
   final TaskEntity task;
+  final int responsible;
 
-  WorkflowTaskEntity({this.task, });
+  WorkflowTaskEntity({this.task, this.responsible, });
 
 
-  List<Object> get props => [task, ];
+  List<Object> get props => [task, responsible, ];
 
   @override
   String toString() {
-    return 'WorkflowTaskEntity{task: $task}';
+    return 'WorkflowTaskEntity{task: $task, responsible: $responsible}';
   }
 
   static WorkflowTaskEntity fromMap(Map map) {
@@ -42,6 +44,7 @@ class WorkflowTaskEntity {
 
     return WorkflowTaskEntity(
       task: taskFromMap, 
+      responsible: map['responsible'], 
     );
   }
 
@@ -53,6 +56,8 @@ class WorkflowTaskEntity {
     Map<String, Object> theDocument = HashMap();
     if (task != null) theDocument["task"] = taskMap;
       else theDocument["task"] = null;
+    if (responsible != null) theDocument["responsible"] = responsible;
+      else theDocument["responsible"] = null;
     return theDocument;
   }
 

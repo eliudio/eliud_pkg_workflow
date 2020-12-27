@@ -45,20 +45,20 @@ class AssignmentModel {
   MemberModel assignee;
   TaskModel task;
   WorkflowModel workflow;
-  AssignmentModel triggeringAssignment;
-  DateTime timestamp;
+  String timestamp;
   List<AssignmentResultModel> results;
+  AssignmentModel triggeredBy;
 
-  AssignmentModel({this.documentID, this.appId, this.reporter, this.assignee, this.task, this.workflow, this.triggeringAssignment, this.timestamp, this.results, })  {
+  AssignmentModel({this.documentID, this.appId, this.reporter, this.assignee, this.task, this.workflow, this.timestamp, this.results, this.triggeredBy, })  {
     assert(documentID != null);
   }
 
-  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, MemberModel assignee, TaskModel task, WorkflowModel workflow, AssignmentModel triggeringAssignment, DateTime timestamp, List<AssignmentResultModel> results, }) {
-    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assignee: assignee ?? this.assignee, task: task ?? this.task, workflow: workflow ?? this.workflow, triggeringAssignment: triggeringAssignment ?? this.triggeringAssignment, timestamp: timestamp ?? this.timestamp, results: results ?? this.results, );
+  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, MemberModel assignee, TaskModel task, WorkflowModel workflow, String timestamp, List<AssignmentResultModel> results, AssignmentModel triggeredBy, }) {
+    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assignee: assignee ?? this.assignee, task: task ?? this.task, workflow: workflow ?? this.workflow, timestamp: timestamp ?? this.timestamp, results: results ?? this.results, triggeredBy: triggeredBy ?? this.triggeredBy, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assignee.hashCode ^ task.hashCode ^ workflow.hashCode ^ triggeringAssignment.hashCode ^ timestamp.hashCode ^ results.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assignee.hashCode ^ task.hashCode ^ workflow.hashCode ^ timestamp.hashCode ^ results.hashCode ^ triggeredBy.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -71,15 +71,15 @@ class AssignmentModel {
           assignee == other.assignee &&
           task == other.task &&
           workflow == other.workflow &&
-          triggeringAssignment == other.triggeringAssignment &&
           timestamp == other.timestamp &&
-          ListEquality().equals(results, other.results);
+          ListEquality().equals(results, other.results) &&
+          triggeredBy == other.triggeredBy;
 
   @override
   String toString() {
     String resultsCsv = (results == null) ? '' : results.join(', ');
 
-    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assignee: $assignee, task: $task, workflow: $workflow, triggeringAssignment: $triggeringAssignment, timestamp: $timestamp, results: AssignmentResult[] { $resultsCsv }}';
+    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assignee: $assignee, task: $task, workflow: $workflow, timestamp: $timestamp, results: AssignmentResult[] { $resultsCsv }, triggeredBy: $triggeredBy}';
   }
 
   AssignmentEntity toEntity({String appId}) {
@@ -89,10 +89,10 @@ class AssignmentModel {
           assigneeId: (assignee != null) ? assignee.documentID : null, 
           task: (task != null) ? task.toEntity(appId: appId) : null, 
           workflowId: (workflow != null) ? workflow.documentID : null, 
-          triggeringAssignmentId: (triggeringAssignment != null) ? triggeringAssignment.documentID : null, 
           timestamp: timestamp,           results: (results != null) ? results
             .map((item) => item.toEntity(appId: appId))
             .toList() : null, 
+          triggeredById: (triggeredBy != null) ? triggeredBy.documentID : null, 
     );
   }
 
@@ -141,11 +141,11 @@ class AssignmentModel {
       } catch (_) {}
     }
 
-    AssignmentModel triggeringAssignmentHolder;
-    if (entity.triggeringAssignmentId != null) {
+    AssignmentModel triggeredByHolder;
+    if (entity.triggeredById != null) {
       try {
-        await assignmentRepository(appId: appId).get(entity.triggeringAssignmentId).then((val) {
-          triggeringAssignmentHolder = val;
+        await assignmentRepository(appId: appId).get(entity.triggeredById).then((val) {
+          triggeredByHolder = val;
         }).catchError((error) {});
       } catch (_) {}
     }
@@ -158,12 +158,12 @@ class AssignmentModel {
           task: 
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 
           workflow: workflowHolder, 
-          triggeringAssignment: triggeringAssignmentHolder, 
           timestamp: entity.timestamp, 
           results: 
             new List<AssignmentResultModel>.from(await Future.wait(entity. results
             .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
             .toList())), 
+          triggeredBy: triggeredByHolder, 
     );
   }
 

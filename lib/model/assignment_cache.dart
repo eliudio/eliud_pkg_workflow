@@ -91,6 +91,10 @@ class AssignmentCache implements AssignmentRepository {
     fullCache.clear();
   }
   
+  String timeStampToString(dynamic timeStamp) {
+    return reference.timeStampToString(timeStamp);
+  } 
+
   dynamic getSubCollection(String documentId, String name) {
     return reference.getSubCollection(documentId, name);
   }
@@ -140,11 +144,11 @@ class AssignmentCache implements AssignmentRepository {
       } catch (_) {}
     }
 
-    AssignmentModel triggeringAssignmentHolder;
-    if (model.triggeringAssignment != null) {
+    AssignmentModel triggeredByHolder;
+    if (model.triggeredBy != null) {
       try {
-        await assignmentRepository(appId: model.triggeringAssignment.appId).get(model.triggeringAssignment.documentID).then((val) {
-          triggeringAssignmentHolder = val;
+        await assignmentRepository(appId: model.triggeredBy.appId).get(model.triggeredBy.documentID).then((val) {
+          triggeredByHolder = val;
         }).catchError((error) {});
       } catch (_) {}
     }
@@ -160,7 +164,7 @@ class AssignmentCache implements AssignmentRepository {
 
         workflow: workflowHolder,
 
-        triggeringAssignment: triggeringAssignmentHolder,
+        triggeredBy: triggeredByHolder,
 
         results: resultsHolder,
 

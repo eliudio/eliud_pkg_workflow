@@ -171,6 +171,9 @@ class WorkflowFirestore implements WorkflowRepository {
     return WorkflowCollection.document(documentId).collection(name);
   }
 
+  String timeStampToString(dynamic timeStamp) {
+    return firestoreTimeStampToString(timeStamp);
+  } 
 
   final String appId;
   WorkflowFirestore(this.WorkflowCollection, this.appId);

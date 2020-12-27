@@ -79,3 +79,15 @@ class ChangedWorkflowTaskTask extends WorkflowTaskFormEvent {
   String toString() => 'ChangedWorkflowTaskTask{ value: $value }';
 }
 
+class ChangedWorkflowTaskResponsible extends WorkflowTaskFormEvent {
+  final WorkflowTaskResponsible value;
+
+  ChangedWorkflowTaskResponsible({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedWorkflowTaskResponsible{ value: $value }';
+}
+

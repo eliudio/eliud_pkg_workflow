@@ -92,9 +92,9 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  assignee: currentState.value.assignee,
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
-                                 triggeringAssignment: currentState.value.triggeringAssignment,
                                  timestamp: currentState.value.timestamp,
                                  results: currentState.value.results,
+                                 triggeredBy: currentState.value.triggeredBy,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
@@ -111,9 +111,9 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  assignee: null,
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
-                                 triggeringAssignment: currentState.value.triggeringAssignment,
                                  timestamp: currentState.value.timestamp,
                                  results: currentState.value.results,
+                                 triggeredBy: currentState.value.triggeredBy,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
@@ -136,28 +136,9 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  assignee: currentState.value.assignee,
                                  task: currentState.value.task,
                                  workflow: null,
-                                 triggeringAssignment: currentState.value.triggeringAssignment,
                                  timestamp: currentState.value.timestamp,
                                  results: currentState.value.results,
-          );
-        yield SubmittableAssignmentForm(value: newValue);
-
-        return;
-      }
-      if (event is ChangedAssignmentTriggeringAssignment) {
-        if (event.value != null)
-          newValue = currentState.value.copyWith(triggeringAssignment: await assignmentRepository(appId: appId).get(event.value));
-        else
-          newValue = new AssignmentModel(
-                                 documentID: currentState.value.documentID,
-                                 appId: currentState.value.appId,
-                                 reporter: currentState.value.reporter,
-                                 assignee: currentState.value.assignee,
-                                 task: currentState.value.task,
-                                 workflow: currentState.value.workflow,
-                                 triggeringAssignment: null,
-                                 timestamp: currentState.value.timestamp,
-                                 results: currentState.value.results,
+                                 triggeredBy: currentState.value.triggeredBy,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
@@ -171,6 +152,25 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
       }
       if (event is ChangedAssignmentResults) {
         newValue = currentState.value.copyWith(results: event.value);
+        yield SubmittableAssignmentForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedAssignmentTriggeredBy) {
+        if (event.value != null)
+          newValue = currentState.value.copyWith(triggeredBy: await assignmentRepository(appId: appId).get(event.value));
+        else
+          newValue = new AssignmentModel(
+                                 documentID: currentState.value.documentID,
+                                 appId: currentState.value.appId,
+                                 reporter: currentState.value.reporter,
+                                 assignee: currentState.value.assignee,
+                                 task: currentState.value.task,
+                                 workflow: currentState.value.workflow,
+                                 timestamp: currentState.value.timestamp,
+                                 results: currentState.value.results,
+                                 triggeredBy: null,
+          );
         yield SubmittableAssignmentForm(value: newValue);
 
         return;

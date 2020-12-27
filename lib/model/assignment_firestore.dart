@@ -36,7 +36,7 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentFirestore implements AssignmentRepository {
   Future<AssignmentModel> add(AssignmentModel value) {
-    return AssignmentCollection.document(value.documentID).setData(value.toEntity().copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
+    return AssignmentCollection.document(value.documentID).setData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
   }
 
   Future<void> delete(AssignmentModel value) {
@@ -44,7 +44,7 @@ class AssignmentFirestore implements AssignmentRepository {
   }
 
   Future<AssignmentModel> update(AssignmentModel value) {
-    return AssignmentCollection.document(value.documentID).updateData(value.toEntity().copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
+    return AssignmentCollection.document(value.documentID).updateData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
   }
 
   AssignmentModel _populateDoc(DocumentSnapshot value) {
@@ -52,7 +52,7 @@ class AssignmentFirestore implements AssignmentRepository {
   }
 
   Future<AssignmentModel> _populateDocPlus(DocumentSnapshot value) async {
-    return AssignmentModel.fromEntityPlus(value.documentID, AssignmentEntity.fromMap(value.data), );  }
+    return AssignmentModel.fromEntityPlus(value.documentID, AssignmentEntity.fromMap(value.data), appId: appId);  }
 
   Future<AssignmentModel> get(String id) {
     return AssignmentCollection.document(id).get().then((doc) {
@@ -110,7 +110,7 @@ class AssignmentFirestore implements AssignmentRepository {
 
   Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
     DocumentSnapshot lastDoc;
-    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, ).snapshots().map((snapshot) {
+    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
@@ -121,7 +121,7 @@ class AssignmentFirestore implements AssignmentRepository {
 
   Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
     DocumentSnapshot lastDoc;
-    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, ).snapshots().asyncMap((snapshot) {
+    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().asyncMap((snapshot) {
       return Future.wait(snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
@@ -133,7 +133,7 @@ class AssignmentFirestore implements AssignmentRepository {
 
   Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
     DocumentSnapshot lastDoc;
-    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, ).getDocuments().then((value) {
+    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return list.map((doc) { 
         lastDoc = doc;
@@ -146,7 +146,7 @@ class AssignmentFirestore implements AssignmentRepository {
 
   Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
     DocumentSnapshot lastDoc;
-    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, ).getDocuments().then((value) {
+    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return Future.wait(list.map((doc) {
         lastDoc = doc;
@@ -171,10 +171,13 @@ class AssignmentFirestore implements AssignmentRepository {
     return AssignmentCollection.document(documentId).collection(name);
   }
 
+  String timeStampToString(dynamic timeStamp) {
+    return firestoreTimeStampToString(timeStamp);
+  } 
 
-  AssignmentFirestore();
+  final String appId;
+  final CollectionReference AssignmentCollection;
 
-  final CollectionReference AssignmentCollection = Firestore.instance.collection('assignment');
-
+  AssignmentFirestore(this.appId) : AssignmentCollection = Firestore.instance.collection('assignment');
 }
 

@@ -159,22 +159,6 @@ class WorkflowAssignmentFormError extends AssignmentFormError {
 }
 
 
-class TriggeringAssignmentAssignmentFormError extends AssignmentFormError { 
-  const TriggeringAssignmentAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
-
-  @override
-  List<Object> get props => [ message, value ];
-
-  @override
-  String toString() {
-    return '''TriggeringAssignmentAssignmentFormError {
-      value: $value,
-      message: $message,
-    }''';
-  }
-}
-
-
 class TimestampAssignmentFormError extends AssignmentFormError { 
   const TimestampAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
@@ -200,6 +184,22 @@ class ResultsAssignmentFormError extends AssignmentFormError {
   @override
   String toString() {
     return '''ResultsAssignmentFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
+class TriggeredByAssignmentFormError extends AssignmentFormError { 
+  const TriggeredByAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''TriggeredByAssignmentFormError {
       value: $value,
       message: $message,
     }''';

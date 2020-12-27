@@ -135,7 +135,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   String _reporter;
   String _assignee;
   String _workflow;
-  String _triggeringAssignment;
+  String _triggeredBy;
 
 
   _MyAssignmentFormState(this.formAction);
@@ -178,10 +178,10 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           _workflow= state.value.workflow.documentID;
         else
           _workflow= "";
-        if (state.value.triggeringAssignment != null)
-          _triggeringAssignment= state.value.triggeringAssignment.documentID;
+        if (state.value.triggeredBy != null)
+          _triggeredBy= state.value.triggeredBy.documentID;
         else
-          _triggeringAssignment= "";
+          _triggeredBy= "";
       }
       if (state is AssignmentFormInitialized) {
         List<Widget> children = List();
@@ -212,16 +212,6 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                 ),
           );
 
-        children.add(
-
-                DropdownButtonComponentFactory().createNew(id: "members", value: _reporter, trigger: _onReporterSelected, optional: false),
-          );
-
-        children.add(
-
-                DropdownButtonComponentFactory().createNew(id: "members", value: _assignee, trigger: _onAssigneeSelected, optional: false),
-          );
-
 
 
         children.add(
@@ -245,6 +235,11 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
+        children.add(
+
+                DropdownButtonComponentFactory().createNew(id: "members", value: _reporter, trigger: _onReporterSelected, optional: false),
+          );
+
 
         children.add(Container(height: 20.0));
         children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
@@ -257,6 +252,47 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                       style: TextStyle(
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
+
+        children.add(
+
+                DropdownButtonComponentFactory().createNew(id: "members", value: _assignee, trigger: _onAssigneeSelected, optional: false),
+          );
+
+
+        children.add(Container(height: 20.0));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+
+
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Text('Reporter',
+                      style: TextStyle(
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                ));
+
+        children.add(
+
+                DropdownButtonComponentFactory().createNew(id: "members", value: _reporter, trigger: _onReporterSelected, optional: false),
+          );
+
+
+        children.add(Container(height: 20.0));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+
+
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Text('Triggered by',
+                      style: TextStyle(
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                ));
+
+        children.add(
+
+                DropdownButtonComponentFactory().createNew(id: "assignments", value: _triggeredBy, trigger: _onTriggeredBySelected, optional: false),
+          );
 
 
         children.add(Container(height: 20.0));
@@ -284,14 +320,14 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Text('Assignment',
+                  child: Text('Assignee',
                       style: TextStyle(
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "assignments", value: _triggeringAssignment, trigger: _onTriggeringAssignmentSelected, optional: false),
+                DropdownButtonComponentFactory().createNew(id: "members", value: _assignee, trigger: _onAssigneeSelected, optional: false),
           );
 
 
@@ -315,9 +351,9 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               assignee: state.value.assignee, 
                               task: state.value.task, 
                               workflow: state.value.workflow, 
-                              triggeringAssignment: state.value.triggeringAssignment, 
                               timestamp: state.value.timestamp, 
                               results: state.value.results, 
+                              triggeredBy: state.value.triggeredBy, 
                         )));
                       } else {
                         BlocProvider.of<AssignmentListBloc>(context).add(
@@ -328,9 +364,9 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               assignee: state.value.assignee, 
                               task: state.value.task, 
                               workflow: state.value.workflow, 
-                              triggeringAssignment: state.value.triggeringAssignment, 
                               timestamp: state.value.timestamp, 
                               results: state.value.results, 
+                              triggeredBy: state.value.triggeredBy, 
                           )));
                       }
                       if (widget.submitAction != null) {
@@ -398,17 +434,17 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
 
-  void _onTriggeringAssignmentSelected(String val) {
-    setState(() {
-      _triggeringAssignment = val;
-    });
-    _myFormBloc.add(ChangedAssignmentTriggeringAssignment(value: val));
-  }
-
-
   void _onResultsChanged(value) {
     _myFormBloc.add(ChangedAssignmentResults(value: value));
     setState(() {});
+  }
+
+
+  void _onTriggeredBySelected(String val) {
+    setState(() {
+      _triggeredBy = val;
+    });
+    _myFormBloc.add(ChangedAssignmentTriggeredBy(value: val));
   }
 
 

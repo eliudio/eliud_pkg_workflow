@@ -131,20 +131,8 @@ class ChangedAssignmentWorkflow extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentWorkflow{ value: $value }';
 }
 
-class ChangedAssignmentTriggeringAssignment extends AssignmentFormEvent {
-  final String value;
-
-  ChangedAssignmentTriggeringAssignment({this.value});
-
-  @override
-  List<Object> get props => [ value ];
-
-  @override
-  String toString() => 'ChangedAssignmentTriggeringAssignment{ value: $value }';
-}
-
 class ChangedAssignmentTimestamp extends AssignmentFormEvent {
-  final DateTime value;
+  final String value;
 
   ChangedAssignmentTimestamp({this.value});
 
@@ -165,5 +153,17 @@ class ChangedAssignmentResults extends AssignmentFormEvent {
 
   @override
   String toString() => 'ChangedAssignmentResults{ value: $value }';
+}
+
+class ChangedAssignmentTriggeredBy extends AssignmentFormEvent {
+  final String value;
+
+  ChangedAssignmentTriggeredBy({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedAssignmentTriggeredBy{ value: $value }';
 }
 

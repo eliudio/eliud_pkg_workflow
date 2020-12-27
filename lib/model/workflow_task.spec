@@ -30,6 +30,14 @@
       "displayName": "Task",
       "fieldType": "Task",
       "group": "Task"
+    },
+    {
+      "fieldName": "responsible",
+      "displayName": "Responsible",
+      "fieldType": "enum",
+      "enumName": "WorkflowTaskResponsible",
+      "remark": "Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment",
+      "enumValues" : [ "CurrentMember", "Owner", "First" ]
     }
   ],
   "groups": [

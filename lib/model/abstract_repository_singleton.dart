@@ -21,16 +21,16 @@ import 'package:eliud_core/core/access/bloc/user_repository.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 
-AssignmentRepository assignmentRepository({ String appId }) => AbstractRepositorySingleton.singleton.assignmentRepository();
+AssignmentRepository assignmentRepository({ String appId }) => AbstractRepositorySingleton.singleton.assignmentRepository(appId);
 WorkflowRepository workflowRepository({ String appId }) => AbstractRepositorySingleton.singleton.workflowRepository(appId);
 
 abstract class AbstractRepositorySingleton {
   static AbstractRepositorySingleton singleton;
 
-  AssignmentRepository assignmentRepository();
+  AssignmentRepository assignmentRepository(String appId);
   WorkflowRepository workflowRepository(String appId);
 
   void flush(String appId) {
-    assignmentRepository().flush();
+    assignmentRepository(appId).flush();
   }
 }

@@ -30,11 +30,12 @@ import '../model/workflow_task_cache.dart';
 import '../model/assignment_model.dart';
 
 class JsRepositorySingleton extends AbstractRepositorySingleton {
-    var _assignmentRepository = AssignmentCache(AssignmentJsFirestore());
+    var _assignmentRepository = HashMap<String, AssignmentRepository>();
     var _workflowRepository = HashMap<String, WorkflowRepository>();
 
-    AssignmentRepository assignmentRepository() {
-      return _assignmentRepository;
+    AssignmentRepository assignmentRepository(String appId) {
+      if (_assignmentRepository[appId] == null) _assignmentRepository[appId] = AssignmentCache(AssignmentJsFirestore(appId));
+      return _assignmentRepository[appId];
     }
     WorkflowRepository workflowRepository(String appId) {
       if (_workflowRepository[appId] == null) _workflowRepository[appId] = WorkflowCache(WorkflowJsFirestore(appRepository().getSubCollection(appId, 'workflow'), appId));

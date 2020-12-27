@@ -119,7 +119,7 @@ class AdminAppWiper extends AdminAppWiperBase {
 
   @override
   Future<void> deleteAll(String appId) async {
-    await assignmentRepository().deleteAll();
+    await assignmentRepository(appId: appId).deleteAll();
     ;
   }
 

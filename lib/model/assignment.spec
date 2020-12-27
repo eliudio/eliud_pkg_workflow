@@ -1,6 +1,7 @@
 {
   "id": "Assignment",
   "packageName": "eliud_pkg_workflow",
+  "isAppModel": true,
   "generate": {
     "generateComponent": false,
     "generateRepository": true,
@@ -38,7 +39,7 @@
       "displayName": "Member",
       "fieldType": "Member",
       "association": true,
-      "group": "member"
+      "group": "Reporter"
     },
     {
       "fieldName": "assignee",
@@ -46,7 +47,7 @@
       "displayName": "Member",
       "fieldType": "Member",
       "association": true,
-      "group": "member"
+      "group": "Assignee"
     },
     {
       "fieldName": "task",
@@ -73,6 +74,13 @@
       "displayName": "Assignment Result",
       "fieldType": "AssignmentResult",
       "arrayType": "Array"
+    },
+    {
+      "fieldName": "triggeredBy",
+      "displayName": "Triggered by",
+      "fieldType": "Assignment",
+      "association": true,
+      "group": "Triggered"
     }
   ],
   "groups": [
@@ -85,12 +93,20 @@
         "description": "Assignee"
     },
     {
+        "group": "Reporter",
+        "description": "Reporter"
+    },
+    {
+        "group": "Triggered",
+        "description": "Triggered by"
+    },
+    {
         "group": "Workflow",
         "description": "Workflow"
     },
     {
-        "group": "Assignment",
-        "description": "Assignment"
+        "group": "Assignee",
+        "description": "Assignee"
     }
   ],
   "listFields": {

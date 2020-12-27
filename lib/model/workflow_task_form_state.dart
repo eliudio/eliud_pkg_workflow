@@ -95,6 +95,22 @@ class TaskWorkflowTaskFormError extends WorkflowTaskFormError {
 }
 
 
+class ResponsibleWorkflowTaskFormError extends WorkflowTaskFormError { 
+  const ResponsibleWorkflowTaskFormError({ String message, WorkflowTaskModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ResponsibleWorkflowTaskFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class WorkflowTaskFormLoaded extends WorkflowTaskFormInitialized { 
   const WorkflowTaskFormLoaded({ WorkflowTaskModel value }): super(value: value);
 

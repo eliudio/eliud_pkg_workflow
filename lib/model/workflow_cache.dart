@@ -91,6 +91,10 @@ class WorkflowCache implements WorkflowRepository {
     fullCache.clear();
   }
   
+  String timeStampToString(dynamic timeStamp) {
+    return reference.timeStampToString(timeStamp);
+  } 
+
   dynamic getSubCollection(String documentId, String name) {
     return reference.getSubCollection(documentId, name);
   }

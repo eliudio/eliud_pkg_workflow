@@ -189,6 +189,11 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
       throw UnimplementedError();
     }
 
+  @override
+  String timeStampToString(timeStamp) {
+    throw UnimplementedError();
+  }
+
     Future<void> deleteAll() {}
 }
 
@@ -273,6 +278,11 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
       throw UnimplementedError();
     }
 
+  @override
+  String timeStampToString(timeStamp) {
+    throw UnimplementedError();
+  }
+
     Future<void> deleteAll() {}
 }
 
@@ -356,6 +366,11 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
     getSubCollection(String documentId, String name) {
       throw UnimplementedError();
     }
+
+  @override
+  String timeStampToString(timeStamp) {
+    throw UnimplementedError();
+  }
 
     Future<void> deleteAll() {}
 }
