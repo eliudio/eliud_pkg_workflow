@@ -109,6 +109,10 @@ class AssignmentResultCache implements AssignmentResultRepository {
     return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, );
   }
 
+  @override
+  StreamSubscription<AssignmentResultModel> listenTo(String documentId, changed) {
+    reference.listenTo(documentId, changed);
+  }
 
   static Future<AssignmentResultModel> refreshRelations(AssignmentResultModel model) async {
 

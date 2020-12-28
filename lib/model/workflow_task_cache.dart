@@ -109,6 +109,10 @@ class WorkflowTaskCache implements WorkflowTaskRepository {
     return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, );
   }
 
+  @override
+  StreamSubscription<WorkflowTaskModel> listenTo(String documentId, changed) {
+    reference.listenTo(documentId, changed);
+  }
 
   static Future<WorkflowTaskModel> refreshRelations(WorkflowTaskModel model) async {
 

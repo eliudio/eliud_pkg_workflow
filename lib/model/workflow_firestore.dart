@@ -107,6 +107,17 @@ class WorkflowFirestore implements WorkflowRepository {
     });
   }
 
+  @override
+  StreamSubscription<WorkflowModel> listenTo(String documentId, WorkflowChanged changed) {
+    var stream = WorkflowCollection.document(documentId)
+        .snapshots()
+        .asyncMap((data) {
+      return _populateDocPlus(data);
+    });
+    return stream.listen((value) {
+      changed(value);
+    });
+  }
 
   Stream<List<WorkflowModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
     DocumentSnapshot lastDoc;

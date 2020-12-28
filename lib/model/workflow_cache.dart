@@ -114,6 +114,10 @@ class WorkflowCache implements WorkflowRepository {
     return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, );
   }
 
+  @override
+  StreamSubscription<WorkflowModel> listenTo(String documentId, changed) {
+    reference.listenTo(documentId, changed);
+  }
 
   static Future<WorkflowModel> refreshRelations(WorkflowModel model) async {
 

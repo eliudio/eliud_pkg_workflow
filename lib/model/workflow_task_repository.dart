@@ -30,6 +30,7 @@ import 'package:eliud_core/tools/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 typedef WorkflowTaskModelTrigger(List<WorkflowTaskModel> list);
+typedef WorkflowTaskChanged(WorkflowTaskModel value);
 
 abstract class WorkflowTaskRepository {
   Future<WorkflowTaskModel> add(WorkflowTaskModel value);
@@ -44,6 +45,7 @@ abstract class WorkflowTaskRepository {
 
   StreamSubscription<List<WorkflowTaskModel>> listen(WorkflowTaskModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(WorkflowTaskModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<WorkflowTaskModel> listenTo(String documentId, WorkflowTaskChanged changed);
   void flush();
   
   String timeStampToString(dynamic timeStamp);

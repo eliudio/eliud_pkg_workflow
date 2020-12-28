@@ -193,6 +193,12 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
   String timeStampToString(timeStamp) {
     throw UnimplementedError();
   }
+  
+  @override
+  StreamSubscription<AssignmentModel> listenTo(String documentId, AssignmentChanged changed) {
+    throw UnimplementedError();
+  }
+  
 
     Future<void> deleteAll() {}
 }
@@ -282,6 +288,12 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
   String timeStampToString(timeStamp) {
     throw UnimplementedError();
   }
+  
+  @override
+  StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed) {
+    throw UnimplementedError();
+  }
+  
 
     Future<void> deleteAll() {}
 }
@@ -371,6 +383,12 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
   String timeStampToString(timeStamp) {
     throw UnimplementedError();
   }
+  
+  @override
+  StreamSubscription<WorkflowTaskModel> listenTo(String documentId, WorkflowTaskChanged changed) {
+    throw UnimplementedError();
+  }
+  
 
     Future<void> deleteAll() {}
 }

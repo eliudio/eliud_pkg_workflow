@@ -30,6 +30,7 @@ import 'package:eliud_core/tools/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 typedef AssignmentResultModelTrigger(List<AssignmentResultModel> list);
+typedef AssignmentResultChanged(AssignmentResultModel value);
 
 abstract class AssignmentResultRepository {
   Future<AssignmentResultModel> add(AssignmentResultModel value);
@@ -44,6 +45,7 @@ abstract class AssignmentResultRepository {
 
   StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed);
   void flush();
   
   String timeStampToString(dynamic timeStamp);
