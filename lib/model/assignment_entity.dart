@@ -53,7 +53,11 @@ class AssignmentEntity {
     taskFromMap = map['task'];
     if (taskFromMap != null)
       taskFromMap = TaskEntity.fromMap(taskFromMap);
-    final resultsList = (map['results'] as List<dynamic>)
+    var resultsFromMap;
+    resultsFromMap = map['results'];
+    var resultsList;
+    if (resultsFromMap != null)
+      resultsList = (map['results'] as List<dynamic>)
         .map((dynamic item) =>
         AssignmentResultEntity.fromMap(item as Map))
         .toList();

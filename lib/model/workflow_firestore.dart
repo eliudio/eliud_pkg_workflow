@@ -31,7 +31,8 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eliud_core/tools/firestore_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class WorkflowFirestore implements WorkflowRepository {
@@ -63,7 +64,7 @@ class WorkflowFirestore implements WorkflowRepository {
     });
   }
 
-  StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel}) {
+  StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<WorkflowModel>> stream;
     if (orderBy == null) {
        stream = WorkflowCollection.snapshots().map((data) {
@@ -88,7 +89,7 @@ class WorkflowFirestore implements WorkflowRepository {
     });
   }
 
-  StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel}) {
+  StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<WorkflowModel>> stream;
     if (orderBy == null) {
       stream = WorkflowCollection.snapshots()
@@ -119,9 +120,9 @@ class WorkflowFirestore implements WorkflowRepository {
     });
   }
 
-  Stream<List<WorkflowModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<WorkflowModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<WorkflowModel>> _values = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().map((snapshot) {
+    Stream<List<WorkflowModel>> _values = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
@@ -130,9 +131,9 @@ class WorkflowFirestore implements WorkflowRepository {
     return _values;
   }
 
-  Stream<List<WorkflowModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<WorkflowModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<WorkflowModel>> _values = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().asyncMap((snapshot) {
+    Stream<List<WorkflowModel>> _values = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().asyncMap((snapshot) {
       return Future.wait(snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
@@ -142,9 +143,9 @@ class WorkflowFirestore implements WorkflowRepository {
     return _values;
   }
 
-  Future<List<WorkflowModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<WorkflowModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
+    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return list.map((doc) { 
         lastDoc = doc;
@@ -155,9 +156,9 @@ class WorkflowFirestore implements WorkflowRepository {
     return _values;
   }
 
-  Future<List<WorkflowModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<WorkflowModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
+    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return Future.wait(list.map((doc) {
         lastDoc = doc;

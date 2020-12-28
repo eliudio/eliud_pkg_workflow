@@ -26,7 +26,7 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 
 import 'dart:async';
-import 'package:eliud_core/tools/firestore_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 typedef AssignmentResultModelTrigger(List<AssignmentResultModel> list);
@@ -38,13 +38,13 @@ abstract class AssignmentResultRepository {
   Future<AssignmentResultModel> get(String id);
   Future<AssignmentResultModel> update(AssignmentResultModel value);
 
-  Stream<List<AssignmentResultModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
-  Stream<List<AssignmentResultModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
-  Future<List<AssignmentResultModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
-  Future<List<AssignmentResultModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
+  Stream<List<AssignmentResultModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Stream<List<AssignmentResultModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Future<List<AssignmentResultModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Future<List<AssignmentResultModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
 
-  StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
-  StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
   StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed);
   void flush();
   

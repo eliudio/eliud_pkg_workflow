@@ -33,7 +33,8 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 import 'dart:async';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart';
-import 'package:eliud_core/tools/js_firestore_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core/tools/firestore/js_firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentJsFirestore implements AssignmentRepository {
@@ -72,7 +73,7 @@ class AssignmentJsFirestore implements AssignmentRepository {
   }
 
   @override
-  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
     if (orderBy == null) {
       stream = getCollection().onSnapshot
@@ -98,7 +99,7 @@ class AssignmentJsFirestore implements AssignmentRepository {
     });
   }
 
-  StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
     if (orderBy == null) {
       // If we use assignmentCollection here, then the second subscription fails
@@ -130,9 +131,9 @@ class AssignmentJsFirestore implements AssignmentRepository {
     });
   }
 
-  Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<AssignmentModel>> _values = getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId)
+    Stream<List<AssignmentModel>> _values = getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)
       .onSnapshot
       .map((data) { 
         return data.docs.map((doc) {
@@ -143,9 +144,9 @@ class AssignmentJsFirestore implements AssignmentRepository {
     return _values;
   }
 
-  Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<AssignmentModel>> _values = getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId)
+    Stream<List<AssignmentModel>> _values = getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)
       .onSnapshot
       .asyncMap((data) {
         return Future.wait(data.docs.map((doc) { 
@@ -158,9 +159,9 @@ class AssignmentJsFirestore implements AssignmentRepository {
   }
 
   @override
-  Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<AssignmentModel> _values = await getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).get().then((value) {
+    List<AssignmentModel> _values = await getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
       var list = value.docs;
       return list.map((doc) { 
         lastDoc = doc;
@@ -172,9 +173,9 @@ class AssignmentJsFirestore implements AssignmentRepository {
   }
 
   @override
-  Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<AssignmentModel> _values = await getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).get().then((value) {
+    List<AssignmentModel> _values = await getQuery(assignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
       var list = value.docs;
       return Future.wait(list.map((doc) {  
         lastDoc = doc;
@@ -200,11 +201,12 @@ class AssignmentJsFirestore implements AssignmentRepository {
   String timeStampToString(dynamic timeStamp) {
     return firestoreTimeStampToString(timeStamp);
   } 
-  CollectionReference getCollection() => firestore().collection('assignment-$appId');
-
   final String appId;
-  
-  AssignmentJsFirestore(this.appId) : assignmentCollection = firestore().collection('assignment-$appId');
+  AssignmentJsFirestore(this.assignmentCollection, this.appId);
 
+  // In flutterweb, it seems we require to re-retrieve the collection. If not then subscribing / listening to it a second time fails.
+  // CollectionReference getCollection() => assignmentCollection;
+  CollectionReference getCollection() => appRepository().getSubCollection(appId, 'assignment');
   final CollectionReference assignmentCollection;
 }
+

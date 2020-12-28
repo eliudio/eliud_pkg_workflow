@@ -15,5 +15,6 @@
 
 export '../model/assignment_repository.dart';
 export '../model/assignment_result_repository.dart';
+export '../model/assignment_view_repository.dart';
 export '../model/workflow_repository.dart';
 export '../model/workflow_task_repository.dart';

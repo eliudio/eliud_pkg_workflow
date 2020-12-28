@@ -52,6 +52,27 @@ class AdminApp extends AdminAppInstallerBase {
   AdminApp(this.appId, this._drawer, this._endDrawer, this._appBar, this._homeMenu, this.menuItemColor, this.selectedMenuItemColor, this.backgroundColor);
 
 
+  PageModel _assignmentViewsPages() {
+    List<BodyComponentModel> components = List();
+    components.add(BodyComponentModel(
+      documentID: "internalWidget-assignmentViews", componentName: "eliud_pkg_workflow_internalWidgets", componentId: "assignmentViews"));
+    PageModel page = PageModel(
+        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
+        privilegeLevelRequired: OWNER_PRIVILEGES,
+        appId: appId,
+        documentID: "eliud_pkg_workflow_assignmentviews_page",
+        title: "AssignmentViews",
+        drawer: _drawer,
+        endDrawer: _endDrawer,
+        appBar: _appBar,
+        homeMenu: _homeMenu,
+        bodyComponents: components,
+        layout: PageLayout.OnlyTheFirstComponent
+    );
+    return page;
+  }
+
+
   PageModel _workflowsPages() {
     List<BodyComponentModel> components = List();
     components.add(BodyComponentModel(
@@ -75,7 +96,9 @@ class AdminApp extends AdminAppInstallerBase {
 
   Future<void> _setupAdminPages() {
 
-    return pageRepository(appId: appId).add(_workflowsPages())
+    return pageRepository(appId: appId).add(_assignmentViewsPages())
+
+        .then((_) => pageRepository(appId: appId).add(_workflowsPages()))
 
     ;
   }
@@ -92,6 +115,16 @@ class AdminMenu extends AdminAppMenuInstallerBase {
 
   Future<MenuDefModel> menu(String appId) async {
     List<MenuItemModel> menuItems = List<MenuItemModel>();
+
+    menuItems.add(
+      MenuItemModel(
+        documentID: "AssignmentViews",
+        text: "AssignmentViews",
+        description: "AssignmentViews",
+        icon: IconModel(codePoint: 0xe88a, fontFamily: "MaterialIcons"),
+        action: GotoPage(appId, pageID: "eliud_pkg_workflow_assignmentviews_page"))
+    );
+
 
     menuItems.add(
       MenuItemModel(
@@ -119,7 +152,6 @@ class AdminAppWiper extends AdminAppWiperBase {
 
   @override
   Future<void> deleteAll(String appId) async {
-    await assignmentRepository(appId: appId).deleteAll();
     ;
   }
 

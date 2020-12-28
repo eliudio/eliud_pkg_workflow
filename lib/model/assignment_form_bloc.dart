@@ -65,8 +65,8 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
 
       if (event is InitialiseAssignmentFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        AssignmentFormLoaded loaded = AssignmentFormLoaded(value: await assignmentRepository(appId: appId).get(event.value.documentID));
-        yield loaded;
+        //AssignmentFormLoaded loaded = AssignmentFormLoaded(value: await assignmentRepository(appId: appId).get(event.value.documentID));
+        yield null;
         return;
       } else if (event is InitialiseAssignmentFormNoLoadEvent) {
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: event.value);
@@ -167,7 +167,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
       }
       if (event is ChangedAssignmentTriggeredBy) {
         if (event.value != null)
-          newValue = currentState.value.copyWith(triggeredBy: await assignmentRepository(appId: appId).get(event.value));
+          newValue = null;//currentState.value.copyWith(triggeredBy: await assignmentRepository(appId: appId).get(event.value));
         else
           newValue = new AssignmentModel(
                                  documentID: currentState.value.documentID,
@@ -194,7 +194,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
   Future<AssignmentFormState> _isDocumentIDValid(String value, AssignmentModel newValue) async {
     if (value == null) return Future.value(error("Provide value for documentID", newValue));
     if (value.length == 0) return Future.value(error("Provide value for documentID", newValue));
-    Future<AssignmentModel> findDocument = assignmentRepository(appId: appId).get(value);
+    Future<AssignmentModel> findDocument = null;//assignmentRepository(appId: appId).get(value);
     return await findDocument.then((documentFound) {
       if (documentFound == null) {
         return SubmittableAssignmentForm(value: newValue);

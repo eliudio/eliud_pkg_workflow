@@ -16,6 +16,7 @@
 
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 
 import 'dart:async';
 
@@ -156,31 +157,31 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
       return completer.future;
     }
 
-    Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues;
     }
     
-    Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues;
     }
     
     @override
-    StreamSubscription<List<AssignmentModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel }) {
+    StreamSubscription<List<AssignmentModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel }) {
+    StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return Future.value(items);
     }
 
@@ -251,31 +252,31 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
       return completer.future;
     }
 
-    Stream<List<AssignmentResultModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Stream<List<AssignmentResultModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues;
     }
     
-    Stream<List<AssignmentResultModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Stream<List<AssignmentResultModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues;
     }
     
     @override
-    StreamSubscription<List<AssignmentResultModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel }) {
+    StreamSubscription<List<AssignmentResultModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel }) {
+    StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<AssignmentResultModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Future<List<AssignmentResultModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<AssignmentResultModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Future<List<AssignmentResultModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return Future.value(items);
     }
 
@@ -346,31 +347,31 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
       return completer.future;
     }
 
-    Stream<List<WorkflowTaskModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Stream<List<WorkflowTaskModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues;
     }
     
-    Stream<List<WorkflowTaskModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Stream<List<WorkflowTaskModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues;
     }
     
     @override
-    StreamSubscription<List<WorkflowTaskModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel }) {
+    StreamSubscription<List<WorkflowTaskModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel }) {
+    StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<WorkflowTaskModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Future<List<WorkflowTaskModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<WorkflowTaskModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+    Future<List<WorkflowTaskModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
       return Future.value(items);
     }
 

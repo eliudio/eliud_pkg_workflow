@@ -88,7 +88,8 @@ class WorkflowModel {
           documentID: documentID, 
           name: entity.name, 
           workflowTask: 
-            entity. workflowTask
+            entity.workflowTask == null ? null :
+            entity.workflowTask
             .map((item) => WorkflowTaskModel.fromEntity(newRandomKey(), item))
             .toList(), 
           appId: entity.appId, 
@@ -102,7 +103,7 @@ class WorkflowModel {
           documentID: documentID, 
           name: entity.name, 
           workflowTask: 
-            new List<WorkflowTaskModel>.from(await Future.wait(entity. workflowTask
+            entity. workflowTask == null ? null : new List<WorkflowTaskModel>.from(await Future.wait(entity. workflowTask
             .map((item) => WorkflowTaskModel.fromEntityPlus(newRandomKey(), item, appId: appId))
             .toList())), 
           appId: entity.appId, 

@@ -109,7 +109,8 @@ class AssignmentModel {
           timestamp: entity.timestamp, 
           closed: entity.closed, 
           results: 
-            entity. results
+            entity.results == null ? null :
+            entity.results
             .map((item) => AssignmentResultModel.fromEntity(newRandomKey(), item))
             .toList(), 
     );
@@ -145,6 +146,7 @@ class AssignmentModel {
       } catch (_) {}
     }
 
+/*
     AssignmentModel triggeredByHolder;
     if (entity.triggeredById != null) {
       try {
@@ -153,6 +155,7 @@ class AssignmentModel {
         }).catchError((error) {});
       } catch (_) {}
     }
+*/
 
     return AssignmentModel(
           documentID: documentID, 
@@ -165,10 +168,10 @@ class AssignmentModel {
           timestamp: entity.timestamp, 
           closed: entity.closed, 
           results: 
-            new List<AssignmentResultModel>.from(await Future.wait(entity. results
+            entity. results == null ? null : new List<AssignmentResultModel>.from(await Future.wait(entity. results
             .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
             .toList())), 
-          triggeredBy: triggeredByHolder, 
+          triggeredBy: null//triggeredByHolder,
     );
   }
 

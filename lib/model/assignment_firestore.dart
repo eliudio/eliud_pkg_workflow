@@ -31,12 +31,13 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eliud_core/tools/firestore_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentFirestore implements AssignmentRepository {
   Future<AssignmentModel> add(AssignmentModel value) {
-    return AssignmentCollection.document(value.documentID).setData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
+    return AssignmentCollection.document(value.documentID).setData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => value);
   }
 
   Future<void> delete(AssignmentModel value) {
@@ -44,7 +45,7 @@ class AssignmentFirestore implements AssignmentRepository {
   }
 
   Future<AssignmentModel> update(AssignmentModel value) {
-    return AssignmentCollection.document(value.documentID).updateData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
+    return AssignmentCollection.document(value.documentID).updateData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => value);
   }
 
   AssignmentModel _populateDoc(DocumentSnapshot value) {
@@ -54,6 +55,7 @@ class AssignmentFirestore implements AssignmentRepository {
   Future<AssignmentModel> _populateDocPlus(DocumentSnapshot value) async {
     return AssignmentModel.fromEntityPlus(value.documentID, AssignmentEntity.fromMap(value.data), appId: appId);  }
 
+/*
   Future<AssignmentModel> get(String id) {
     return AssignmentCollection.document(id).get().then((doc) {
       if (doc.data != null)
@@ -62,19 +64,21 @@ class AssignmentFirestore implements AssignmentRepository {
         return null;
     });
   }
+*/
 
-  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, }) {
+  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<AssignmentModel>> stream;
-    if (orderBy == null) {
-       stream = AssignmentCollection.snapshots().map((data) {
+//    if (orderBy == null) {
+       stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
         Iterable<AssignmentModel> assignments  = data.documents.map((doc) {
           AssignmentModel value = _populateDoc(doc);
           return value;
         }).toList();
         return assignments;
       });
+/*
     } else {
-      stream = AssignmentCollection.orderBy(orderBy, descending: descending).snapshots().map((data) {
+      stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).orderBy(orderBy, descending: descending).snapshots().map((data) {
         Iterable<AssignmentModel> assignments  = data.documents.map((doc) {
           AssignmentModel value = _populateDoc(doc);
           return value;
@@ -83,20 +87,21 @@ class AssignmentFirestore implements AssignmentRepository {
       });
   
     }
+*/
     return stream.listen((listOfAssignmentModels) {
       trigger(listOfAssignmentModels);
     });
   }
 
-  StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel}) {
+  StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<AssignmentModel>> stream;
     if (orderBy == null) {
-      stream = AssignmentCollection.snapshots()
+      stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
           .asyncMap((data) async {
         return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
       });
     } else {
-      stream = AssignmentCollection.orderBy(orderBy, descending: descending).snapshots()
+      stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).orderBy(orderBy, descending: descending).snapshots()
           .asyncMap((data) async {
         return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
       });
@@ -119,9 +124,9 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
-  Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<AssignmentModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().map((snapshot) {
+    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
@@ -130,9 +135,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return _values;
   }
 
-  Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<AssignmentModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().asyncMap((snapshot) {
+    Stream<List<AssignmentModel>> _values = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().asyncMap((snapshot) {
       return Future.wait(snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
@@ -142,9 +147,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return _values;
   }
 
-  Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<AssignmentModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
+    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return list.map((doc) { 
         lastDoc = doc;
@@ -155,9 +160,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return _values;
   }
 
-  Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<AssignmentModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
+    List<AssignmentModel> _values = await getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return Future.wait(list.map((doc) {
         lastDoc = doc;
@@ -187,8 +192,8 @@ class AssignmentFirestore implements AssignmentRepository {
   } 
 
   final String appId;
-  final CollectionReference AssignmentCollection;
+  AssignmentFirestore(this.AssignmentCollection, this.appId);
 
-  AssignmentFirestore(this.appId) : AssignmentCollection = Firestore.instance.collection('assignment');
+  final CollectionReference AssignmentCollection;
 }
 

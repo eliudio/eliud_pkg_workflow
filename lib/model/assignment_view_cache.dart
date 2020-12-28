@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- assignment_result_repository.dart
+ assignment_view_repository.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -16,39 +16,44 @@
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
-import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
-import 'package:eliud_pkg_workflow/model/assignment_result_repository.dart';
+import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
+import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
+import 'package:eliud_core/model/repository_export.dart';
+import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/repository_export.dart';
+import 'package:eliud_core/model/cache_export.dart';
 import 'package:eliud_pkg_workflow/model/cache_export.dart';
+import 'package:eliud_core/model/model_export.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
+import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
-class AssignmentResultCache implements AssignmentResultRepository {
+class AssignmentViewCache implements AssignmentViewRepository {
 
-  final AssignmentResultRepository reference;
-  final Map<String, AssignmentResultModel> fullCache = Map();
+  final AssignmentViewRepository reference;
+  final Map<String, AssignmentViewModel> fullCache = Map();
 
-  AssignmentResultCache(this.reference);
+  AssignmentViewCache(this.reference);
 
-  Future<AssignmentResultModel> add(AssignmentResultModel value) {
+  Future<AssignmentViewModel> add(AssignmentViewModel value) {
     return reference.add(value).then((newValue) {
       fullCache[value.documentID] = newValue;
       return newValue;
     });
   }
 
-  Future<void> delete(AssignmentResultModel value){
+  Future<void> delete(AssignmentViewModel value){
     fullCache.remove(value.documentID);
     reference.delete(value);
     return Future.value();
   }
 
-  Future<AssignmentResultModel> get(String id){
-    AssignmentResultModel value = fullCache[id];
+  Future<AssignmentViewModel> get(String id){
+    AssignmentViewModel value = fullCache[id];
     if (value != null) return refreshRelations(value);
     return reference.get(id).then((value) {
       fullCache[id] = value;
@@ -56,7 +61,7 @@ class AssignmentResultCache implements AssignmentResultRepository {
     });
   }
 
-  Future<AssignmentResultModel> update(AssignmentResultModel value) {
+  Future<AssignmentViewModel> update(AssignmentViewModel value) {
     return reference.update(value).then((newValue) {
       fullCache[value.documentID] = newValue;
       return newValue;
@@ -64,22 +69,22 @@ class AssignmentResultCache implements AssignmentResultRepository {
   }
 
   @override
-  Stream<List<AssignmentResultModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+  Stream<List<AssignmentViewModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     return reference.values(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  Stream<List<AssignmentResultModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+  Stream<List<AssignmentViewModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     return reference.valuesWithDetails(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  Future<List<AssignmentResultModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
+  Future<List<AssignmentViewModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     return await reference.valuesList(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
   
   @override
-  Future<List<AssignmentResultModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
+  Future<List<AssignmentViewModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     return await reference.valuesListWithDetails(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
@@ -101,21 +106,21 @@ class AssignmentResultCache implements AssignmentResultRepository {
   }
 
   @override
-  StreamSubscription<List<AssignmentResultModel>> listen(trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<AssignmentViewModel>> listen(trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
     return reference.listen(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<AssignmentViewModel>> listenWithDetails(trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
     return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  StreamSubscription<AssignmentResultModel> listenTo(String documentId, changed) {
+  StreamSubscription<AssignmentViewModel> listenTo(String documentId, changed) {
     reference.listenTo(documentId, changed);
   }
 
-  static Future<AssignmentResultModel> refreshRelations(AssignmentResultModel model) async {
+  static Future<AssignmentViewModel> refreshRelations(AssignmentViewModel model) async {
 
     return model.copyWith(
 
