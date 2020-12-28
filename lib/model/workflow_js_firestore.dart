@@ -75,25 +75,14 @@ class WorkflowJsFirestore implements WorkflowRepository {
   @override
   StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
-    if (orderBy == null) {
-      stream = getCollection().onSnapshot
-          .map((data) {
-        Iterable<WorkflowModel> workflows  = data.docs.map((doc) {
-          WorkflowModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return workflows;
-      });
-    } else {
-      stream = getCollection().orderBy(orderBy, descending ? 'desc': 'asc').onSnapshot
-          .map((data) {
-        Iterable<WorkflowModel> workflows  = data.docs.map((doc) {
-          WorkflowModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return workflows;
-      });
-    }
+    stream = getQuery(getCollection(), currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).onSnapshot
+        .map((data) {
+      Iterable<WorkflowModel> workflows  = data.docs.map((doc) {
+        WorkflowModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return workflows;
+    });
     return stream.listen((listOfWorkflowModels) {
       trigger(listOfWorkflowModels);
     });
@@ -101,19 +90,11 @@ class WorkflowJsFirestore implements WorkflowRepository {
 
   StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
-    if (orderBy == null) {
-      // If we use workflowCollection here, then the second subscription fails
-      stream = getCollection().onSnapshot
-          .asyncMap((data) async {
-        return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      // If we use workflowCollection here, then the second subscription fails
-      stream = getCollection().orderBy(orderBy, descending ? 'desc': 'asc').onSnapshot
-          .asyncMap((data) async {
-        return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    // If we use workflowCollection here, then the second subscription fails
+    stream = getQuery(getCollection(), currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).onSnapshot
+        .asyncMap((data) async {
+      return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
     return stream.listen((listOfWorkflowModels) {
       trigger(listOfWorkflowModels);
     });

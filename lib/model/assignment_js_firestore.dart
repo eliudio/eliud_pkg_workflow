@@ -75,25 +75,14 @@ class AssignmentJsFirestore implements AssignmentRepository {
   @override
   StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
-    if (orderBy == null) {
-      stream = getCollection().onSnapshot
-          .map((data) {
-        Iterable<AssignmentModel> assignments  = data.docs.map((doc) {
-          AssignmentModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignments;
-      });
-    } else {
-      stream = getCollection().orderBy(orderBy, descending ? 'desc': 'asc').onSnapshot
-          .map((data) {
-        Iterable<AssignmentModel> assignments  = data.docs.map((doc) {
-          AssignmentModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignments;
-      });
-    }
+    stream = getQuery(getCollection(), currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).onSnapshot
+        .map((data) {
+      Iterable<AssignmentModel> assignments  = data.docs.map((doc) {
+        AssignmentModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return assignments;
+    });
     return stream.listen((listOfAssignmentModels) {
       trigger(listOfAssignmentModels);
     });
@@ -101,19 +90,11 @@ class AssignmentJsFirestore implements AssignmentRepository {
 
   StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
-    if (orderBy == null) {
-      // If we use assignmentCollection here, then the second subscription fails
-      stream = getCollection().onSnapshot
-          .asyncMap((data) async {
-        return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      // If we use assignmentCollection here, then the second subscription fails
-      stream = getCollection().orderBy(orderBy, descending ? 'desc': 'asc').onSnapshot
-          .asyncMap((data) async {
-        return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    // If we use assignmentCollection here, then the second subscription fails
+    stream = getQuery(getCollection(), currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).onSnapshot
+        .asyncMap((data) async {
+      return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
     return stream.listen((listOfAssignmentModels) {
       trigger(listOfAssignmentModels);
     });

@@ -75,25 +75,14 @@ class AssignmentViewJsFirestore implements AssignmentViewRepository {
   @override
   StreamSubscription<List<AssignmentViewModel>> listen(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
-    if (orderBy == null) {
-      stream = getCollection().onSnapshot
-          .map((data) {
-        Iterable<AssignmentViewModel> assignmentViews  = data.docs.map((doc) {
-          AssignmentViewModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignmentViews;
-      });
-    } else {
-      stream = getCollection().orderBy(orderBy, descending ? 'desc': 'asc').onSnapshot
-          .map((data) {
-        Iterable<AssignmentViewModel> assignmentViews  = data.docs.map((doc) {
-          AssignmentViewModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignmentViews;
-      });
-    }
+    stream = getQuery(getCollection(), currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).onSnapshot
+        .map((data) {
+      Iterable<AssignmentViewModel> assignmentViews  = data.docs.map((doc) {
+        AssignmentViewModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return assignmentViews;
+    });
     return stream.listen((listOfAssignmentViewModels) {
       trigger(listOfAssignmentViewModels);
     });
@@ -101,19 +90,11 @@ class AssignmentViewJsFirestore implements AssignmentViewRepository {
 
   StreamSubscription<List<AssignmentViewModel>> listenWithDetails(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
-    if (orderBy == null) {
-      // If we use assignmentViewCollection here, then the second subscription fails
-      stream = getCollection().onSnapshot
-          .asyncMap((data) async {
-        return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      // If we use assignmentViewCollection here, then the second subscription fails
-      stream = getCollection().orderBy(orderBy, descending ? 'desc': 'asc').onSnapshot
-          .asyncMap((data) async {
-        return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    // If we use assignmentViewCollection here, then the second subscription fails
+    stream = getQuery(getCollection(), currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).onSnapshot
+        .asyncMap((data) async {
+      return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
     return stream.listen((listOfAssignmentViewModels) {
       trigger(listOfAssignmentViewModels);
     });

@@ -64,44 +64,26 @@ class WorkflowFirestore implements WorkflowRepository {
     });
   }
 
-  StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<WorkflowModel>> stream;
-    if (orderBy == null) {
-       stream = WorkflowCollection.snapshots().map((data) {
-        Iterable<WorkflowModel> workflows  = data.documents.map((doc) {
-          WorkflowModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return workflows;
-      });
-    } else {
-      stream = WorkflowCollection.orderBy(orderBy, descending: descending).snapshots().map((data) {
-        Iterable<WorkflowModel> workflows  = data.documents.map((doc) {
-          WorkflowModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return workflows;
-      });
-  
-    }
+    stream = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
+      Iterable<WorkflowModel> workflows  = data.documents.map((doc) {
+        WorkflowModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return workflows;
+    });
     return stream.listen((listOfWorkflowModels) {
       trigger(listOfWorkflowModels);
     });
   }
 
-  StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<WorkflowModel>> stream;
-    if (orderBy == null) {
-      stream = WorkflowCollection.snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      stream = WorkflowCollection.orderBy(orderBy, descending: descending).snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    stream = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
+        .asyncMap((data) async {
+      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
 
     return stream.listen((listOfWorkflowModels) {
       trigger(listOfWorkflowModels);

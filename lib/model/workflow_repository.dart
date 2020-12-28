@@ -47,8 +47,8 @@ abstract class WorkflowRepository {
   Future<List<WorkflowModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
   Future<List<WorkflowModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
 
-  StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<WorkflowModel>> listenWithDetails(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
   StreamSubscription<WorkflowModel> listenTo(String documentId, WorkflowChanged changed);
   void flush();
   

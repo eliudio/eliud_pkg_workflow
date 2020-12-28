@@ -37,7 +37,7 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentFirestore implements AssignmentRepository {
   Future<AssignmentModel> add(AssignmentModel value) {
-    return AssignmentCollection.document(value.documentID).setData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => value);
+    return AssignmentCollection.document(value.documentID).setData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
   }
 
   Future<void> delete(AssignmentModel value) {
@@ -45,7 +45,7 @@ class AssignmentFirestore implements AssignmentRepository {
   }
 
   Future<AssignmentModel> update(AssignmentModel value) {
-    return AssignmentCollection.document(value.documentID).updateData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => value);
+    return AssignmentCollection.document(value.documentID).updateData(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
   }
 
   AssignmentModel _populateDoc(DocumentSnapshot value) {
@@ -55,7 +55,6 @@ class AssignmentFirestore implements AssignmentRepository {
   Future<AssignmentModel> _populateDocPlus(DocumentSnapshot value) async {
     return AssignmentModel.fromEntityPlus(value.documentID, AssignmentEntity.fromMap(value.data), appId: appId);  }
 
-/*
   Future<AssignmentModel> get(String id) {
     return AssignmentCollection.document(id).get().then((doc) {
       if (doc.data != null)
@@ -64,48 +63,27 @@ class AssignmentFirestore implements AssignmentRepository {
         return null;
     });
   }
-*/
 
-  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<AssignmentModel>> stream;
-//    if (orderBy == null) {
-       stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
-        Iterable<AssignmentModel> assignments  = data.documents.map((doc) {
-          AssignmentModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignments;
-      });
-/*
-    } else {
-      stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).orderBy(orderBy, descending: descending).snapshots().map((data) {
-        Iterable<AssignmentModel> assignments  = data.documents.map((doc) {
-          AssignmentModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignments;
-      });
-  
-    }
-*/
+    stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
+      Iterable<AssignmentModel> assignments  = data.documents.map((doc) {
+        AssignmentModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return assignments;
+    });
     return stream.listen((listOfAssignmentModels) {
       trigger(listOfAssignmentModels);
     });
   }
 
-  StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<AssignmentModel>> listenWithDetails(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<AssignmentModel>> stream;
-    if (orderBy == null) {
-      stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).orderBy(orderBy, descending: descending).snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    stream = getQuery(AssignmentCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
+        .asyncMap((data) async {
+      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
 
     return stream.listen((listOfAssignmentModels) {
       trigger(listOfAssignmentModels);

@@ -166,12 +166,12 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
     }
     
     @override
-    StreamSubscription<List<AssignmentModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
+    StreamSubscription<List<AssignmentModel>> listen(trigger, { String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
+    StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
     
@@ -261,12 +261,12 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
     }
     
     @override
-    StreamSubscription<List<AssignmentResultModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
+    StreamSubscription<List<AssignmentResultModel>> listen(trigger, { String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
+    StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
     
@@ -356,12 +356,12 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
     }
     
     @override
-    StreamSubscription<List<WorkflowTaskModel>> listen(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
+    StreamSubscription<List<WorkflowTaskModel>> listen(trigger, { String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery }) {
+    StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(trigger, { String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
       return theValues.listen((theList) => trigger(theList));
     }
     

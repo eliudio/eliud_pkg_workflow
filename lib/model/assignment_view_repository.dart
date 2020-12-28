@@ -47,8 +47,8 @@ abstract class AssignmentViewRepository {
   Future<List<AssignmentViewModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
   Future<List<AssignmentViewModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
 
-  StreamSubscription<List<AssignmentViewModel>> listen(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<List<AssignmentViewModel>> listenWithDetails(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<AssignmentViewModel>> listen(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<AssignmentViewModel>> listenWithDetails(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
   StreamSubscription<AssignmentViewModel> listenTo(String documentId, AssignmentViewChanged changed);
   void flush();
   

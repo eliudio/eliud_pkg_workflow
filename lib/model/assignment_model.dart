@@ -146,7 +146,6 @@ class AssignmentModel {
       } catch (_) {}
     }
 
-/*
     AssignmentModel triggeredByHolder;
     if (entity.triggeredById != null) {
       try {
@@ -155,7 +154,6 @@ class AssignmentModel {
         }).catchError((error) {});
       } catch (_) {}
     }
-*/
 
     return AssignmentModel(
           documentID: documentID, 
@@ -171,7 +169,7 @@ class AssignmentModel {
             entity. results == null ? null : new List<AssignmentResultModel>.from(await Future.wait(entity. results
             .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
             .toList())), 
-          triggeredBy: null//triggeredByHolder,
+          triggeredBy: triggeredByHolder, 
     );
   }
 

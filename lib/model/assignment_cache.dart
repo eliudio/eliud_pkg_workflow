@@ -52,7 +52,6 @@ class AssignmentCache implements AssignmentRepository {
     return Future.value();
   }
 
-/*
   Future<AssignmentModel> get(String id){
     AssignmentModel value = fullCache[id];
     if (value != null) return refreshRelations(value);
@@ -61,7 +60,6 @@ class AssignmentCache implements AssignmentRepository {
       return value;
     });
   }
-*/
 
   Future<AssignmentModel> update(AssignmentModel value) {
     return reference.update(value).then((newValue) {
@@ -108,13 +106,13 @@ class AssignmentCache implements AssignmentRepository {
   }
 
   @override
-  StreamSubscription<List<AssignmentModel>> listen(trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
-    return reference.listen(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
+  StreamSubscription<List<AssignmentModel>> listen(trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
+    return reference.listen(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
-    return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
+  StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
+    return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
@@ -151,7 +149,6 @@ class AssignmentCache implements AssignmentRepository {
       } catch (_) {}
     }
 
-/*
     AssignmentModel triggeredByHolder;
     if (model.triggeredBy != null) {
       try {
@@ -160,7 +157,6 @@ class AssignmentCache implements AssignmentRepository {
         }).catchError((error) {});
       } catch (_) {}
     }
-*/
 
     List<AssignmentResultModel> resultsHolder = List<AssignmentResultModel>.from(await Future.wait(await model.results.map((element) async {
       return await AssignmentResultCache.refreshRelations(element);
@@ -173,7 +169,7 @@ class AssignmentCache implements AssignmentRepository {
 
         workflow: workflowHolder,
 
-        triggeredBy: null,//triggeredByHolder,
+        triggeredBy: triggeredByHolder,
 
         results: resultsHolder,
 

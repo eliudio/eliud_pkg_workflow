@@ -53,7 +53,7 @@ abstract class WorkflowPackage extends Package {
 
   EliudQuery getAssignmentQuery(String appId, String assigneeId) {
     return EliudQuery(
-        conditions: [
+        theConditions: [
           EliudQueryCondition('assigneeId', isEqualTo: assigneeId),
           EliudQueryCondition('appId', isEqualTo: appId),
 //          EliudQueryCondition('closed', isEqualTo: true)

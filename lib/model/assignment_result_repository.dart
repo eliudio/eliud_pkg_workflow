@@ -43,8 +43,8 @@ abstract class AssignmentResultRepository {
   Future<List<AssignmentResultModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
   Future<List<AssignmentResultModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
 
-  StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
   StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed);
   void flush();
   

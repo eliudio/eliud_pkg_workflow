@@ -64,44 +64,26 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
     });
   }
 
-  StreamSubscription<List<AssignmentViewModel>> listen(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<AssignmentViewModel>> listen(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<AssignmentViewModel>> stream;
-    if (orderBy == null) {
-       stream = AssignmentViewCollection.snapshots().map((data) {
-        Iterable<AssignmentViewModel> assignmentViews  = data.documents.map((doc) {
-          AssignmentViewModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignmentViews;
-      });
-    } else {
-      stream = AssignmentViewCollection.orderBy(orderBy, descending: descending).snapshots().map((data) {
-        Iterable<AssignmentViewModel> assignmentViews  = data.documents.map((doc) {
-          AssignmentViewModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return assignmentViews;
-      });
-  
-    }
+    stream = getQuery(AssignmentViewCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
+      Iterable<AssignmentViewModel> assignmentViews  = data.documents.map((doc) {
+        AssignmentViewModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return assignmentViews;
+    });
     return stream.listen((listOfAssignmentViewModels) {
       trigger(listOfAssignmentViewModels);
     });
   }
 
-  StreamSubscription<List<AssignmentViewModel>> listenWithDetails(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<AssignmentViewModel>> listenWithDetails(AssignmentViewModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<AssignmentViewModel>> stream;
-    if (orderBy == null) {
-      stream = AssignmentViewCollection.snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      stream = AssignmentViewCollection.orderBy(orderBy, descending: descending).snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    stream = getQuery(AssignmentViewCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
+        .asyncMap((data) async {
+      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
 
     return stream.listen((listOfAssignmentViewModels) {
       trigger(listOfAssignmentViewModels);
