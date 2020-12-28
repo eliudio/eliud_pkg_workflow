@@ -175,6 +175,22 @@ class TimestampAssignmentFormError extends AssignmentFormError {
 }
 
 
+class ClosedAssignmentFormError extends AssignmentFormError { 
+  const ClosedAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ClosedAssignmentFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class ResultsAssignmentFormError extends AssignmentFormError { 
   const ResultsAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 

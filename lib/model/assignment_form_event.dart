@@ -143,6 +143,18 @@ class ChangedAssignmentTimestamp extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentTimestamp{ value: $value }';
 }
 
+class ChangedAssignmentClosed extends AssignmentFormEvent {
+  final bool value;
+
+  ChangedAssignmentClosed({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedAssignmentClosed{ value: $value }';
+}
+
 class ChangedAssignmentResults extends AssignmentFormEvent {
   final List<AssignmentResultModel> value;
 

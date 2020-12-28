@@ -135,6 +135,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   String _reporter;
   String _assignee;
   String _workflow;
+  bool _closedSelection;
   String _triggeredBy;
 
 
@@ -146,6 +147,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     _myFormBloc = BlocProvider.of<AssignmentFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
     _appIdController.addListener(_onAppIdChanged);
+    _closedSelection = false;
   }
 
   @override
@@ -178,6 +180,10 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           _workflow= state.value.workflow.documentID;
         else
           _workflow= "";
+        if (state.value.closed != null)
+        _closedSelection = state.value.closed;
+        else
+        _closedSelection = false;
         if (state.value.triggeredBy != null)
           _triggeredBy= state.value.triggeredBy.documentID;
         else
@@ -213,6 +219,16 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           );
 
 
+
+        children.add(
+
+                CheckboxListTile(
+                    title: Text('Closed', style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    value: _closedSelection,
+                    onChanged: _readOnly(accessState, state) ? null : (val) {
+                      setSelectionClosed(val);
+                    }),
+          );
 
         children.add(
 
@@ -352,6 +368,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               task: state.value.task, 
                               workflow: state.value.workflow, 
                               timestamp: state.value.timestamp, 
+                              closed: state.value.closed, 
                               results: state.value.results, 
                               triggeredBy: state.value.triggeredBy, 
                         )));
@@ -365,6 +382,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               task: state.value.task, 
                               workflow: state.value.workflow, 
                               timestamp: state.value.timestamp, 
+                              closed: state.value.closed, 
                               results: state.value.results, 
                               triggeredBy: state.value.triggeredBy, 
                           )));
@@ -433,6 +451,13 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     _myFormBloc.add(ChangedAssignmentWorkflow(value: val));
   }
 
+
+  void setSelectionClosed(bool val) {
+    setState(() {
+      _closedSelection = val;
+    });
+    _myFormBloc.add(ChangedAssignmentClosed(value: val));
+  }
 
   void _onResultsChanged(value) {
     _myFormBloc.add(ChangedAssignmentResults(value: value));

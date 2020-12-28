@@ -93,6 +93,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
                                  timestamp: currentState.value.timestamp,
+                                 closed: currentState.value.closed,
                                  results: currentState.value.results,
                                  triggeredBy: currentState.value.triggeredBy,
           );
@@ -112,6 +113,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
                                  timestamp: currentState.value.timestamp,
+                                 closed: currentState.value.closed,
                                  results: currentState.value.results,
                                  triggeredBy: currentState.value.triggeredBy,
           );
@@ -137,6 +139,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  task: currentState.value.task,
                                  workflow: null,
                                  timestamp: currentState.value.timestamp,
+                                 closed: currentState.value.closed,
                                  results: currentState.value.results,
                                  triggeredBy: currentState.value.triggeredBy,
           );
@@ -146,6 +149,12 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
       }
       if (event is ChangedAssignmentTimestamp) {
         newValue = currentState.value.copyWith(timestamp: event.value);
+        yield SubmittableAssignmentForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedAssignmentClosed) {
+        newValue = currentState.value.copyWith(closed: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
@@ -168,6 +177,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
                                  timestamp: currentState.value.timestamp,
+                                 closed: currentState.value.closed,
                                  results: currentState.value.results,
                                  triggeredBy: null,
           );

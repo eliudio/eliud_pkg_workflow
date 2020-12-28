@@ -63,7 +63,7 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
-  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel}) {
+  StreamSubscription<List<AssignmentModel>> listen(AssignmentModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, }) {
     Stream<List<AssignmentModel>> stream;
     if (orderBy == null) {
        stream = AssignmentCollection.snapshots().map((data) {

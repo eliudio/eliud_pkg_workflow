@@ -46,19 +46,20 @@ class AssignmentModel {
   TaskModel task;
   WorkflowModel workflow;
   String timestamp;
+  bool closed;
   List<AssignmentResultModel> results;
   AssignmentModel triggeredBy;
 
-  AssignmentModel({this.documentID, this.appId, this.reporter, this.assignee, this.task, this.workflow, this.timestamp, this.results, this.triggeredBy, })  {
+  AssignmentModel({this.documentID, this.appId, this.reporter, this.assignee, this.task, this.workflow, this.timestamp, this.closed, this.results, this.triggeredBy, })  {
     assert(documentID != null);
   }
 
-  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, MemberModel assignee, TaskModel task, WorkflowModel workflow, String timestamp, List<AssignmentResultModel> results, AssignmentModel triggeredBy, }) {
-    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assignee: assignee ?? this.assignee, task: task ?? this.task, workflow: workflow ?? this.workflow, timestamp: timestamp ?? this.timestamp, results: results ?? this.results, triggeredBy: triggeredBy ?? this.triggeredBy, );
+  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, MemberModel assignee, TaskModel task, WorkflowModel workflow, String timestamp, bool closed, List<AssignmentResultModel> results, AssignmentModel triggeredBy, }) {
+    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assignee: assignee ?? this.assignee, task: task ?? this.task, workflow: workflow ?? this.workflow, timestamp: timestamp ?? this.timestamp, closed: closed ?? this.closed, results: results ?? this.results, triggeredBy: triggeredBy ?? this.triggeredBy, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assignee.hashCode ^ task.hashCode ^ workflow.hashCode ^ timestamp.hashCode ^ results.hashCode ^ triggeredBy.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assignee.hashCode ^ task.hashCode ^ workflow.hashCode ^ timestamp.hashCode ^ closed.hashCode ^ results.hashCode ^ triggeredBy.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -72,6 +73,7 @@ class AssignmentModel {
           task == other.task &&
           workflow == other.workflow &&
           timestamp == other.timestamp &&
+          closed == other.closed &&
           ListEquality().equals(results, other.results) &&
           triggeredBy == other.triggeredBy;
 
@@ -79,7 +81,7 @@ class AssignmentModel {
   String toString() {
     String resultsCsv = (results == null) ? '' : results.join(', ');
 
-    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assignee: $assignee, task: $task, workflow: $workflow, timestamp: $timestamp, results: AssignmentResult[] { $resultsCsv }, triggeredBy: $triggeredBy}';
+    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assignee: $assignee, task: $task, workflow: $workflow, timestamp: $timestamp, closed: $closed, results: AssignmentResult[] { $resultsCsv }, triggeredBy: $triggeredBy}';
   }
 
   AssignmentEntity toEntity({String appId}) {
@@ -89,7 +91,8 @@ class AssignmentModel {
           assigneeId: (assignee != null) ? assignee.documentID : null, 
           task: (task != null) ? task.toEntity(appId: appId) : null, 
           workflowId: (workflow != null) ? workflow.documentID : null, 
-          timestamp: timestamp,           results: (results != null) ? results
+          timestamp: timestamp,           closed: (closed != null) ? closed : null, 
+          results: (results != null) ? results
             .map((item) => item.toEntity(appId: appId))
             .toList() : null, 
           triggeredById: (triggeredBy != null) ? triggeredBy.documentID : null, 
@@ -104,6 +107,7 @@ class AssignmentModel {
           task: 
             TaskModel.fromEntity(entity.task), 
           timestamp: entity.timestamp, 
+          closed: entity.closed, 
           results: 
             entity. results
             .map((item) => AssignmentResultModel.fromEntity(newRandomKey(), item))
@@ -159,6 +163,7 @@ class AssignmentModel {
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 
           workflow: workflowHolder, 
           timestamp: entity.timestamp, 
+          closed: entity.closed, 
           results: 
             new List<AssignmentResultModel>.from(await Future.wait(entity. results
             .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))

@@ -70,6 +70,11 @@
       "group": "general"
     },
     {
+      "fieldName": "closed",
+      "displayName": "Closed",
+      "fieldType": "bool"
+    },
+    {
       "fieldName": "results",
       "displayName": "Assignment Result",
       "fieldType": "AssignmentResult",

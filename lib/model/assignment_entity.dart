@@ -28,21 +28,22 @@ class AssignmentEntity {
   final TaskEntity task;
   final String workflowId;
   final Object timestamp;
+  final bool closed;
   final List<AssignmentResultEntity> results;
   final String triggeredById;
 
-  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.timestamp, this.results, this.triggeredById, });
+  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.timestamp, this.closed, this.results, this.triggeredById, });
 
   AssignmentEntity copyWith({Object timestamp, }) {
-    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, timestamp : timestamp, results: results, triggeredById: triggeredById, );
+    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, timestamp : timestamp, closed: closed, results: results, triggeredById: triggeredById, );
   }
-  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, timestamp, results, triggeredById, ];
+  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, timestamp, closed, results, triggeredById, ];
 
   @override
   String toString() {
     String resultsCsv = (results == null) ? '' : results.join(', ');
 
-    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, timestamp: $timestamp, results: AssignmentResult[] { $resultsCsv }, triggeredById: $triggeredById}';
+    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, timestamp: $timestamp, closed: $closed, results: AssignmentResult[] { $resultsCsv }, triggeredById: $triggeredById}';
   }
 
   static AssignmentEntity fromMap(Map map) {
@@ -64,6 +65,7 @@ class AssignmentEntity {
       task: taskFromMap, 
       workflowId: map['workflowId'], 
       timestamp: assignmentRepository().timeStampToString(map['timestamp']), 
+      closed: map['closed'], 
       results: resultsList, 
       triggeredById: map['triggeredById'], 
     );
@@ -89,6 +91,8 @@ class AssignmentEntity {
     if (workflowId != null) theDocument["workflowId"] = workflowId;
       else theDocument["workflowId"] = null;
     theDocument["timestamp"] = timestamp;
+    if (closed != null) theDocument["closed"] = closed;
+      else theDocument["closed"] = null;
     if (results != null) theDocument["results"] = resultsListMap;
       else theDocument["results"] = null;
     if (triggeredById != null) theDocument["triggeredById"] = triggeredById;
