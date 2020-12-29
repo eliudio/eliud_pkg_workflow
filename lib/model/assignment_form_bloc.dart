@@ -54,7 +54,8 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: AssignmentModel(
                                                documentID: "IDENTIFIER", 
                                  appId: "",
-                                 results: [],
+                                 assigneeId: "",
+                                 resultsFromPreviousAssignment: [],
 
         ));
         yield loaded;
@@ -89,34 +90,20 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  documentID: currentState.value.documentID,
                                  appId: currentState.value.appId,
                                  reporter: null,
-                                 assignee: currentState.value.assignee,
+                                 assigneeId: currentState.value.assigneeId,
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
                                  timestamp: currentState.value.timestamp,
-                                 closed: currentState.value.closed,
-                                 results: currentState.value.results,
+                                 status: currentState.value.status,
+                                 resultsFromPreviousAssignment: currentState.value.resultsFromPreviousAssignment,
                                  triggeredBy: currentState.value.triggeredBy,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
-      if (event is ChangedAssignmentAssignee) {
-        if (event.value != null)
-          newValue = currentState.value.copyWith(assignee: await memberRepository(appId: appId).get(event.value));
-        else
-          newValue = new AssignmentModel(
-                                 documentID: currentState.value.documentID,
-                                 appId: currentState.value.appId,
-                                 reporter: currentState.value.reporter,
-                                 assignee: null,
-                                 task: currentState.value.task,
-                                 workflow: currentState.value.workflow,
-                                 timestamp: currentState.value.timestamp,
-                                 closed: currentState.value.closed,
-                                 results: currentState.value.results,
-                                 triggeredBy: currentState.value.triggeredBy,
-          );
+      if (event is ChangedAssignmentAssigneeId) {
+        newValue = currentState.value.copyWith(assigneeId: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
@@ -135,12 +122,12 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  documentID: currentState.value.documentID,
                                  appId: currentState.value.appId,
                                  reporter: currentState.value.reporter,
-                                 assignee: currentState.value.assignee,
+                                 assigneeId: currentState.value.assigneeId,
                                  task: currentState.value.task,
                                  workflow: null,
                                  timestamp: currentState.value.timestamp,
-                                 closed: currentState.value.closed,
-                                 results: currentState.value.results,
+                                 status: currentState.value.status,
+                                 resultsFromPreviousAssignment: currentState.value.resultsFromPreviousAssignment,
                                  triggeredBy: currentState.value.triggeredBy,
           );
         yield SubmittableAssignmentForm(value: newValue);
@@ -153,14 +140,14 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
 
         return;
       }
-      if (event is ChangedAssignmentClosed) {
-        newValue = currentState.value.copyWith(closed: event.value);
+      if (event is ChangedAssignmentStatus) {
+        newValue = currentState.value.copyWith(status: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
-      if (event is ChangedAssignmentResults) {
-        newValue = currentState.value.copyWith(results: event.value);
+      if (event is ChangedAssignmentResultsFromPreviousAssignment) {
+        newValue = currentState.value.copyWith(resultsFromPreviousAssignment: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
@@ -173,12 +160,12 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  documentID: currentState.value.documentID,
                                  appId: currentState.value.appId,
                                  reporter: currentState.value.reporter,
-                                 assignee: currentState.value.assignee,
+                                 assigneeId: currentState.value.assigneeId,
                                  task: currentState.value.task,
                                  workflow: currentState.value.workflow,
                                  timestamp: currentState.value.timestamp,
-                                 closed: currentState.value.closed,
-                                 results: currentState.value.results,
+                                 status: currentState.value.status,
+                                 resultsFromPreviousAssignment: currentState.value.resultsFromPreviousAssignment,
                                  triggeredBy: null,
           );
         yield SubmittableAssignmentForm(value: newValue);

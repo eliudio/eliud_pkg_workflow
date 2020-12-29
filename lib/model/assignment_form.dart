@@ -133,9 +133,9 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _appIdController = TextEditingController();
   String _reporter;
-  String _assignee;
+  final TextEditingController _assigneeIdController = TextEditingController();
   String _workflow;
-  bool _closedSelection;
+  int _statusSelectedRadioTile;
   String _triggeredBy;
 
 
@@ -147,7 +147,8 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     _myFormBloc = BlocProvider.of<AssignmentFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
     _appIdController.addListener(_onAppIdChanged);
-    _closedSelection = false;
+    _assigneeIdController.addListener(_onAssigneeIdChanged);
+    _statusSelectedRadioTile = 0;
   }
 
   @override
@@ -172,18 +173,18 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           _reporter= state.value.reporter.documentID;
         else
           _reporter= "";
-        if (state.value.assignee != null)
-          _assignee= state.value.assignee.documentID;
+        if (state.value.assigneeId != null)
+          _assigneeIdController.text = state.value.assigneeId.toString();
         else
-          _assignee= "";
+          _assigneeIdController.text = "";
         if (state.value.workflow != null)
           _workflow= state.value.workflow.documentID;
         else
           _workflow= "";
-        if (state.value.closed != null)
-        _closedSelection = state.value.closed;
+        if (state.value.status != null)
+          _statusSelectedRadioTile = state.value.status.index;
         else
-        _closedSelection = false;
+          _statusSelectedRadioTile = 0;
         if (state.value.triggeredBy != null)
           _triggeredBy= state.value.triggeredBy.documentID;
         else
@@ -222,19 +223,49 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                CheckboxListTile(
-                    title: Text('Closed', style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    value: _closedSelection,
-                    onChanged: _readOnly(accessState, state) ? null : (val) {
-                      setSelectionClosed(val);
-                    }),
+                RadioListTile(
+                    value: 0,
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    groupValue: _statusSelectedRadioTile,
+                    title: Text("Success", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Success", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                      setSelectionStatus(val);
+                    },
+                ),
+          );
+        children.add(
+
+                RadioListTile(
+                    value: 1,
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    groupValue: _statusSelectedRadioTile,
+                    title: Text("Declined", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Declined", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                      setSelectionStatus(val);
+                    },
+                ),
+          );
+        children.add(
+
+                RadioListTile(
+                    value: 2,
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    groupValue: _statusSelectedRadioTile,
+                    title: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                      setSelectionStatus(val);
+                    },
+                ),
           );
 
         children.add(
 
                 new Container(
                     height: (fullScreenHeight(context) / 2.5), 
-                    child: assignmentResultsList(context, state.value.results, _onResultsChanged)
+                    child: assignmentResultsList(context, state.value.resultsFromPreviousAssignment, _onResultsFromPreviousAssignmentChanged)
                 )
           );
 
@@ -271,7 +302,20 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "members", value: _assignee, trigger: _onAssigneeSelected, optional: false),
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _assigneeIdController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Assignee',
+                  ),
+                  keyboardType: TextInputType.text,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is AssigneeIdAssignmentFormError ? state.message : null;
+                  },
+                ),
           );
 
 
@@ -343,7 +387,20 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "members", value: _assignee, trigger: _onAssigneeSelected, optional: false),
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _assigneeIdController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Assignee',
+                  ),
+                  keyboardType: TextInputType.text,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is AssigneeIdAssignmentFormError ? state.message : null;
+                  },
+                ),
           );
 
 
@@ -364,12 +421,12 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               documentID: state.value.documentID, 
                               appId: state.value.appId, 
                               reporter: state.value.reporter, 
-                              assignee: state.value.assignee, 
+                              assigneeId: state.value.assigneeId, 
                               task: state.value.task, 
                               workflow: state.value.workflow, 
                               timestamp: state.value.timestamp, 
-                              closed: state.value.closed, 
-                              results: state.value.results, 
+                              status: state.value.status, 
+                              resultsFromPreviousAssignment: state.value.resultsFromPreviousAssignment, 
                               triggeredBy: state.value.triggeredBy, 
                         )));
                       } else {
@@ -378,12 +435,12 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               documentID: state.value.documentID, 
                               appId: state.value.appId, 
                               reporter: state.value.reporter, 
-                              assignee: state.value.assignee, 
+                              assigneeId: state.value.assigneeId, 
                               task: state.value.task, 
                               workflow: state.value.workflow, 
                               timestamp: state.value.timestamp, 
-                              closed: state.value.closed, 
-                              results: state.value.results, 
+                              status: state.value.status, 
+                              resultsFromPreviousAssignment: state.value.resultsFromPreviousAssignment, 
                               triggeredBy: state.value.triggeredBy, 
                           )));
                       }
@@ -436,11 +493,8 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
 
-  void _onAssigneeSelected(String val) {
-    setState(() {
-      _assignee = val;
-    });
-    _myFormBloc.add(ChangedAssignmentAssignee(value: val));
+  void _onAssigneeIdChanged() {
+    _myFormBloc.add(ChangedAssignmentAssigneeId(value: _assigneeIdController.text));
   }
 
 
@@ -452,15 +506,16 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
 
-  void setSelectionClosed(bool val) {
+  void setSelectionStatus(int val) {
     setState(() {
-      _closedSelection = val;
+      _statusSelectedRadioTile = val;
     });
-    _myFormBloc.add(ChangedAssignmentClosed(value: val));
+    _myFormBloc.add(ChangedAssignmentStatus(value: toAssignmentStatus(val)));
   }
 
-  void _onResultsChanged(value) {
-    _myFormBloc.add(ChangedAssignmentResults(value: value));
+
+  void _onResultsFromPreviousAssignmentChanged(value) {
+    _myFormBloc.add(ChangedAssignmentResultsFromPreviousAssignment(value: value));
     setState(() {});
   }
 
@@ -478,6 +533,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   void dispose() {
     _documentIDController.dispose();
     _appIdController.dispose();
+    _assigneeIdController.dispose();
     super.dispose();
   }
 

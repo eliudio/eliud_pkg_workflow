@@ -19,6 +19,8 @@ import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
 
 import 'package:eliud_pkg_workflow/model/component_registry.dart';
 
+import 'model/assignment_model.dart';
+
 // Todo: clearly we can introduce some caching, as we are listening as well as querying the same data. So, instead: keep a cache and update the cache adnd use it from within the isConditionOk
 abstract class WorkflowPackage extends Package {
   static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
@@ -56,7 +58,7 @@ abstract class WorkflowPackage extends Package {
         theConditions: [
           EliudQueryCondition('assigneeId', isEqualTo: assigneeId),
           EliudQueryCondition('appId', isEqualTo: appId),
-//          EliudQueryCondition('closed', isEqualTo: true)
+          EliudQueryCondition('status', isEqualTo: AssignmentStatus.Open.index)
         ]
     );
   }

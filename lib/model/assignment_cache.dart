@@ -131,15 +131,6 @@ class AssignmentCache implements AssignmentRepository {
       } catch (_) {}
     }
 
-    MemberModel assigneeHolder;
-    if (model.assignee != null) {
-      try {
-        await memberRepository().get(model.assignee.documentID).then((val) {
-          assigneeHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
-    }
-
     WorkflowModel workflowHolder;
     if (model.workflow != null) {
       try {
@@ -158,20 +149,18 @@ class AssignmentCache implements AssignmentRepository {
       } catch (_) {}
     }
 
-    List<AssignmentResultModel> resultsHolder = List<AssignmentResultModel>.from(await Future.wait(await model.results.map((element) async {
+    List<AssignmentResultModel> resultsFromPreviousAssignmentHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsFromPreviousAssignment.map((element) async {
       return await AssignmentResultCache.refreshRelations(element);
     }))).toList();
 
     return model.copyWith(
         reporter: reporterHolder,
 
-        assignee: assigneeHolder,
-
         workflow: workflowHolder,
 
         triggeredBy: triggeredByHolder,
 
-        results: resultsHolder,
+        resultsFromPreviousAssignment: resultsFromPreviousAssignmentHolder,
 
 
     );

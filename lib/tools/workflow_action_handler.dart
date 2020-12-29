@@ -22,14 +22,15 @@ class WorkflowActionHandler extends PackageActionHandler {
               documentID:newRandomKey(),
               appId: action.appID,
               reporter: accessState.member,
-              assignee: accessState.member,
+              assigneeId: accessState.member.documentID,
               task: firstTask,
               workflow: workflowModel,
               timestamp: null,
               triggeredBy: null,
-              results: null
+              resultsFromPreviousAssignment: null,
+              status: AssignmentStatus.Open,
           );
-          firstTask.execute(context, assignment, true);
+          firstTask.callExecute(context, assignment, true);
         } else {
           // no tasks in workflow
         }

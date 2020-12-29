@@ -28,22 +28,22 @@ class AssignmentEntity {
   final TaskEntity task;
   final String workflowId;
   final Object timestamp;
-  final bool closed;
-  final List<AssignmentResultEntity> results;
+  final int status;
+  final List<AssignmentResultEntity> resultsFromPreviousAssignment;
   final String triggeredById;
 
-  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.timestamp, this.closed, this.results, this.triggeredById, });
+  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.timestamp, this.status, this.resultsFromPreviousAssignment, this.triggeredById, });
 
   AssignmentEntity copyWith({Object timestamp, }) {
-    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, timestamp : timestamp, closed: closed, results: results, triggeredById: triggeredById, );
+    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, timestamp : timestamp, status: status, resultsFromPreviousAssignment: resultsFromPreviousAssignment, triggeredById: triggeredById, );
   }
-  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, timestamp, closed, results, triggeredById, ];
+  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, timestamp, status, resultsFromPreviousAssignment, triggeredById, ];
 
   @override
   String toString() {
-    String resultsCsv = (results == null) ? '' : results.join(', ');
+    String resultsFromPreviousAssignmentCsv = (resultsFromPreviousAssignment == null) ? '' : resultsFromPreviousAssignment.join(', ');
 
-    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, timestamp: $timestamp, closed: $closed, results: AssignmentResult[] { $resultsCsv }, triggeredById: $triggeredById}';
+    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, timestamp: $timestamp, status: $status, resultsFromPreviousAssignment: AssignmentResult[] { $resultsFromPreviousAssignmentCsv }, triggeredById: $triggeredById}';
   }
 
   static AssignmentEntity fromMap(Map map) {
@@ -53,11 +53,11 @@ class AssignmentEntity {
     taskFromMap = map['task'];
     if (taskFromMap != null)
       taskFromMap = TaskEntity.fromMap(taskFromMap);
-    var resultsFromMap;
-    resultsFromMap = map['results'];
-    var resultsList;
-    if (resultsFromMap != null)
-      resultsList = (map['results'] as List<dynamic>)
+    var resultsFromPreviousAssignmentFromMap;
+    resultsFromPreviousAssignmentFromMap = map['resultsFromPreviousAssignment'];
+    var resultsFromPreviousAssignmentList;
+    if (resultsFromPreviousAssignmentFromMap != null)
+      resultsFromPreviousAssignmentList = (map['resultsFromPreviousAssignment'] as List<dynamic>)
         .map((dynamic item) =>
         AssignmentResultEntity.fromMap(item as Map))
         .toList();
@@ -69,8 +69,8 @@ class AssignmentEntity {
       task: taskFromMap, 
       workflowId: map['workflowId'], 
       timestamp: assignmentRepository().timeStampToString(map['timestamp']), 
-      closed: map['closed'], 
-      results: resultsList, 
+      status: map['status'], 
+      resultsFromPreviousAssignment: resultsFromPreviousAssignmentList, 
       triggeredById: map['triggeredById'], 
     );
   }
@@ -79,8 +79,8 @@ class AssignmentEntity {
     final Map<String, dynamic> taskMap = task != null 
         ? task.toDocument()
         : null;
-    final List<Map<String, dynamic>> resultsListMap = results != null 
-        ? results.map((item) => item.toDocument()).toList()
+    final List<Map<String, dynamic>> resultsFromPreviousAssignmentListMap = resultsFromPreviousAssignment != null 
+        ? resultsFromPreviousAssignment.map((item) => item.toDocument()).toList()
         : null;
 
     Map<String, Object> theDocument = HashMap();
@@ -95,10 +95,10 @@ class AssignmentEntity {
     if (workflowId != null) theDocument["workflowId"] = workflowId;
       else theDocument["workflowId"] = null;
     theDocument["timestamp"] = timestamp;
-    if (closed != null) theDocument["closed"] = closed;
-      else theDocument["closed"] = null;
-    if (results != null) theDocument["results"] = resultsListMap;
-      else theDocument["results"] = null;
+    if (status != null) theDocument["status"] = status;
+      else theDocument["status"] = null;
+    if (resultsFromPreviousAssignment != null) theDocument["resultsFromPreviousAssignment"] = resultsFromPreviousAssignmentListMap;
+      else theDocument["resultsFromPreviousAssignment"] = null;
     if (triggeredById != null) theDocument["triggeredById"] = triggeredById;
       else theDocument["triggeredById"] = null;
     return theDocument;

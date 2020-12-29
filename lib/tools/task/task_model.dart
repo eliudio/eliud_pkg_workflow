@@ -1,16 +1,30 @@
 import 'dart:collection';
+import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core/model/member_model.dart';
+import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
+import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 
-enum ExecutionResult { success, failure, decline, delay }
+enum ExecutionStatus { success, failure, decline, delay }
+
+class ExecutionResults {
+  final ExecutionStatus status;
+  final List<AssignmentResultModel> results;
+
+  ExecutionResults(this.status, {this.results});
+}
 
 class TaskModelRegistry {
   final Map<String, TaskModelMapper> mappers = HashMap();
   static TaskModelRegistry _instance;
 
-  TaskModelRegistry._internal() {
-  }
+  TaskModelRegistry._internal();
 
   static TaskModelRegistry registry() {
     _instance ??= TaskModelRegistry._internal();
@@ -36,7 +50,9 @@ abstract class TaskModelMapper {
 abstract class TaskModel {
   final String taskString;
 
-  const TaskModel({this.taskString});
+  bool _isNewAssignment;
+
+  TaskModel({this.taskString});
 
   TaskEntity toEntity({String appId});
 
@@ -63,10 +79,115 @@ abstract class TaskModel {
   }
 
   /*
-   * Execute the task. Is "isNewAssignment" then the assignment itself is required to be created. If not, then the assignment
-   * needs to be updated (in case changes have been made to it).
+   * Execute the task. Implement this method in your task
    */
-  ExecutionResult execute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment);
+  void startTask(BuildContext context, AssignmentModel assignmentModel, );
+
+  /*
+   * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
+   * to allow asynchronous execution of your task(s).
+   */
+  void finishTask(BuildContext context, AssignmentModel assignmentModel, ExecutionResults executionResult) {
+    _handleCurrentAssignment(context, assignmentModel, _isNewAssignment, executionResult);
+    _createNextAssignment(context, assignmentModel, executionResult);
+  }
+
+  /* This method is called by the workflow framework */
+  void callExecute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment) {
+    _isNewAssignment = isNewAssignment;
+    startTask(context, assignmentModel);
+  }
+
+  void _handleCurrentAssignment(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment, ExecutionResults executionResult) {
+    var assignmentStatus;
+    switch (executionResult.status) {
+      case ExecutionStatus.success:
+        assignmentStatus = AssignmentStatus.Success;
+        break;
+      case ExecutionStatus.decline:
+        assignmentStatus = AssignmentStatus.Declined;
+        break;
+    }
+    if (assignmentStatus != null) {
+      assignmentModel.status = assignmentStatus;
+      if (isNewAssignment) {
+        AbstractRepositorySingleton.singleton.assignmentRepository(
+            assignmentModel.appId)
+            .add(assignmentModel);
+      } else {
+        AbstractRepositorySingleton.singleton
+            .assignmentRepository(assignmentModel.appId)
+            .update(assignmentModel);
+      }
+    }
+  }
+
+  String _determineMember(WorkflowTaskResponsible workflowTaskResponsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) {
+    switch (workflowTaskResponsible) {
+      case WorkflowTaskResponsible.CurrentMember:
+        return member.documentID;
+      case WorkflowTaskResponsible.Owner:
+        return app.ownerID;
+      case WorkflowTaskResponsible.First:
+        var findAssignment = currentAssignment;
+        var assigneeId;
+        while (findAssignment.triggeredBy != null) {
+          assigneeId = findAssignment.assigneeId;
+          findAssignment = currentAssignment.triggeredBy;
+        }
+        return assigneeId;
+      case WorkflowTaskResponsible.Previous:
+        if (currentAssignment.triggeredBy != null) {
+          return currentAssignment.triggeredBy.assigneeId;
+        }
+        break;
+    }
+    return null;
+  }
+
+  void _createNextAssignment(BuildContext context, AssignmentModel currentAssignment, ExecutionResults executionResult) {
+    if (executionResult.status == ExecutionStatus.success) {
+      var state = AccessBloc.getState(context);
+      if (state is AppLoaded) {
+        if (state.getMember() != null) {
+          var member = state.getMember();
+          // the below must become part of the TaskModel class "createNextAssignment"
+          var tasks = currentAssignment.workflow.workflowTask;
+          var found = -1;
+          for (int i = 0; i < tasks.length; i++) {
+            if (tasks[i].task.taskString == currentAssignment.task.taskString) {
+              found = i;
+              break;
+            }
+          }
+
+          if (found >= 0) {
+            if (found < tasks.length) {
+              var nextTask = tasks[found + 1];
+              var nextAssignment = AssignmentModel(
+                  documentID: newRandomKey(),
+                  appId: currentAssignment.appId,
+                  reporter: member,
+                  assigneeId: _determineMember(nextTask.responsible, state.app, member, currentAssignment),
+                  task: nextTask.task,
+                  workflow: currentAssignment.workflow,
+                  timestamp: null,
+                  status: AssignmentStatus.Open,
+                  triggeredBy: null,
+                  resultsFromPreviousAssignment: executionResult.results);
+              AbstractRepositorySingleton.singleton
+                  .assignmentRepository(currentAssignment.appId)
+                  .add(nextAssignment);
+            } else {
+              // no next task to do
+            }
+          } else {
+            // task not found: error in workflow
+          }
+        }
+      }
+    }
+  }
 }
 
 /*
@@ -133,18 +254,17 @@ class ExampleTaskModel1 extends TaskModel {
   ExampleTaskModel1({this.extraParameter}) : super(taskString: ExampleTaskEntity1.label);
 
   @override
-  ExecutionResult execute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment) {
-    // open dialog box with some stuff
-    throw UnimplementedError();
-  }
-
-  @override
   TaskEntity toEntity({String appId}) {
     return ExampleTaskEntity1();
   }
 
   static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) => ExampleTaskModel1(extraParameter: entity.extraParameter, );
   static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(extraParameter: snap["extraParameter"]);
+
+  @override
+  void startTask(BuildContext context, AssignmentModel assignmentModel) {
+    throw UnimplementedError();
+  }
 }
 
 class ExampleTaskModel1Mapper implements TaskModelMapper {

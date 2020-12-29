@@ -30,7 +30,7 @@ import 'package:eliud_pkg_workflow/model/workflow_task_entity.dart';
 import 'package:eliud_core/tools/random.dart';
 
 enum WorkflowTaskResponsible {
-  CurrentMember, Owner, First, Unknown
+  CurrentMember, Owner, First, Previous, Unknown
 }
 
 
@@ -39,6 +39,7 @@ WorkflowTaskResponsible toWorkflowTaskResponsible(int index) {
     case 0: return WorkflowTaskResponsible.CurrentMember;
     case 1: return WorkflowTaskResponsible.Owner;
     case 2: return WorkflowTaskResponsible.First;
+    case 3: return WorkflowTaskResponsible.Previous;
   }
   return WorkflowTaskResponsible.Unknown;
 }

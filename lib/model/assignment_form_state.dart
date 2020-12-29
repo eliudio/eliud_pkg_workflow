@@ -111,15 +111,15 @@ class ReporterAssignmentFormError extends AssignmentFormError {
 }
 
 
-class AssigneeAssignmentFormError extends AssignmentFormError { 
-  const AssigneeAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+class AssigneeIdAssignmentFormError extends AssignmentFormError { 
+  const AssigneeIdAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''AssigneeAssignmentFormError {
+    return '''AssigneeIdAssignmentFormError {
       value: $value,
       message: $message,
     }''';
@@ -175,15 +175,15 @@ class TimestampAssignmentFormError extends AssignmentFormError {
 }
 
 
-class ClosedAssignmentFormError extends AssignmentFormError { 
-  const ClosedAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+class StatusAssignmentFormError extends AssignmentFormError { 
+  const StatusAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''ClosedAssignmentFormError {
+    return '''StatusAssignmentFormError {
       value: $value,
       message: $message,
     }''';
@@ -191,15 +191,15 @@ class ClosedAssignmentFormError extends AssignmentFormError {
 }
 
 
-class ResultsAssignmentFormError extends AssignmentFormError { 
-  const ResultsAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+class ResultsFromPreviousAssignmentAssignmentFormError extends AssignmentFormError { 
+  const ResultsFromPreviousAssignmentAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''ResultsAssignmentFormError {
+    return '''ResultsFromPreviousAssignmentAssignmentFormError {
       value: $value,
       message: $message,
     }''';

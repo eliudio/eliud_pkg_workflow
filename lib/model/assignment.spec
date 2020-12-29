@@ -37,17 +37,16 @@
     {
       "fieldName": "reporter",
       "remarks": "The one who initiated the assignment",
-      "displayName": "Member",
+      "displayName": "Reporter",
       "fieldType": "Member",
       "association": true,
       "group": "Reporter"
     },
     {
-      "fieldName": "assignee",
-      "remarks": "The one who assignment is assiged to",
-      "displayName": "Member",
-      "fieldType": "Member",
-      "association": true,
+      "fieldName": "assigneeId",
+      "remarks": "The one who assignment is assiged to. This is a a string, not a Member to be able to assigne to a Member to which the currently logged in Member does not have access to",
+      "displayName": "Assignee",
+      "fieldType": "String",
       "group": "Assignee"
     },
     {
@@ -71,13 +70,15 @@
       "group": "general"
     },
     {
-      "fieldName": "closed",
-      "displayName": "Closed",
-      "fieldType": "bool"
+      "fieldName": "status",
+      "fieldType": "enum",
+      "enumName": "AssignmentStatus",
+      "enumValues" : [ "Success", "Declined", "Open" ]
     },
     {
-      "fieldName": "results",
-      "displayName": "Assignment Result",
+      "fieldName": "resultsPrevious",
+      "displayName": "Result previous Assignment",
+      "remark": "The results of the assignment that preceeded this assignment",
       "fieldType": "AssignmentResult",
       "arrayType": "Array"
     },

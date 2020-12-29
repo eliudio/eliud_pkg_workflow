@@ -204,6 +204,19 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                     },
                 ),
           );
+        children.add(
+
+                RadioListTile(
+                    value: 3,
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    groupValue: _responsibleSelectedRadioTile,
+                    title: Text("Previous", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Previous", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                      setSelectionResponsible(val);
+                    },
+                ),
+          );
 
 
         children.add(Container(height: 20.0));

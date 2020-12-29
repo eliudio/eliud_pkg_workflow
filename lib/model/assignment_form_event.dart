@@ -95,16 +95,16 @@ class ChangedAssignmentReporter extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentReporter{ value: $value }';
 }
 
-class ChangedAssignmentAssignee extends AssignmentFormEvent {
+class ChangedAssignmentAssigneeId extends AssignmentFormEvent {
   final String value;
 
-  ChangedAssignmentAssignee({this.value});
+  ChangedAssignmentAssigneeId({this.value});
 
   @override
   List<Object> get props => [ value ];
 
   @override
-  String toString() => 'ChangedAssignmentAssignee{ value: $value }';
+  String toString() => 'ChangedAssignmentAssigneeId{ value: $value }';
 }
 
 class ChangedAssignmentTask extends AssignmentFormEvent {
@@ -143,28 +143,28 @@ class ChangedAssignmentTimestamp extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentTimestamp{ value: $value }';
 }
 
-class ChangedAssignmentClosed extends AssignmentFormEvent {
-  final bool value;
+class ChangedAssignmentStatus extends AssignmentFormEvent {
+  final AssignmentStatus value;
 
-  ChangedAssignmentClosed({this.value});
+  ChangedAssignmentStatus({this.value});
 
   @override
   List<Object> get props => [ value ];
 
   @override
-  String toString() => 'ChangedAssignmentClosed{ value: $value }';
+  String toString() => 'ChangedAssignmentStatus{ value: $value }';
 }
 
-class ChangedAssignmentResults extends AssignmentFormEvent {
+class ChangedAssignmentResultsFromPreviousAssignment extends AssignmentFormEvent {
   final List<AssignmentResultModel> value;
 
-  ChangedAssignmentResults({this.value});
+  ChangedAssignmentResultsFromPreviousAssignment({this.value});
 
   @override
   List<Object> get props => [ value ];
 
   @override
-  String toString() => 'ChangedAssignmentResults{ value: $value }';
+  String toString() => 'ChangedAssignmentResultsFromPreviousAssignment{ value: $value }';
 }
 
 class ChangedAssignmentTriggeredBy extends AssignmentFormEvent {
