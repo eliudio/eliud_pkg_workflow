@@ -64,6 +64,12 @@
       "group": "Workflow"
     },
     {
+      "fieldName": "workflowTaskSeqNumber",
+      "remark": "this corresponds to the WorkflowModel.workflowTask[i].seqNumber",
+      "displayName": "Workflow Sequence Id",
+      "fieldType": "int"
+    },
+    {
       "fieldName": "timestamp",
       "displayName": "Timestamp",
       "fieldType": "ServerTimestamp",
@@ -83,10 +89,9 @@
       "arrayType": "Array"
     },
     {
-      "fieldName": "triggeredBy",
+      "fieldName": "triggeredById",
       "displayName": "Triggered by",
-      "fieldType": "Assignment",
-      "association": true,
+      "fieldType": "String",
       "group": "Triggered"
     }
   ],

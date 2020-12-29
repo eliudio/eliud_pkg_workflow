@@ -21,17 +21,18 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class WorkflowTaskEntity {
+  final int seqNumber;
   final TaskEntity task;
   final int responsible;
 
-  WorkflowTaskEntity({this.task, this.responsible, });
+  WorkflowTaskEntity({this.seqNumber, this.task, this.responsible, });
 
 
-  List<Object> get props => [task, responsible, ];
+  List<Object> get props => [seqNumber, task, responsible, ];
 
   @override
   String toString() {
-    return 'WorkflowTaskEntity{task: $task, responsible: $responsible}';
+    return 'WorkflowTaskEntity{seqNumber: $seqNumber, task: $task, responsible: $responsible}';
   }
 
   static WorkflowTaskEntity fromMap(Map map) {
@@ -43,6 +44,7 @@ class WorkflowTaskEntity {
       taskFromMap = TaskEntity.fromMap(taskFromMap);
 
     return WorkflowTaskEntity(
+      seqNumber: int.tryParse(map['seqNumber'].toString()), 
       task: taskFromMap, 
       responsible: map['responsible'], 
     );
@@ -54,6 +56,8 @@ class WorkflowTaskEntity {
         : null;
 
     Map<String, Object> theDocument = HashMap();
+    if (seqNumber != null) theDocument["seqNumber"] = seqNumber;
+      else theDocument["seqNumber"] = null;
     if (task != null) theDocument["task"] = taskMap;
       else theDocument["task"] = null;
     if (responsible != null) theDocument["responsible"] = responsible;

@@ -135,8 +135,9 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   String _reporter;
   final TextEditingController _assigneeIdController = TextEditingController();
   String _workflow;
+  final TextEditingController _workflowTaskSeqNumberController = TextEditingController();
   int _statusSelectedRadioTile;
-  String _triggeredBy;
+  final TextEditingController _triggeredByIdController = TextEditingController();
 
 
   _MyAssignmentFormState(this.formAction);
@@ -148,7 +149,9 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     _documentIDController.addListener(_onDocumentIDChanged);
     _appIdController.addListener(_onAppIdChanged);
     _assigneeIdController.addListener(_onAssigneeIdChanged);
+    _workflowTaskSeqNumberController.addListener(_onWorkflowTaskSeqNumberChanged);
     _statusSelectedRadioTile = 0;
+    _triggeredByIdController.addListener(_onTriggeredByIdChanged);
   }
 
   @override
@@ -181,14 +184,18 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           _workflow= state.value.workflow.documentID;
         else
           _workflow= "";
+        if (state.value.workflowTaskSeqNumber != null)
+          _workflowTaskSeqNumberController.text = state.value.workflowTaskSeqNumber.toString();
+        else
+          _workflowTaskSeqNumberController.text = "";
         if (state.value.status != null)
           _statusSelectedRadioTile = state.value.status.index;
         else
           _statusSelectedRadioTile = 0;
-        if (state.value.triggeredBy != null)
-          _triggeredBy= state.value.triggeredBy.documentID;
+        if (state.value.triggeredById != null)
+          _triggeredByIdController.text = state.value.triggeredById.toString();
         else
-          _triggeredBy= "";
+          _triggeredByIdController.text = "";
       }
       if (state is AssignmentFormInitialized) {
         List<Widget> children = List();
@@ -219,6 +226,25 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                 ),
           );
 
+
+        children.add(
+
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _workflowTaskSeqNumberController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Workflow Sequence Id',
+                    hintText: "this corresponds to the WorkflowModel.workflowTask[i].seqNumber",
+                  ),
+                  keyboardType: TextInputType.number,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is WorkflowTaskSeqNumberAssignmentFormError ? state.message : null;
+                  },
+                ),
+          );
 
 
         children.add(
@@ -265,7 +291,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
                 new Container(
                     height: (fullScreenHeight(context) / 2.5), 
-                    child: assignmentResultsList(context, state.value.resultsFromPreviousAssignment, _onResultsFromPreviousAssignmentChanged)
+                    child: assignmentResultsList(context, state.value.resultsPrevious, _onResultsPreviousChanged)
                 )
           );
 
@@ -351,7 +377,20 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "assignments", value: _triggeredBy, trigger: _onTriggeredBySelected, optional: false),
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _triggeredByIdController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Triggered by',
+                  ),
+                  keyboardType: TextInputType.text,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is TriggeredByIdAssignmentFormError ? state.message : null;
+                  },
+                ),
           );
 
 
@@ -424,10 +463,11 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               assigneeId: state.value.assigneeId, 
                               task: state.value.task, 
                               workflow: state.value.workflow, 
+                              workflowTaskSeqNumber: state.value.workflowTaskSeqNumber, 
                               timestamp: state.value.timestamp, 
                               status: state.value.status, 
-                              resultsFromPreviousAssignment: state.value.resultsFromPreviousAssignment, 
-                              triggeredBy: state.value.triggeredBy, 
+                              resultsPrevious: state.value.resultsPrevious, 
+                              triggeredById: state.value.triggeredById, 
                         )));
                       } else {
                         BlocProvider.of<AssignmentListBloc>(context).add(
@@ -438,10 +478,11 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               assigneeId: state.value.assigneeId, 
                               task: state.value.task, 
                               workflow: state.value.workflow, 
+                              workflowTaskSeqNumber: state.value.workflowTaskSeqNumber, 
                               timestamp: state.value.timestamp, 
                               status: state.value.status, 
-                              resultsFromPreviousAssignment: state.value.resultsFromPreviousAssignment, 
-                              triggeredBy: state.value.triggeredBy, 
+                              resultsPrevious: state.value.resultsPrevious, 
+                              triggeredById: state.value.triggeredById, 
                           )));
                       }
                       if (widget.submitAction != null) {
@@ -506,6 +547,11 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
 
+  void _onWorkflowTaskSeqNumberChanged() {
+    _myFormBloc.add(ChangedAssignmentWorkflowTaskSeqNumber(value: _workflowTaskSeqNumberController.text));
+  }
+
+
   void setSelectionStatus(int val) {
     setState(() {
       _statusSelectedRadioTile = val;
@@ -514,17 +560,14 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
 
-  void _onResultsFromPreviousAssignmentChanged(value) {
-    _myFormBloc.add(ChangedAssignmentResultsFromPreviousAssignment(value: value));
+  void _onResultsPreviousChanged(value) {
+    _myFormBloc.add(ChangedAssignmentResultsPrevious(value: value));
     setState(() {});
   }
 
 
-  void _onTriggeredBySelected(String val) {
-    setState(() {
-      _triggeredBy = val;
-    });
-    _myFormBloc.add(ChangedAssignmentTriggeredBy(value: val));
+  void _onTriggeredByIdChanged() {
+    _myFormBloc.add(ChangedAssignmentTriggeredById(value: _triggeredByIdController.text));
   }
 
 
@@ -534,6 +577,8 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     _documentIDController.dispose();
     _appIdController.dispose();
     _assigneeIdController.dispose();
+    _workflowTaskSeqNumberController.dispose();
+    _triggeredByIdController.dispose();
     super.dispose();
   }
 

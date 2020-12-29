@@ -79,6 +79,22 @@ class DocumentIDWorkflowTaskFormError extends WorkflowTaskFormError {
 }
 
 
+class SeqNumberWorkflowTaskFormError extends WorkflowTaskFormError { 
+  const SeqNumberWorkflowTaskFormError({ String message, WorkflowTaskModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''SeqNumberWorkflowTaskFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class TaskWorkflowTaskFormError extends WorkflowTaskFormError { 
   const TaskWorkflowTaskFormError({ String message, WorkflowTaskModel value }): super(message: message, value: value);
 

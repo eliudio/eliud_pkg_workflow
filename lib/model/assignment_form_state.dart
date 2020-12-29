@@ -159,6 +159,22 @@ class WorkflowAssignmentFormError extends AssignmentFormError {
 }
 
 
+class WorkflowTaskSeqNumberAssignmentFormError extends AssignmentFormError { 
+  const WorkflowTaskSeqNumberAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''WorkflowTaskSeqNumberAssignmentFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class TimestampAssignmentFormError extends AssignmentFormError { 
   const TimestampAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
@@ -191,15 +207,15 @@ class StatusAssignmentFormError extends AssignmentFormError {
 }
 
 
-class ResultsFromPreviousAssignmentAssignmentFormError extends AssignmentFormError { 
-  const ResultsFromPreviousAssignmentAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+class ResultsPreviousAssignmentFormError extends AssignmentFormError { 
+  const ResultsPreviousAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''ResultsFromPreviousAssignmentAssignmentFormError {
+    return '''ResultsPreviousAssignmentFormError {
       value: $value,
       message: $message,
     }''';
@@ -207,15 +223,15 @@ class ResultsFromPreviousAssignmentAssignmentFormError extends AssignmentFormErr
 }
 
 
-class TriggeredByAssignmentFormError extends AssignmentFormError { 
-  const TriggeredByAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+class TriggeredByIdAssignmentFormError extends AssignmentFormError { 
+  const TriggeredByIdAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''TriggeredByAssignmentFormError {
+    return '''TriggeredByIdAssignmentFormError {
       value: $value,
       message: $message,
     }''';

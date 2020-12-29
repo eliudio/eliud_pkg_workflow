@@ -53,7 +53,7 @@ class WorkflowCache implements WorkflowRepository {
   }
 
   Future<WorkflowModel> get(String id){
-    WorkflowModel value = fullCache[id];
+    WorkflowModel value = null;// disable cashe for now fullCache[id];
     if (value != null) return refreshRelations(value);
     return reference.get(id).then((value) {
       fullCache[id] = value;

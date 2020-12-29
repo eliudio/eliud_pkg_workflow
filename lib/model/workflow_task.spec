@@ -26,6 +26,11 @@
       "hidden": true
     },
     {
+      "fieldName": "seqNumber",
+      "displayName": "Sequence number",
+      "fieldType": "int"
+    },
+    {
       "fieldName": "task",
       "displayName": "Task",
       "fieldType": "Task",

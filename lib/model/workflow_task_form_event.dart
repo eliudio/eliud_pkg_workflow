@@ -67,6 +67,18 @@ class ChangedWorkflowTaskDocumentID extends WorkflowTaskFormEvent {
   String toString() => 'ChangedWorkflowTaskDocumentID{ value: $value }';
 }
 
+class ChangedWorkflowTaskSeqNumber extends WorkflowTaskFormEvent {
+  final String value;
+
+  ChangedWorkflowTaskSeqNumber({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedWorkflowTaskSeqNumber{ value: $value }';
+}
+
 class ChangedWorkflowTaskTask extends WorkflowTaskFormEvent {
   final TaskModel value;
 

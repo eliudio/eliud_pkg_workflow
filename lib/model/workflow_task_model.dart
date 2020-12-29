@@ -47,21 +47,22 @@ WorkflowTaskResponsible toWorkflowTaskResponsible(int index) {
 
 class WorkflowTaskModel {
   String documentID;
+  int seqNumber;
   TaskModel task;
 
   // Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
   WorkflowTaskResponsible responsible;
 
-  WorkflowTaskModel({this.documentID, this.task, this.responsible, })  {
+  WorkflowTaskModel({this.documentID, this.seqNumber, this.task, this.responsible, })  {
     assert(documentID != null);
   }
 
-  WorkflowTaskModel copyWith({String documentID, TaskModel task, WorkflowTaskResponsible responsible, }) {
-    return WorkflowTaskModel(documentID: documentID ?? this.documentID, task: task ?? this.task, responsible: responsible ?? this.responsible, );
+  WorkflowTaskModel copyWith({String documentID, int seqNumber, TaskModel task, WorkflowTaskResponsible responsible, }) {
+    return WorkflowTaskModel(documentID: documentID ?? this.documentID, seqNumber: seqNumber ?? this.seqNumber, task: task ?? this.task, responsible: responsible ?? this.responsible, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ task.hashCode ^ responsible.hashCode;
+  int get hashCode => documentID.hashCode ^ seqNumber.hashCode ^ task.hashCode ^ responsible.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -69,16 +70,18 @@ class WorkflowTaskModel {
           other is WorkflowTaskModel &&
           runtimeType == other.runtimeType && 
           documentID == other.documentID &&
+          seqNumber == other.seqNumber &&
           task == other.task &&
           responsible == other.responsible;
 
   @override
   String toString() {
-    return 'WorkflowTaskModel{documentID: $documentID, task: $task, responsible: $responsible}';
+    return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, responsible: $responsible}';
   }
 
   WorkflowTaskEntity toEntity({String appId}) {
     return WorkflowTaskEntity(
+          seqNumber: (seqNumber != null) ? seqNumber : null, 
           task: (task != null) ? task.toEntity(appId: appId) : null, 
           responsible: (responsible != null) ? responsible.index : null, 
     );
@@ -88,6 +91,7 @@ class WorkflowTaskModel {
     if (entity == null) return null;
     return WorkflowTaskModel(
           documentID: documentID, 
+          seqNumber: entity.seqNumber, 
           task: 
             TaskModel.fromEntity(entity.task), 
           responsible: toWorkflowTaskResponsible(entity.responsible), 
@@ -99,6 +103,7 @@ class WorkflowTaskModel {
 
     return WorkflowTaskModel(
           documentID: documentID, 
+          seqNumber: entity.seqNumber, 
           task: 
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 
           responsible: toWorkflowTaskResponsible(entity.responsible), 

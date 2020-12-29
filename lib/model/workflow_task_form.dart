@@ -123,6 +123,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   WorkflowTaskFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
+  final TextEditingController _seqNumberController = TextEditingController();
   int _responsibleSelectedRadioTile;
 
 
@@ -133,6 +134,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
     super.initState();
     _myFormBloc = BlocProvider.of<WorkflowTaskFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
+    _seqNumberController.addListener(_onSeqNumberChanged);
     _responsibleSelectedRadioTile = 0;
   }
 
@@ -150,6 +152,10 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
           _documentIDController.text = state.value.documentID.toString();
         else
           _documentIDController.text = "";
+        if (state.value.seqNumber != null)
+          _seqNumberController.text = state.value.seqNumber.toString();
+        else
+          _seqNumberController.text = "";
         if (state.value.responsible != null)
           _responsibleSelectedRadioTile = state.value.responsible.index;
         else
@@ -164,6 +170,24 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                       style: TextStyle(
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
+
+        children.add(
+
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _seqNumberController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Sequence number',
+                  ),
+                  keyboardType: TextInputType.number,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is SeqNumberWorkflowTaskFormError ? state.message : null;
+                  },
+                ),
+          );
 
         children.add(
 
@@ -248,6 +272,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                         BlocProvider.of<WorkflowTaskListBloc>(context).add(
                           UpdateWorkflowTaskList(value: state.value.copyWith(
                               documentID: state.value.documentID, 
+                              seqNumber: state.value.seqNumber, 
                               task: state.value.task, 
                               responsible: state.value.responsible, 
                         )));
@@ -255,6 +280,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                         BlocProvider.of<WorkflowTaskListBloc>(context).add(
                           AddWorkflowTaskList(value: WorkflowTaskModel(
                               documentID: state.value.documentID, 
+                              seqNumber: state.value.seqNumber, 
                               task: state.value.task, 
                               responsible: state.value.responsible, 
                           )));
@@ -295,6 +321,11 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   }
 
 
+  void _onSeqNumberChanged() {
+    _myFormBloc.add(ChangedWorkflowTaskSeqNumber(value: _seqNumberController.text));
+  }
+
+
   void setSelectionResponsible(int val) {
     setState(() {
       _responsibleSelectedRadioTile = val;
@@ -307,6 +338,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   @override
   void dispose() {
     _documentIDController.dispose();
+    _seqNumberController.dispose();
     super.dispose();
   }
 

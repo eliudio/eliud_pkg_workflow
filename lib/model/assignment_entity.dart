@@ -27,23 +27,24 @@ class AssignmentEntity {
   final String assigneeId;
   final TaskEntity task;
   final String workflowId;
+  final int workflowTaskSeqNumber;
   final Object timestamp;
   final int status;
-  final List<AssignmentResultEntity> resultsFromPreviousAssignment;
+  final List<AssignmentResultEntity> resultsPrevious;
   final String triggeredById;
 
-  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.timestamp, this.status, this.resultsFromPreviousAssignment, this.triggeredById, });
+  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsPrevious, this.triggeredById, });
 
   AssignmentEntity copyWith({Object timestamp, }) {
-    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, timestamp : timestamp, status: status, resultsFromPreviousAssignment: resultsFromPreviousAssignment, triggeredById: triggeredById, );
+    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, workflowTaskSeqNumber: workflowTaskSeqNumber, timestamp : timestamp, status: status, resultsPrevious: resultsPrevious, triggeredById: triggeredById, );
   }
-  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, timestamp, status, resultsFromPreviousAssignment, triggeredById, ];
+  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, workflowTaskSeqNumber, timestamp, status, resultsPrevious, triggeredById, ];
 
   @override
   String toString() {
-    String resultsFromPreviousAssignmentCsv = (resultsFromPreviousAssignment == null) ? '' : resultsFromPreviousAssignment.join(', ');
+    String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious.join(', ');
 
-    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, timestamp: $timestamp, status: $status, resultsFromPreviousAssignment: AssignmentResult[] { $resultsFromPreviousAssignmentCsv }, triggeredById: $triggeredById}';
+    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById}';
   }
 
   static AssignmentEntity fromMap(Map map) {
@@ -53,11 +54,11 @@ class AssignmentEntity {
     taskFromMap = map['task'];
     if (taskFromMap != null)
       taskFromMap = TaskEntity.fromMap(taskFromMap);
-    var resultsFromPreviousAssignmentFromMap;
-    resultsFromPreviousAssignmentFromMap = map['resultsFromPreviousAssignment'];
-    var resultsFromPreviousAssignmentList;
-    if (resultsFromPreviousAssignmentFromMap != null)
-      resultsFromPreviousAssignmentList = (map['resultsFromPreviousAssignment'] as List<dynamic>)
+    var resultsPreviousFromMap;
+    resultsPreviousFromMap = map['resultsPrevious'];
+    var resultsPreviousList;
+    if (resultsPreviousFromMap != null)
+      resultsPreviousList = (map['resultsPrevious'] as List<dynamic>)
         .map((dynamic item) =>
         AssignmentResultEntity.fromMap(item as Map))
         .toList();
@@ -68,9 +69,10 @@ class AssignmentEntity {
       assigneeId: map['assigneeId'], 
       task: taskFromMap, 
       workflowId: map['workflowId'], 
+      workflowTaskSeqNumber: int.tryParse(map['workflowTaskSeqNumber'].toString()), 
       timestamp: assignmentRepository().timeStampToString(map['timestamp']), 
       status: map['status'], 
-      resultsFromPreviousAssignment: resultsFromPreviousAssignmentList, 
+      resultsPrevious: resultsPreviousList, 
       triggeredById: map['triggeredById'], 
     );
   }
@@ -79,8 +81,8 @@ class AssignmentEntity {
     final Map<String, dynamic> taskMap = task != null 
         ? task.toDocument()
         : null;
-    final List<Map<String, dynamic>> resultsFromPreviousAssignmentListMap = resultsFromPreviousAssignment != null 
-        ? resultsFromPreviousAssignment.map((item) => item.toDocument()).toList()
+    final List<Map<String, dynamic>> resultsPreviousListMap = resultsPrevious != null 
+        ? resultsPrevious.map((item) => item.toDocument()).toList()
         : null;
 
     Map<String, Object> theDocument = HashMap();
@@ -94,11 +96,13 @@ class AssignmentEntity {
       else theDocument["task"] = null;
     if (workflowId != null) theDocument["workflowId"] = workflowId;
       else theDocument["workflowId"] = null;
+    if (workflowTaskSeqNumber != null) theDocument["workflowTaskSeqNumber"] = workflowTaskSeqNumber;
+      else theDocument["workflowTaskSeqNumber"] = null;
     theDocument["timestamp"] = timestamp;
     if (status != null) theDocument["status"] = status;
       else theDocument["status"] = null;
-    if (resultsFromPreviousAssignment != null) theDocument["resultsFromPreviousAssignment"] = resultsFromPreviousAssignmentListMap;
-      else theDocument["resultsFromPreviousAssignment"] = null;
+    if (resultsPrevious != null) theDocument["resultsPrevious"] = resultsPreviousListMap;
+      else theDocument["resultsPrevious"] = null;
     if (triggeredById != null) theDocument["triggeredById"] = triggeredById;
       else theDocument["triggeredById"] = null;
     return theDocument;

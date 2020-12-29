@@ -48,6 +48,7 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
       if (event is InitialiseNewWorkflowTaskFormEvent) {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: WorkflowTaskModel(
                                                documentID: "IDENTIFIER", 
+                                 seqNumber: 0,
 
         ));
         yield loaded;
@@ -67,6 +68,17 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
       }
     } else if (currentState is WorkflowTaskFormInitialized) {
       WorkflowTaskModel newValue = null;
+      if (event is ChangedWorkflowTaskSeqNumber) {
+        if (isInt(event.value)) {
+          newValue = currentState.value.copyWith(seqNumber: int.parse(event.value));
+          yield SubmittableWorkflowTaskForm(value: newValue);
+
+        } else {
+          newValue = currentState.value.copyWith(seqNumber: 0);
+          yield SeqNumberWorkflowTaskFormError(message: "Value should be a number", value: newValue);
+        }
+        return;
+      }
       if (event is ChangedWorkflowTaskTask) {
         newValue = currentState.value.copyWith(task: event.value);
         yield SubmittableWorkflowTaskForm(value: newValue);

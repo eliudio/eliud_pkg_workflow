@@ -140,16 +140,7 @@ class AssignmentCache implements AssignmentRepository {
       } catch (_) {}
     }
 
-    AssignmentModel triggeredByHolder;
-    if (model.triggeredBy != null) {
-      try {
-        await assignmentRepository(appId: model.triggeredBy.appId).get(model.triggeredBy.documentID).then((val) {
-          triggeredByHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
-    }
-
-    List<AssignmentResultModel> resultsFromPreviousAssignmentHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsFromPreviousAssignment.map((element) async {
+    List<AssignmentResultModel> resultsPreviousHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsPrevious.map((element) async {
       return await AssignmentResultCache.refreshRelations(element);
     }))).toList();
 
@@ -158,9 +149,7 @@ class AssignmentCache implements AssignmentRepository {
 
         workflow: workflowHolder,
 
-        triggeredBy: triggeredByHolder,
-
-        resultsFromPreviousAssignment: resultsFromPreviousAssignmentHolder,
+        resultsPrevious: resultsPreviousHolder,
 
 
     );

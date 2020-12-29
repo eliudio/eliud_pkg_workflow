@@ -1,7 +1,7 @@
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class TaskEntity /*extends Equatable */{
+abstract class TaskEntity {
   final String taskString;
 
   const TaskEntity( { this.taskString });

@@ -87,9 +87,17 @@ abstract class TaskModel {
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
    * to allow asynchronous execution of your task(s).
    */
-  void finishTask(BuildContext context, AssignmentModel assignmentModel, ExecutionResults executionResult) {
-    _handleCurrentAssignment(context, assignmentModel, _isNewAssignment, executionResult);
-    _createNextAssignment(context, assignmentModel, executionResult);
+  Future<void> finishTask(BuildContext context, AssignmentModel assignmentModel, ExecutionResults executionResult) async {
+    await _handleCurrentAssignment(context, assignmentModel, _isNewAssignment, executionResult);
+    if (executionResult.status == ExecutionStatus.success) {
+      var nextAssignment = await _createNextAssignment(context, assignmentModel, executionResult);
+
+      // if the next assignment is assigned to the currently logged in member, then present it instantly:
+      MemberModel currentMember = AccessBloc.getState(context).getMember();
+      if ((currentMember != null) && (nextAssignment != null) && (nextAssignment.assigneeId == currentMember.documentID)) {
+        nextAssignment.task.callExecute(context, nextAssignment, false);
+      }
+    }
   }
 
   /* This method is called by the workflow framework */
@@ -98,7 +106,7 @@ abstract class TaskModel {
     startTask(context, assignmentModel);
   }
 
-  void _handleCurrentAssignment(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment, ExecutionResults executionResult) {
+  Future<void> _handleCurrentAssignment(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment, ExecutionResults executionResult) async {
     var assignmentStatus;
     switch (executionResult.status) {
       case ExecutionStatus.success:
@@ -111,18 +119,18 @@ abstract class TaskModel {
     if (assignmentStatus != null) {
       assignmentModel.status = assignmentStatus;
       if (isNewAssignment) {
-        AbstractRepositorySingleton.singleton.assignmentRepository(
+        await AbstractRepositorySingleton.singleton.assignmentRepository(
             assignmentModel.appId)
             .add(assignmentModel);
       } else {
-        AbstractRepositorySingleton.singleton
+        await AbstractRepositorySingleton.singleton
             .assignmentRepository(assignmentModel.appId)
             .update(assignmentModel);
       }
     }
   }
 
-  String _determineMember(WorkflowTaskResponsible workflowTaskResponsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) {
+  Future<String> _determineMember(WorkflowTaskResponsible workflowTaskResponsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
     switch (workflowTaskResponsible) {
       case WorkflowTaskResponsible.CurrentMember:
         return member.documentID;
@@ -131,31 +139,32 @@ abstract class TaskModel {
       case WorkflowTaskResponsible.First:
         var findAssignment = currentAssignment;
         var assigneeId;
-        while (findAssignment.triggeredBy != null) {
+        while (findAssignment.triggeredById != null) {
           assigneeId = findAssignment.assigneeId;
-          findAssignment = currentAssignment.triggeredBy;
+          findAssignment = await assignmentRepository(appId: app.documentID).get(findAssignment.triggeredById);
         }
         return assigneeId;
       case WorkflowTaskResponsible.Previous:
-        if (currentAssignment.triggeredBy != null) {
-          return currentAssignment.triggeredBy.assigneeId;
+        if (currentAssignment.triggeredById != null) {
+          var triggeredBy = await assignmentRepository(appId: app.documentID).get(currentAssignment.triggeredById);
+          return triggeredBy.assigneeId;
         }
         break;
     }
     return null;
   }
 
-  void _createNextAssignment(BuildContext context, AssignmentModel currentAssignment, ExecutionResults executionResult) {
+  Future<AssignmentModel> _createNextAssignment(BuildContext context, AssignmentModel currentAssignment, ExecutionResults executionResult) async {
     if (executionResult.status == ExecutionStatus.success) {
       var state = AccessBloc.getState(context);
       if (state is AppLoaded) {
         if (state.getMember() != null) {
           var member = state.getMember();
-          // the below must become part of the TaskModel class "createNextAssignment"
+
           var tasks = currentAssignment.workflow.workflowTask;
           var found = -1;
           for (int i = 0; i < tasks.length; i++) {
-            if (tasks[i].task.taskString == currentAssignment.task.taskString) {
+            if (tasks[i].seqNumber == currentAssignment.workflowTaskSeqNumber) {
               found = i;
               break;
             }
@@ -168,14 +177,14 @@ abstract class TaskModel {
                   documentID: newRandomKey(),
                   appId: currentAssignment.appId,
                   reporter: member,
-                  assigneeId: _determineMember(nextTask.responsible, state.app, member, currentAssignment),
+                  assigneeId: await _determineMember(nextTask.responsible, state.app, member, currentAssignment),
                   task: nextTask.task,
                   workflow: currentAssignment.workflow,
-                  timestamp: null,
                   status: AssignmentStatus.Open,
-                  triggeredBy: null,
-                  resultsFromPreviousAssignment: executionResult.results);
-              AbstractRepositorySingleton.singleton
+                  triggeredById: currentAssignment.documentID,
+                  workflowTaskSeqNumber: currentAssignment.workflow.workflowTask[found + 1].seqNumber,
+                  resultsPrevious: executionResult.results);
+              return await AbstractRepositorySingleton.singleton
                   .assignmentRepository(currentAssignment.appId)
                   .add(nextAssignment);
             } else {
@@ -187,6 +196,7 @@ abstract class TaskModel {
         }
       }
     }
+    return null;
   }
 }
 
