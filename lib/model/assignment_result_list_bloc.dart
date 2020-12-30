@@ -22,6 +22,7 @@ import 'package:eliud_pkg_workflow/model/assignment_result_list_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_list_state.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 
 
@@ -29,15 +30,17 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
   final AssignmentResultRepository _assignmentResultRepository;
   StreamSubscription _assignmentResultsListSubscription;
   final AccessBloc accessBloc;
+  final EliudQuery eliudQuery;
 
-  AssignmentResultListBloc(this.accessBloc,{ @required AssignmentResultRepository assignmentResultRepository })
+
+  AssignmentResultListBloc(this.accessBloc,{ this.eliudQuery, @required AssignmentResultRepository assignmentResultRepository })
       : assert(assignmentResultRepository != null),
       _assignmentResultRepository = assignmentResultRepository,
       super(AssignmentResultListLoading());
 
   Stream<AssignmentResultListState> _mapLoadAssignmentResultListToState({ String orderBy, bool descending }) async* {
     _assignmentResultsListSubscription?.cancel();
-    _assignmentResultsListSubscription = _assignmentResultRepository.listen((list) => add(AssignmentResultListUpdated(value: list)), orderBy: orderBy, descending: descending, );
+    _assignmentResultsListSubscription = _assignmentResultRepository.listen((list) => add(AssignmentResultListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState() async* {

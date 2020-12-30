@@ -53,7 +53,7 @@ class WorkflowCache implements WorkflowRepository {
   }
 
   Future<WorkflowModel> get(String id){
-    WorkflowModel value = null;// disable cashe for now fullCache[id];
+    WorkflowModel value = fullCache[id];
     if (value != null) return refreshRelations(value);
     return reference.get(id).then((value) {
       fullCache[id] = value;
@@ -122,9 +122,12 @@ class WorkflowCache implements WorkflowRepository {
 
   static Future<WorkflowModel> refreshRelations(WorkflowModel model) async {
 
-    List<WorkflowTaskModel> workflowTaskHolder = List<WorkflowTaskModel>.from(await Future.wait(await model.workflowTask.map((element) async {
-      return await WorkflowTaskCache.refreshRelations(element);
-    }))).toList();
+    List<WorkflowTaskModel> workflowTaskHolder;
+    if (model.workflowTask != null) {
+      workflowTaskHolder = List<WorkflowTaskModel>.from(await Future.wait(await model.workflowTask.map((element) async {
+        return await WorkflowTaskCache.refreshRelations(element);
+      }))).toList();
+    }
 
     return model.copyWith(
         workflowTask: workflowTaskHolder,

@@ -48,12 +48,11 @@ abstract class TaskModelMapper {
 }
 
 abstract class TaskModel {
-  final String taskString;
   final String description;
 
   bool _isNewAssignment;
 
-  TaskModel({this.taskString, this.description});
+  TaskModel({this.description});
 
   TaskEntity toEntity({String appId});
 
@@ -262,7 +261,7 @@ abstract class TaskModel {
 class ExampleTaskModel1 extends TaskModel {
   final String extraParameter;
 
-  ExampleTaskModel1({this.extraParameter, String description}) : super(taskString: ExampleTaskEntity1.label, description: description);
+  ExampleTaskModel1({this.extraParameter, String description}) : super(description: description);
 
   @override
   TaskEntity toEntity({String appId}) {

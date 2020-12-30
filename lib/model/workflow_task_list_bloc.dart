@@ -22,6 +22,7 @@ import 'package:eliud_pkg_workflow/model/workflow_task_list_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_list_state.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 
 
@@ -29,15 +30,17 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
   final WorkflowTaskRepository _workflowTaskRepository;
   StreamSubscription _workflowTasksListSubscription;
   final AccessBloc accessBloc;
+  final EliudQuery eliudQuery;
 
-  WorkflowTaskListBloc(this.accessBloc,{ @required WorkflowTaskRepository workflowTaskRepository })
+
+  WorkflowTaskListBloc(this.accessBloc,{ this.eliudQuery, @required WorkflowTaskRepository workflowTaskRepository })
       : assert(workflowTaskRepository != null),
       _workflowTaskRepository = workflowTaskRepository,
       super(WorkflowTaskListLoading());
 
   Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListToState({ String orderBy, bool descending }) async* {
     _workflowTasksListSubscription?.cancel();
-    _workflowTasksListSubscription = _workflowTaskRepository.listen((list) => add(WorkflowTaskListUpdated(value: list)), orderBy: orderBy, descending: descending, );
+    _workflowTasksListSubscription = _workflowTaskRepository.listen((list) => add(WorkflowTaskListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListWithDetailsToState() async* {
