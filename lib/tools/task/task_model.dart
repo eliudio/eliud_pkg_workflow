@@ -49,10 +49,11 @@ abstract class TaskModelMapper {
 
 abstract class TaskModel {
   final String taskString;
+  final String description;
 
   bool _isNewAssignment;
 
-  TaskModel({this.taskString});
+  TaskModel({this.taskString, this.description});
 
   TaskEntity toEntity({String appId});
 
@@ -81,7 +82,7 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  void startTask(BuildContext context, AssignmentModel assignmentModel, );
+  Future<void> startTask(BuildContext context, AssignmentModel assignmentModel, );
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
@@ -261,18 +262,18 @@ abstract class TaskModel {
 class ExampleTaskModel1 extends TaskModel {
   final String extraParameter;
 
-  ExampleTaskModel1({this.extraParameter}) : super(taskString: ExampleTaskEntity1.label);
+  ExampleTaskModel1({this.extraParameter, String description}) : super(taskString: ExampleTaskEntity1.label, description: description);
 
   @override
   TaskEntity toEntity({String appId}) {
     return ExampleTaskEntity1();
   }
 
-  static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) => ExampleTaskModel1(extraParameter: entity.extraParameter, );
-  static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(extraParameter: snap["extraParameter"]);
+  static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) => ExampleTaskModel1(extraParameter: entity.extraParameter, description: entity.description);
+  static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(extraParameter: snap["extraParameter"], description: snap["description"]);
 
   @override
-  void startTask(BuildContext context, AssignmentModel assignmentModel) {
+  Future<void> startTask(BuildContext context, AssignmentModel assignmentModel) {
     throw UnimplementedError();
   }
 }

@@ -15,6 +15,7 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_workflow/model/assignment_repository.dart';
@@ -29,15 +30,16 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
   final AssignmentRepository _assignmentRepository;
   StreamSubscription _assignmentsListSubscription;
   final AccessBloc accessBloc;
+  final EliudQuery eliudQuery;
 
-  AssignmentListBloc(this.accessBloc,{ @required AssignmentRepository assignmentRepository })
+  AssignmentListBloc(this.accessBloc, { this.eliudQuery, @required AssignmentRepository assignmentRepository })
       : assert(assignmentRepository != null),
       _assignmentRepository = assignmentRepository,
       super(AssignmentListLoading());
 
   Stream<AssignmentListState> _mapLoadAssignmentListToState({ String orderBy, bool descending }) async* {
     _assignmentsListSubscription?.cancel();
-    _assignmentsListSubscription = _assignmentRepository.listen((list) => add(AssignmentListUpdated(value: list)), orderBy: orderBy, descending: descending, );
+    _assignmentsListSubscription = _assignmentRepository.listen((list) => add(AssignmentListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery);
   }
 
   Stream<AssignmentListState> _mapLoadAssignmentListWithDetailsToState() async* {

@@ -125,5 +125,13 @@
     "title": "documentID",
     "subTitle": "documentID"
   },
-  "depends": ["eliud_core"]
+  "depends": ["eliud_core"],
+  "extraImports": {
+    "alternative_list_widgets" : "import 'package:eliud_pkg_workflow/extensions/widgets/my_assignment_list_item.dart';"
+  },
+  "alternativeListWidgets": [
+    {
+        "listItemWidget": "MyAssignmentListItem"
+    }
+  ]
 }

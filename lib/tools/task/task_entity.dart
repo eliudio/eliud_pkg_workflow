@@ -3,8 +3,9 @@ import 'package:equatable/equatable.dart';
 
 abstract class TaskEntity {
   final String taskString;
+  final String description;
 
-  const TaskEntity( { this.taskString });
+  const TaskEntity( { this.taskString, this.description });
 
   Map<String, Object> toDocument();
 
@@ -23,15 +24,13 @@ class ExampleTaskEntity1 extends TaskEntity {
   static String label = "EXAMPLE_TASK_1";
   final String extraParameter;
 
-  ExampleTaskEntity1({ this.extraParameter }) : super(taskString: label);
-
-  @override
-  List<Object> get props => [ taskString, extraParameter ];
+  ExampleTaskEntity1({ this.extraParameter, String description }) : super(taskString: label, description: description);
 
   Map<String, Object> toDocument() {
     return {
       "taskString": taskString,
-      "extraParameter": extraParameter
+      "extraParameter": extraParameter,
+      "description": description,
     };
   }
 

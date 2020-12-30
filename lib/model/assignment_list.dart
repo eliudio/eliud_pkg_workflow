@@ -44,6 +44,7 @@ import 'package:eliud_core/model/app_model.dart';
 
 import 'assignment_form.dart';
 
+import 'package:eliud_pkg_workflow/extensions/widgets/my_assignment_list_item.dart';
 class AssignmentListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
   bool readOnly;
@@ -170,6 +171,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
+          if (widget.listItemWidget == "MyAssignmentListItem") return MyAssignmentListItem(value: value);
 
           return AssignmentListItem(
             value: value,
