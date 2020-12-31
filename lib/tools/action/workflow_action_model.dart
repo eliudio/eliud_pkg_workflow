@@ -6,10 +6,10 @@ import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
 
 // Start a workflow
-class WorkflowAction extends ActionModel {
+class WorkflowActionModel extends ActionModel {
   final WorkflowModel workflow;
 
-  WorkflowAction(String appId, { this.workflow, ReadCondition readCondition, int privilegeLevelRequired, String packageCondition} ) : super(appId, actionType: WorkflowActionEntity.label, readCondition: readCondition, privilegeLevelRequired: privilegeLevelRequired, packageCondition: packageCondition);
+  WorkflowActionModel(String appId, { this.workflow, ReadCondition readCondition, int privilegeLevelRequired, String packageCondition} ) : super(appId, actionType: WorkflowActionEntity.label, readCondition: readCondition, privilegeLevelRequired: privilegeLevelRequired, packageCondition: packageCondition);
 
   @override
   ActionEntity toEntity({String appId}) {
@@ -23,7 +23,7 @@ class WorkflowAction extends ActionModel {
 
   static ActionModel fromEntity(WorkflowActionEntity entity) {
     if (entity == null) return null;
-    return WorkflowAction(
+    return WorkflowActionModel(
       entity.appID,
       readCondition: toReadCondition(entity.readCondition),
       privilegeLevelRequired: entity.privilegeLevelRequired,
@@ -40,7 +40,7 @@ class WorkflowAction extends ActionModel {
       } catch (_) {}
     }
 
-    return WorkflowAction(
+    return WorkflowActionModel(
         entity.appID,
         readCondition: toReadCondition(entity.readCondition),
         privilegeLevelRequired: entity.privilegeLevelRequired,
@@ -56,10 +56,10 @@ class WorkflowAction extends ActionModel {
 
 class WorkflowActionMapper implements ActionModelMapper {
   @override
-  ActionModel fromEntity(ActionEntity entity) => WorkflowAction.fromEntity(entity);
+  ActionModel fromEntity(ActionEntity entity) => WorkflowActionModel.fromEntity(entity);
 
   @override
-  Future<ActionModel> fromEntityPlus(ActionEntity entity) => WorkflowAction.fromEntityPlus(entity);
+  Future<ActionModel> fromEntityPlus(ActionEntity entity) => WorkflowActionModel.fromEntityPlus(entity);
 
   @override
   ActionEntity fromMap(Map map) => WorkflowActionEntity.fromMap(map);

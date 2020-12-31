@@ -12,6 +12,7 @@ import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ExecutionStatus { success, failure, decline, delay }
+typedef void FinaliseWorkflow();
 
 class ExecutionResults {
   final ExecutionStatus status;
@@ -51,6 +52,7 @@ abstract class TaskModel {
   final String description;
 
   bool _isNewAssignment;
+  FinaliseWorkflow _finaliseWorkflow;
 
   TaskModel({this.description});
 
@@ -81,28 +83,37 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  Future<void> startTask(BuildContext context, AssignmentModel assignmentModel, );
+  Future<void> startTask(BuildContext context, AssignmentModel assignmentModel);
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
    * to allow asynchronous execution of your task(s).
    */
   Future<void> finishTask(BuildContext context, AssignmentModel assignmentModel, ExecutionResults executionResult) async {
+    bool feedback = true;
     await _handleCurrentAssignment(context, assignmentModel, _isNewAssignment, executionResult);
     if (executionResult.status == ExecutionStatus.success) {
       var nextAssignment = await _createNextAssignment(context, assignmentModel, executionResult);
 
-      // if the next assignment is assigned to the currently logged in member, then present it instantly:
-      MemberModel currentMember = AccessBloc.getState(context).getMember();
-      if ((currentMember != null) && (nextAssignment != null) && (nextAssignment.assigneeId == currentMember.documentID)) {
-        nextAssignment.task.callExecute(context, nextAssignment, false);
+      if (nextAssignment != null) {
+        // if the next assignment is assigned to the currently logged in member, then present it instantly:
+        MemberModel currentMember = AccessBloc.getState(context).getMember();
+        if ((currentMember != null) &&
+            (nextAssignment.assigneeId == currentMember.documentID)) {
+          nextAssignment.task.callExecute(context, nextAssignment, false, finaliseWorkflow: _finaliseWorkflow);
+          feedback = false;
+        }
       }
+    }
+    if ((feedback) && (_finaliseWorkflow != null)) {
+      _finaliseWorkflow();
     }
   }
 
   /* This method is called by the workflow framework */
-  void callExecute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment) {
+  void callExecute(BuildContext context, AssignmentModel assignmentModel, bool isNewAssignment, {FinaliseWorkflow finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
+    _finaliseWorkflow = finaliseWorkflow;
     startTask(context, assignmentModel);
   }
 
@@ -171,7 +182,7 @@ abstract class TaskModel {
           }
 
           if (found >= 0) {
-            if (found < tasks.length) {
+            if (found + 1 < tasks.length) {
               var nextTask = tasks[found + 1];
               var nextAssignment = AssignmentModel(
                   documentID: newRandomKey(),
