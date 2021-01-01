@@ -64,20 +64,23 @@ class AssignmentModel {
   String timestamp;
   AssignmentStatus status;
 
-  // The results of the assignment that preceeded this assignment
+  // The results of the current assignment
+  List<AssignmentResultModel> resultsCurrent;
+
+  // The results of the assignment that preceeded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)
   List<AssignmentResultModel> resultsPrevious;
   String triggeredById;
 
-  AssignmentModel({this.documentID, this.appId, this.reporter, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsPrevious, this.triggeredById, })  {
+  AssignmentModel({this.documentID, this.appId, this.reporter, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, })  {
     assert(documentID != null);
   }
 
-  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, String assigneeId, TaskModel task, WorkflowModel workflow, int workflowTaskSeqNumber, String timestamp, AssignmentStatus status, List<AssignmentResultModel> resultsPrevious, String triggeredById, }) {
-    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, );
+  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, String assigneeId, TaskModel task, WorkflowModel workflow, int workflowTaskSeqNumber, String timestamp, AssignmentStatus status, List<AssignmentResultModel> resultsCurrent, List<AssignmentResultModel> resultsPrevious, String triggeredById, }) {
+    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assigneeId.hashCode ^ task.hashCode ^ workflow.hashCode ^ workflowTaskSeqNumber.hashCode ^ timestamp.hashCode ^ status.hashCode ^ resultsPrevious.hashCode ^ triggeredById.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assigneeId.hashCode ^ task.hashCode ^ workflow.hashCode ^ workflowTaskSeqNumber.hashCode ^ timestamp.hashCode ^ status.hashCode ^ resultsCurrent.hashCode ^ resultsPrevious.hashCode ^ triggeredById.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -93,14 +96,16 @@ class AssignmentModel {
           workflowTaskSeqNumber == other.workflowTaskSeqNumber &&
           timestamp == other.timestamp &&
           status == other.status &&
+          ListEquality().equals(resultsCurrent, other.resultsCurrent) &&
           ListEquality().equals(resultsPrevious, other.resultsPrevious) &&
           triggeredById == other.triggeredById;
 
   @override
   String toString() {
+    String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent.join(', ');
     String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious.join(', ');
 
-    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById}';
+    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById}';
   }
 
   AssignmentEntity toEntity({String appId}) {
@@ -112,6 +117,9 @@ class AssignmentModel {
           workflowId: (workflow != null) ? workflow.documentID : null, 
           workflowTaskSeqNumber: (workflowTaskSeqNumber != null) ? workflowTaskSeqNumber : null, 
           timestamp: timestamp,           status: (status != null) ? status.index : null, 
+          resultsCurrent: (resultsCurrent != null) ? resultsCurrent
+            .map((item) => item.toEntity(appId: appId))
+            .toList() : null, 
           resultsPrevious: (resultsPrevious != null) ? resultsPrevious
             .map((item) => item.toEntity(appId: appId))
             .toList() : null, 
@@ -130,6 +138,11 @@ class AssignmentModel {
           workflowTaskSeqNumber: entity.workflowTaskSeqNumber, 
           timestamp: entity.timestamp, 
           status: toAssignmentStatus(entity.status), 
+          resultsCurrent: 
+            entity.resultsCurrent == null ? null :
+            entity.resultsCurrent
+            .map((item) => AssignmentResultModel.fromEntity(newRandomKey(), item))
+            .toList(), 
           resultsPrevious: 
             entity.resultsPrevious == null ? null :
             entity.resultsPrevious
@@ -171,6 +184,10 @@ class AssignmentModel {
           workflowTaskSeqNumber: entity.workflowTaskSeqNumber, 
           timestamp: entity.timestamp, 
           status: toAssignmentStatus(entity.status), 
+          resultsCurrent: 
+            entity. resultsCurrent == null ? null : new List<AssignmentResultModel>.from(await Future.wait(entity. resultsCurrent
+            .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
+            .toList())), 
           resultsPrevious: 
             entity. resultsPrevious == null ? null : new List<AssignmentResultModel>.from(await Future.wait(entity. resultsPrevious
             .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))

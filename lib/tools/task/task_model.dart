@@ -12,7 +12,7 @@ import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ExecutionStatus { success, failure, decline, delay }
-typedef void FinaliseWorkflow();
+typedef void FinaliseWorkflow(bool success, AssignmentModel assignmentModel);
 
 class ExecutionResults {
   final ExecutionStatus status;
@@ -50,11 +50,12 @@ abstract class TaskModelMapper {
 
 abstract class TaskModel {
   final String description;
+  final bool executeInstantly; // Execute instantly? When a triggering assignment has been finalised by a member and when the next assignment is also assigned to this member, then it will be executed instantly when set",
 
   bool _isNewAssignment;
   FinaliseWorkflow _finaliseWorkflow;
 
-  TaskModel({this.description});
+  TaskModel({this.description, this.executeInstantly});
 
   TaskEntity toEntity({String appId});
 
@@ -90,7 +91,6 @@ abstract class TaskModel {
    * to allow asynchronous execution of your task(s).
    */
   Future<void> finishTask(BuildContext context, AssignmentModel assignmentModel, ExecutionResults executionResult) async {
-    bool feedback = true;
     await _handleCurrentAssignment(context, assignmentModel, _isNewAssignment, executionResult);
     if (executionResult.status == ExecutionStatus.success) {
       var nextAssignment = await _createNextAssignment(context, assignmentModel, executionResult);
@@ -99,14 +99,13 @@ abstract class TaskModel {
         // if the next assignment is assigned to the currently logged in member, then present it instantly:
         MemberModel currentMember = AccessBloc.getState(context).getMember();
         if ((currentMember != null) &&
-            (nextAssignment.assigneeId == currentMember.documentID)) {
+            (nextAssignment.assigneeId == currentMember.documentID) && (nextAssignment.task.executeInstantly != null) && (nextAssignment.task.executeInstantly)) {
           nextAssignment.task.callExecute(context, nextAssignment, false, finaliseWorkflow: _finaliseWorkflow);
-          feedback = false;
         }
       }
     }
-    if ((feedback) && (_finaliseWorkflow != null)) {
-      _finaliseWorkflow();
+    if ((_finaliseWorkflow != null)) {
+      _finaliseWorkflow(executionResult.status == ExecutionStatus.success, assignmentModel);
     }
   }
 
@@ -127,6 +126,7 @@ abstract class TaskModel {
         assignmentStatus = AssignmentStatus.Declined;
         break;
     }
+    assignmentModel.resultsCurrent = executionResult.results;
     if (assignmentStatus != null) {
       assignmentModel.status = assignmentStatus;
       if (isNewAssignment) {
@@ -211,76 +211,18 @@ abstract class TaskModel {
   }
 }
 
-/*
- Action. First we need to transform the current implementation of actions to be like the task implementation pattern:
- allow external packages to plugin an action. Then we need to add a way to actually execute the action when it's being clicked.
- (I'm guessing extend router or something)
-
- Then we can create a class for action "initiate workflow". Examples:
-*/
-
-/* Real example tasks are:
-   ManualPayment:
-     where execute opens dialog box with instructions and required details
-     user can enter the details and has a few buttons Submit, Decline, Delay
-
-   ChoiceOfPaymentsIncludingManual:
-     where execute opens dialog box with various payment options to pay, then eventually actually making the payment
-
-   ApprovePaymentAndShip:
-     where execute invites the owner of the app gets the request to validate the payment and then ship the product
-
-   RequestMembership:
-     where execute opens a dialog box with "you want to become a member?". Yes means the next step in the workflow chain to be executed,
-     which should be to request for a payment for the membership, or to activate the membership, depending on paid or free membership
-
-   ApproveManualPayment
-     where execute invites the owner of the app to approve the payment
-
-   ActivateMembership
-     where execute presents the request to activate membership to the owner
-
-   Sometimes we actually have a tight coupling between the button and the task: some tasks can only be used within specific
-   contexts. For example, when requesting friendship, the task needs to know who to make friendship with. So the RequestFriendship task
-   assumes it runs in a context where a FriendshipBloc is available and where the state says which member to make friends with.
-   The ManualPayment can have 2 implementations: FixedManualPayment, which can be configured with a specific amount, or
-   ContextualManualPayment which also depends on and assume a PaymentBloc where it can get the amount from.
-*/
-
-/* Real example workflows are:
-   manual_paid_membership : request_membership > manual_payment member (ManualPayment 20 GBP) > approve_manual_payment (ApproveManualPayment) > activate_membership (ActivateMembership)
-   auto_membership: request_membership (RequestMembership) > activate_membership (ActivateMembership)
-   buy: manual_or_other_payment (ChoiceOfPaymentsIncludingManual) > approve_and_ship
-   become_friends: confirm_request_friendship > request_approval_friendship
- */
-
-/* How it works:
-   A button is clicked.
-   If this is a specific context, like make a friend context, then a friendbloc with that friend is constructed.
-   If the action behind the button is for example initiating a workflow, then the workflow is started.
-   This in itself creates an assignment for the first
-   It creates an instance Assignment then executes the first task in the workflow with the assignment.
-   In this case the isNewAssignment is true instructing the task to store the assignment as a new assignment.
-
-   The assignment does it's thing, in this case it asks for a confirmation to make friends.
-   It could be that it gets some data from the context, eg. finds out if there's a friendbloc around. If not "exception"
-   On success, ie. when the user confirms the task, then an assignment is created. In this example, this assignment is
-
-   If the user confirms to make friends, it stores/creates the assignment as well as create a new assignment, i.e. for the next task of the workflow.
- */
-
 class ExampleTaskModel1 extends TaskModel {
   final String extraParameter;
 
-  ExampleTaskModel1({this.extraParameter, String description}) : super(description: description);
+  ExampleTaskModel1({this.extraParameter, String description, bool executeInstantly}) : super(description: description, executeInstantly: executeInstantly);
 
   @override
   TaskEntity toEntity({String appId}) {
-    return ExampleTaskEntity1();
+    return ExampleTaskEntity1(description: description, executeInstantly: executeInstantly);
   }
 
-  static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) => ExampleTaskModel1(extraParameter: entity.extraParameter, description: entity.description);
-  static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(extraParameter: snap["extraParameter"], description: snap["description"]);
+  static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) => ExampleTaskModel1(extraParameter: entity.extraParameter, description: entity.description, executeInstantly: entity.executeInstantly);
+  static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(extraParameter: snap["extraParameter"], description: snap["description"], executeInstantly: snap["executeInstantly"]);
 
   @override
   Future<void> startTask(BuildContext context, AssignmentModel assignmentModel) {

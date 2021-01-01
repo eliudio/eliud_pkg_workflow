@@ -291,6 +291,14 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
                 new Container(
                     height: (fullScreenHeight(context) / 2.5), 
+                    child: assignmentResultsList(context, state.value.resultsCurrent, _onResultsCurrentChanged)
+                )
+          );
+
+        children.add(
+
+                new Container(
+                    height: (fullScreenHeight(context) / 2.5), 
                     child: assignmentResultsList(context, state.value.resultsPrevious, _onResultsPreviousChanged)
                 )
           );
@@ -466,6 +474,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               workflowTaskSeqNumber: state.value.workflowTaskSeqNumber, 
                               timestamp: state.value.timestamp, 
                               status: state.value.status, 
+                              resultsCurrent: state.value.resultsCurrent, 
                               resultsPrevious: state.value.resultsPrevious, 
                               triggeredById: state.value.triggeredById, 
                         )));
@@ -481,6 +490,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               workflowTaskSeqNumber: state.value.workflowTaskSeqNumber, 
                               timestamp: state.value.timestamp, 
                               status: state.value.status, 
+                              resultsCurrent: state.value.resultsCurrent, 
                               resultsPrevious: state.value.resultsPrevious, 
                               triggeredById: state.value.triggeredById, 
                           )));
@@ -557,6 +567,12 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
       _statusSelectedRadioTile = val;
     });
     _myFormBloc.add(ChangedAssignmentStatus(value: toAssignmentStatus(val)));
+  }
+
+
+  void _onResultsCurrentChanged(value) {
+    _myFormBloc.add(ChangedAssignmentResultsCurrent(value: value));
+    setState(() {});
   }
 
 

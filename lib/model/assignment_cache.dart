@@ -140,6 +140,13 @@ class AssignmentCache implements AssignmentRepository {
       } catch (_) {}
     }
 
+    List<AssignmentResultModel> resultsCurrentHolder;
+    if (model.resultsCurrent != null) {
+      resultsCurrentHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsCurrent.map((element) async {
+        return await AssignmentResultCache.refreshRelations(element);
+      }))).toList();
+    }
+
     List<AssignmentResultModel> resultsPreviousHolder;
     if (model.resultsPrevious != null) {
       resultsPreviousHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsPrevious.map((element) async {
@@ -151,6 +158,8 @@ class AssignmentCache implements AssignmentRepository {
         reporter: reporterHolder,
 
         workflow: workflowHolder,
+
+        resultsCurrent: resultsCurrentHolder,
 
         resultsPrevious: resultsPreviousHolder,
 

@@ -82,9 +82,16 @@
       "enumValues" : [ "Success", "Declined", "Open" ]
     },
     {
+      "fieldName": "resultsCurrent",
+      "displayName": "Result current Assignment",
+      "remark": "The results of the current assignment",
+      "fieldType": "AssignmentResult",
+      "arrayType": "Array"
+    },
+    {
       "fieldName": "resultsPrevious",
       "displayName": "Result previous Assignment",
-      "remark": "The results of the assignment that preceeded this assignment",
+      "remark": "The results of the assignment that preceeded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)",
       "fieldType": "AssignmentResult",
       "arrayType": "Array"
     },

@@ -167,6 +167,18 @@ class ChangedAssignmentStatus extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentStatus{ value: $value }';
 }
 
+class ChangedAssignmentResultsCurrent extends AssignmentFormEvent {
+  final List<AssignmentResultModel> value;
+
+  ChangedAssignmentResultsCurrent({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedAssignmentResultsCurrent{ value: $value }';
+}
+
 class ChangedAssignmentResultsPrevious extends AssignmentFormEvent {
   final List<AssignmentResultModel> value;
 

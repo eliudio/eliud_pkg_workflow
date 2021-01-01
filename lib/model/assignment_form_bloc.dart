@@ -56,6 +56,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  appId: "",
                                  assigneeId: "",
                                  workflowTaskSeqNumber: 0,
+                                 resultsCurrent: [],
                                  resultsPrevious: [],
                                  triggeredById: "",
 
@@ -98,6 +99,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  workflowTaskSeqNumber: currentState.value.workflowTaskSeqNumber,
                                  timestamp: currentState.value.timestamp,
                                  status: currentState.value.status,
+                                 resultsCurrent: currentState.value.resultsCurrent,
                                  resultsPrevious: currentState.value.resultsPrevious,
                                  triggeredById: currentState.value.triggeredById,
           );
@@ -131,6 +133,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  workflowTaskSeqNumber: currentState.value.workflowTaskSeqNumber,
                                  timestamp: currentState.value.timestamp,
                                  status: currentState.value.status,
+                                 resultsCurrent: currentState.value.resultsCurrent,
                                  resultsPrevious: currentState.value.resultsPrevious,
                                  triggeredById: currentState.value.triggeredById,
           );
@@ -157,6 +160,12 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
       }
       if (event is ChangedAssignmentStatus) {
         newValue = currentState.value.copyWith(status: event.value);
+        yield SubmittableAssignmentForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedAssignmentResultsCurrent) {
+        newValue = currentState.value.copyWith(resultsCurrent: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;

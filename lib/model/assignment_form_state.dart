@@ -207,6 +207,22 @@ class StatusAssignmentFormError extends AssignmentFormError {
 }
 
 
+class ResultsCurrentAssignmentFormError extends AssignmentFormError { 
+  const ResultsCurrentAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ResultsCurrentAssignmentFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class ResultsPreviousAssignmentFormError extends AssignmentFormError { 
   const ResultsPreviousAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
 
