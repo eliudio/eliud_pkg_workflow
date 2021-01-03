@@ -44,7 +44,7 @@
     },
     {
       "fieldName": "assigneeId",
-      "remarks": "The one who assignment is assiged to. This is a a string, not a Member to be able to assigne to a Member to which the currently logged in Member does not have access to",
+      "remarks": "The one who assignment is assiged to. This is a a string, not a Member to be able to assign to a Member to which the currently logged in Member does not have access to",
       "displayName": "Assignee",
       "fieldType": "String",
       "group": "Assignee"
@@ -91,7 +91,7 @@
     {
       "fieldName": "resultsPrevious",
       "displayName": "Result previous Assignment",
-      "remark": "The results of the assignment that preceeded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)",
+      "remark": "The results of the assignment that preceded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)",
       "fieldType": "AssignmentResult",
       "arrayType": "Array"
     },
@@ -110,10 +110,6 @@
     {
         "group": "Assignee",
         "description": "Assignee"
-    },
-    {
-        "group": "Reporter",
-        "description": "Reporter"
     },
     {
         "group": "Triggered",

@@ -67,7 +67,7 @@ class AssignmentModel {
   // The results of the current assignment
   List<AssignmentResultModel> resultsCurrent;
 
-  // The results of the assignment that preceeded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)
+  // The results of the assignment that preceded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)
   List<AssignmentResultModel> resultsPrevious;
   String triggeredById;
 
