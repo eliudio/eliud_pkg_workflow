@@ -44,15 +44,18 @@ import 'package:eliud_core/model/app_model.dart';
 
 import 'assignment_result_form.dart';
 
+
+typedef AssignmentResultWidgetProvider(AssignmentResultModel value);
+
 class AssignmentResultListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
+  AssignmentResultWidgetProvider widgetProvider;
   bool readOnly;
   String form;
-  String listItemWidget;
   AssignmentResultListWidgetState state;
   bool isEmbedded;
 
-  AssignmentResultListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
+  AssignmentResultListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   AssignmentResultListWidgetState createState() {
@@ -170,6 +173,8 @@ class AssignmentResultListWidgetState extends State<AssignmentResultListWidget> 
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
+          
+          if (widget.widgetProvider != null) return widget.widgetProvider(value);
 
           return AssignmentResultListItem(
             value: value,

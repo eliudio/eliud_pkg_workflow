@@ -44,15 +44,18 @@ import 'package:eliud_core/model/app_model.dart';
 
 import 'workflow_task_form.dart';
 
+
+typedef WorkflowTaskWidgetProvider(WorkflowTaskModel value);
+
 class WorkflowTaskListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
+  WorkflowTaskWidgetProvider widgetProvider;
   bool readOnly;
   String form;
-  String listItemWidget;
   WorkflowTaskListWidgetState state;
   bool isEmbedded;
 
-  WorkflowTaskListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
+  WorkflowTaskListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   WorkflowTaskListWidgetState createState() {
@@ -170,6 +173,8 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
+          
+          if (widget.widgetProvider != null) return widget.widgetProvider(value);
 
           return WorkflowTaskListItem(
             value: value,

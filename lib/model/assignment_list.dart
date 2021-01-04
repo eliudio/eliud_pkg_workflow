@@ -44,16 +44,18 @@ import 'package:eliud_core/model/app_model.dart';
 
 import 'assignment_form.dart';
 
-import 'package:eliud_pkg_workflow/extensions/widgets/my_assignment_list_item.dart';
+
+typedef AssignmentWidgetProvider(AssignmentModel value);
+
 class AssignmentListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
+  AssignmentWidgetProvider widgetProvider;
   bool readOnly;
   String form;
-  String listItemWidget;
   AssignmentListWidgetState state;
   bool isEmbedded;
 
-  AssignmentListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
+  AssignmentListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   AssignmentListWidgetState createState() {
@@ -171,7 +173,8 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
-          if (widget.listItemWidget == "MyAssignmentListItem") return MyAssignmentListItem(value: value);
+          
+          if (widget.widgetProvider != null) return widget.widgetProvider(value);
 
           return AssignmentListItem(
             value: value,

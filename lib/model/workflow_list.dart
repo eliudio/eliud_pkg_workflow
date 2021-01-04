@@ -44,15 +44,18 @@ import 'package:eliud_core/model/app_model.dart';
 
 import 'workflow_form.dart';
 
+
+typedef WorkflowWidgetProvider(WorkflowModel value);
+
 class WorkflowListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
+  WorkflowWidgetProvider widgetProvider;
   bool readOnly;
   String form;
-  String listItemWidget;
   WorkflowListWidgetState state;
   bool isEmbedded;
 
-  WorkflowListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
+  WorkflowListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   WorkflowListWidgetState createState() {
@@ -170,6 +173,8 @@ class WorkflowListWidgetState extends State<WorkflowListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
+          
+          if (widget.widgetProvider != null) return widget.widgetProvider(value);
 
           return WorkflowListItem(
             value: value,

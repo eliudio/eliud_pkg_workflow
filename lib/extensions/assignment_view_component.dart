@@ -5,10 +5,12 @@ import 'package:eliud_core/core/widgets/progress_indicator.dart';
 import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/tools/component_constructor.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_pkg_workflow/extensions/widgets/my_assignment_list_item.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_bloc.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_event.dart';
+import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_component.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
@@ -49,12 +51,16 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
         )..add(LoadAssignmentList()),
         child: AssignmentListWidget(
             readOnly: true,
-            listItemWidget: "MyAssignmentListItem",
+            widgetProvider: widgetProvider,
             listBackground: BackgroundModel(documentID: "`transparent")),
       );
     } else {
       return DelayedCircularProgressIndicator();
     }
+  }
+
+  Widget widgetProvider(AssignmentModel value) {
+    return MyAssignmentListItem(value: value);
   }
 
   @override
