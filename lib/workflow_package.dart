@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
@@ -46,7 +47,7 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   }
 
   @override
-  Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner, int privilegeLevel) async {
+  Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) async {
     if (packageCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
       if (member == null) return false;
       var values = await assignmentRepository(appId: app.documentID).valuesList(eliudQuery: getOpenAssignmentsQuery(app.documentID, member.documentID));

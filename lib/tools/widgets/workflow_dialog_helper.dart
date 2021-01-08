@@ -100,6 +100,8 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
   final Function yesFunction;
   final Function noFunction;
   final List<Widget> extraFields;
+  final String yesLabel;
+  final String noLabel;
 
   const YesNoIgnoreDialogWithAssignmentResults(
       {Key key,
@@ -108,7 +110,9 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
       this.resultsPrevious,
       this.yesFunction,
       this.noFunction,
-      this.extraFields})
+      this.extraFields,
+      this.yesLabel,
+      this.noLabel})
       : super(key: key);
 
   void pop(BuildContext context) {
@@ -121,7 +125,7 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
         title: title,
         message: message,
         resultsPrevious: resultsPrevious,
-        buttonLabels: ['Later', 'Cancel', 'Continue'],
+        buttonLabels: ['Later', noLabel != null ? noLabel : 'Cancel', yesLabel != null ? yesLabel : 'Continue'],
         functions: [
           () => Navigator.pop(context),
           noFunction,
