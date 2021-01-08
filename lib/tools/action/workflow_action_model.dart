@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/conditions_model.dart';
 import 'package:eliud_core/tools/action/action_entity.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_core/tools/common_tools.dart';
@@ -9,15 +10,13 @@ import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
 class WorkflowActionModel extends ActionModel {
   final WorkflowModel workflow;
 
-  WorkflowActionModel(String appId, { this.workflow, ReadCondition readCondition, int privilegeLevelRequired, String packageCondition} ) : super(appId, actionType: WorkflowActionEntity.label, readCondition: readCondition, privilegeLevelRequired: privilegeLevelRequired, packageCondition: packageCondition);
+  WorkflowActionModel(String appId, { this.workflow, ConditionsModel conditions} ) : super(appId, actionType: WorkflowActionEntity.label, conditions: conditions);
 
   @override
   ActionEntity toEntity({String appId}) {
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow.documentID : null,
-        readCondition: readCondition == null ? null : readCondition.index,
-        privilegeLevelRequired: privilegeLevelRequired,
-        packageCondition: packageCondition,
+        conditions: (conditions != null) ? conditions.toEntity(): null,
         appId: appId);
   }
 
@@ -25,9 +24,7 @@ class WorkflowActionModel extends ActionModel {
     if (entity == null) return null;
     return WorkflowActionModel(
       entity.appID,
-      readCondition: toReadCondition(entity.readCondition),
-      privilegeLevelRequired: entity.privilegeLevelRequired,
-      packageCondition: entity.packageCondition,
+      conditions: ConditionsModel.fromEntity(entity.conditions),
     );
   }
   static Future<ActionModel> fromEntityPlus(WorkflowActionEntity entity, { String appId}) async {
@@ -42,9 +39,7 @@ class WorkflowActionModel extends ActionModel {
 
     return WorkflowActionModel(
         entity.appID,
-        readCondition: toReadCondition(entity.readCondition),
-        privilegeLevelRequired: entity.privilegeLevelRequired,
-        packageCondition: entity.packageCondition,
+        conditions: ConditionsModel.fromEntity(entity.conditions),
         workflow: workFlowModel
     );
   }

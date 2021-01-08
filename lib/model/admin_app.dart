@@ -57,8 +57,10 @@ class AdminApp extends AdminAppInstallerBase {
     components.add(BodyComponentModel(
       documentID: "internalWidget-assignmentViews", componentName: "eliud_pkg_workflow_internalWidgets", componentId: "assignmentViews"));
     PageModel page = PageModel(
-        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
-        privilegeLevelRequired: OWNER_PRIVILEGES,
+        conditions: ConditionsModel(
+          readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
+          privilegeLevelRequired: OWNER_PRIVILEGES
+        ),
         appId: appId,
         documentID: "eliud_pkg_workflow_assignmentviews_page",
         title: "AssignmentViews",
@@ -78,8 +80,10 @@ class AdminApp extends AdminAppInstallerBase {
     components.add(BodyComponentModel(
       documentID: "internalWidget-workflows", componentName: "eliud_pkg_workflow_internalWidgets", componentId: "workflows"));
     PageModel page = PageModel(
-        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
-        privilegeLevelRequired: OWNER_PRIVILEGES,
+        conditions: ConditionsModel(
+          readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
+          privilegeLevelRequired: OWNER_PRIVILEGES
+        ),
         appId: appId,
         documentID: "eliud_pkg_workflow_workflows_page",
         title: "Workflows",
