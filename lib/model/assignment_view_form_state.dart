@@ -127,6 +127,22 @@ class DescriptionAssignmentViewFormError extends AssignmentViewFormError {
 }
 
 
+class ConditionsAssignmentViewFormError extends AssignmentViewFormError { 
+  const ConditionsAssignmentViewFormError({ String message, AssignmentViewModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ConditionsAssignmentViewFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class AssignmentViewFormLoaded extends AssignmentViewFormInitialized { 
   const AssignmentViewFormLoaded({ AssignmentViewModel value }): super(value: value);
 

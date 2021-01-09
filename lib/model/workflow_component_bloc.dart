@@ -20,6 +20,8 @@ import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_state.dart';
 import 'package:eliud_pkg_workflow/model/workflow_repository.dart';
+import 'package:flutter/services.dart';
+
 class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowComponentState> {
   final WorkflowRepository workflowRepository;
 
@@ -30,13 +32,23 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
     if (event is FetchWorkflowComponent) {
       try {
         if (currentState is WorkflowComponentUninitialized) {
-          final WorkflowModel model = await _fetchWorkflow(event.id);
-
-          if (model != null) {
-            yield WorkflowComponentLoaded(value: model);
+          bool permissionDenied = false;
+          final model = await workflowRepository.get(event.id, onError: (error) {
+            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
+            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+              permissionDenied = true;
+            }
+          });
+          if (permissionDenied) {
+            yield WorkflowComponentPermissionDenied();
           } else {
-            String id = event.id;
-            yield WorkflowComponentError(message: "Workflow with id = '$id' not found");
+            if (model != null) {
+              yield WorkflowComponentLoaded(value: model);
+            } else {
+              String id = event.id;
+              yield WorkflowComponentError(
+                  message: "Workflow with id = '$id' not found");
+            }
           }
           return;
         }
@@ -46,15 +58,10 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
     }
   }
 
-  Future<WorkflowModel> _fetchWorkflow(String id) async {
-    return workflowRepository.get(id);
-  }
-
   @override
   Future<void> close() {
     return super.close();
   }
 
 }
-
 

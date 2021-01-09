@@ -62,12 +62,16 @@ class AssignmentViewJsFirestore implements AssignmentViewRepository {
     return AssignmentViewModel.fromEntityPlus(value.id, AssignmentViewEntity.fromMap(value.data()), appId: appId);
   }
 
-  Future<AssignmentViewModel> get(String id) {
+  Future<AssignmentViewModel> get(String id, { Function(Exception) onError }) {
     return assignmentViewCollection.doc(id).get().then((data) {
       if (data.data() != null) {
         return _populateDocPlus(data);
       } else {
         return null;
+      }
+    }).catchError((Object e) {
+      if (onError != null) {
+        onError(e);
       }
     });
   }

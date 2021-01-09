@@ -55,12 +55,16 @@ class WorkflowFirestore implements WorkflowRepository {
   Future<WorkflowModel> _populateDocPlus(DocumentSnapshot value) async {
     return WorkflowModel.fromEntityPlus(value.documentID, WorkflowEntity.fromMap(value.data), appId: appId);  }
 
-  Future<WorkflowModel> get(String id) {
+  Future<WorkflowModel> get(String id, {Function(Exception) onError}) {
     return WorkflowCollection.document(id).get().then((doc) {
       if (doc.data != null)
         return _populateDocPlus(doc);
       else
         return null;
+    }).catchError((Object e) {
+      if (onError != null) {
+        onError(e);
+      }
     });
   }
 

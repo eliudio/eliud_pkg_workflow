@@ -50,12 +50,22 @@
       "fieldType": "String",
       "iconName": "text_format",
       "group": "general"
+    },
+    {
+      "fieldName": "conditions",
+      "displayName": "Conditions",
+      "fieldType": "ConditionsSimple",
+      "group": "conditions"
     }
   ],
   "groups": [
     {
         "group": "general",
         "description": "General"
+    },
+    {
+        "group": "conditions",
+        "description": "Conditions"
     }
   ],
   "listFields": {

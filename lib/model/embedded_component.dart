@@ -150,7 +150,7 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
       }
     }
 
-    Future<AssignmentModel> get(String id) {
+    Future<AssignmentModel> get(String id, { Function(Exception) onError }) {
       int index = _index(id);
       var completer = new Completer<AssignmentModel>();
       completer.complete(items[index]);
@@ -245,7 +245,7 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
       }
     }
 
-    Future<AssignmentResultModel> get(String id) {
+    Future<AssignmentResultModel> get(String id, { Function(Exception) onError }) {
       int index = _index(id);
       var completer = new Completer<AssignmentResultModel>();
       completer.complete(items[index]);
@@ -340,7 +340,7 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
       }
     }
 
-    Future<WorkflowTaskModel> get(String id) {
+    Future<WorkflowTaskModel> get(String id, { Function(Exception) onError }) {
       int index = _index(id);
       var completer = new Completer<WorkflowTaskModel>();
       completer.complete(items[index]);

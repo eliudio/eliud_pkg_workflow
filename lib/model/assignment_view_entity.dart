@@ -25,28 +25,39 @@ class AssignmentViewEntity {
   final String appId;
   final String title;
   final String description;
+  final ConditionsSimpleEntity conditions;
 
-  AssignmentViewEntity({this.appId, this.title, this.description, });
+  AssignmentViewEntity({this.appId, this.title, this.description, this.conditions, });
 
 
-  List<Object> get props => [appId, title, description, ];
+  List<Object> get props => [appId, title, description, conditions, ];
 
   @override
   String toString() {
-    return 'AssignmentViewEntity{appId: $appId, title: $title, description: $description}';
+    return 'AssignmentViewEntity{appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
   static AssignmentViewEntity fromMap(Map map) {
     if (map == null) return null;
 
+    var conditionsFromMap;
+    conditionsFromMap = map['conditions'];
+    if (conditionsFromMap != null)
+      conditionsFromMap = ConditionsSimpleEntity.fromMap(conditionsFromMap);
+
     return AssignmentViewEntity(
       appId: map['appId'], 
       title: map['title'], 
       description: map['description'], 
+      conditions: conditionsFromMap, 
     );
   }
 
   Map<String, Object> toDocument() {
+    final Map<String, dynamic> conditionsMap = conditions != null 
+        ? conditions.toDocument()
+        : null;
+
     Map<String, Object> theDocument = HashMap();
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
@@ -54,6 +65,8 @@ class AssignmentViewEntity {
       else theDocument["title"] = null;
     if (description != null) theDocument["description"] = description;
       else theDocument["description"] = null;
+    if (conditions != null) theDocument["conditions"] = conditionsMap;
+      else theDocument["conditions"] = null;
     return theDocument;
   }
 

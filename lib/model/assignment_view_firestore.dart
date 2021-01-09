@@ -55,12 +55,16 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
   Future<AssignmentViewModel> _populateDocPlus(DocumentSnapshot value) async {
     return AssignmentViewModel.fromEntityPlus(value.documentID, AssignmentViewEntity.fromMap(value.data), appId: appId);  }
 
-  Future<AssignmentViewModel> get(String id) {
+  Future<AssignmentViewModel> get(String id, {Function(Exception) onError}) {
     return AssignmentViewCollection.document(id).get().then((doc) {
       if (doc.data != null)
         return _populateDocPlus(doc);
       else
         return null;
+    }).catchError((Object e) {
+      if (onError != null) {
+        onError(e);
+      }
     });
   }
 

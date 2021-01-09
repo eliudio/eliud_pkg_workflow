@@ -39,7 +39,7 @@ typedef AssignmentViewChanged(AssignmentViewModel value);
 abstract class AssignmentViewRepository {
   Future<AssignmentViewModel> add(AssignmentViewModel value);
   Future<void> delete(AssignmentViewModel value);
-  Future<AssignmentViewModel> get(String id);
+  Future<AssignmentViewModel> get(String id, { Function(Exception) onError });
   Future<AssignmentViewModel> update(AssignmentViewModel value);
 
   Stream<List<AssignmentViewModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });

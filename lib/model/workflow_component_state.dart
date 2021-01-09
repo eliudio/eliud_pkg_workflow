@@ -30,6 +30,10 @@ class WorkflowComponentError extends WorkflowComponentState {
   WorkflowComponentError({ this.message });
 }
 
+class WorkflowComponentPermissionDenied extends WorkflowComponentState {
+  WorkflowComponentPermissionDenied();
+}
+
 class WorkflowComponentLoaded extends WorkflowComponentState {
   final WorkflowModel value;
 
@@ -45,5 +49,4 @@ class WorkflowComponentLoaded extends WorkflowComponentState {
   @override
   String toString() => 'WorkflowComponentLoaded { value: $value }';
 }
-
 

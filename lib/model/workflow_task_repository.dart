@@ -35,7 +35,7 @@ typedef WorkflowTaskChanged(WorkflowTaskModel value);
 abstract class WorkflowTaskRepository {
   Future<WorkflowTaskModel> add(WorkflowTaskModel value);
   Future<void> delete(WorkflowTaskModel value);
-  Future<WorkflowTaskModel> get(String id);
+  Future<WorkflowTaskModel> get(String id, { Function(Exception) onError });
   Future<WorkflowTaskModel> update(WorkflowTaskModel value);
 
   Stream<List<WorkflowTaskModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });

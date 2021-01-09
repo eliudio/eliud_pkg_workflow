@@ -40,17 +40,18 @@ class AssignmentViewModel {
   String appId;
   String title;
   String description;
+  ConditionsSimpleModel conditions;
 
-  AssignmentViewModel({this.documentID, this.appId, this.title, this.description, })  {
+  AssignmentViewModel({this.documentID, this.appId, this.title, this.description, this.conditions, })  {
     assert(documentID != null);
   }
 
-  AssignmentViewModel copyWith({String documentID, String appId, String title, String description, }) {
-    return AssignmentViewModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, title: title ?? this.title, description: description ?? this.description, );
+  AssignmentViewModel copyWith({String documentID, String appId, String title, String description, ConditionsSimpleModel conditions, }) {
+    return AssignmentViewModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, title: title ?? this.title, description: description ?? this.description, conditions: conditions ?? this.conditions, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ title.hashCode ^ description.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ title.hashCode ^ description.hashCode ^ conditions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -60,11 +61,12 @@ class AssignmentViewModel {
           documentID == other.documentID &&
           appId == other.appId &&
           title == other.title &&
-          description == other.description;
+          description == other.description &&
+          conditions == other.conditions;
 
   @override
   String toString() {
-    return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description}';
+    return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
   AssignmentViewEntity toEntity({String appId}) {
@@ -72,6 +74,7 @@ class AssignmentViewModel {
           appId: (appId != null) ? appId : null, 
           title: (title != null) ? title : null, 
           description: (description != null) ? description : null, 
+          conditions: (conditions != null) ? conditions.toEntity(appId: appId) : null, 
     );
   }
 
@@ -82,6 +85,8 @@ class AssignmentViewModel {
           appId: entity.appId, 
           title: entity.title, 
           description: entity.description, 
+          conditions: 
+            ConditionsSimpleModel.fromEntity(entity.conditions), 
     );
   }
 
@@ -93,6 +98,8 @@ class AssignmentViewModel {
           appId: entity.appId, 
           title: entity.title, 
           description: entity.description, 
+          conditions: 
+            await ConditionsSimpleModel.fromEntityPlus(entity.conditions, appId: appId), 
     );
   }
 

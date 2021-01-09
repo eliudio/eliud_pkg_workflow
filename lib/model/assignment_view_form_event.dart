@@ -107,3 +107,15 @@ class ChangedAssignmentViewDescription extends AssignmentViewFormEvent {
   String toString() => 'ChangedAssignmentViewDescription{ value: $value }';
 }
 
+class ChangedAssignmentViewConditions extends AssignmentViewFormEvent {
+  final ConditionsSimpleModel value;
+
+  ChangedAssignmentViewConditions({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedAssignmentViewConditions{ value: $value }';
+}
+

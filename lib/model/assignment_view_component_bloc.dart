@@ -20,6 +20,8 @@ import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_component_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_component_state.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
+import 'package:flutter/services.dart';
+
 class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, AssignmentViewComponentState> {
   final AssignmentViewRepository assignmentViewRepository;
 
@@ -30,13 +32,23 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
     if (event is FetchAssignmentViewComponent) {
       try {
         if (currentState is AssignmentViewComponentUninitialized) {
-          final AssignmentViewModel model = await _fetchAssignmentView(event.id);
-
-          if (model != null) {
-            yield AssignmentViewComponentLoaded(value: model);
+          bool permissionDenied = false;
+          final model = await assignmentViewRepository.get(event.id, onError: (error) {
+            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
+            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+              permissionDenied = true;
+            }
+          });
+          if (permissionDenied) {
+            yield AssignmentViewComponentPermissionDenied();
           } else {
-            String id = event.id;
-            yield AssignmentViewComponentError(message: "AssignmentView with id = '$id' not found");
+            if (model != null) {
+              yield AssignmentViewComponentLoaded(value: model);
+            } else {
+              String id = event.id;
+              yield AssignmentViewComponentError(
+                  message: "AssignmentView with id = '$id' not found");
+            }
           }
           return;
         }
@@ -46,15 +58,10 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
     }
   }
 
-  Future<AssignmentViewModel> _fetchAssignmentView(String id) async {
-    return assignmentViewRepository.get(id);
-  }
-
   @override
   Future<void> close() {
     return super.close();
   }
 
 }
-
 

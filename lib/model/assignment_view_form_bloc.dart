@@ -98,6 +98,12 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
 
         return;
       }
+      if (event is ChangedAssignmentViewConditions) {
+        newValue = currentState.value.copyWith(conditions: event.value);
+        yield SubmittableAssignmentViewForm(value: newValue);
+
+        return;
+      }
     }
   }
 

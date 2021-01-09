@@ -30,6 +30,10 @@ class AssignmentViewComponentError extends AssignmentViewComponentState {
   AssignmentViewComponentError({ this.message });
 }
 
+class AssignmentViewComponentPermissionDenied extends AssignmentViewComponentState {
+  AssignmentViewComponentPermissionDenied();
+}
+
 class AssignmentViewComponentLoaded extends AssignmentViewComponentState {
   final AssignmentViewModel value;
 
@@ -45,5 +49,4 @@ class AssignmentViewComponentLoaded extends AssignmentViewComponentState {
   @override
   String toString() => 'AssignmentViewComponentLoaded { value: $value }';
 }
-
 

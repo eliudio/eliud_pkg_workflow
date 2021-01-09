@@ -39,7 +39,7 @@ typedef WorkflowChanged(WorkflowModel value);
 abstract class WorkflowRepository {
   Future<WorkflowModel> add(WorkflowModel value);
   Future<void> delete(WorkflowModel value);
-  Future<WorkflowModel> get(String id);
+  Future<WorkflowModel> get(String id, { Function(Exception) onError });
   Future<WorkflowModel> update(WorkflowModel value);
 
   Stream<List<WorkflowModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
