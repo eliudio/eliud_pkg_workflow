@@ -70,17 +70,19 @@ class AssignmentModel {
   // The results of the assignment that preceded this assignment. So this is the same as the resultsCurrent of the preceeding task to which the current member might not have access to (no read access rights)
   List<AssignmentResultModel> resultsPrevious;
   String triggeredById;
+  WorkflowNotificationModel confirmMessage;
+  WorkflowNotificationModel rejectMessage;
 
-  AssignmentModel({this.documentID, this.appId, this.reporter, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, })  {
+  AssignmentModel({this.documentID, this.appId, this.reporter, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, })  {
     assert(documentID != null);
   }
 
-  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, String assigneeId, TaskModel task, WorkflowModel workflow, int workflowTaskSeqNumber, String timestamp, AssignmentStatus status, List<AssignmentResultModel> resultsCurrent, List<AssignmentResultModel> resultsPrevious, String triggeredById, }) {
-    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, );
+  AssignmentModel copyWith({String documentID, String appId, MemberModel reporter, String assigneeId, TaskModel task, WorkflowModel workflow, int workflowTaskSeqNumber, String timestamp, AssignmentStatus status, List<AssignmentResultModel> resultsCurrent, List<AssignmentResultModel> resultsPrevious, String triggeredById, WorkflowNotificationModel confirmMessage, WorkflowNotificationModel rejectMessage, }) {
+    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assigneeId.hashCode ^ task.hashCode ^ workflow.hashCode ^ workflowTaskSeqNumber.hashCode ^ timestamp.hashCode ^ status.hashCode ^ resultsCurrent.hashCode ^ resultsPrevious.hashCode ^ triggeredById.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assigneeId.hashCode ^ task.hashCode ^ workflow.hashCode ^ workflowTaskSeqNumber.hashCode ^ timestamp.hashCode ^ status.hashCode ^ resultsCurrent.hashCode ^ resultsPrevious.hashCode ^ triggeredById.hashCode ^ confirmMessage.hashCode ^ rejectMessage.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -98,14 +100,16 @@ class AssignmentModel {
           status == other.status &&
           ListEquality().equals(resultsCurrent, other.resultsCurrent) &&
           ListEquality().equals(resultsPrevious, other.resultsPrevious) &&
-          triggeredById == other.triggeredById;
+          triggeredById == other.triggeredById &&
+          confirmMessage == other.confirmMessage &&
+          rejectMessage == other.rejectMessage;
 
   @override
   String toString() {
     String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent.join(', ');
     String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious.join(', ');
 
-    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById}';
+    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
   AssignmentEntity toEntity({String appId}) {
@@ -124,6 +128,8 @@ class AssignmentModel {
             .map((item) => item.toEntity(appId: appId))
             .toList() : null, 
           triggeredById: (triggeredById != null) ? triggeredById : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage.toEntity(appId: appId) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage.toEntity(appId: appId) : null, 
     );
   }
 
@@ -149,6 +155,10 @@ class AssignmentModel {
             .map((item) => AssignmentResultModel.fromEntity(newRandomKey(), item))
             .toList(), 
           triggeredById: entity.triggeredById, 
+          confirmMessage: 
+            WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
+          rejectMessage: 
+            WorkflowNotificationModel.fromEntity(entity.rejectMessage), 
     );
   }
 
@@ -193,6 +203,10 @@ class AssignmentModel {
             .map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
             .toList())), 
           triggeredById: entity.triggeredById, 
+          confirmMessage: 
+            await WorkflowNotificationModel.fromEntityPlus(entity.confirmMessage, appId: appId), 
+          rejectMessage: 
+            await WorkflowNotificationModel.fromEntityPlus(entity.rejectMessage, appId: appId), 
     );
   }
 

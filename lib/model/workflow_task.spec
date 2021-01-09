@@ -37,6 +37,20 @@
       "group": "Task"
     },
     {
+      "fieldName": "confirmMessage",
+      "remark": "Message to be sent after this task is completed successfully",
+      "displayName": "Confirm Message",
+      "fieldType": "WorkflowNotification",
+      "group": "WorkflowNotification"
+    },
+    {
+      "fieldName": "rejectMessage",
+      "remark": "Message to be sent after this task is completed unsuccessfully",
+      "displayName": "Refect Message",
+      "fieldType": "WorkflowNotification",
+      "group": "WorkflowNotification"
+    },
+    {
       "fieldName": "responsible",
       "displayName": "Responsible",
       "fieldType": "enum",
@@ -49,6 +63,10 @@
     {
         "group": "Task",
         "description": "Task"
+    },
+    {
+        "group": "WorkflowNotification",
+        "description": "WorkflowNotification"
     }
   ],
   "listFields": {

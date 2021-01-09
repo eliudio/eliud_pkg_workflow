@@ -91,6 +91,30 @@ class ChangedWorkflowTaskTask extends WorkflowTaskFormEvent {
   String toString() => 'ChangedWorkflowTaskTask{ value: $value }';
 }
 
+class ChangedWorkflowTaskConfirmMessage extends WorkflowTaskFormEvent {
+  final WorkflowNotificationModel value;
+
+  ChangedWorkflowTaskConfirmMessage({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedWorkflowTaskConfirmMessage{ value: $value }';
+}
+
+class ChangedWorkflowTaskRejectMessage extends WorkflowTaskFormEvent {
+  final WorkflowNotificationModel value;
+
+  ChangedWorkflowTaskRejectMessage({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedWorkflowTaskRejectMessage{ value: $value }';
+}
+
 class ChangedWorkflowTaskResponsible extends WorkflowTaskFormEvent {
   final WorkflowTaskResponsible value;
 

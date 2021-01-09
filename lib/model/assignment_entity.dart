@@ -33,20 +33,22 @@ class AssignmentEntity {
   final List<AssignmentResultEntity> resultsCurrent;
   final List<AssignmentResultEntity> resultsPrevious;
   final String triggeredById;
+  final WorkflowNotificationEntity confirmMessage;
+  final WorkflowNotificationEntity rejectMessage;
 
-  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, });
+  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, });
 
   AssignmentEntity copyWith({Object timestamp, }) {
-    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, workflowTaskSeqNumber: workflowTaskSeqNumber, timestamp : timestamp, status: status, resultsCurrent: resultsCurrent, resultsPrevious: resultsPrevious, triggeredById: triggeredById, );
+    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, workflowTaskSeqNumber: workflowTaskSeqNumber, timestamp : timestamp, status: status, resultsCurrent: resultsCurrent, resultsPrevious: resultsPrevious, triggeredById: triggeredById, confirmMessage: confirmMessage, rejectMessage: rejectMessage, );
   }
-  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, workflowTaskSeqNumber, timestamp, status, resultsCurrent, resultsPrevious, triggeredById, ];
+  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, workflowTaskSeqNumber, timestamp, status, resultsCurrent, resultsPrevious, triggeredById, confirmMessage, rejectMessage, ];
 
   @override
   String toString() {
     String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent.join(', ');
     String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious.join(', ');
 
-    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById}';
+    return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
   static AssignmentEntity fromMap(Map map) {
@@ -72,6 +74,14 @@ class AssignmentEntity {
         .map((dynamic item) =>
         AssignmentResultEntity.fromMap(item as Map))
         .toList();
+    var confirmMessageFromMap;
+    confirmMessageFromMap = map['confirmMessage'];
+    if (confirmMessageFromMap != null)
+      confirmMessageFromMap = WorkflowNotificationEntity.fromMap(confirmMessageFromMap);
+    var rejectMessageFromMap;
+    rejectMessageFromMap = map['rejectMessage'];
+    if (rejectMessageFromMap != null)
+      rejectMessageFromMap = WorkflowNotificationEntity.fromMap(rejectMessageFromMap);
 
     return AssignmentEntity(
       appId: map['appId'], 
@@ -85,6 +95,8 @@ class AssignmentEntity {
       resultsCurrent: resultsCurrentList, 
       resultsPrevious: resultsPreviousList, 
       triggeredById: map['triggeredById'], 
+      confirmMessage: confirmMessageFromMap, 
+      rejectMessage: rejectMessageFromMap, 
     );
   }
 
@@ -97,6 +109,12 @@ class AssignmentEntity {
         : null;
     final List<Map<String, dynamic>> resultsPreviousListMap = resultsPrevious != null 
         ? resultsPrevious.map((item) => item.toDocument()).toList()
+        : null;
+    final Map<String, dynamic> confirmMessageMap = confirmMessage != null 
+        ? confirmMessage.toDocument()
+        : null;
+    final Map<String, dynamic> rejectMessageMap = rejectMessage != null 
+        ? rejectMessage.toDocument()
         : null;
 
     Map<String, Object> theDocument = HashMap();
@@ -121,6 +139,10 @@ class AssignmentEntity {
       else theDocument["resultsPrevious"] = null;
     if (triggeredById != null) theDocument["triggeredById"] = triggeredById;
       else theDocument["triggeredById"] = null;
+    if (confirmMessage != null) theDocument["confirmMessage"] = confirmMessageMap;
+      else theDocument["confirmMessage"] = null;
+    if (rejectMessage != null) theDocument["rejectMessage"] = rejectMessageMap;
+      else theDocument["rejectMessage"] = null;
     return theDocument;
   }
 

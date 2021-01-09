@@ -17,4 +17,5 @@ export '../model/assignment_model.dart';
 export '../model/assignment_result_model.dart';
 export '../model/assignment_view_model.dart';
 export '../model/workflow_model.dart';
+export '../model/workflow_notification_model.dart';
 export '../model/workflow_task_model.dart';

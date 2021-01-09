@@ -17,4 +17,5 @@ export '../model/assignment_entity.dart';
 export '../model/assignment_result_entity.dart';
 export '../model/assignment_view_entity.dart';
 export '../model/workflow_entity.dart';
+export '../model/workflow_notification_entity.dart';
 export '../model/workflow_task_entity.dart';

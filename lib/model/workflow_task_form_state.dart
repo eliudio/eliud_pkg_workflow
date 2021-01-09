@@ -111,6 +111,38 @@ class TaskWorkflowTaskFormError extends WorkflowTaskFormError {
 }
 
 
+class ConfirmMessageWorkflowTaskFormError extends WorkflowTaskFormError { 
+  const ConfirmMessageWorkflowTaskFormError({ String message, WorkflowTaskModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ConfirmMessageWorkflowTaskFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
+class RejectMessageWorkflowTaskFormError extends WorkflowTaskFormError { 
+  const RejectMessageWorkflowTaskFormError({ String message, WorkflowTaskModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''RejectMessageWorkflowTaskFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class ResponsibleWorkflowTaskFormError extends WorkflowTaskFormError { 
   const ResponsibleWorkflowTaskFormError({ String message, WorkflowTaskModel value }): super(message: message, value: value);
 

@@ -8,6 +8,7 @@ import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_firestore.dart';
 import 'package:eliud_pkg_workflow/model/workflow_model.dart';
+import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -27,7 +28,8 @@ class WorkflowActionHandler extends PackageActionHandler {
       var workflowModel = action.workflow;
       if ((workflowModel.workflowTask != null) &&
           (workflowModel.workflowTask.length > 0)) {
-        var firstTask = workflowModel.workflowTask[0].task;
+        var firstWorkflowTask = workflowModel.workflowTask[0];
+        var firstTask = firstWorkflowTask.task;
         var assignment = AssignmentModel(
           documentID: newRandomKey(),
           appId: action.appID,
@@ -37,8 +39,10 @@ class WorkflowActionHandler extends PackageActionHandler {
           workflow: workflowModel,
           timestamp: null,
           triggeredById: null,
-          workflowTaskSeqNumber: action.workflow.workflowTask[0].seqNumber,
+          workflowTaskSeqNumber: firstWorkflowTask.seqNumber,
           resultsPrevious: null,
+          confirmMessage: firstWorkflowTask.confirmMessage,
+          rejectMessage: firstWorkflowTask.rejectMessage,
           status: AssignmentStatus.Open,
         );
         firstTask.callExecute(

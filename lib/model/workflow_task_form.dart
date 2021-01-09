@@ -261,6 +261,21 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
         children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Text('WorkflowNotification',
+                      style: TextStyle(
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                ));
+
+
+
+
+        children.add(Container(height: 20.0));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+
+
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
                   color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
@@ -274,6 +289,8 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                               documentID: state.value.documentID, 
                               seqNumber: state.value.seqNumber, 
                               task: state.value.task, 
+                              confirmMessage: state.value.confirmMessage, 
+                              rejectMessage: state.value.rejectMessage, 
                               responsible: state.value.responsible, 
                         )));
                       } else {
@@ -282,6 +299,8 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                               documentID: state.value.documentID, 
                               seqNumber: state.value.seqNumber, 
                               task: state.value.task, 
+                              confirmMessage: state.value.confirmMessage, 
+                              rejectMessage: state.value.rejectMessage, 
                               responsible: state.value.responsible, 
                           )));
                       }

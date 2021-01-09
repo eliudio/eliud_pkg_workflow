@@ -50,19 +50,25 @@ class WorkflowTaskModel {
   int seqNumber;
   TaskModel task;
 
+  // Message to be sent after this task is completed successfully
+  WorkflowNotificationModel confirmMessage;
+
+  // Message to be sent after this task is completed unsuccessfully
+  WorkflowNotificationModel rejectMessage;
+
   // Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
   WorkflowTaskResponsible responsible;
 
-  WorkflowTaskModel({this.documentID, this.seqNumber, this.task, this.responsible, })  {
+  WorkflowTaskModel({this.documentID, this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, })  {
     assert(documentID != null);
   }
 
-  WorkflowTaskModel copyWith({String documentID, int seqNumber, TaskModel task, WorkflowTaskResponsible responsible, }) {
-    return WorkflowTaskModel(documentID: documentID ?? this.documentID, seqNumber: seqNumber ?? this.seqNumber, task: task ?? this.task, responsible: responsible ?? this.responsible, );
+  WorkflowTaskModel copyWith({String documentID, int seqNumber, TaskModel task, WorkflowNotificationModel confirmMessage, WorkflowNotificationModel rejectMessage, WorkflowTaskResponsible responsible, }) {
+    return WorkflowTaskModel(documentID: documentID ?? this.documentID, seqNumber: seqNumber ?? this.seqNumber, task: task ?? this.task, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, responsible: responsible ?? this.responsible, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ seqNumber.hashCode ^ task.hashCode ^ responsible.hashCode;
+  int get hashCode => documentID.hashCode ^ seqNumber.hashCode ^ task.hashCode ^ confirmMessage.hashCode ^ rejectMessage.hashCode ^ responsible.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -72,17 +78,21 @@ class WorkflowTaskModel {
           documentID == other.documentID &&
           seqNumber == other.seqNumber &&
           task == other.task &&
+          confirmMessage == other.confirmMessage &&
+          rejectMessage == other.rejectMessage &&
           responsible == other.responsible;
 
   @override
   String toString() {
-    return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, responsible: $responsible}';
+    return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
   WorkflowTaskEntity toEntity({String appId}) {
     return WorkflowTaskEntity(
           seqNumber: (seqNumber != null) ? seqNumber : null, 
           task: (task != null) ? task.toEntity(appId: appId) : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage.toEntity(appId: appId) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage.toEntity(appId: appId) : null, 
           responsible: (responsible != null) ? responsible.index : null, 
     );
   }
@@ -94,6 +104,10 @@ class WorkflowTaskModel {
           seqNumber: entity.seqNumber, 
           task: 
             TaskModel.fromEntity(entity.task), 
+          confirmMessage: 
+            WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
+          rejectMessage: 
+            WorkflowNotificationModel.fromEntity(entity.rejectMessage), 
           responsible: toWorkflowTaskResponsible(entity.responsible), 
     );
   }
@@ -106,6 +120,10 @@ class WorkflowTaskModel {
           seqNumber: entity.seqNumber, 
           task: 
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 
+          confirmMessage: 
+            await WorkflowNotificationModel.fromEntityPlus(entity.confirmMessage, appId: appId), 
+          rejectMessage: 
+            await WorkflowNotificationModel.fromEntityPlus(entity.rejectMessage, appId: appId), 
           responsible: toWorkflowTaskResponsible(entity.responsible), 
     );
   }

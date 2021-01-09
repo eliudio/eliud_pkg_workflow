@@ -203,3 +203,27 @@ class ChangedAssignmentTriggeredById extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentTriggeredById{ value: $value }';
 }
 
+class ChangedAssignmentConfirmMessage extends AssignmentFormEvent {
+  final WorkflowNotificationModel value;
+
+  ChangedAssignmentConfirmMessage({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedAssignmentConfirmMessage{ value: $value }';
+}
+
+class ChangedAssignmentRejectMessage extends AssignmentFormEvent {
+  final WorkflowNotificationModel value;
+
+  ChangedAssignmentRejectMessage({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedAssignmentRejectMessage{ value: $value }';
+}
+

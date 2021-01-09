@@ -100,6 +100,18 @@
       "displayName": "Triggered by",
       "fieldType": "String",
       "group": "Triggered"
+    },
+    {
+      "fieldName": "confirmMessage",
+      "displayName": "Confirm Message",
+      "fieldType": "WorkflowNotification",
+      "group": "WorkflowNotification"
+    },
+    {
+      "fieldName": "rejectMessage",
+      "displayName": "Refect Message",
+      "fieldType": "WorkflowNotification",
+      "group": "WorkflowNotification"
     }
   ],
   "groups": [
@@ -122,6 +134,10 @@
     {
         "group": "Assignee",
         "description": "Assignee"
+    },
+    {
+        "group": "WorkflowNotification",
+        "description": "WorkflowNotification"
     }
   ],
   "listFields": {

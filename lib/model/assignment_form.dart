@@ -437,6 +437,21 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
         children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Text('WorkflowNotification',
+                      style: TextStyle(
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                ));
+
+
+
+
+        children.add(Container(height: 20.0));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+
+
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
                   color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
@@ -459,6 +474,8 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               resultsCurrent: state.value.resultsCurrent, 
                               resultsPrevious: state.value.resultsPrevious, 
                               triggeredById: state.value.triggeredById, 
+                              confirmMessage: state.value.confirmMessage, 
+                              rejectMessage: state.value.rejectMessage, 
                         )));
                       } else {
                         BlocProvider.of<AssignmentListBloc>(context).add(
@@ -475,6 +492,8 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                               resultsCurrent: state.value.resultsCurrent, 
                               resultsPrevious: state.value.resultsPrevious, 
                               triggeredById: state.value.triggeredById, 
+                              confirmMessage: state.value.confirmMessage, 
+                              rejectMessage: state.value.rejectMessage, 
                           )));
                       }
                       if (widget.submitAction != null) {

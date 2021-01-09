@@ -255,6 +255,38 @@ class TriggeredByIdAssignmentFormError extends AssignmentFormError {
 }
 
 
+class ConfirmMessageAssignmentFormError extends AssignmentFormError { 
+  const ConfirmMessageAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ConfirmMessageAssignmentFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
+class RejectMessageAssignmentFormError extends AssignmentFormError { 
+  const RejectMessageAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''RejectMessageAssignmentFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class AssignmentFormLoaded extends AssignmentFormInitialized { 
   const AssignmentFormLoaded({ AssignmentModel value }): super(value: value);
 

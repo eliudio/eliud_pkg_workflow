@@ -102,6 +102,8 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  resultsCurrent: currentState.value.resultsCurrent,
                                  resultsPrevious: currentState.value.resultsPrevious,
                                  triggeredById: currentState.value.triggeredById,
+                                 confirmMessage: currentState.value.confirmMessage,
+                                 rejectMessage: currentState.value.rejectMessage,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
@@ -136,6 +138,8 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  resultsCurrent: currentState.value.resultsCurrent,
                                  resultsPrevious: currentState.value.resultsPrevious,
                                  triggeredById: currentState.value.triggeredById,
+                                 confirmMessage: currentState.value.confirmMessage,
+                                 rejectMessage: currentState.value.rejectMessage,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
@@ -178,6 +182,18 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
       }
       if (event is ChangedAssignmentTriggeredById) {
         newValue = currentState.value.copyWith(triggeredById: event.value);
+        yield SubmittableAssignmentForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedAssignmentConfirmMessage) {
+        newValue = currentState.value.copyWith(confirmMessage: event.value);
+        yield SubmittableAssignmentForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedAssignmentRejectMessage) {
+        newValue = currentState.value.copyWith(rejectMessage: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
