@@ -111,7 +111,7 @@ abstract class TaskModel {
           if (nextAssignment != null) {
             // if the next assignment is assigned to the currently logged in member, then present it instantly:
             MemberModel currentMember =
-                AccessBloc.getState(context).getMember();
+            AccessBloc.getState(context).getMember();
             if ((currentMember != null) &&
                 (nextAssignment.assigneeId == currentMember.documentID) &&
                 (nextAssignment.task.executeInstantly != null) &&
@@ -119,10 +119,10 @@ abstract class TaskModel {
               nextAssignment.task.callExecute(context, nextAssignment, false,
                   finaliseWorkflow: _finaliseWorkflow);
             }
-          } else {
-            _sendMessage(context, assignmentModel.rejectMessage, state.app,
-                member, assignmentModel, feedback);
           }
+        } else {
+          _sendMessage(context, assignmentModel.rejectMessage, state.app,
+              member, assignmentModel, feedback);
         }
       }
     }
