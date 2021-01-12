@@ -13,6 +13,8 @@ import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/workflow_action_handler.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
 import 'package:eliud_core/package/package_with_subscription.dart';
+import 'model/abstract_repository_singleton.dart';
+import 'model/repository_singleton.dart';
 
 import 'package:eliud_pkg_workflow/model/component_registry.dart';
 
@@ -62,6 +64,9 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   @override
   void init() {
     ComponentRegistry().init();
+
+    // initialise repository
+    AbstractRepositorySingleton.singleton = RepositorySingleton();
 
     // Register action handler for the workflow action
     eliud_router.Router.register(WorkflowActionHandler());

@@ -37,27 +37,27 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class WorkflowFirestore implements WorkflowRepository {
   Future<WorkflowModel> add(WorkflowModel value) {
-    return WorkflowCollection.document(value.documentID).setData(value.toEntity(appId: appId).toDocument()).then((_) => value);
+    return WorkflowCollection.doc(value.documentID).set(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
 
   Future<void> delete(WorkflowModel value) {
-    return WorkflowCollection.document(value.documentID).delete();
+    return WorkflowCollection.doc(value.documentID).delete();
   }
 
   Future<WorkflowModel> update(WorkflowModel value) {
-    return WorkflowCollection.document(value.documentID).updateData(value.toEntity(appId: appId).toDocument()).then((_) => value);
+    return WorkflowCollection.doc(value.documentID).update(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
 
   WorkflowModel _populateDoc(DocumentSnapshot value) {
-    return WorkflowModel.fromEntity(value.documentID, WorkflowEntity.fromMap(value.data));
+    return WorkflowModel.fromEntity(value.id, WorkflowEntity.fromMap(value.data()));
   }
 
   Future<WorkflowModel> _populateDocPlus(DocumentSnapshot value) async {
-    return WorkflowModel.fromEntityPlus(value.documentID, WorkflowEntity.fromMap(value.data), appId: appId);  }
+    return WorkflowModel.fromEntityPlus(value.id, WorkflowEntity.fromMap(value.data()), appId: appId);  }
 
   Future<WorkflowModel> get(String id, {Function(Exception) onError}) {
-    return WorkflowCollection.document(id).get().then((doc) {
-      if (doc.data != null)
+    return WorkflowCollection.doc(id).get().then((doc) {
+      if (doc.data() != null)
         return _populateDocPlus(doc);
       else
         return null;
@@ -71,7 +71,7 @@ class WorkflowFirestore implements WorkflowRepository {
   StreamSubscription<List<WorkflowModel>> listen(WorkflowModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<WorkflowModel>> stream;
     stream = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
-      Iterable<WorkflowModel> workflows  = data.documents.map((doc) {
+      Iterable<WorkflowModel> workflows  = data.docs.map((doc) {
         WorkflowModel value = _populateDoc(doc);
         return value;
       }).toList();
@@ -86,7 +86,7 @@ class WorkflowFirestore implements WorkflowRepository {
     Stream<List<WorkflowModel>> stream;
     stream = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
         .asyncMap((data) async {
-      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+      return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
     });
 
     return stream.listen((listOfWorkflowModels) {
@@ -96,7 +96,7 @@ class WorkflowFirestore implements WorkflowRepository {
 
   @override
   StreamSubscription<WorkflowModel> listenTo(String documentId, WorkflowChanged changed) {
-    var stream = WorkflowCollection.document(documentId)
+    var stream = WorkflowCollection.doc(documentId)
         .snapshots()
         .asyncMap((data) {
       return _populateDocPlus(data);
@@ -109,7 +109,7 @@ class WorkflowFirestore implements WorkflowRepository {
   Stream<List<WorkflowModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
     Stream<List<WorkflowModel>> _values = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((snapshot) {
-      return snapshot.documents.map((doc) {
+      return snapshot.docs.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
       }).toList();});
@@ -120,7 +120,7 @@ class WorkflowFirestore implements WorkflowRepository {
   Stream<List<WorkflowModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
     Stream<List<WorkflowModel>> _values = getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().asyncMap((snapshot) {
-      return Future.wait(snapshot.documents.map((doc) {
+      return Future.wait(snapshot.docs.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
       }).toList());
@@ -131,8 +131,8 @@ class WorkflowFirestore implements WorkflowRepository {
 
   Future<List<WorkflowModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
-      var list = value.documents;
+    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
+      var list = value.docs;
       return list.map((doc) { 
         lastDoc = doc;
         return _populateDoc(doc);
@@ -144,8 +144,8 @@ class WorkflowFirestore implements WorkflowRepository {
 
   Future<List<WorkflowModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
-      var list = value.documents;
+    List<WorkflowModel> _values = await getQuery(WorkflowCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
+      var list = value.docs;
       return Future.wait(list.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
@@ -158,15 +158,15 @@ class WorkflowFirestore implements WorkflowRepository {
   void flush() {}
 
   Future<void> deleteAll() {
-    return WorkflowCollection.getDocuments().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents){
+    return WorkflowCollection.get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs){
         ds.reference.delete();
       }
     });
   }
 
   dynamic getSubCollection(String documentId, String name) {
-    return WorkflowCollection.document(documentId).collection(name);
+    return WorkflowCollection.doc(documentId).collection(name);
   }
 
   String timeStampToString(dynamic timeStamp) {
