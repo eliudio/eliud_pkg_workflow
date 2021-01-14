@@ -43,9 +43,9 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     _workflowTasksListSubscription = _workflowTaskRepository.listen((list) => add(WorkflowTaskListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
-  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListWithDetailsToState() async* {
+  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListWithDetailsToState({ String orderBy, bool descending }) async* {
     _workflowTasksListSubscription?.cancel();
-    _workflowTasksListSubscription = _workflowTaskRepository.listenWithDetails((list) => add(WorkflowTaskListUpdated(value: list)), );
+    _workflowTasksListSubscription = _workflowTaskRepository.listenWithDetails((list) => add(WorkflowTaskListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<WorkflowTaskListState> _mapAddWorkflowTaskListToState(AddWorkflowTaskList event) async* {

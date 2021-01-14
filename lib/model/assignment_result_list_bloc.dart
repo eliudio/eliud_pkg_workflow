@@ -43,9 +43,9 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
     _assignmentResultsListSubscription = _assignmentResultRepository.listen((list) => add(AssignmentResultListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
-  Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState() async* {
+  Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState({ String orderBy, bool descending }) async* {
     _assignmentResultsListSubscription?.cancel();
-    _assignmentResultsListSubscription = _assignmentResultRepository.listenWithDetails((list) => add(AssignmentResultListUpdated(value: list)), );
+    _assignmentResultsListSubscription = _assignmentResultRepository.listenWithDetails((list) => add(AssignmentResultListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<AssignmentResultListState> _mapAddAssignmentResultListToState(AddAssignmentResultList event) async* {
