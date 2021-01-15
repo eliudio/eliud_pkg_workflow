@@ -23,7 +23,7 @@ import 'model/assignment_model.dart';
 // Todo: clearly we can introduce some caching, as we are listening as well as querying the same data. So, instead: keep a cache and update the cache adnd use it from within the isConditionOk
 abstract class WorkflowPackage extends PackageWithSubscription {
   static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
-  bool previousState = null;
+  bool stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
 
   static EliudQuery getOpenAssignmentsQuery(String appId, String assigneeId) {
     return EliudQuery(
@@ -41,8 +41,8 @@ abstract class WorkflowPackage extends PackageWithSubscription {
       // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
       // then we must inform the AccessBloc, so that it can refresh the state
       bool currentState = list.length > 0;
-      if (currentState != previousState) {
-        previousState = currentState;
+      if (currentState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
+        stateCONDITION_MUST_HAVE_ASSIGNMENTS = currentState;
         accessBloc.add(MemberUpdated(currentMember));
       }
     }, orderBy: 'timestamp', descending: true, eliudQuery: getOpenAssignmentsQuery(appId, currentMember.documentID));
@@ -51,9 +51,13 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   @override
   Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) async {
     if (packageCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
+      if (stateCONDITION_MUST_HAVE_ASSIGNMENTS == null) return false;
+      return stateCONDITION_MUST_HAVE_ASSIGNMENTS;
+/*
       if (member == null) return false;
       var values = await assignmentRepository(appId: app.documentID).valuesList(eliudQuery: getOpenAssignmentsQuery(app.documentID, member.documentID));
       return values != null && values.length > 0;
+*/
     }
     return null;
   }
