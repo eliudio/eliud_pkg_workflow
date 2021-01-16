@@ -7,10 +7,10 @@ import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
+import 'package:eliud_pkg_workflow/tools/action/workflow_action_handler.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
-import 'package:eliud_pkg_workflow/tools/workflow_action_handler.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
 import 'package:eliud_core/package/package_with_subscription.dart';
 import 'model/abstract_repository_singleton.dart';
@@ -35,17 +35,31 @@ abstract class WorkflowPackage extends PackageWithSubscription {
     );
   }
 
+  void _setState(bool newState, {MemberModel currentMember}) {
+    if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
+      stateCONDITION_MUST_HAVE_ASSIGNMENTS = newState;
+      accessBloc.add(MemberUpdated(currentMember));
+    }
+  }
+
   void resubscribe(AppModel app, MemberModel currentMember) {
     String appId = app.documentID;
-    subscription = assignmentRepository(appId: appId).listen((list) {
-      // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
-      // then we must inform the AccessBloc, so that it can refresh the state
-      bool currentState = list.length > 0;
-      if (currentState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
-        stateCONDITION_MUST_HAVE_ASSIGNMENTS = currentState;
-        accessBloc.add(MemberUpdated(currentMember));
-      }
-    }, orderBy: 'timestamp', descending: true, eliudQuery: getOpenAssignmentsQuery(appId, currentMember.documentID));
+    if (currentMember != null) {
+      subscription = assignmentRepository(appId: appId).listen((list) {
+        // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
+        // then we must inform the AccessBloc, so that it can refresh the state
+        _setState(list.length > 0, currentMember: currentMember);
+      }/*, orderBy: 'timestamp',
+          descending: true*/,
+          eliudQuery: getOpenAssignmentsQuery(appId, currentMember.documentID));
+    } else {
+      _setState(false);
+    }
+  }
+
+  void unsubscribe() {
+    super.unsubscribe();
+    _setState(false);
   }
 
   @override
