@@ -40,12 +40,12 @@ class WorkflowListBloc extends Bloc<WorkflowListEvent, WorkflowListState> {
 
   Stream<WorkflowListState> _mapLoadWorkflowListToState({ String orderBy, bool descending }) async* {
     _workflowsListSubscription?.cancel();
-    _workflowsListSubscription = _workflowRepository.listen((list) => add(WorkflowListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
+    _workflowsListSubscription = _workflowRepository.listen((list) => add(WorkflowListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
   }
 
   Stream<WorkflowListState> _mapLoadWorkflowListWithDetailsToState({ String orderBy, bool descending }) async* {
     _workflowsListSubscription?.cancel();
-    _workflowsListSubscription = _workflowRepository.listenWithDetails((list) => add(WorkflowListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
+    _workflowsListSubscription = _workflowRepository.listenWithDetails((list) => add(WorkflowListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
   }
 
   Stream<WorkflowListState> _mapAddWorkflowListToState(AddWorkflowList event) async* {

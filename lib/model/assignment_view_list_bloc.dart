@@ -40,12 +40,12 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
 
   Stream<AssignmentViewListState> _mapLoadAssignmentViewListToState({ String orderBy, bool descending }) async* {
     _assignmentViewsListSubscription?.cancel();
-    _assignmentViewsListSubscription = _assignmentViewRepository.listen((list) => add(AssignmentViewListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
+    _assignmentViewsListSubscription = _assignmentViewRepository.listen((list) => add(AssignmentViewListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
   }
 
   Stream<AssignmentViewListState> _mapLoadAssignmentViewListWithDetailsToState({ String orderBy, bool descending }) async* {
     _assignmentViewsListSubscription?.cancel();
-    _assignmentViewsListSubscription = _assignmentViewRepository.listenWithDetails((list) => add(AssignmentViewListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
+    _assignmentViewsListSubscription = _assignmentViewRepository.listenWithDetails((list) => add(AssignmentViewListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
   }
 
   Stream<AssignmentViewListState> _mapAddAssignmentViewListToState(AddAssignmentViewList event) async* {
