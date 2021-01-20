@@ -27,11 +27,12 @@ class AssignmentListLoading extends AssignmentListState {}
 
 class AssignmentListLoaded extends AssignmentListState {
   final List<AssignmentModel> values;
+  final bool mightHaveMore;
 
-  const AssignmentListLoaded({this.values = const []});
+  const AssignmentListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values ];
+  List<Object> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'AssignmentListLoaded { values: $values }';

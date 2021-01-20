@@ -43,7 +43,6 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
     if (state is AppLoaded) {
       return BlocProvider<AssignmentListBloc>(
         create: (context) => AssignmentListBloc(
-          AccessBloc.getBloc(context),
           eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
               state.app.documentID, state.getMember().documentID),
           assignmentRepository:

@@ -20,32 +20,48 @@ import 'package:meta/meta.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_repository.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_list_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_list_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_event.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
 
+
+const _assignmentResultLimit = 5;
 
 class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, AssignmentResultListState> {
   final AssignmentResultRepository _assignmentResultRepository;
   StreamSubscription _assignmentResultsListSubscription;
-  final AccessBloc accessBloc;
   final EliudQuery eliudQuery;
+  int pages = 1;
+  final bool paged;
+  final String orderBy;
+  final bool descending;
+  final bool detailed;
 
-
-  AssignmentResultListBloc(this.accessBloc,{ this.eliudQuery, @required AssignmentResultRepository assignmentResultRepository })
+  AssignmentResultListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, @required AssignmentResultRepository assignmentResultRepository})
       : assert(assignmentResultRepository != null),
-      _assignmentResultRepository = assignmentResultRepository,
-      super(AssignmentResultListLoading());
+        _assignmentResultRepository = assignmentResultRepository,
+        super(AssignmentResultListLoading());
 
-  Stream<AssignmentResultListState> _mapLoadAssignmentResultListToState({ String orderBy, bool descending }) async* {
+  Stream<AssignmentResultListState> _mapLoadAssignmentResultListToState() async* {
+    int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values.length : 0;
     _assignmentResultsListSubscription?.cancel();
-    _assignmentResultsListSubscription = _assignmentResultRepository.listen((list) => add(AssignmentResultListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
+    _assignmentResultsListSubscription = _assignmentResultRepository.listen(
+          (list) => add(AssignmentResultListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+      orderBy: orderBy,
+      descending: descending,
+      eliudQuery: eliudQuery,
+      limit: ((paged != null) && (paged)) ? pages * _assignmentResultLimit : null
+    );
   }
 
-  Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState({ String orderBy, bool descending }) async* {
+  Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState() async* {
+    int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values.length : 0;
     _assignmentResultsListSubscription?.cancel();
-    _assignmentResultsListSubscription = _assignmentResultRepository.listenWithDetails((list) => add(AssignmentResultListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
+    _assignmentResultsListSubscription = _assignmentResultRepository.listenWithDetails(
+            (list) => add(AssignmentResultListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+        orderBy: orderBy,
+        descending: descending,
+        eliudQuery: eliudQuery,
+        limit: ((paged != null) && (paged)) ? pages * _assignmentResultLimit : null
+    );
   }
 
   Stream<AssignmentResultListState> _mapAddAssignmentResultListToState(AddAssignmentResultList event) async* {
@@ -60,17 +76,22 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
     _assignmentResultRepository.delete(event.value);
   }
 
-  Stream<AssignmentResultListState> _mapAssignmentResultListUpdatedToState(AssignmentResultListUpdated event) async* {
-    yield AssignmentResultListLoaded(values: event.value);
+  Stream<AssignmentResultListState> _mapAssignmentResultListUpdatedToState(
+      AssignmentResultListUpdated event) async* {
+    yield AssignmentResultListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
   }
-
 
   @override
   Stream<AssignmentResultListState> mapEventToState(AssignmentResultListEvent event) async* {
-    final currentState = state;
     if (event is LoadAssignmentResultList) {
-      yield* _mapLoadAssignmentResultListToState(orderBy: event.orderBy, descending: event.descending);
-    } if (event is LoadAssignmentResultListWithDetails) {
+      if ((detailed == null) || (!detailed)) {
+        yield* _mapLoadAssignmentResultListToState();
+      } else {
+        yield* _mapLoadAssignmentResultListWithDetailsToState();
+      }
+    }
+    if (event is NewPage) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadAssignmentResultListWithDetailsToState();
     } else if (event is AddAssignmentResultList) {
       yield* _mapAddAssignmentResultListToState(event);
@@ -88,7 +109,6 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
     _assignmentResultsListSubscription?.cancel();
     return super.close();
   }
-
 }
 
 

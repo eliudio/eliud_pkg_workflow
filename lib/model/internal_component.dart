@@ -145,7 +145,6 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
-            BlocProvider.of<AccessBloc>(context), 
             assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context)),
           )..add(LoadAssignmentList()),
         )
@@ -159,7 +158,6 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
-            BlocProvider.of<AccessBloc>(context), 
             assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context)),
           )..add(LoadAssignmentViewList()),
         )
@@ -173,7 +171,6 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
-            BlocProvider.of<AccessBloc>(context), 
             workflowRepository: workflowRepository(appId: AccessBloc.appId(context)),
           )..add(LoadWorkflowList()),
         )
@@ -210,7 +207,6 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
-            BlocProvider.of<AccessBloc>(context), 
             assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context)),
           )..add(LoadAssignmentList()),
         )
@@ -224,7 +220,6 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
-            BlocProvider.of<AccessBloc>(context), 
             assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context)),
           )..add(LoadAssignmentViewList()),
         )
@@ -238,7 +233,6 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
-            BlocProvider.of<AccessBloc>(context), 
             workflowRepository: workflowRepository(appId: AccessBloc.appId(context)),
           )..add(LoadWorkflowList()),
         )

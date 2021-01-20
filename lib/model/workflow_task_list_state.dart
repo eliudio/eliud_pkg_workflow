@@ -27,11 +27,12 @@ class WorkflowTaskListLoading extends WorkflowTaskListState {}
 
 class WorkflowTaskListLoaded extends WorkflowTaskListState {
   final List<WorkflowTaskModel> values;
+  final bool mightHaveMore;
 
-  const WorkflowTaskListLoaded({this.values = const []});
+  const WorkflowTaskListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values ];
+  List<Object> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'WorkflowTaskListLoaded { values: $values }';

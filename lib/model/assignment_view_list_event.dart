@@ -22,18 +22,9 @@ abstract class AssignmentViewListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadAssignmentViewList extends AssignmentViewListEvent {
-  final String orderBy;
-  final bool descending;
+class LoadAssignmentViewList extends AssignmentViewListEvent {}
 
-  LoadAssignmentViewList({this.orderBy, this.descending});
-
-  @override
-  List<Object> get props => [orderBy, descending];
-
-}
-
-class LoadAssignmentViewListWithDetails extends AssignmentViewListEvent {}
+class NewPage extends AssignmentViewListEvent {}
 
 class AddAssignmentViewList extends AssignmentViewListEvent {
   final AssignmentViewModel value;
@@ -73,13 +64,14 @@ class DeleteAssignmentViewList extends AssignmentViewListEvent {
 
 class AssignmentViewListUpdated extends AssignmentViewListEvent {
   final List<AssignmentViewModel> value;
+  final bool mightHaveMore;
 
-  const AssignmentViewListUpdated({ this.value });
-
-  @override
-  List<Object> get props => [ value ];
+  const AssignmentViewListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  String toString() => 'AssignmentViewListUpdated{ value: $value }';
+  List<Object> get props => [ value, mightHaveMore ];
+
+  @override
+  String toString() => 'AssignmentViewListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 

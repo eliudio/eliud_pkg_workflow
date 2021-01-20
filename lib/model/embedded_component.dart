@@ -61,7 +61,6 @@ static Widget assignmentsList(BuildContext context, List<AssignmentModel> values
     providers: [
       BlocProvider<AssignmentListBloc>(
         create: (context) => AssignmentListBloc(
-          AccessBloc.getBloc(context), 
           assignmentRepository: inMemoryRepository,
           )..add(LoadAssignmentList()),
         )
@@ -79,7 +78,6 @@ static Widget assignmentResultsList(BuildContext context, List<AssignmentResultM
     providers: [
       BlocProvider<AssignmentResultListBloc>(
         create: (context) => AssignmentResultListBloc(
-          AccessBloc.getBloc(context), 
           assignmentResultRepository: inMemoryRepository,
           )..add(LoadAssignmentResultList()),
         )
@@ -97,7 +95,6 @@ static Widget workflowTasksList(BuildContext context, List<WorkflowTaskModel> va
     providers: [
       BlocProvider<WorkflowTaskListBloc>(
         create: (context) => WorkflowTaskListBloc(
-          AccessBloc.getBloc(context), 
           workflowTaskRepository: inMemoryRepository,
           )..add(LoadWorkflowTaskList()),
         )

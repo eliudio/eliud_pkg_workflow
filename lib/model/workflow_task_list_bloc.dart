@@ -20,32 +20,48 @@ import 'package:meta/meta.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_repository.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_list_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_list_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_event.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
 
+
+const _workflowTaskLimit = 5;
 
 class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListState> {
   final WorkflowTaskRepository _workflowTaskRepository;
   StreamSubscription _workflowTasksListSubscription;
-  final AccessBloc accessBloc;
   final EliudQuery eliudQuery;
+  int pages = 1;
+  final bool paged;
+  final String orderBy;
+  final bool descending;
+  final bool detailed;
 
-
-  WorkflowTaskListBloc(this.accessBloc,{ this.eliudQuery, @required WorkflowTaskRepository workflowTaskRepository })
+  WorkflowTaskListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, @required WorkflowTaskRepository workflowTaskRepository})
       : assert(workflowTaskRepository != null),
-      _workflowTaskRepository = workflowTaskRepository,
-      super(WorkflowTaskListLoading());
+        _workflowTaskRepository = workflowTaskRepository,
+        super(WorkflowTaskListLoading());
 
-  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListToState({ String orderBy, bool descending }) async* {
+  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListToState() async* {
+    int amountNow =  (state is WorkflowTaskListLoaded) ? (state as WorkflowTaskListLoaded).values.length : 0;
     _workflowTasksListSubscription?.cancel();
-    _workflowTasksListSubscription = _workflowTaskRepository.listen((list) => add(WorkflowTaskListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
+    _workflowTasksListSubscription = _workflowTaskRepository.listen(
+          (list) => add(WorkflowTaskListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+      orderBy: orderBy,
+      descending: descending,
+      eliudQuery: eliudQuery,
+      limit: ((paged != null) && (paged)) ? pages * _workflowTaskLimit : null
+    );
   }
 
-  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListWithDetailsToState({ String orderBy, bool descending }) async* {
+  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListWithDetailsToState() async* {
+    int amountNow =  (state is WorkflowTaskListLoaded) ? (state as WorkflowTaskListLoaded).values.length : 0;
     _workflowTasksListSubscription?.cancel();
-    _workflowTasksListSubscription = _workflowTaskRepository.listenWithDetails((list) => add(WorkflowTaskListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
+    _workflowTasksListSubscription = _workflowTaskRepository.listenWithDetails(
+            (list) => add(WorkflowTaskListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+        orderBy: orderBy,
+        descending: descending,
+        eliudQuery: eliudQuery,
+        limit: ((paged != null) && (paged)) ? pages * _workflowTaskLimit : null
+    );
   }
 
   Stream<WorkflowTaskListState> _mapAddWorkflowTaskListToState(AddWorkflowTaskList event) async* {
@@ -60,17 +76,22 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     _workflowTaskRepository.delete(event.value);
   }
 
-  Stream<WorkflowTaskListState> _mapWorkflowTaskListUpdatedToState(WorkflowTaskListUpdated event) async* {
-    yield WorkflowTaskListLoaded(values: event.value);
+  Stream<WorkflowTaskListState> _mapWorkflowTaskListUpdatedToState(
+      WorkflowTaskListUpdated event) async* {
+    yield WorkflowTaskListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
   }
-
 
   @override
   Stream<WorkflowTaskListState> mapEventToState(WorkflowTaskListEvent event) async* {
-    final currentState = state;
     if (event is LoadWorkflowTaskList) {
-      yield* _mapLoadWorkflowTaskListToState(orderBy: event.orderBy, descending: event.descending);
-    } if (event is LoadWorkflowTaskListWithDetails) {
+      if ((detailed == null) || (!detailed)) {
+        yield* _mapLoadWorkflowTaskListToState();
+      } else {
+        yield* _mapLoadWorkflowTaskListWithDetailsToState();
+      }
+    }
+    if (event is NewPage) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadWorkflowTaskListWithDetailsToState();
     } else if (event is AddWorkflowTaskList) {
       yield* _mapAddWorkflowTaskListToState(event);
@@ -88,7 +109,6 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     _workflowTasksListSubscription?.cancel();
     return super.close();
   }
-
 }
 
 

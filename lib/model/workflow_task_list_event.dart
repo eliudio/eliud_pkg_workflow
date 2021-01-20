@@ -22,18 +22,9 @@ abstract class WorkflowTaskListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadWorkflowTaskList extends WorkflowTaskListEvent {
-  final String orderBy;
-  final bool descending;
+class LoadWorkflowTaskList extends WorkflowTaskListEvent {}
 
-  LoadWorkflowTaskList({this.orderBy, this.descending});
-
-  @override
-  List<Object> get props => [orderBy, descending];
-
-}
-
-class LoadWorkflowTaskListWithDetails extends WorkflowTaskListEvent {}
+class NewPage extends WorkflowTaskListEvent {}
 
 class AddWorkflowTaskList extends WorkflowTaskListEvent {
   final WorkflowTaskModel value;
@@ -73,13 +64,14 @@ class DeleteWorkflowTaskList extends WorkflowTaskListEvent {
 
 class WorkflowTaskListUpdated extends WorkflowTaskListEvent {
   final List<WorkflowTaskModel> value;
+  final bool mightHaveMore;
 
-  const WorkflowTaskListUpdated({ this.value });
-
-  @override
-  List<Object> get props => [ value ];
+  const WorkflowTaskListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  String toString() => 'WorkflowTaskListUpdated{ value: $value }';
+  List<Object> get props => [ value, mightHaveMore ];
+
+  @override
+  String toString() => 'WorkflowTaskListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 

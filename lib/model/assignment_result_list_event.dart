@@ -22,18 +22,9 @@ abstract class AssignmentResultListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadAssignmentResultList extends AssignmentResultListEvent {
-  final String orderBy;
-  final bool descending;
+class LoadAssignmentResultList extends AssignmentResultListEvent {}
 
-  LoadAssignmentResultList({this.orderBy, this.descending});
-
-  @override
-  List<Object> get props => [orderBy, descending];
-
-}
-
-class LoadAssignmentResultListWithDetails extends AssignmentResultListEvent {}
+class NewPage extends AssignmentResultListEvent {}
 
 class AddAssignmentResultList extends AssignmentResultListEvent {
   final AssignmentResultModel value;
@@ -73,13 +64,14 @@ class DeleteAssignmentResultList extends AssignmentResultListEvent {
 
 class AssignmentResultListUpdated extends AssignmentResultListEvent {
   final List<AssignmentResultModel> value;
+  final bool mightHaveMore;
 
-  const AssignmentResultListUpdated({ this.value });
-
-  @override
-  List<Object> get props => [ value ];
+  const AssignmentResultListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  String toString() => 'AssignmentResultListUpdated{ value: $value }';
+  List<Object> get props => [ value, mightHaveMore ];
+
+  @override
+  String toString() => 'AssignmentResultListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 

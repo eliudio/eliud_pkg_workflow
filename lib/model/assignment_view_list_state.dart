@@ -27,11 +27,12 @@ class AssignmentViewListLoading extends AssignmentViewListState {}
 
 class AssignmentViewListLoaded extends AssignmentViewListState {
   final List<AssignmentViewModel> values;
+  final bool mightHaveMore;
 
-  const AssignmentViewListLoaded({this.values = const []});
+  const AssignmentViewListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values ];
+  List<Object> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'AssignmentViewListLoaded { values: $values }';
