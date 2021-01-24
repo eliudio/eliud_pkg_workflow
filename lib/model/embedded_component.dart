@@ -196,6 +196,11 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
   StreamSubscription<AssignmentModel> listenTo(String documentId, AssignmentChanged changed) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<AssignmentModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
+    throw UnimplementedError();
+  }
   
 
     Future<void> deleteAll() {}
@@ -291,6 +296,11 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
   StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<AssignmentResultModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
+    throw UnimplementedError();
+  }
   
 
     Future<void> deleteAll() {}
@@ -384,6 +394,11 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
   
   @override
   StreamSubscription<WorkflowTaskModel> listenTo(String documentId, WorkflowTaskChanged changed) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<WorkflowTaskModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
     throw UnimplementedError();
   }
   

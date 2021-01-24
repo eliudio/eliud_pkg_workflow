@@ -180,6 +180,12 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
     return firestoreTimeStampToString(timeStamp);
   } 
 
+  Future<AssignmentViewModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
+    var change = FieldValue.increment(changeByThisValue);
+    return AssignmentViewCollection.doc(documentId).update({fieldName: change}).then((v) => get(documentId));
+  }
+
+
   final String appId;
   AssignmentViewFirestore(this.AssignmentViewCollection, this.appId);
 
