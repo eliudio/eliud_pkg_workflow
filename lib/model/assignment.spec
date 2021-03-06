@@ -6,7 +6,7 @@
     "generateComponent": false,
     "generateRepository": true,
     "generateCache": true,
-	"hasPersistentRepository": true,
+    "hasPersistentRepository": true,
     "generateFirestoreRepository": true,
     "generateRepositorySingleton": true,
     "generateModel": true,
@@ -18,6 +18,7 @@
     "generateEmbeddedComponent": true,
     "isDocumentCollection": true
   },
+  "memberIdentifier": "assigneeId",
   "fields": [
     {
       "fieldName": "documentID",

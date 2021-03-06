@@ -4,6 +4,7 @@ import 'package:eliud_core/core/access/bloc/access_event.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
+import 'package:eliud_core/package/package.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
@@ -95,4 +96,7 @@ abstract class WorkflowPackage extends PackageWithSubscription {
     // Register a mapper for an extra task: the mapper for the ExampleTask1
     TaskModelRegistry.registry().addMapper(ExampleTaskEntity1.label, ExampleTaskModel1Mapper());
   }
+
+  @override
+  List<MemberCollectionInfo> getMemberCollectionInfo() => AbstractRepositorySingleton.collections;
 }

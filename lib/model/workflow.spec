@@ -50,10 +50,6 @@
     {
         "group": "general",
         "description": "General"
-    },
-    {
-        "group": "member",
-        "description": "Member"
     }
  ],
   "listFields": {
