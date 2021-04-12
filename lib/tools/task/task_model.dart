@@ -96,7 +96,7 @@ abstract class TaskModel {
    * to allow asynchronous execution of your task(s).
    */
   Future<void> finishTask(BuildContext context, AssignmentModel assignmentModel,
-      ExecutionResults executionResult, String feedback) async {
+      ExecutionResults executionResult, String? feedback) async {
     await _handleCurrentAssignment(
         context, assignmentModel, _isNewAssignment, executionResult);
     var state = AccessBloc.getState(context);
@@ -177,7 +177,7 @@ abstract class TaskModel {
       AppModel app,
       MemberModel member,
       AssignmentModel currentAssignment,
-      String feedback) async {
+      String? feedback) async {
     if (workflowNotificationModel != null) {
       var message = workflowNotificationModel.message;
       if (feedback != null) {

@@ -13,22 +13,23 @@ class WorkflowActionModel extends ActionModel {
   WorkflowActionModel(String? appId, { this.workflow, ConditionsModel? conditions} ) : super(appId, actionType: WorkflowActionEntity.label, conditions: conditions);
 
   @override
-  ActionEntity toEntity({String? appId}) {
+  WorkflowActionEntity toEntity({String? appId}) {
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow!.documentID : null,
         conditions: (conditions != null) ? conditions!.toEntity(): null,
         appId: appId);
   }
 
-  static ActionModel? fromEntity(WorkflowActionEntity entity) {
+  static WorkflowActionModel? fromEntity(WorkflowActionEntity? entity) {
     if (entity == null) return null;
     return WorkflowActionModel(
       entity.appID,
       conditions: ConditionsModel.fromEntity(entity.conditions),
     );
   }
-  static Future<ActionModel> fromEntityPlus(WorkflowActionEntity entity, { String? appId}) async {
+  static Future<WorkflowActionModel?> fromEntityPlus(WorkflowActionEntity? entity, { String? appId}) async {
     WorkflowModel? workFlowModel;
+    if (entity == null) return null;
     if (entity.workflowId != null) {
       try {
         await workflowRepository(appId: entity.appID)!.get(entity.workflowId).then((val) {
@@ -54,7 +55,7 @@ class WorkflowActionMapper implements ActionModelMapper {
   ActionModel? fromEntity(ActionEntity entity) => WorkflowActionModel.fromEntity(entity as WorkflowActionEntity);
 
   @override
-  Future<ActionModel> fromEntityPlus(ActionEntity entity) => WorkflowActionModel.fromEntityPlus(entity as WorkflowActionEntity);
+  Future<ActionModel?> fromEntityPlus(ActionEntity entity) => WorkflowActionModel.fromEntityPlus(entity as WorkflowActionEntity);
 
   @override
   ActionEntity? fromMap(Map map) => WorkflowActionEntity.fromMap(map);
