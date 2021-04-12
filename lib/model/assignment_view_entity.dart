@@ -22,22 +22,22 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class AssignmentViewEntity {
-  final String appId;
-  final String title;
-  final String description;
-  final ConditionsSimpleEntity conditions;
+  final String? appId;
+  final String? title;
+  final String? description;
+  final ConditionsSimpleEntity? conditions;
 
   AssignmentViewEntity({this.appId, this.title, this.description, this.conditions, });
 
 
-  List<Object> get props => [appId, title, description, conditions, ];
+  List<Object?> get props => [appId, title, description, conditions, ];
 
   @override
   String toString() {
     return 'AssignmentViewEntity{appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  static AssignmentViewEntity fromMap(Map map) {
+  static AssignmentViewEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     var conditionsFromMap;
@@ -53,12 +53,12 @@ class AssignmentViewEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    final Map<String, dynamic> conditionsMap = conditions != null 
-        ? conditions.toDocument()
+  Map<String, Object?> toDocument() {
+    final Map<String, dynamic>? conditionsMap = conditions != null 
+        ? conditions!.toDocument()
         : null;
 
-    Map<String, Object> theDocument = HashMap();
+    Map<String, Object?> theDocument = HashMap();
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
     if (title != null) theDocument["title"] = title;
@@ -70,8 +70,8 @@ class AssignmentViewEntity {
     return theDocument;
   }
 
-  static AssignmentViewEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static AssignmentViewEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

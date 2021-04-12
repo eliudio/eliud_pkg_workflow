@@ -20,19 +20,19 @@ abstract class WorkflowTaskListState extends Equatable {
   const WorkflowTaskListState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class WorkflowTaskListLoading extends WorkflowTaskListState {}
 
 class WorkflowTaskListLoaded extends WorkflowTaskListState {
-  final List<WorkflowTaskModel> values;
-  final bool mightHaveMore;
+  final List<WorkflowTaskModel?>? values;
+  final bool? mightHaveMore;
 
   const WorkflowTaskListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'WorkflowTaskListLoaded { values: $values }';

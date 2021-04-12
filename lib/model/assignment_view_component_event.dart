@@ -21,7 +21,7 @@ abstract class AssignmentViewComponentEvent extends Equatable {
 }
 
 class FetchAssignmentViewComponent extends AssignmentViewComponentEvent {
-  final String id;
+  final String? id;
 
   FetchAssignmentViewComponent({ this.id });
 }

@@ -30,7 +30,7 @@ abstract class AssignmentResultFormEvent extends Equatable {
   const AssignmentResultFormEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialiseNewAssignmentResultFormEvent extends AssignmentResultFormEvent {
@@ -38,54 +38,54 @@ class InitialiseNewAssignmentResultFormEvent extends AssignmentResultFormEvent {
 
 
 class InitialiseAssignmentResultFormEvent extends AssignmentResultFormEvent {
-  final AssignmentResultModel value;
+  final AssignmentResultModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseAssignmentResultFormEvent({this.value});
 }
 
 class InitialiseAssignmentResultFormNoLoadEvent extends AssignmentResultFormEvent {
-  final AssignmentResultModel value;
+  final AssignmentResultModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseAssignmentResultFormNoLoadEvent({this.value});
 }
 
 class ChangedAssignmentResultDocumentID extends AssignmentResultFormEvent {
-  final String value;
+  final String? value;
 
   ChangedAssignmentResultDocumentID({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedAssignmentResultDocumentID{ value: $value }';
 }
 
 class ChangedAssignmentResultKey extends AssignmentResultFormEvent {
-  final String value;
+  final String? value;
 
   ChangedAssignmentResultKey({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedAssignmentResultKey{ value: $value }';
 }
 
 class ChangedAssignmentResultValue extends AssignmentResultFormEvent {
-  final String value;
+  final String? value;
 
   ChangedAssignmentResultValue({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedAssignmentResultValue{ value: $value }';

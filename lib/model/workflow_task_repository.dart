@@ -29,29 +29,29 @@ import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
-typedef WorkflowTaskModelTrigger(List<WorkflowTaskModel> list);
-typedef WorkflowTaskChanged(WorkflowTaskModel value);
+typedef WorkflowTaskModelTrigger(List<WorkflowTaskModel?> list);
+typedef WorkflowTaskChanged(WorkflowTaskModel? value);
 
 abstract class WorkflowTaskRepository {
   Future<WorkflowTaskModel> add(WorkflowTaskModel value);
   Future<void> delete(WorkflowTaskModel value);
-  Future<WorkflowTaskModel> get(String id, { Function(Exception) onError });
+  Future<WorkflowTaskModel?> get(String? id, { Function(Exception)? onError });
   Future<WorkflowTaskModel> update(WorkflowTaskModel value);
 
-  Stream<List<WorkflowTaskModel>> values({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Stream<List<WorkflowTaskModel>> valuesWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Future<List<WorkflowTaskModel>> valuesList({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Future<List<WorkflowTaskModel>> valuesListWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Stream<List<WorkflowTaskModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Stream<List<WorkflowTaskModel?>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Future<List<WorkflowTaskModel?>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Future<List<WorkflowTaskModel?>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
 
-  StreamSubscription<List<WorkflowTaskModel>> listen(WorkflowTaskModelTrigger trigger, {String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(WorkflowTaskModelTrigger trigger, {String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<WorkflowTaskModel> listenTo(String documentId, WorkflowTaskChanged changed);
+  StreamSubscription<List<WorkflowTaskModel?>> listen(WorkflowTaskModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
+  StreamSubscription<List<WorkflowTaskModel?>> listenWithDetails(WorkflowTaskModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
+  StreamSubscription<WorkflowTaskModel?> listenTo(String documentId, WorkflowTaskChanged changed);
   void flush();
   
-  String timeStampToString(dynamic timeStamp);
+  String? timeStampToString(dynamic timeStamp);
 
   dynamic getSubCollection(String documentId, String name);
-  Future<WorkflowTaskModel> changeValue(String documentId, String fieldName, num changeByThisValue);
+  Future<WorkflowTaskModel?> changeValue(String documentId, String fieldName, num changeByThisValue);
 
   Future<void> deleteAll();
 }

@@ -22,13 +22,13 @@ abstract class AssignmentFormState extends Equatable {
   const AssignmentFormState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 // Startup: menu has not been initialised yet and so we should show a "loading indicator" or something
 class AssignmentFormUninitialized extends AssignmentFormState {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 
   @override
   String toString() {
@@ -38,22 +38,22 @@ class AssignmentFormUninitialized extends AssignmentFormState {
 
 // AssignmentModel has been initialised and hence AssignmentModel is available
 class AssignmentFormInitialized extends AssignmentFormState {
-  final AssignmentModel value;
+  final AssignmentModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   const AssignmentFormInitialized({ this.value });
 }
 
 // Menu has been initialised and hence a menu is available
 abstract class AssignmentFormError extends AssignmentFormInitialized {
-  final String message;
+  final String? message;
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
-  const AssignmentFormError({this.message, AssignmentModel value }) : super(value: value);
+  const AssignmentFormError({this.message, AssignmentModel? value }) : super(value: value);
 
   @override
   String toString() {
@@ -64,10 +64,10 @@ abstract class AssignmentFormError extends AssignmentFormInitialized {
   }
 }
 class DocumentIDAssignmentFormError extends AssignmentFormError { 
-  const DocumentIDAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const DocumentIDAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -80,10 +80,10 @@ class DocumentIDAssignmentFormError extends AssignmentFormError {
 
 
 class AppIdAssignmentFormError extends AssignmentFormError { 
-  const AppIdAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const AppIdAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -96,10 +96,10 @@ class AppIdAssignmentFormError extends AssignmentFormError {
 
 
 class ReporterAssignmentFormError extends AssignmentFormError { 
-  const ReporterAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const ReporterAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -112,10 +112,10 @@ class ReporterAssignmentFormError extends AssignmentFormError {
 
 
 class AssigneeIdAssignmentFormError extends AssignmentFormError { 
-  const AssigneeIdAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const AssigneeIdAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -128,10 +128,10 @@ class AssigneeIdAssignmentFormError extends AssignmentFormError {
 
 
 class TaskAssignmentFormError extends AssignmentFormError { 
-  const TaskAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const TaskAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -144,10 +144,10 @@ class TaskAssignmentFormError extends AssignmentFormError {
 
 
 class WorkflowAssignmentFormError extends AssignmentFormError { 
-  const WorkflowAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const WorkflowAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -160,10 +160,10 @@ class WorkflowAssignmentFormError extends AssignmentFormError {
 
 
 class WorkflowTaskSeqNumberAssignmentFormError extends AssignmentFormError { 
-  const WorkflowTaskSeqNumberAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const WorkflowTaskSeqNumberAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -176,10 +176,10 @@ class WorkflowTaskSeqNumberAssignmentFormError extends AssignmentFormError {
 
 
 class TimestampAssignmentFormError extends AssignmentFormError { 
-  const TimestampAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const TimestampAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -192,10 +192,10 @@ class TimestampAssignmentFormError extends AssignmentFormError {
 
 
 class StatusAssignmentFormError extends AssignmentFormError { 
-  const StatusAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const StatusAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -208,10 +208,10 @@ class StatusAssignmentFormError extends AssignmentFormError {
 
 
 class ResultsCurrentAssignmentFormError extends AssignmentFormError { 
-  const ResultsCurrentAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const ResultsCurrentAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -224,10 +224,10 @@ class ResultsCurrentAssignmentFormError extends AssignmentFormError {
 
 
 class ResultsPreviousAssignmentFormError extends AssignmentFormError { 
-  const ResultsPreviousAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const ResultsPreviousAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -240,10 +240,10 @@ class ResultsPreviousAssignmentFormError extends AssignmentFormError {
 
 
 class TriggeredByIdAssignmentFormError extends AssignmentFormError { 
-  const TriggeredByIdAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const TriggeredByIdAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -256,10 +256,10 @@ class TriggeredByIdAssignmentFormError extends AssignmentFormError {
 
 
 class ConfirmMessageAssignmentFormError extends AssignmentFormError { 
-  const ConfirmMessageAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const ConfirmMessageAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -272,10 +272,10 @@ class ConfirmMessageAssignmentFormError extends AssignmentFormError {
 
 
 class RejectMessageAssignmentFormError extends AssignmentFormError { 
-  const RejectMessageAssignmentFormError({ String message, AssignmentModel value }): super(message: message, value: value);
+  const RejectMessageAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -288,10 +288,10 @@ class RejectMessageAssignmentFormError extends AssignmentFormError {
 
 
 class AssignmentFormLoaded extends AssignmentFormInitialized { 
-  const AssignmentFormLoaded({ AssignmentModel value }): super(value: value);
+  const AssignmentFormLoaded({ AssignmentModel? value }): super(value: value);
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() {
@@ -303,10 +303,10 @@ class AssignmentFormLoaded extends AssignmentFormInitialized {
 
 
 class SubmittableAssignmentForm extends AssignmentFormInitialized { 
-  const SubmittableAssignmentForm({ AssignmentModel value }): super(value: value);
+  const SubmittableAssignmentForm({ AssignmentModel? value }): super(value: value);
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() {

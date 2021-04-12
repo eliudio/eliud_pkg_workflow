@@ -20,19 +20,19 @@ abstract class AssignmentListState extends Equatable {
   const AssignmentListState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AssignmentListLoading extends AssignmentListState {}
 
 class AssignmentListLoaded extends AssignmentListState {
-  final List<AssignmentModel> values;
-  final bool mightHaveMore;
+  final List<AssignmentModel?>? values;
+  final bool? mightHaveMore;
 
   const AssignmentListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'AssignmentListLoaded { values: $values }';

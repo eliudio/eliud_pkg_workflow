@@ -34,7 +34,7 @@ abstract class WorkflowFormEvent extends Equatable {
   const WorkflowFormEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialiseNewWorkflowFormEvent extends WorkflowFormEvent {
@@ -42,66 +42,66 @@ class InitialiseNewWorkflowFormEvent extends WorkflowFormEvent {
 
 
 class InitialiseWorkflowFormEvent extends WorkflowFormEvent {
-  final WorkflowModel value;
+  final WorkflowModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseWorkflowFormEvent({this.value});
 }
 
 class InitialiseWorkflowFormNoLoadEvent extends WorkflowFormEvent {
-  final WorkflowModel value;
+  final WorkflowModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseWorkflowFormNoLoadEvent({this.value});
 }
 
 class ChangedWorkflowDocumentID extends WorkflowFormEvent {
-  final String value;
+  final String? value;
 
   ChangedWorkflowDocumentID({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedWorkflowDocumentID{ value: $value }';
 }
 
 class ChangedWorkflowName extends WorkflowFormEvent {
-  final String value;
+  final String? value;
 
   ChangedWorkflowName({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedWorkflowName{ value: $value }';
 }
 
 class ChangedWorkflowWorkflowTask extends WorkflowFormEvent {
-  final List<WorkflowTaskModel> value;
+  final List<WorkflowTaskModel>? value;
 
   ChangedWorkflowWorkflowTask({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedWorkflowWorkflowTask{ value: $value }';
 }
 
 class ChangedWorkflowAppId extends WorkflowFormEvent {
-  final String value;
+  final String? value;
 
   ChangedWorkflowAppId({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedWorkflowAppId{ value: $value }';

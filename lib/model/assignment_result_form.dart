@@ -58,10 +58,10 @@ import 'package:eliud_pkg_workflow/model/assignment_result_form_state.dart';
 
 class AssignmentResultForm extends StatelessWidget {
   FormAction formAction;
-  AssignmentResultModel value;
-  ActionModel submitAction;
+  AssignmentResultModel? value;
+  ActionModel? submitAction;
 
-  AssignmentResultForm({Key key, @required this.formAction, @required this.value, this.submitAction}) : super(key: key);
+  AssignmentResultForm({Key? key, required this.formAction, required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +87,14 @@ class AssignmentResultForm extends StatelessWidget {
       return Scaffold(
         appBar: formAction == FormAction.UpdateAction ?
                 AppBar(
-                    title: Text("Update AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Update AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
                   ) :
                 AppBar(
-                    title: Text("Add AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Add AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
                 ),
         body: BlocProvider<AssignmentResultFormBloc >(
             create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
@@ -109,8 +109,8 @@ class AssignmentResultForm extends StatelessWidget {
 
 
 class MyAssignmentResultForm extends StatefulWidget {
-  final FormAction formAction;
-  final ActionModel submitAction;
+  final FormAction? formAction;
+  final ActionModel? submitAction;
 
   MyAssignmentResultForm({this.formAction, this.submitAction});
 
@@ -119,8 +119,8 @@ class MyAssignmentResultForm extends StatefulWidget {
 
 
 class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
-  final FormAction formAction;
-  AssignmentResultFormBloc _myFormBloc;
+  final FormAction? formAction;
+  late AssignmentResultFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _keyController = TextEditingController();
@@ -148,29 +148,29 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
       );
 
       if (state is AssignmentResultFormLoaded) {
-        if (state.value.documentID != null)
-          _documentIDController.text = state.value.documentID.toString();
+        if (state.value!.documentID != null)
+          _documentIDController.text = state.value!.documentID.toString();
         else
           _documentIDController.text = "";
-        if (state.value.key != null)
-          _keyController.text = state.value.key.toString();
+        if (state.value!.key != null)
+          _keyController.text = state.value!.key.toString();
         else
           _keyController.text = "";
-        if (state.value.value != null)
-          _valueController.text = state.value.value.toString();
+        if (state.value!.value != null)
+          _valueController.text = state.value!.value.toString();
         else
           _valueController.text = "";
       }
       if (state is AssignmentResultFormInitialized) {
-        List<Widget> children = List();
+        List<Widget?> children = [];
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _keyController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Key',
                   ),
                   keyboardType: TextInputType.text,
@@ -184,11 +184,11 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _valueController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Value',
                   ),
                   keyboardType: TextInputType.text,
@@ -202,40 +202,39 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
-                  color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
+                  color: RgbHelper.color(rgbo: app!.formSubmitButtonColor),
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is AssignmentResultFormError) {
                       return null;
                     } else {
                       if (formAction == FormAction.UpdateAction) {
                         BlocProvider.of<AssignmentResultListBloc>(context).add(
-                          UpdateAssignmentResultList(value: state.value.copyWith(
-                              documentID: state.value.documentID, 
-                              key: state.value.key, 
-                              value: state.value.value, 
+                          UpdateAssignmentResultList(value: state.value!.copyWith(
+                              documentID: state.value!.documentID, 
+                              key: state.value!.key, 
+                              value: state.value!.value, 
                         )));
                       } else {
                         BlocProvider.of<AssignmentResultListBloc>(context).add(
                           AddAssignmentResultList(value: AssignmentResultModel(
-                              documentID: state.value.documentID, 
-                              key: state.value.key, 
-                              value: state.value.value, 
+                              documentID: state.value!.documentID, 
+                              key: state.value!.key, 
+                              value: state.value!.value, 
                           )));
                       }
                       if (widget.submitAction != null) {
-                        eliudrouter.Router.navigateTo(context, widget.submitAction);
+                        eliudrouter.Router.navigateTo(context, widget.submitAction!);
                       } else {
                         Navigator.pop(context);
                       }
-                      return true;
                     }
                   },
-                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app.formSubmitButtonTextColor))),
+                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app!.formSubmitButtonTextColor))),
                 ));
 
         return Container(
           color: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? Colors.transparent : null,
-          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app.formBackground),
+          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app!.formBackground),
           padding:
           const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
             child: Form(
@@ -243,7 +242,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
               padding: const EdgeInsets.all(8),
               physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
               shrinkWrap: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)),
-              children: children
+              children: children as List<Widget>
             ),
           )
         );

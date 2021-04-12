@@ -34,7 +34,7 @@ enum WorkflowTaskResponsible {
 }
 
 
-WorkflowTaskResponsible toWorkflowTaskResponsible(int index) {
+WorkflowTaskResponsible toWorkflowTaskResponsible(int? index) {
   switch (index) {
     case 0: return WorkflowTaskResponsible.CurrentMember;
     case 1: return WorkflowTaskResponsible.Owner;
@@ -46,24 +46,24 @@ WorkflowTaskResponsible toWorkflowTaskResponsible(int index) {
 
 
 class WorkflowTaskModel {
-  String documentID;
-  int seqNumber;
-  TaskModel task;
+  String? documentID;
+  int? seqNumber;
+  TaskModel? task;
 
   // Message to be sent after this task is completed successfully
-  WorkflowNotificationModel confirmMessage;
+  WorkflowNotificationModel? confirmMessage;
 
   // Message to be sent after this task is completed unsuccessfully
-  WorkflowNotificationModel rejectMessage;
+  WorkflowNotificationModel? rejectMessage;
 
   // Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
-  WorkflowTaskResponsible responsible;
+  WorkflowTaskResponsible? responsible;
 
   WorkflowTaskModel({this.documentID, this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, })  {
     assert(documentID != null);
   }
 
-  WorkflowTaskModel copyWith({String documentID, int seqNumber, TaskModel task, WorkflowNotificationModel confirmMessage, WorkflowNotificationModel rejectMessage, WorkflowTaskResponsible responsible, }) {
+  WorkflowTaskModel copyWith({String? documentID, int? seqNumber, TaskModel? task, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, WorkflowTaskResponsible? responsible, }) {
     return WorkflowTaskModel(documentID: documentID ?? this.documentID, seqNumber: seqNumber ?? this.seqNumber, task: task ?? this.task, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, responsible: responsible ?? this.responsible, );
   }
 
@@ -87,17 +87,17 @@ class WorkflowTaskModel {
     return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  WorkflowTaskEntity toEntity({String appId}) {
+  WorkflowTaskEntity toEntity({String? appId}) {
     return WorkflowTaskEntity(
           seqNumber: (seqNumber != null) ? seqNumber : null, 
-          task: (task != null) ? task.toEntity(appId: appId) : null, 
-          confirmMessage: (confirmMessage != null) ? confirmMessage.toEntity(appId: appId) : null, 
-          rejectMessage: (rejectMessage != null) ? rejectMessage.toEntity(appId: appId) : null, 
-          responsible: (responsible != null) ? responsible.index : null, 
+          task: (task != null) ? task!.toEntity(appId: appId) : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId) : null, 
+          responsible: (responsible != null) ? responsible!.index : null, 
     );
   }
 
-  static WorkflowTaskModel fromEntity(String documentID, WorkflowTaskEntity entity) {
+  static WorkflowTaskModel? fromEntity(String documentID, WorkflowTaskEntity? entity) {
     if (entity == null) return null;
     return WorkflowTaskModel(
           documentID: documentID, 
@@ -112,7 +112,7 @@ class WorkflowTaskModel {
     );
   }
 
-  static Future<WorkflowTaskModel> fromEntityPlus(String documentID, WorkflowTaskEntity entity, { String appId}) async {
+  static Future<WorkflowTaskModel?> fromEntityPlus(String documentID, WorkflowTaskEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return WorkflowTaskModel(

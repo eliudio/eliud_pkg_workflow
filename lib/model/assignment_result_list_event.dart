@@ -19,7 +19,7 @@ import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 abstract class AssignmentResultListEvent extends Equatable {
   const AssignmentResultListEvent();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadAssignmentResultList extends AssignmentResultListEvent {}
@@ -27,49 +27,49 @@ class LoadAssignmentResultList extends AssignmentResultListEvent {}
 class NewPage extends AssignmentResultListEvent {}
 
 class AddAssignmentResultList extends AssignmentResultListEvent {
-  final AssignmentResultModel value;
+  final AssignmentResultModel? value;
 
   const AddAssignmentResultList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'AddAssignmentResultList{ value: $value }';
 }
 
 class UpdateAssignmentResultList extends AssignmentResultListEvent {
-  final AssignmentResultModel value;
+  final AssignmentResultModel? value;
 
   const UpdateAssignmentResultList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'UpdateAssignmentResultList{ value: $value }';
 }
 
 class DeleteAssignmentResultList extends AssignmentResultListEvent {
-  final AssignmentResultModel value;
+  final AssignmentResultModel? value;
 
   const DeleteAssignmentResultList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'DeleteAssignmentResultList{ value: $value }';
 }
 
 class AssignmentResultListUpdated extends AssignmentResultListEvent {
-  final List<AssignmentResultModel> value;
-  final bool mightHaveMore;
+  final List<AssignmentResultModel?>? value;
+  final bool? mightHaveMore;
 
   const AssignmentResultListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  List<Object> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [ value, mightHaveMore ];
 
   @override
   String toString() => 'AssignmentResultListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';

@@ -16,20 +16,20 @@ import 'package:eliud_core/tools/random.dart';
 
 class WorkflowActionHandler extends PackageActionHandler {
   @override
-  Future<void> navigateTo(BuildContext context, ActionModel action, {Map<String, Object> parameters}) async {
+  Future<void> navigateTo(BuildContext context, ActionModel action, {Map<String, Object>? parameters}) async {
     if (action is WorkflowActionModel) {
       executeWorkflow(context, action);
     }
   }
 
-  static void executeWorkflow(BuildContext context, WorkflowActionModel action, {FinaliseWorkflow finaliseWorkflow}) {
+  static void executeWorkflow(BuildContext context, WorkflowActionModel action, {FinaliseWorkflow? finaliseWorkflow}) {
     var accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
-      var workflowModel = action.workflow;
+      var workflowModel = action.workflow!;
       if ((workflowModel.workflowTask != null) &&
-          (workflowModel.workflowTask.length > 0)) {
-        var firstWorkflowTask = workflowModel.workflowTask[0];
-        var firstTask = firstWorkflowTask.task;
+          (workflowModel.workflowTask!.length > 0)) {
+        var firstWorkflowTask = workflowModel.workflowTask![0];
+        var firstTask = firstWorkflowTask.task!;
         var assignment = AssignmentModel(
           documentID: newRandomKey(),
           appId: action.appID,

@@ -27,53 +27,59 @@ const _assignmentViewLimit = 5;
 
 class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentViewListState> {
   final AssignmentViewRepository _assignmentViewRepository;
-  StreamSubscription _assignmentViewsListSubscription;
-  final EliudQuery eliudQuery;
+  StreamSubscription? _assignmentViewsListSubscription;
+  final EliudQuery? eliudQuery;
   int pages = 1;
-  final bool paged;
-  final String orderBy;
-  final bool descending;
-  final bool detailed;
+  final bool? paged;
+  final String? orderBy;
+  final bool? descending;
+  final bool? detailed;
 
-  AssignmentViewListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, @required AssignmentViewRepository assignmentViewRepository})
+  AssignmentViewListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentViewRepository assignmentViewRepository})
       : assert(assignmentViewRepository != null),
         _assignmentViewRepository = assignmentViewRepository,
         super(AssignmentViewListLoading());
 
   Stream<AssignmentViewListState> _mapLoadAssignmentViewListToState() async* {
-    int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values.length : 0;
+    int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values!.length : 0;
     _assignmentViewsListSubscription?.cancel();
     _assignmentViewsListSubscription = _assignmentViewRepository.listen(
           (list) => add(AssignmentViewListUpdated(value: list, mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && (paged)) ? pages * _assignmentViewLimit : null
+      limit: ((paged != null) && paged!) ? pages * _assignmentViewLimit : null
     );
   }
 
   Stream<AssignmentViewListState> _mapLoadAssignmentViewListWithDetailsToState() async* {
-    int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values.length : 0;
+    int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values!.length : 0;
     _assignmentViewsListSubscription?.cancel();
     _assignmentViewsListSubscription = _assignmentViewRepository.listenWithDetails(
             (list) => add(AssignmentViewListUpdated(value: list, mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && (paged)) ? pages * _assignmentViewLimit : null
+        limit: ((paged != null) && paged!) ? pages * _assignmentViewLimit : null
     );
   }
 
   Stream<AssignmentViewListState> _mapAddAssignmentViewListToState(AddAssignmentViewList event) async* {
-    _assignmentViewRepository.add(event.value);
+    var value = event.value;
+    if (value != null) 
+      _assignmentViewRepository.add(value);
   }
 
   Stream<AssignmentViewListState> _mapUpdateAssignmentViewListToState(UpdateAssignmentViewList event) async* {
-    _assignmentViewRepository.update(event.value);
+    var value = event.value;
+    if (value != null) 
+      _assignmentViewRepository.update(value);
   }
 
   Stream<AssignmentViewListState> _mapDeleteAssignmentViewListToState(DeleteAssignmentViewList event) async* {
-    _assignmentViewRepository.delete(event.value);
+    var value = event.value;
+    if (value != null) 
+      _assignmentViewRepository.delete(value);
   }
 
   Stream<AssignmentViewListState> _mapAssignmentViewListUpdatedToState(
@@ -84,7 +90,7 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
   @override
   Stream<AssignmentViewListState> mapEventToState(AssignmentViewListEvent event) async* {
     if (event is LoadAssignmentViewList) {
-      if ((detailed == null) || (!detailed)) {
+      if ((detailed == null) || (!detailed!)) {
         yield* _mapLoadAssignmentViewListToState();
       } else {
         yield* _mapLoadAssignmentViewListWithDetailsToState();

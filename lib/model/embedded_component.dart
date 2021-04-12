@@ -53,10 +53,7 @@ workflowTasksList(context, value, trigger) => EmbeddedComponentFactory.workflowT
 class EmbeddedComponentFactory {
 
 static Widget assignmentsList(BuildContext context, List<AssignmentModel> values, AssignmentListChanged trigger) {
-  AssignmentInMemoryRepository inMemoryRepository = AssignmentInMemoryRepository(
-    trigger: trigger,
-    items: values,
-  );
+  AssignmentInMemoryRepository inMemoryRepository = AssignmentInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
       BlocProvider<AssignmentListBloc>(
@@ -70,10 +67,7 @@ static Widget assignmentsList(BuildContext context, List<AssignmentModel> values
 }
 
 static Widget assignmentResultsList(BuildContext context, List<AssignmentResultModel> values, AssignmentResultListChanged trigger) {
-  AssignmentResultInMemoryRepository inMemoryRepository = AssignmentResultInMemoryRepository(
-    trigger: trigger,
-    items: values,
-  );
+  AssignmentResultInMemoryRepository inMemoryRepository = AssignmentResultInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
       BlocProvider<AssignmentResultListBloc>(
@@ -87,10 +81,7 @@ static Widget assignmentResultsList(BuildContext context, List<AssignmentResultM
 }
 
 static Widget workflowTasksList(BuildContext context, List<WorkflowTaskModel> values, WorkflowTaskListChanged trigger) {
-  WorkflowTaskInMemoryRepository inMemoryRepository = WorkflowTaskInMemoryRepository(
-    trigger: trigger,
-    items: values,
-  );
+  WorkflowTaskInMemoryRepository inMemoryRepository = WorkflowTaskInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
       BlocProvider<WorkflowTaskListBloc>(
@@ -109,11 +100,11 @@ static Widget workflowTasksList(BuildContext context, List<WorkflowTaskModel> va
 class AssignmentInMemoryRepository implements AssignmentRepository {
     final List<AssignmentModel> items;
     final AssignmentListChanged trigger;
-    Stream<List<AssignmentModel>> theValues;
+    Stream<List<AssignmentModel>>? theValues;
 
-    AssignmentInMemoryRepository({this.trigger, this.items}) {
-        List<List<AssignmentModel>> myList = new List<List<AssignmentModel>>();
-        myList.add(items);
+    AssignmentInMemoryRepository(this.trigger, this.items) {
+        List<List<AssignmentModel>> myList = <List<AssignmentModel>>[];
+        if (items != null) myList.add(items);
         theValues = Stream<List<AssignmentModel>>.fromIterable(myList);
     }
 
@@ -131,54 +122,57 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
     Future<AssignmentModel> add(AssignmentModel value) {
         items.add(value.copyWith(documentID: newRandomKey()));
         trigger(items);
+        return Future.value(value);
     }
 
     Future<void> delete(AssignmentModel value) {
-      int index = _index(value.documentID);
+      int index = _index(value!.documentID!);
       if (index >= 0) items.removeAt(index);
       trigger(items);
+      return Future.value(value);
     }
 
     Future<AssignmentModel> update(AssignmentModel value) {
-      int index = _index(value.documentID);
+      int index = _index(value!.documentID!);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
         trigger(items);
       }
+      return Future.value(value);
     }
 
-    Future<AssignmentModel> get(String id, { Function(Exception) onError }) {
-      int index = _index(id);
+    Future<AssignmentModel> get(String? id, { Function(Exception)? onError }) {
+      int index = _index(id!);
       var completer = new Completer<AssignmentModel>();
       completer.complete(items[index]);
       return completer.future;
     }
 
-    Stream<List<AssignmentModel>> values({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues;
+    Stream<List<AssignmentModel>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!;
     }
     
-    Stream<List<AssignmentModel>> valuesWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues;
+    Stream<List<AssignmentModel>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!;
     }
     
     @override
-    StreamSubscription<List<AssignmentModel>> listen(trigger, { String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues.listen((theList) => trigger(theList));
+    StreamSubscription<List<AssignmentModel>> listen(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, { String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues.listen((theList) => trigger(theList));
+    StreamSubscription<List<AssignmentModel>> listenWithDetails(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<AssignmentModel>> valuesList({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+    Future<List<AssignmentModel>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<AssignmentModel>> valuesListWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+    Future<List<AssignmentModel>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
 
@@ -203,17 +197,17 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
   }
   
 
-    Future<void> deleteAll() {}
+    Future<void> deleteAll() async {}
 }
 
 class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
     final List<AssignmentResultModel> items;
     final AssignmentResultListChanged trigger;
-    Stream<List<AssignmentResultModel>> theValues;
+    Stream<List<AssignmentResultModel>>? theValues;
 
-    AssignmentResultInMemoryRepository({this.trigger, this.items}) {
-        List<List<AssignmentResultModel>> myList = new List<List<AssignmentResultModel>>();
-        myList.add(items);
+    AssignmentResultInMemoryRepository(this.trigger, this.items) {
+        List<List<AssignmentResultModel>> myList = <List<AssignmentResultModel>>[];
+        if (items != null) myList.add(items);
         theValues = Stream<List<AssignmentResultModel>>.fromIterable(myList);
     }
 
@@ -231,54 +225,57 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
     Future<AssignmentResultModel> add(AssignmentResultModel value) {
         items.add(value.copyWith(documentID: newRandomKey()));
         trigger(items);
+        return Future.value(value);
     }
 
     Future<void> delete(AssignmentResultModel value) {
-      int index = _index(value.documentID);
+      int index = _index(value!.documentID!);
       if (index >= 0) items.removeAt(index);
       trigger(items);
+      return Future.value(value);
     }
 
     Future<AssignmentResultModel> update(AssignmentResultModel value) {
-      int index = _index(value.documentID);
+      int index = _index(value!.documentID!);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
         trigger(items);
       }
+      return Future.value(value);
     }
 
-    Future<AssignmentResultModel> get(String id, { Function(Exception) onError }) {
-      int index = _index(id);
+    Future<AssignmentResultModel> get(String? id, { Function(Exception)? onError }) {
+      int index = _index(id!);
       var completer = new Completer<AssignmentResultModel>();
       completer.complete(items[index]);
       return completer.future;
     }
 
-    Stream<List<AssignmentResultModel>> values({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues;
+    Stream<List<AssignmentResultModel>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!;
     }
     
-    Stream<List<AssignmentResultModel>> valuesWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues;
+    Stream<List<AssignmentResultModel>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!;
     }
     
     @override
-    StreamSubscription<List<AssignmentResultModel>> listen(trigger, { String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues.listen((theList) => trigger(theList));
+    StreamSubscription<List<AssignmentResultModel>> listen(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, { String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues.listen((theList) => trigger(theList));
+    StreamSubscription<List<AssignmentResultModel>> listenWithDetails(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<AssignmentResultModel>> valuesList({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+    Future<List<AssignmentResultModel>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<AssignmentResultModel>> valuesListWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+    Future<List<AssignmentResultModel>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
 
@@ -303,17 +300,17 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
   }
   
 
-    Future<void> deleteAll() {}
+    Future<void> deleteAll() async {}
 }
 
 class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
     final List<WorkflowTaskModel> items;
     final WorkflowTaskListChanged trigger;
-    Stream<List<WorkflowTaskModel>> theValues;
+    Stream<List<WorkflowTaskModel>>? theValues;
 
-    WorkflowTaskInMemoryRepository({this.trigger, this.items}) {
-        List<List<WorkflowTaskModel>> myList = new List<List<WorkflowTaskModel>>();
-        myList.add(items);
+    WorkflowTaskInMemoryRepository(this.trigger, this.items) {
+        List<List<WorkflowTaskModel>> myList = <List<WorkflowTaskModel>>[];
+        if (items != null) myList.add(items);
         theValues = Stream<List<WorkflowTaskModel>>.fromIterable(myList);
     }
 
@@ -331,54 +328,57 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
     Future<WorkflowTaskModel> add(WorkflowTaskModel value) {
         items.add(value.copyWith(documentID: newRandomKey()));
         trigger(items);
+        return Future.value(value);
     }
 
     Future<void> delete(WorkflowTaskModel value) {
-      int index = _index(value.documentID);
+      int index = _index(value!.documentID!);
       if (index >= 0) items.removeAt(index);
       trigger(items);
+      return Future.value(value);
     }
 
     Future<WorkflowTaskModel> update(WorkflowTaskModel value) {
-      int index = _index(value.documentID);
+      int index = _index(value!.documentID!);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
         trigger(items);
       }
+      return Future.value(value);
     }
 
-    Future<WorkflowTaskModel> get(String id, { Function(Exception) onError }) {
-      int index = _index(id);
+    Future<WorkflowTaskModel> get(String? id, { Function(Exception)? onError }) {
+      int index = _index(id!);
       var completer = new Completer<WorkflowTaskModel>();
       completer.complete(items[index]);
       return completer.future;
     }
 
-    Stream<List<WorkflowTaskModel>> values({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues;
+    Stream<List<WorkflowTaskModel>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!;
     }
     
-    Stream<List<WorkflowTaskModel>> valuesWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues;
+    Stream<List<WorkflowTaskModel>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!;
     }
     
     @override
-    StreamSubscription<List<WorkflowTaskModel>> listen(trigger, { String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues.listen((theList) => trigger(theList));
+    StreamSubscription<List<WorkflowTaskModel>> listen(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(trigger, { String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery }) {
-      return theValues.listen((theList) => trigger(theList));
+    StreamSubscription<List<WorkflowTaskModel>> listenWithDetails(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+      return theValues!.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<WorkflowTaskModel>> valuesList({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+    Future<List<WorkflowTaskModel>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<WorkflowTaskModel>> valuesListWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+    Future<List<WorkflowTaskModel>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
 
@@ -403,6 +403,6 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
   }
   
 
-    Future<void> deleteAll() {}
+    Future<void> deleteAll() async {}
 }
 

@@ -21,13 +21,13 @@ import '../workflow_package.dart';
 
 class AssignmentViewComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({String id, Map<String, Object> parameters}) {
+  Widget createNew({String? id, Map<String, Object>? parameters}) {
     return AssignmentViewComponentImpl(id: id);
   }
 }
 
 class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
-  AssignmentViewComponentImpl({String id}) : super(assignmentViewID: id);
+  AssignmentViewComponentImpl({String? id}) : super(assignmentViewID: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {
@@ -37,16 +37,16 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
 //  static BuildContext theInstance;
 
   @override
-  Widget yourWidget(BuildContext context, AssignmentViewModel view) {
+  Widget yourWidget(BuildContext context, AssignmentViewModel? view) {
     //theInstance = context;
     var state = AccessBloc.getState(context);
     if (state is AppLoaded) {
       return BlocProvider<AssignmentListBloc>(
         create: (context) => AssignmentListBloc(
           eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
-              state.app.documentID, state.getMember().documentID),
+              state.app.documentID!, state.getMember()!.documentID!),
           assignmentRepository:
-              assignmentRepository(appId: AccessBloc.appId(context)),
+              assignmentRepository(appId: AccessBloc.appId(context))!,
         )..add(LoadAssignmentList()),
         child: AssignmentListWidget(
             readOnly: true,
@@ -58,13 +58,17 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
     }
   }
 
-  Widget widgetProvider(AssignmentModel value) {
-    return MyAssignmentListItem(value: value);
+  Widget widgetProvider(AssignmentModel? value) {
+    if (value == null) {
+      return Text("Assignment not available");
+    } else {
+      return MyAssignmentListItem(value: value);
+    }
   }
 
   @override
   AssignmentViewRepository getAssignmentViewRepository(BuildContext context) {
     return AbstractRepositorySingleton.singleton
-        .assignmentViewRepository(AccessBloc.appId(context));
+        .assignmentViewRepository(AccessBloc.appId(context))!;
   }
 }

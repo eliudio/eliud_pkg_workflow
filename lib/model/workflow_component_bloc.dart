@@ -23,7 +23,7 @@ import 'package:eliud_pkg_workflow/model/workflow_repository.dart';
 import 'package:flutter/services.dart';
 
 class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowComponentState> {
-  final WorkflowRepository workflowRepository;
+  final WorkflowRepository? workflowRepository;
 
   WorkflowComponentBloc({ this.workflowRepository }): super(WorkflowComponentUninitialized());
   @override
@@ -33,9 +33,9 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
       try {
         if (currentState is WorkflowComponentUninitialized) {
           bool permissionDenied = false;
-          final model = await workflowRepository.get(event.id, onError: (error) {
+          final model = await workflowRepository!.get(event.id, onError: (error) {
             // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
               permissionDenied = true;
             }
           });
@@ -45,7 +45,7 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
             if (model != null) {
               yield WorkflowComponentLoaded(value: model);
             } else {
-              String id = event.id;
+              String? id = event.id;
               yield WorkflowComponentError(
                   message: "Workflow with id = '$id' not found");
             }

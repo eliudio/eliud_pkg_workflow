@@ -37,18 +37,18 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class WorkflowModel {
-  String documentID;
-  String name;
-  List<WorkflowTaskModel> workflowTask;
+  String? documentID;
+  String? name;
+  List<WorkflowTaskModel>? workflowTask;
 
   // This is the identifier of the app to which this feed belongs
-  String appId;
+  String? appId;
 
   WorkflowModel({this.documentID, this.name, this.workflowTask, this.appId, })  {
     assert(documentID != null);
   }
 
-  WorkflowModel copyWith({String documentID, String name, List<WorkflowTaskModel> workflowTask, String appId, }) {
+  WorkflowModel copyWith({String? documentID, String? name, List<WorkflowTaskModel>? workflowTask, String? appId, }) {
     return WorkflowModel(documentID: documentID ?? this.documentID, name: name ?? this.name, workflowTask: workflowTask ?? this.workflowTask, appId: appId ?? this.appId, );
   }
 
@@ -67,22 +67,22 @@ class WorkflowModel {
 
   @override
   String toString() {
-    String workflowTaskCsv = (workflowTask == null) ? '' : workflowTask.join(', ');
+    String workflowTaskCsv = (workflowTask == null) ? '' : workflowTask!.join(', ');
 
     return 'WorkflowModel{documentID: $documentID, name: $name, workflowTask: WorkflowTask[] { $workflowTaskCsv }, appId: $appId}';
   }
 
-  WorkflowEntity toEntity({String appId}) {
+  WorkflowEntity toEntity({String? appId}) {
     return WorkflowEntity(
           name: (name != null) ? name : null, 
           workflowTask: (workflowTask != null) ? workflowTask
-            .map((item) => item.toEntity(appId: appId))
+            !.map((item) => item.toEntity(appId: appId))
             .toList() : null, 
           appId: (appId != null) ? appId : null, 
     );
   }
 
-  static WorkflowModel fromEntity(String documentID, WorkflowEntity entity) {
+  static WorkflowModel? fromEntity(String documentID, WorkflowEntity? entity) {
     if (entity == null) return null;
     return WorkflowModel(
           documentID: documentID, 
@@ -90,13 +90,13 @@ class WorkflowModel {
           workflowTask: 
             entity.workflowTask == null ? null :
             entity.workflowTask
-            .map((item) => WorkflowTaskModel.fromEntity(newRandomKey(), item))
+            !.map((item) => WorkflowTaskModel.fromEntity(newRandomKey(), item)!)
             .toList(), 
           appId: entity.appId, 
     );
   }
 
-  static Future<WorkflowModel> fromEntityPlus(String documentID, WorkflowEntity entity, { String appId}) async {
+  static Future<WorkflowModel?> fromEntityPlus(String documentID, WorkflowEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return WorkflowModel(
@@ -104,7 +104,7 @@ class WorkflowModel {
           name: entity.name, 
           workflowTask: 
             entity. workflowTask == null ? null : new List<WorkflowTaskModel>.from(await Future.wait(entity. workflowTask
-            .map((item) => WorkflowTaskModel.fromEntityPlus(newRandomKey(), item, appId: appId))
+            !.map((item) => WorkflowTaskModel.fromEntityPlus(newRandomKey(), item, appId: appId))
             .toList())), 
           appId: entity.appId, 
     );

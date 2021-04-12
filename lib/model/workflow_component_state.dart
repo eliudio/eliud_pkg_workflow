@@ -20,13 +20,13 @@ abstract class WorkflowComponentState extends Equatable {
   const WorkflowComponentState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class WorkflowComponentUninitialized extends WorkflowComponentState {}
 
 class WorkflowComponentError extends WorkflowComponentState {
-  final String message;
+  final String? message;
   WorkflowComponentError({ this.message });
 }
 
@@ -35,16 +35,16 @@ class WorkflowComponentPermissionDenied extends WorkflowComponentState {
 }
 
 class WorkflowComponentLoaded extends WorkflowComponentState {
-  final WorkflowModel value;
+  final WorkflowModel? value;
 
   const WorkflowComponentLoaded({ this.value });
 
-  WorkflowComponentLoaded copyWith({ WorkflowModel copyThis }) {
+  WorkflowComponentLoaded copyWith({ WorkflowModel? copyThis }) {
     return WorkflowComponentLoaded(value: copyThis ?? this.value);
   }
 
   @override
-  List<Object> get props => [value];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'WorkflowComponentLoaded { value: $value }';

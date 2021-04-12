@@ -19,7 +19,7 @@ import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 abstract class AssignmentListEvent extends Equatable {
   const AssignmentListEvent();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadAssignmentList extends AssignmentListEvent {}
@@ -27,49 +27,49 @@ class LoadAssignmentList extends AssignmentListEvent {}
 class NewPage extends AssignmentListEvent {}
 
 class AddAssignmentList extends AssignmentListEvent {
-  final AssignmentModel value;
+  final AssignmentModel? value;
 
   const AddAssignmentList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'AddAssignmentList{ value: $value }';
 }
 
 class UpdateAssignmentList extends AssignmentListEvent {
-  final AssignmentModel value;
+  final AssignmentModel? value;
 
   const UpdateAssignmentList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'UpdateAssignmentList{ value: $value }';
 }
 
 class DeleteAssignmentList extends AssignmentListEvent {
-  final AssignmentModel value;
+  final AssignmentModel? value;
 
   const DeleteAssignmentList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'DeleteAssignmentList{ value: $value }';
 }
 
 class AssignmentListUpdated extends AssignmentListEvent {
-  final List<AssignmentModel> value;
-  final bool mightHaveMore;
+  final List<AssignmentModel?>? value;
+  final bool? mightHaveMore;
 
   const AssignmentListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  List<Object> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [ value, mightHaveMore ];
 
   @override
   String toString() => 'AssignmentListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';

@@ -25,7 +25,7 @@ import 'package:eliud_pkg_workflow/model/assignment_view_component_state.dart';
 
 abstract class AbstractAssignmentViewComponent extends StatelessWidget {
   static String componentName = "assignmentViews";
-  final String assignmentViewID;
+  final String? assignmentViewID;
 
   AbstractAssignmentViewComponent({this.assignmentViewID});
 
@@ -63,7 +63,7 @@ abstract class AbstractAssignmentViewComponent extends StatelessWidget {
     });
   }
 
-  Widget yourWidget(BuildContext context, AssignmentViewModel value);
+  Widget yourWidget(BuildContext context, AssignmentViewModel? value);
   Widget alertWidget({ title: String, content: String});
   AssignmentViewRepository getAssignmentViewRepository(BuildContext context);
 }

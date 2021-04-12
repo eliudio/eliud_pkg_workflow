@@ -58,10 +58,10 @@ import 'package:eliud_pkg_workflow/model/workflow_task_form_state.dart';
 
 class WorkflowTaskForm extends StatelessWidget {
   FormAction formAction;
-  WorkflowTaskModel value;
-  ActionModel submitAction;
+  WorkflowTaskModel? value;
+  ActionModel? submitAction;
 
-  WorkflowTaskForm({Key key, @required this.formAction, @required this.value, this.submitAction}) : super(key: key);
+  WorkflowTaskForm({Key? key, required this.formAction, required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +87,14 @@ class WorkflowTaskForm extends StatelessWidget {
       return Scaffold(
         appBar: formAction == FormAction.UpdateAction ?
                 AppBar(
-                    title: Text("Update WorkflowTask", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Update WorkflowTask", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
                   ) :
                 AppBar(
-                    title: Text("Add WorkflowTask", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Add WorkflowTask", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
                 ),
         body: BlocProvider<WorkflowTaskFormBloc >(
             create: (context) => WorkflowTaskFormBloc(AccessBloc.appId(context),
@@ -109,8 +109,8 @@ class WorkflowTaskForm extends StatelessWidget {
 
 
 class MyWorkflowTaskForm extends StatefulWidget {
-  final FormAction formAction;
-  final ActionModel submitAction;
+  final FormAction? formAction;
+  final ActionModel? submitAction;
 
   MyWorkflowTaskForm({this.formAction, this.submitAction});
 
@@ -119,12 +119,12 @@ class MyWorkflowTaskForm extends StatefulWidget {
 
 
 class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
-  final FormAction formAction;
-  WorkflowTaskFormBloc _myFormBloc;
+  final FormAction? formAction;
+  late WorkflowTaskFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _seqNumberController = TextEditingController();
-  int _responsibleSelectedRadioTile;
+  int? _responsibleSelectedRadioTile;
 
 
   _MyWorkflowTaskFormState(this.formAction);
@@ -148,37 +148,37 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
       );
 
       if (state is WorkflowTaskFormLoaded) {
-        if (state.value.documentID != null)
-          _documentIDController.text = state.value.documentID.toString();
+        if (state.value!.documentID != null)
+          _documentIDController.text = state.value!.documentID.toString();
         else
           _documentIDController.text = "";
-        if (state.value.seqNumber != null)
-          _seqNumberController.text = state.value.seqNumber.toString();
+        if (state.value!.seqNumber != null)
+          _seqNumberController.text = state.value!.seqNumber.toString();
         else
           _seqNumberController.text = "";
-        if (state.value.responsible != null)
-          _responsibleSelectedRadioTile = state.value.responsible.index;
+        if (state.value!.responsible != null)
+          _responsibleSelectedRadioTile = state.value!.responsible!.index;
         else
           _responsibleSelectedRadioTile = 0;
       }
       if (state is WorkflowTaskFormInitialized) {
-        List<Widget> children = List();
+        List<Widget?> children = [];
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('General',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _seqNumberController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Sequence number',
                   ),
                   keyboardType: TextInputType.number,
@@ -193,11 +193,11 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
                 RadioListTile(
                     value: 0,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
                     groupValue: _responsibleSelectedRadioTile,
-                    title: Text("CurrentMember", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("CurrentMember", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                    title: Text("CurrentMember", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    subtitle: Text("CurrentMember", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionResponsible(val);
                     },
                 ),
@@ -206,11 +206,11 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
                 RadioListTile(
                     value: 1,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
                     groupValue: _responsibleSelectedRadioTile,
-                    title: Text("Owner", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("Owner", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                    title: Text("Owner", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    subtitle: Text("Owner", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionResponsible(val);
                     },
                 ),
@@ -219,11 +219,11 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
                 RadioListTile(
                     value: 2,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
                     groupValue: _responsibleSelectedRadioTile,
-                    title: Text("First", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("First", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                    title: Text("First", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    subtitle: Text("First", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionResponsible(val);
                     },
                 ),
@@ -232,11 +232,11 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
                 RadioListTile(
                     value: 3,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
                     groupValue: _responsibleSelectedRadioTile,
-                    title: Text("Previous", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("Previous", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                    title: Text("Previous", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    subtitle: Text("Previous", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionResponsible(val);
                     },
                 ),
@@ -244,7 +244,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
          children.add(Container(
@@ -252,13 +252,13 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Task',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
          children.add(Container(
@@ -266,58 +266,57 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('WorkflowNotification',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
 
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
-                  color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
+                  color: RgbHelper.color(rgbo: app!.formSubmitButtonColor),
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is WorkflowTaskFormError) {
                       return null;
                     } else {
                       if (formAction == FormAction.UpdateAction) {
                         BlocProvider.of<WorkflowTaskListBloc>(context).add(
-                          UpdateWorkflowTaskList(value: state.value.copyWith(
-                              documentID: state.value.documentID, 
-                              seqNumber: state.value.seqNumber, 
-                              task: state.value.task, 
-                              confirmMessage: state.value.confirmMessage, 
-                              rejectMessage: state.value.rejectMessage, 
-                              responsible: state.value.responsible, 
+                          UpdateWorkflowTaskList(value: state.value!.copyWith(
+                              documentID: state.value!.documentID, 
+                              seqNumber: state.value!.seqNumber, 
+                              task: state.value!.task, 
+                              confirmMessage: state.value!.confirmMessage, 
+                              rejectMessage: state.value!.rejectMessage, 
+                              responsible: state.value!.responsible, 
                         )));
                       } else {
                         BlocProvider.of<WorkflowTaskListBloc>(context).add(
                           AddWorkflowTaskList(value: WorkflowTaskModel(
-                              documentID: state.value.documentID, 
-                              seqNumber: state.value.seqNumber, 
-                              task: state.value.task, 
-                              confirmMessage: state.value.confirmMessage, 
-                              rejectMessage: state.value.rejectMessage, 
-                              responsible: state.value.responsible, 
+                              documentID: state.value!.documentID, 
+                              seqNumber: state.value!.seqNumber, 
+                              task: state.value!.task, 
+                              confirmMessage: state.value!.confirmMessage, 
+                              rejectMessage: state.value!.rejectMessage, 
+                              responsible: state.value!.responsible, 
                           )));
                       }
                       if (widget.submitAction != null) {
-                        eliudrouter.Router.navigateTo(context, widget.submitAction);
+                        eliudrouter.Router.navigateTo(context, widget.submitAction!);
                       } else {
                         Navigator.pop(context);
                       }
-                      return true;
                     }
                   },
-                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app.formSubmitButtonTextColor))),
+                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app!.formSubmitButtonTextColor))),
                 ));
 
         return Container(
           color: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? Colors.transparent : null,
-          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app.formBackground),
+          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app!.formBackground),
           padding:
           const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
             child: Form(
@@ -325,7 +324,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
               padding: const EdgeInsets.all(8),
               physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
               shrinkWrap: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)),
-              children: children
+              children: children as List<Widget>
             ),
           )
         );
@@ -345,7 +344,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   }
 
 
-  void setSelectionResponsible(int val) {
+  void setSelectionResponsible(int? val) {
     setState(() {
       _responsibleSelectedRadioTile = val;
     });

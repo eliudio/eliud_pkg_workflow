@@ -21,7 +21,7 @@ abstract class WorkflowComponentEvent extends Equatable {
 }
 
 class FetchWorkflowComponent extends WorkflowComponentEvent {
-  final String id;
+  final String? id;
 
   FetchWorkflowComponent({ this.id });
 }

@@ -22,23 +22,23 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class WorkflowEntity {
-  final String name;
-  final List<WorkflowTaskEntity> workflowTask;
-  final String appId;
+  final String? name;
+  final List<WorkflowTaskEntity>? workflowTask;
+  final String? appId;
 
   WorkflowEntity({this.name, this.workflowTask, this.appId, });
 
 
-  List<Object> get props => [name, workflowTask, appId, ];
+  List<Object?> get props => [name, workflowTask, appId, ];
 
   @override
   String toString() {
-    String workflowTaskCsv = (workflowTask == null) ? '' : workflowTask.join(', ');
+    String workflowTaskCsv = (workflowTask == null) ? '' : workflowTask!.join(', ');
 
     return 'WorkflowEntity{name: $name, workflowTask: WorkflowTask[] { $workflowTaskCsv }, appId: $appId}';
   }
 
-  static WorkflowEntity fromMap(Map map) {
+  static WorkflowEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     var workflowTaskFromMap;
@@ -57,12 +57,12 @@ class WorkflowEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    final List<Map<String, dynamic>> workflowTaskListMap = workflowTask != null 
-        ? workflowTask.map((item) => item.toDocument()).toList()
+  Map<String, Object?> toDocument() {
+    final List<Map<String?, dynamic>>? workflowTaskListMap = workflowTask != null 
+        ? workflowTask!.map((item) => item.toDocument()).toList()
         : null;
 
-    Map<String, Object> theDocument = HashMap();
+    Map<String, Object?> theDocument = HashMap();
     if (name != null) theDocument["name"] = name;
       else theDocument["name"] = null;
     if (workflowTask != null) theDocument["workflowTask"] = workflowTaskListMap;
@@ -72,8 +72,8 @@ class WorkflowEntity {
     return theDocument;
   }
 
-  static WorkflowEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static WorkflowEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

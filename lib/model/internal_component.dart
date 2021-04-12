@@ -74,13 +74,13 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class ListComponentFactory implements ComponentConstructor {
-  Widget createNew({String id, Map<String, Object> parameters}) {
+  Widget? createNew({String? id, Map<String, Object>? parameters}) {
     return ListComponent(componentId: id);
   }
 }
 
 
-typedef DropdownButtonChanged(String value);
+typedef DropdownButtonChanged(String? value);
 
 class DropdownButtonComponentFactory implements ComponentDropDown {
 
@@ -92,7 +92,7 @@ class DropdownButtonComponentFactory implements ComponentDropDown {
     return false;
   }
 
-  Widget createNew({String id, Map<String, Object> parameters, String value, DropdownButtonChanged trigger, bool optional}) {
+  Widget createNew({String? id, Map<String, Object>? parameters, String? value, DropdownButtonChanged? trigger, bool? optional}) {
 
     if (id == "assignments")
       return DropdownButtonComponent(componentId: id, value: value, trigger: trigger, optional: optional);
@@ -103,17 +103,17 @@ class DropdownButtonComponentFactory implements ComponentDropDown {
     if (id == "workflows")
       return DropdownButtonComponent(componentId: id, value: value, trigger: trigger, optional: optional);
 
-    return null;
+    return Text("Id $id not found");
   }
 }
 
 
 class ListComponent extends StatelessWidget with HasFab {
-  final String componentId;
-  Widget widget;
+  final String? componentId;
+  Widget? widget;
 
   @override
-  Widget fab(BuildContext context){
+  Widget? fab(BuildContext context){
     if ((widget != null) && (widget is HasFab)) {
       HasFab hasFab = widget as HasFab;
       return hasFab.fab(context);
@@ -134,7 +134,7 @@ class ListComponent extends StatelessWidget with HasFab {
     return Text('Component with componentId == $componentId not found');
   }
 
-  Widget initWidget() {
+  void initWidget() {
     if (componentId == 'assignments') widget = AssignmentListWidget();
     if (componentId == 'assignmentViews') widget = AssignmentViewListWidget();
     if (componentId == 'workflows') widget = WorkflowListWidget();
@@ -145,11 +145,11 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
-            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context)),
+            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadAssignmentList()),
         )
       ],
-      child: widget,
+      child: widget!,
     );
   }
 
@@ -158,11 +158,11 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
-            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context)),
+            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadAssignmentViewList()),
         )
       ],
-      child: widget,
+      child: widget!,
     );
   }
 
@@ -171,24 +171,24 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
-            workflowRepository: workflowRepository(appId: AccessBloc.appId(context)),
+            workflowRepository: workflowRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadWorkflowList()),
         )
       ],
-      child: widget,
+      child: widget!,
     );
   }
 
 }
 
 
-typedef Changed(String value);
+typedef Changed(String? value);
 
 class DropdownButtonComponent extends StatelessWidget {
-  final String componentId;
-  final String value;
-  final Changed trigger;
-  final bool optional;
+  final String? componentId;
+  final String? value;
+  final Changed? trigger;
+  final bool? optional;
 
   DropdownButtonComponent({this.componentId, this.value, this.trigger, this.optional});
 
@@ -207,7 +207,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
-            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context)),
+            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadAssignmentList()),
         )
       ],
@@ -220,7 +220,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
-            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context)),
+            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadAssignmentViewList()),
         )
       ],
@@ -233,7 +233,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
-            workflowRepository: workflowRepository(appId: AccessBloc.appId(context)),
+            workflowRepository: workflowRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadWorkflowList()),
         )
       ],

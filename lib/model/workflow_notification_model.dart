@@ -34,7 +34,7 @@ enum WorkflowNotificationAddressee {
 }
 
 
-WorkflowNotificationAddressee toWorkflowNotificationAddressee(int index) {
+WorkflowNotificationAddressee toWorkflowNotificationAddressee(int? index) {
   switch (index) {
     case 0: return WorkflowNotificationAddressee.CurrentMember;
     case 1: return WorkflowNotificationAddressee.Owner;
@@ -46,15 +46,15 @@ WorkflowNotificationAddressee toWorkflowNotificationAddressee(int index) {
 
 
 class WorkflowNotificationModel {
-  String message;
+  String? message;
 
   // Who's to be notified after completing the  to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
-  WorkflowNotificationAddressee addressee;
+  WorkflowNotificationAddressee? addressee;
 
   WorkflowNotificationModel({this.message, this.addressee, })  {
   }
 
-  WorkflowNotificationModel copyWith({String message, WorkflowNotificationAddressee addressee, }) {
+  WorkflowNotificationModel copyWith({String? message, WorkflowNotificationAddressee? addressee, }) {
     return WorkflowNotificationModel(message: message ?? this.message, addressee: addressee ?? this.addressee, );
   }
 
@@ -74,14 +74,14 @@ class WorkflowNotificationModel {
     return 'WorkflowNotificationModel{message: $message, addressee: $addressee}';
   }
 
-  WorkflowNotificationEntity toEntity({String appId}) {
+  WorkflowNotificationEntity toEntity({String? appId}) {
     return WorkflowNotificationEntity(
           message: (message != null) ? message : null, 
-          addressee: (addressee != null) ? addressee.index : null, 
+          addressee: (addressee != null) ? addressee!.index : null, 
     );
   }
 
-  static WorkflowNotificationModel fromEntity(WorkflowNotificationEntity entity) {
+  static WorkflowNotificationModel? fromEntity(WorkflowNotificationEntity? entity) {
     if (entity == null) return null;
     return WorkflowNotificationModel(
           message: entity.message, 
@@ -89,7 +89,7 @@ class WorkflowNotificationModel {
     );
   }
 
-  static Future<WorkflowNotificationModel> fromEntityPlus(WorkflowNotificationEntity entity, { String appId}) async {
+  static Future<WorkflowNotificationModel?> fromEntityPlus(WorkflowNotificationEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return WorkflowNotificationModel(

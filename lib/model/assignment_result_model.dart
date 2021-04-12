@@ -32,15 +32,15 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class AssignmentResultModel {
-  String documentID;
-  String key;
-  String value;
+  String? documentID;
+  String? key;
+  String? value;
 
   AssignmentResultModel({this.documentID, this.key, this.value, })  {
     assert(documentID != null);
   }
 
-  AssignmentResultModel copyWith({String documentID, String key, String value, }) {
+  AssignmentResultModel copyWith({String? documentID, String? key, String? value, }) {
     return AssignmentResultModel(documentID: documentID ?? this.documentID, key: key ?? this.key, value: value ?? this.value, );
   }
 
@@ -61,14 +61,14 @@ class AssignmentResultModel {
     return 'AssignmentResultModel{documentID: $documentID, key: $key, value: $value}';
   }
 
-  AssignmentResultEntity toEntity({String appId}) {
+  AssignmentResultEntity toEntity({String? appId}) {
     return AssignmentResultEntity(
           key: (key != null) ? key : null, 
           value: (value != null) ? value : null, 
     );
   }
 
-  static AssignmentResultModel fromEntity(String documentID, AssignmentResultEntity entity) {
+  static AssignmentResultModel? fromEntity(String documentID, AssignmentResultEntity? entity) {
     if (entity == null) return null;
     return AssignmentResultModel(
           documentID: documentID, 
@@ -77,7 +77,7 @@ class AssignmentResultModel {
     );
   }
 
-  static Future<AssignmentResultModel> fromEntityPlus(String documentID, AssignmentResultEntity entity, { String appId}) async {
+  static Future<AssignmentResultModel?> fromEntityPlus(String documentID, AssignmentResultEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return AssignmentResultModel(

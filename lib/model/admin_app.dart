@@ -53,7 +53,7 @@ class AdminApp extends AdminAppInstallerBase {
 
 
   PageModel _assignmentViewsPages() {
-    List<BodyComponentModel> components = List();
+    List<BodyComponentModel> components = [];
     components.add(BodyComponentModel(
       documentID: "internalWidget-assignmentViews", componentName: "eliud_pkg_workflow_internalWidgets", componentId: "assignmentViews"));
     PageModel page = PageModel(
@@ -77,7 +77,7 @@ class AdminApp extends AdminAppInstallerBase {
 
 
   PageModel _workflowsPages() {
-    List<BodyComponentModel> components = List();
+    List<BodyComponentModel> components = [];
     components.add(BodyComponentModel(
       documentID: "internalWidget-workflows", componentName: "eliud_pkg_workflow_internalWidgets", componentId: "workflows"));
     PageModel page = PageModel(
@@ -102,9 +102,9 @@ class AdminApp extends AdminAppInstallerBase {
 
   Future<void> _setupAdminPages() {
 
-    return pageRepository(appId: appId).add(_assignmentViewsPages())
+    return pageRepository(appId: appId)!.add(_assignmentViewsPages())
 
-        .then((_) => pageRepository(appId: appId).add(_workflowsPages()))
+        .then((_) => pageRepository(appId: appId)!.add(_workflowsPages()))
 
     ;
   }
@@ -120,7 +120,7 @@ class AdminApp extends AdminAppInstallerBase {
 class AdminMenu extends AdminAppMenuInstallerBase {
 
   Future<MenuDefModel> menu(String appId) async {
-    List<MenuItemModel> menuItems = List<MenuItemModel>();
+    var menuItems = <MenuItemModel>[];
 
     menuItems.add(
       MenuItemModel(
@@ -149,7 +149,7 @@ class AdminMenu extends AdminAppMenuInstallerBase {
       name: "eliud_pkg_workflow",
       menuItems: menuItems
     );
-    await menuDefRepository(appId: appId).add(menu);
+    await menuDefRepository(appId: appId)!.add(menu);
     return menu;
   }
 }

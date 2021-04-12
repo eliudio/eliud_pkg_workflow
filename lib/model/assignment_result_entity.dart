@@ -21,20 +21,20 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class AssignmentResultEntity {
-  final String key;
-  final String value;
+  final String? key;
+  final String? value;
 
   AssignmentResultEntity({this.key, this.value, });
 
 
-  List<Object> get props => [key, value, ];
+  List<Object?> get props => [key, value, ];
 
   @override
   String toString() {
     return 'AssignmentResultEntity{key: $key, value: $value}';
   }
 
-  static AssignmentResultEntity fromMap(Map map) {
+  static AssignmentResultEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     return AssignmentResultEntity(
@@ -43,8 +43,8 @@ class AssignmentResultEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    Map<String, Object> theDocument = HashMap();
+  Map<String, Object?> toDocument() {
+    Map<String, Object?> theDocument = HashMap();
     if (key != null) theDocument["key"] = key;
       else theDocument["key"] = null;
     if (value != null) theDocument["value"] = value;
@@ -52,8 +52,8 @@ class AssignmentResultEntity {
     return theDocument;
   }
 
-  static AssignmentResultEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static AssignmentResultEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

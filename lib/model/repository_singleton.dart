@@ -37,16 +37,16 @@ class RepositorySingleton extends AbstractRepositorySingleton {
     var _assignmentViewRepository = HashMap<String, AssignmentViewRepository>();
     var _workflowRepository = HashMap<String, WorkflowRepository>();
 
-    AssignmentRepository assignmentRepository(String appId) {
-      if (_assignmentRepository[appId] == null) _assignmentRepository[appId] = AssignmentCache(AssignmentFirestore(appRepository().getSubCollection(appId, 'assignment'), appId));
+    AssignmentRepository? assignmentRepository(String? appId) {
+      if ((appId != null) && (_assignmentRepository[appId] == null)) _assignmentRepository[appId] = AssignmentCache(AssignmentFirestore(appRepository()!.getSubCollection(appId, 'assignment'), appId));
       return _assignmentRepository[appId];
     }
-    AssignmentViewRepository assignmentViewRepository(String appId) {
-      if (_assignmentViewRepository[appId] == null) _assignmentViewRepository[appId] = AssignmentViewCache(AssignmentViewFirestore(appRepository().getSubCollection(appId, 'assignmentview'), appId));
+    AssignmentViewRepository? assignmentViewRepository(String? appId) {
+      if ((appId != null) && (_assignmentViewRepository[appId] == null)) _assignmentViewRepository[appId] = AssignmentViewCache(AssignmentViewFirestore(appRepository()!.getSubCollection(appId, 'assignmentview'), appId));
       return _assignmentViewRepository[appId];
     }
-    WorkflowRepository workflowRepository(String appId) {
-      if (_workflowRepository[appId] == null) _workflowRepository[appId] = WorkflowCache(WorkflowFirestore(appRepository().getSubCollection(appId, 'workflow'), appId));
+    WorkflowRepository? workflowRepository(String? appId) {
+      if ((appId != null) && (_workflowRepository[appId] == null)) _workflowRepository[appId] = WorkflowCache(WorkflowFirestore(appRepository()!.getSubCollection(appId, 'workflow'), appId));
       return _workflowRepository[appId];
     }
 

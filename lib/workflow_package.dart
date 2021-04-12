@@ -24,7 +24,7 @@ import 'model/assignment_model.dart';
 // Todo: clearly we can introduce some caching, as we are listening as well as querying the same data. So, instead: keep a cache and update the cache adnd use it from within the isConditionOk
 abstract class WorkflowPackage extends PackageWithSubscription {
   static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
-  bool stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
+  bool? stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
 
   static EliudQuery getOpenAssignmentsQuery(String appId, String assigneeId) {
     return EliudQuery(
@@ -36,23 +36,23 @@ abstract class WorkflowPackage extends PackageWithSubscription {
     );
   }
 
-  void _setState(bool newState, {MemberModel currentMember}) {
+  void _setState(bool newState, {MemberModel? currentMember}) {
     if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
       stateCONDITION_MUST_HAVE_ASSIGNMENTS = newState;
-      accessBloc.add(MemberUpdated(currentMember));
+      accessBloc.add(MemberUpdated(currentMember!));
     }
   }
 
-  void resubscribe(AppModel app, MemberModel currentMember) {
-    String appId = app.documentID;
+  void resubscribe(AppModel? app, MemberModel? currentMember) {
+    String appId = app!.documentID!;
     if (currentMember != null) {
-      subscription = assignmentRepository(appId: appId).listen((list) {
+      subscription = assignmentRepository(appId: appId)!.listen((list) {
         // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
         // then we must inform the AccessBloc, so that it can refresh the state
         _setState(list.length > 0, currentMember: currentMember);
       }/*, orderBy: 'timestamp',
           descending: true*/,
-          eliudQuery: getOpenAssignmentsQuery(appId, currentMember.documentID));
+          eliudQuery: getOpenAssignmentsQuery(appId, currentMember!.documentID!));
     } else {
       _setState(false);
     }
@@ -64,7 +64,7 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   }
 
   @override
-  Future<bool> isConditionOk(String packageCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) async {
+  Future<bool?> isConditionOk(String? packageCondition, AppModel? app, MemberModel? member, bool? isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async {
     if (packageCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
       if (stateCONDITION_MUST_HAVE_ASSIGNMENTS == null) return false;
       return stateCONDITION_MUST_HAVE_ASSIGNMENTS;
@@ -91,10 +91,10 @@ abstract class WorkflowPackage extends PackageWithSubscription {
     eliud_router.Router.register(WorkflowActionHandler());
 
     // Register a mapper for an extra action: the mapper for the WorkflowAction
-    ActionModelRegistry.registry().addMapper(WorkflowActionEntity.label, WorkflowActionMapper());
+    ActionModelRegistry.registry()!.addMapper(WorkflowActionEntity.label, WorkflowActionMapper());
 
     // Register a mapper for an extra task: the mapper for the ExampleTask1
-    TaskModelRegistry.registry().addMapper(ExampleTaskEntity1.label, ExampleTaskModel1Mapper());
+    TaskModelRegistry.registry()!.addMapper(ExampleTaskEntity1.label, ExampleTaskModel1Mapper());
   }
 
   @override

@@ -19,7 +19,7 @@ import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 abstract class WorkflowListEvent extends Equatable {
   const WorkflowListEvent();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadWorkflowList extends WorkflowListEvent {}
@@ -27,49 +27,49 @@ class LoadWorkflowList extends WorkflowListEvent {}
 class NewPage extends WorkflowListEvent {}
 
 class AddWorkflowList extends WorkflowListEvent {
-  final WorkflowModel value;
+  final WorkflowModel? value;
 
   const AddWorkflowList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'AddWorkflowList{ value: $value }';
 }
 
 class UpdateWorkflowList extends WorkflowListEvent {
-  final WorkflowModel value;
+  final WorkflowModel? value;
 
   const UpdateWorkflowList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'UpdateWorkflowList{ value: $value }';
 }
 
 class DeleteWorkflowList extends WorkflowListEvent {
-  final WorkflowModel value;
+  final WorkflowModel? value;
 
   const DeleteWorkflowList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'DeleteWorkflowList{ value: $value }';
 }
 
 class WorkflowListUpdated extends WorkflowListEvent {
-  final List<WorkflowModel> value;
-  final bool mightHaveMore;
+  final List<WorkflowModel?>? value;
+  final bool? mightHaveMore;
 
   const WorkflowListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  List<Object> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [ value, mightHaveMore ];
 
   @override
   String toString() => 'WorkflowListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';

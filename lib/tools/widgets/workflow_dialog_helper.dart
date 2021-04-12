@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DialogWithAssignmentResults extends StatefulWidget {
-  final String title;
-  final String message;
-  final List<AssignmentResultModel> resultsPrevious;
-  final List<String> buttonLabels;
-  final List<Function> functions;
-  final List<Widget> extraFields;
+  final String? title;
+  final String? message;
+  final List<AssignmentResultModel>? resultsPrevious;
+  final List<String?>? buttonLabels;
+  final List<Function?>? functions;
+  final List<Widget>? extraFields;
 
   DialogWithAssignmentResults(
-      {Key key,
+      {Key? key,
       this.title,
       this.message,
       this.buttonLabels,
@@ -33,45 +33,45 @@ class _DialogWithAssignmentResultsState
   @override
   Widget build(BuildContext context) {
     return dialogHelper.build(
-        title: widget.title,
+        title: widget.title!,
         contents: contents(context),
         buttons: dialogHelper.getButtons(
-            context, widget.buttonLabels, widget.functions));
+            context, widget.buttonLabels as List<String>, widget.functions as List<Function>));
   }
 
   Widget contents(BuildContext context) {
     List<Widget> widgets = [];
     if ((widget.resultsPrevious != null) &&
-        (widget.resultsPrevious.isNotEmpty)) {
-      widgets.add(Text(widget.message));
-      for (int i = 0; i < widget.resultsPrevious.length; i++) {
-        var result = widget.resultsPrevious[i];
-        widgets.add(Text(result.key + ": " + result.value));
+        (widget.resultsPrevious!.isNotEmpty)) {
+      widgets.add(Text(widget.message!));
+      for (int i = 0; i < widget.resultsPrevious!.length; i++) {
+        var result = widget.resultsPrevious![i];
+        widgets.add(Text(result.key! + ": " + result.value!));
       }
     }
 
-    if ((widget.extraFields != null) && (widget.extraFields.isNotEmpty)) {
-      widgets.addAll(widget.extraFields);
+    if ((widget.extraFields != null) && (widget.extraFields!.isNotEmpty)) {
+      widgets.addAll(widget.extraFields!);
     }
 
     if (widgets.length > 0) {
       return Column(children: widgets);
     } else {
-      return Text(widget.message);
+      return Text(widget.message!);
     }
   }
 }
 
 class YesNoDialogWithAssignmentResults extends StatelessWidget {
-  final String title;
-  final String message;
-  final List<AssignmentResultModel> resultsPrevious;
-  final Function yesFunction;
-  final Function noFunction;
-  final List<Widget> extraFields;
+  final String? title;
+  final String? message;
+  final List<AssignmentResultModel>? resultsPrevious;
+  final Function? yesFunction;
+  final Function? noFunction;
+  final List<Widget>? extraFields;
 
   const YesNoDialogWithAssignmentResults(
-      {Key key,
+      {Key? key,
       this.title,
       this.message,
       this.resultsPrevious,
@@ -94,17 +94,17 @@ class YesNoDialogWithAssignmentResults extends StatelessWidget {
 }
 
 class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
-  final String title;
-  final String message;
-  final List<AssignmentResultModel> resultsPrevious;
-  final Function yesFunction;
-  final Function noFunction;
-  final List<Widget> extraFields;
-  final String yesLabel;
-  final String noLabel;
+  final String? title;
+  final String? message;
+  final List<AssignmentResultModel>? resultsPrevious;
+  final Function? yesFunction;
+  final Function? noFunction;
+  final List<Widget>? extraFields;
+  final String? yesLabel;
+  final String? noLabel;
 
   const YesNoIgnoreDialogWithAssignmentResults(
-      {Key key,
+      {Key? key,
       this.title,
       this.message,
       this.resultsPrevious,

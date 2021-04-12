@@ -22,13 +22,13 @@ abstract class AssignmentResultFormState extends Equatable {
   const AssignmentResultFormState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 // Startup: menu has not been initialised yet and so we should show a "loading indicator" or something
 class AssignmentResultFormUninitialized extends AssignmentResultFormState {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 
   @override
   String toString() {
@@ -38,22 +38,22 @@ class AssignmentResultFormUninitialized extends AssignmentResultFormState {
 
 // AssignmentResultModel has been initialised and hence AssignmentResultModel is available
 class AssignmentResultFormInitialized extends AssignmentResultFormState {
-  final AssignmentResultModel value;
+  final AssignmentResultModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   const AssignmentResultFormInitialized({ this.value });
 }
 
 // Menu has been initialised and hence a menu is available
 abstract class AssignmentResultFormError extends AssignmentResultFormInitialized {
-  final String message;
+  final String? message;
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
-  const AssignmentResultFormError({this.message, AssignmentResultModel value }) : super(value: value);
+  const AssignmentResultFormError({this.message, AssignmentResultModel? value }) : super(value: value);
 
   @override
   String toString() {
@@ -64,10 +64,10 @@ abstract class AssignmentResultFormError extends AssignmentResultFormInitialized
   }
 }
 class DocumentIDAssignmentResultFormError extends AssignmentResultFormError { 
-  const DocumentIDAssignmentResultFormError({ String message, AssignmentResultModel value }): super(message: message, value: value);
+  const DocumentIDAssignmentResultFormError({ String? message, AssignmentResultModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -80,10 +80,10 @@ class DocumentIDAssignmentResultFormError extends AssignmentResultFormError {
 
 
 class KeyAssignmentResultFormError extends AssignmentResultFormError { 
-  const KeyAssignmentResultFormError({ String message, AssignmentResultModel value }): super(message: message, value: value);
+  const KeyAssignmentResultFormError({ String? message, AssignmentResultModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -96,10 +96,10 @@ class KeyAssignmentResultFormError extends AssignmentResultFormError {
 
 
 class ValueAssignmentResultFormError extends AssignmentResultFormError { 
-  const ValueAssignmentResultFormError({ String message, AssignmentResultModel value }): super(message: message, value: value);
+  const ValueAssignmentResultFormError({ String? message, AssignmentResultModel? value }): super(message: message, value: value);
 
   @override
-  List<Object> get props => [ message, value ];
+  List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
@@ -112,10 +112,10 @@ class ValueAssignmentResultFormError extends AssignmentResultFormError {
 
 
 class AssignmentResultFormLoaded extends AssignmentResultFormInitialized { 
-  const AssignmentResultFormLoaded({ AssignmentResultModel value }): super(value: value);
+  const AssignmentResultFormLoaded({ AssignmentResultModel? value }): super(value: value);
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() {
@@ -127,10 +127,10 @@ class AssignmentResultFormLoaded extends AssignmentResultFormInitialized {
 
 
 class SubmittableAssignmentResultForm extends AssignmentResultFormInitialized { 
-  const SubmittableAssignmentResultForm({ AssignmentResultModel value }): super(value: value);
+  const SubmittableAssignmentResultForm({ AssignmentResultModel? value }): super(value: value);
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() {

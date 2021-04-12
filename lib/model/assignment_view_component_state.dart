@@ -20,13 +20,13 @@ abstract class AssignmentViewComponentState extends Equatable {
   const AssignmentViewComponentState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AssignmentViewComponentUninitialized extends AssignmentViewComponentState {}
 
 class AssignmentViewComponentError extends AssignmentViewComponentState {
-  final String message;
+  final String? message;
   AssignmentViewComponentError({ this.message });
 }
 
@@ -35,16 +35,16 @@ class AssignmentViewComponentPermissionDenied extends AssignmentViewComponentSta
 }
 
 class AssignmentViewComponentLoaded extends AssignmentViewComponentState {
-  final AssignmentViewModel value;
+  final AssignmentViewModel? value;
 
   const AssignmentViewComponentLoaded({ this.value });
 
-  AssignmentViewComponentLoaded copyWith({ AssignmentViewModel copyThis }) {
+  AssignmentViewComponentLoaded copyWith({ AssignmentViewModel? copyThis }) {
     return AssignmentViewComponentLoaded(value: copyThis ?? this.value);
   }
 
   @override
-  List<Object> get props => [value];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AssignmentViewComponentLoaded { value: $value }';

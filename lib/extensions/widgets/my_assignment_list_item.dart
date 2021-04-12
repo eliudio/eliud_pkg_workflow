@@ -14,8 +14,8 @@ class MyAssignmentListItem extends StatelessWidget {
   final AssignmentModel value;
 
   MyAssignmentListItem({
-    Key key,
-    @required this.value,
+    Key? key,
+    required this.value,
   }) : super(key: key);
 
   @override
@@ -30,11 +30,11 @@ class MyAssignmentListItem extends StatelessWidget {
       },
       child: ListTile(
         onTap: () async {
-          var valueWithRelations = await assignmentRepository(appId: app.documentID).get(value.documentID);
-          value.task.callExecute(Registry.navigatorKey.currentContext, valueWithRelations, false);
+          var valueWithRelations = await assignmentRepository(appId: app!.documentID)!.get(value.documentID);
+          value.task!.callExecute(Registry.navigatorKey.currentContext, valueWithRelations, false);
         },
-        trailing: Text(value.timestamp, style: style),
-        title: Text(value.task.description == null ? "?" : value.task.description, style: style,))
+        trailing: Text(value.timestamp!, style: style),
+        title: Text(value.task!.description == null ? "?" : value.task!.description!, style: style,))
       );
   }
 }

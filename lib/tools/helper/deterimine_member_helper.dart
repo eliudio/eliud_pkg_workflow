@@ -19,8 +19,8 @@ enum Responsible {
 }
 
 class DetermineMemberHelper {
-  static Future<String> determineMemberWithWorkflowNotificationAddressee(WorkflowNotificationAddressee responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
-    Responsible newResponsible;
+  static Future<String?> determineMemberWithWorkflowNotificationAddressee(WorkflowNotificationAddressee? responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
+    Responsible? newResponsible;
     switch (responsible) {
       case WorkflowNotificationAddressee.CurrentMember: newResponsible = Responsible.CurrentMember; break;
       case WorkflowNotificationAddressee.Owner: newResponsible = Responsible.Owner; break;
@@ -30,8 +30,8 @@ class DetermineMemberHelper {
     return determineMember(newResponsible, app, member, currentAssignment);
   }
 
-  static Future<String> determineMemberWithWorkflowTaskResponsible(WorkflowTaskResponsible responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
-    Responsible newResponsible;
+  static Future<String?> determineMemberWithWorkflowTaskResponsible(WorkflowTaskResponsible? responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
+    Responsible? newResponsible;
     switch (responsible) {
       case WorkflowTaskResponsible.CurrentMember: newResponsible = Responsible.CurrentMember; break;
       case WorkflowTaskResponsible.Owner: newResponsible = Responsible.Owner; break;
@@ -41,7 +41,7 @@ class DetermineMemberHelper {
     return determineMember(newResponsible, app, member, currentAssignment);
   }
 
-  static Future<String> determineMember(Responsible responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
+  static Future<String?> determineMember(Responsible? responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
     switch (responsible) {
       case Responsible.CurrentMember:
         return member.documentID;
@@ -52,13 +52,22 @@ class DetermineMemberHelper {
         var assigneeId;
         while (findAssignment.triggeredById != null) {
           assigneeId = findAssignment.assigneeId;
-          findAssignment = await assignmentRepository(appId: app.documentID).get(findAssignment.triggeredById);
+          var found = await (assignmentRepository(appId: app.documentID)!.get(findAssignment.triggeredById));
+          if (found != null) {
+            findAssignment = found;
+          } else {
+            return null;
+          }
         }
         return assigneeId;
       case Responsible.Previous:
         if (currentAssignment.triggeredById != null) {
-          var triggeredBy = await assignmentRepository(appId: app.documentID).get(currentAssignment.triggeredById);
-          return triggeredBy.assigneeId;
+          var triggeredBy = await (assignmentRepository(appId: app.documentID)!.get(currentAssignment.triggeredById));
+          if (triggeredBy != null) {
+            return triggeredBy.assigneeId;
+          } else {
+            return null;
+          }
         }
         break;
     }

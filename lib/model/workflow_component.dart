@@ -25,7 +25,7 @@ import 'package:eliud_pkg_workflow/model/workflow_component_state.dart';
 
 abstract class AbstractWorkflowComponent extends StatelessWidget {
   static String componentName = "workflows";
-  final String workflowID;
+  final String? workflowID;
 
   AbstractWorkflowComponent({this.workflowID});
 
@@ -63,7 +63,7 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
     });
   }
 
-  Widget yourWidget(BuildContext context, WorkflowModel value);
+  Widget yourWidget(BuildContext context, WorkflowModel? value);
   Widget alertWidget({ title: String, content: String});
   WorkflowRepository getWorkflowRepository(BuildContext context);
 }

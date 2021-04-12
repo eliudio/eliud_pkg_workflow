@@ -23,7 +23,7 @@ import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
 import 'package:flutter/services.dart';
 
 class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, AssignmentViewComponentState> {
-  final AssignmentViewRepository assignmentViewRepository;
+  final AssignmentViewRepository? assignmentViewRepository;
 
   AssignmentViewComponentBloc({ this.assignmentViewRepository }): super(AssignmentViewComponentUninitialized());
   @override
@@ -33,9 +33,9 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
       try {
         if (currentState is AssignmentViewComponentUninitialized) {
           bool permissionDenied = false;
-          final model = await assignmentViewRepository.get(event.id, onError: (error) {
+          final model = await assignmentViewRepository!.get(event.id, onError: (error) {
             // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
               permissionDenied = true;
             }
           });
@@ -45,7 +45,7 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
             if (model != null) {
               yield AssignmentViewComponentLoaded(value: model);
             } else {
-              String id = event.id;
+              String? id = event.id;
               yield AssignmentViewComponentError(
                   message: "AssignmentView with id = '$id' not found");
             }

@@ -19,18 +19,18 @@ typedef void FinaliseWorkflow(bool success, AssignmentModel assignmentModel);
 
 class ExecutionResults {
   final ExecutionStatus status;
-  final List<AssignmentResultModel> results;
+  final List<AssignmentResultModel>? results;
 
   ExecutionResults(this.status, {this.results});
 }
 
 class TaskModelRegistry {
   final Map<String, TaskModelMapper> mappers = HashMap();
-  static TaskModelRegistry _instance;
+  static TaskModelRegistry? _instance;
 
   TaskModelRegistry._internal();
 
-  static TaskModelRegistry registry() {
+  static TaskModelRegistry? registry() {
     _instance ??= TaskModelRegistry._internal();
 
     return _instance;
@@ -40,8 +40,8 @@ class TaskModelRegistry {
     mappers[taskString] = mapper;
   }
 
-  TaskModelMapper getMapper(String taskString) {
-    return mappers[taskString];
+  TaskModelMapper? getMapper(String? taskString) {
+    return mappers[taskString!];
   }
 }
 
@@ -52,21 +52,21 @@ abstract class TaskModelMapper {
 }
 
 abstract class TaskModel {
-  final String description;
-  final bool
+  final String? description;
+  final bool?
       executeInstantly; // Execute instantly? When a triggering assignment has been finalised by a member and when the next assignment is also assigned to this member, then it will be executed instantly when set",
 
-  bool _isNewAssignment;
-  FinaliseWorkflow _finaliseWorkflow;
+  bool? _isNewAssignment;
+  FinaliseWorkflow? _finaliseWorkflow;
 
   TaskModel({this.description, this.executeInstantly});
 
-  TaskEntity toEntity({String appId});
+  TaskEntity toEntity({String? appId});
 
-  static TaskModel fromEntity(TaskEntity entity) {
+  static TaskModel? fromEntity(TaskEntity? entity) {
     if (entity == null) return null;
 
-    var mapper = TaskModelRegistry.registry().getMapper(entity.taskString);
+    var mapper = TaskModelRegistry.registry()!.getMapper(entity.taskString);
     if (mapper != null) {
       return mapper.fromEntity(entity);
     }
@@ -74,11 +74,11 @@ abstract class TaskModel {
     return null;
   }
 
-  static Future<TaskModel> fromEntityPlus(TaskEntity entity,
-      {String appId}) async {
+  static Future<TaskModel?> fromEntityPlus(TaskEntity? entity,
+      {String? appId}) async {
     if (entity == null) return null;
 
-    var mapper = TaskModelRegistry.registry().getMapper(entity.taskString);
+    var mapper = TaskModelRegistry.registry()!.getMapper(entity.taskString);
     if (mapper != null) {
       return mapper.fromEntityPlus(entity);
     }
@@ -89,7 +89,7 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  Future<void> startTask(BuildContext context, AssignmentModel assignmentModel);
+  Future<void> startTask(BuildContext? context, AssignmentModel? assignmentModel);
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
@@ -103,39 +103,40 @@ abstract class TaskModel {
     if (state is AppLoaded) {
       if (state.getMember() != null) {
         var member = state.getMember();
-        if (executionResult.status == ExecutionStatus.success) {
-          _sendMessage(context, assignmentModel.confirmMessage, state.app,
-              member, assignmentModel, feedback);
-          var nextAssignment = await _nextAssignment(
-              context, assignmentModel, executionResult, member, state.app);
-          if (nextAssignment != null) {
-            // if the next assignment is assigned to the currently logged in member, then present it instantly:
-            MemberModel currentMember =
-            AccessBloc.getState(context).getMember();
-            if ((currentMember != null) &&
-                (nextAssignment.assigneeId == currentMember.documentID) &&
-                (nextAssignment.task.executeInstantly != null) &&
-                (nextAssignment.task.executeInstantly)) {
-              nextAssignment.task.callExecute(context, nextAssignment, false,
-                  finaliseWorkflow: _finaliseWorkflow);
+        if (member != null) {
+          if (executionResult.status == ExecutionStatus.success) {
+            _sendMessage(context, assignmentModel.confirmMessage, state.app,
+                member, assignmentModel, feedback);
+            var nextAssignment = await _nextAssignment(
+                context, assignmentModel, executionResult, member, state.app);
+            if (nextAssignment != null) {
+              // if the next assignment is assigned to the currently logged in member, then present it instantly:
+              MemberModel? currentMember = AccessBloc.getState(context).getMember();
+              if ((currentMember != null) &&
+                  (nextAssignment.assigneeId == currentMember.documentID) &&
+                  (nextAssignment.task!.executeInstantly != null) &&
+                  nextAssignment.task!.executeInstantly!) {
+                nextAssignment.task!.callExecute(context, nextAssignment, false,
+                    finaliseWorkflow: _finaliseWorkflow);
+              }
             }
+          } else {
+            _sendMessage(context, assignmentModel.rejectMessage, state.app,
+                member, assignmentModel, feedback);
           }
-        } else {
-          _sendMessage(context, assignmentModel.rejectMessage, state.app,
-              member, assignmentModel, feedback);
         }
       }
     }
     if ((_finaliseWorkflow != null)) {
-      _finaliseWorkflow(
+      _finaliseWorkflow!(
           executionResult.status == ExecutionStatus.success, assignmentModel);
     }
   }
 
   /* This method is called by the workflow framework */
-  void callExecute(BuildContext context, AssignmentModel assignmentModel,
+  void callExecute(BuildContext? context, AssignmentModel? assignmentModel,
       bool isNewAssignment,
-      {FinaliseWorkflow finaliseWorkflow}) {
+      {FinaliseWorkflow? finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
     _finaliseWorkflow = finaliseWorkflow;
     startTask(context, assignmentModel);
@@ -144,7 +145,7 @@ abstract class TaskModel {
   Future<void> _handleCurrentAssignment(
       BuildContext context,
       AssignmentModel assignmentModel,
-      bool isNewAssignment,
+      bool? isNewAssignment,
       ExecutionResults executionResult) async {
     var assignmentStatus;
     switch (executionResult.status) {
@@ -158,13 +159,13 @@ abstract class TaskModel {
     assignmentModel.resultsCurrent = executionResult.results;
     if (assignmentStatus != null) {
       assignmentModel.status = assignmentStatus;
-      if (isNewAssignment) {
+      if (isNewAssignment!) {
         await AbstractRepositorySingleton.singleton
-            .assignmentRepository(assignmentModel.appId)
+            .assignmentRepository(assignmentModel.appId)!
             .add(assignmentModel);
       } else {
         await AbstractRepositorySingleton.singleton
-            .assignmentRepository(assignmentModel.appId)
+            .assignmentRepository(assignmentModel.appId)!
             .update(assignmentModel);
       }
     }
@@ -172,7 +173,7 @@ abstract class TaskModel {
 
   Future<void> _sendMessage(
       BuildContext context,
-      WorkflowNotificationModel workflowNotificationModel,
+      WorkflowNotificationModel? workflowNotificationModel,
       AppModel app,
       MemberModel member,
       AssignmentModel currentAssignment,
@@ -180,23 +181,28 @@ abstract class TaskModel {
     if (workflowNotificationModel != null) {
       var message = workflowNotificationModel.message;
       if (feedback != null) {
-        message = message + " " + feedback;
+        message = message! + " " + feedback;
       }
       var addressee = workflowNotificationModel.addressee;
-      String to = await DetermineMemberHelper
+      String? to = await (DetermineMemberHelper
           .determineMemberWithWorkflowNotificationAddressee(
-              addressee, app, member, currentAssignment);
-      AbstractNotificationPlatform.platform.sendMessage(context, to, message);
+              addressee, app, member, currentAssignment));
+      if (to == null) {
+        print("error can't determing addressee to send message");
+      } else {
+        AbstractNotificationPlatform.platform!.sendMessage(
+            context, to, message!);
+      }
     }
   }
 
-  Future<AssignmentModel> _nextAssignment(
+  Future<AssignmentModel?> _nextAssignment(
       BuildContext context,
       AssignmentModel currentAssignment,
       ExecutionResults executionResult,
       MemberModel member,
       AppModel app) async {
-    var tasks = currentAssignment.workflow.workflowTask;
+    var tasks = currentAssignment.workflow!.workflowTask!;
     var found = -1;
     for (int i = 0; i < tasks.length; i++) {
       if (tasks[i].seqNumber == currentAssignment.workflowTaskSeqNumber) {
@@ -209,7 +215,7 @@ abstract class TaskModel {
       if (found + 1 < tasks.length) {
         var nextTask = tasks[found + 1];
         WorkflowTaskModel workflowTaskModel =
-            currentAssignment.workflow.workflowTask[found + 1];
+            currentAssignment.workflow!.workflowTask![found + 1];
         var nextAssignment = AssignmentModel(
             documentID: newRandomKey(),
             appId: currentAssignment.appId,
@@ -226,7 +232,7 @@ abstract class TaskModel {
             rejectMessage: workflowTaskModel.rejectMessage,
             resultsPrevious: executionResult.results);
         return await AbstractRepositorySingleton.singleton
-            .assignmentRepository(currentAssignment.appId)
+            .assignmentRepository(currentAssignment.appId)!
             .add(nextAssignment);
       } else {
         // no next task to do
@@ -238,14 +244,14 @@ abstract class TaskModel {
 }
 
 class ExampleTaskModel1 extends TaskModel {
-  final String extraParameter;
+  final String? extraParameter;
 
   ExampleTaskModel1(
-      {this.extraParameter, String description, bool executeInstantly})
+      {this.extraParameter, String? description, bool? executeInstantly})
       : super(description: description, executeInstantly: executeInstantly);
 
   @override
-  TaskEntity toEntity({String appId}) {
+  TaskEntity toEntity({String? appId}) {
     return ExampleTaskEntity1(
         description: description, executeInstantly: executeInstantly);
   }
@@ -262,7 +268,7 @@ class ExampleTaskModel1 extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext context, AssignmentModel assignmentModel) {
+      BuildContext? context, AssignmentModel? assignmentModel) {
     throw UnimplementedError();
   }
 }
@@ -270,7 +276,7 @@ class ExampleTaskModel1 extends TaskModel {
 class ExampleTaskModel1Mapper implements TaskModelMapper {
   @override
   TaskModel fromEntity(TaskEntity entity) =>
-      ExampleTaskModel1.fromEntity(entity);
+      ExampleTaskModel1.fromEntity(entity as ExampleTaskEntity1);
 
   @override
   TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);

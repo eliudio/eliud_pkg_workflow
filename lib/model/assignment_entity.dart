@@ -22,36 +22,36 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class AssignmentEntity {
-  final String appId;
-  final String reporterId;
-  final String assigneeId;
-  final TaskEntity task;
-  final String workflowId;
-  final int workflowTaskSeqNumber;
-  final Object timestamp;
-  final int status;
-  final List<AssignmentResultEntity> resultsCurrent;
-  final List<AssignmentResultEntity> resultsPrevious;
-  final String triggeredById;
-  final WorkflowNotificationEntity confirmMessage;
-  final WorkflowNotificationEntity rejectMessage;
+  final String? appId;
+  final String? reporterId;
+  final String? assigneeId;
+  final TaskEntity? task;
+  final String? workflowId;
+  final int? workflowTaskSeqNumber;
+  final Object? timestamp;
+  final int? status;
+  final List<AssignmentResultEntity>? resultsCurrent;
+  final List<AssignmentResultEntity>? resultsPrevious;
+  final String? triggeredById;
+  final WorkflowNotificationEntity? confirmMessage;
+  final WorkflowNotificationEntity? rejectMessage;
 
   AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, });
 
-  AssignmentEntity copyWith({Object timestamp, }) {
+  AssignmentEntity copyWith({Object? timestamp, }) {
     return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, workflowTaskSeqNumber: workflowTaskSeqNumber, timestamp : timestamp, status: status, resultsCurrent: resultsCurrent, resultsPrevious: resultsPrevious, triggeredById: triggeredById, confirmMessage: confirmMessage, rejectMessage: rejectMessage, );
   }
-  List<Object> get props => [appId, reporterId, assigneeId, task, workflowId, workflowTaskSeqNumber, timestamp, status, resultsCurrent, resultsPrevious, triggeredById, confirmMessage, rejectMessage, ];
+  List<Object?> get props => [appId, reporterId, assigneeId, task, workflowId, workflowTaskSeqNumber, timestamp, status, resultsCurrent, resultsPrevious, triggeredById, confirmMessage, rejectMessage, ];
 
   @override
   String toString() {
-    String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent.join(', ');
-    String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious.join(', ');
+    String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent!.join(', ');
+    String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious!.join(', ');
 
     return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
-  static AssignmentEntity fromMap(Map map) {
+  static AssignmentEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     var taskFromMap;
@@ -90,7 +90,7 @@ class AssignmentEntity {
       task: taskFromMap, 
       workflowId: map['workflowId'], 
       workflowTaskSeqNumber: int.tryParse(map['workflowTaskSeqNumber'].toString()), 
-      timestamp: assignmentRepository().timeStampToString(map['timestamp']), 
+      timestamp: assignmentRepository()?.timeStampToString(map['timestamp']), 
       status: map['status'], 
       resultsCurrent: resultsCurrentList, 
       resultsPrevious: resultsPreviousList, 
@@ -100,24 +100,24 @@ class AssignmentEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    final Map<String, dynamic> taskMap = task != null 
-        ? task.toDocument()
+  Map<String, Object?> toDocument() {
+    final Map<String, dynamic>? taskMap = task != null 
+        ? task!.toDocument()
         : null;
-    final List<Map<String, dynamic>> resultsCurrentListMap = resultsCurrent != null 
-        ? resultsCurrent.map((item) => item.toDocument()).toList()
+    final List<Map<String?, dynamic>>? resultsCurrentListMap = resultsCurrent != null 
+        ? resultsCurrent!.map((item) => item.toDocument()).toList()
         : null;
-    final List<Map<String, dynamic>> resultsPreviousListMap = resultsPrevious != null 
-        ? resultsPrevious.map((item) => item.toDocument()).toList()
+    final List<Map<String?, dynamic>>? resultsPreviousListMap = resultsPrevious != null 
+        ? resultsPrevious!.map((item) => item.toDocument()).toList()
         : null;
-    final Map<String, dynamic> confirmMessageMap = confirmMessage != null 
-        ? confirmMessage.toDocument()
+    final Map<String, dynamic>? confirmMessageMap = confirmMessage != null 
+        ? confirmMessage!.toDocument()
         : null;
-    final Map<String, dynamic> rejectMessageMap = rejectMessage != null 
-        ? rejectMessage.toDocument()
+    final Map<String, dynamic>? rejectMessageMap = rejectMessage != null 
+        ? rejectMessage!.toDocument()
         : null;
 
-    Map<String, Object> theDocument = HashMap();
+    Map<String, Object?> theDocument = HashMap();
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
     if (reporterId != null) theDocument["reporterId"] = reporterId;
@@ -146,8 +146,8 @@ class AssignmentEntity {
     return theDocument;
   }
 
-  static AssignmentEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static AssignmentEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

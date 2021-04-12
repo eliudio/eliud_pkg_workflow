@@ -42,8 +42,8 @@ import 'package:eliud_pkg_workflow/model/assignment_form_state.dart';
 import 'package:eliud_pkg_workflow/model/assignment_repository.dart';
 
 class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> {
-  final FormAction formAction;
-  final String appId;
+  final FormAction? formAction;
+  final String? appId;
 
   AssignmentFormBloc(this.appId, { this.formAction }): super(AssignmentFormUninitialized());
   @override
@@ -69,131 +69,131 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
 
       if (event is InitialiseAssignmentFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        AssignmentFormLoaded loaded = AssignmentFormLoaded(value: await assignmentRepository(appId: appId).get(event.value.documentID));
+        AssignmentFormLoaded loaded = AssignmentFormLoaded(value: await assignmentRepository(appId: appId)!.get(event!.value!.documentID));
         yield loaded;
         return;
       } else if (event is InitialiseAssignmentFormNoLoadEvent) {
-        AssignmentFormLoaded loaded = AssignmentFormLoaded(value: event.value);
+        AssignmentFormLoaded loaded = AssignmentFormLoaded(value: event!.value);
         yield loaded;
         return;
       }
     } else if (currentState is AssignmentFormInitialized) {
-      AssignmentModel newValue = null;
+      AssignmentModel? newValue = null;
       if (event is ChangedAssignmentAppId) {
-        newValue = currentState.value.copyWith(appId: event.value);
+        newValue = currentState.value!.copyWith(appId: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentReporter) {
-        if (event.value != null)
-          newValue = currentState.value.copyWith(reporter: await memberRepository(appId: appId).get(event.value));
+        if (event!.value != null)
+          newValue = currentState.value!.copyWith(reporter: await memberRepository(appId: appId)!.get(event!.value));
         else
           newValue = new AssignmentModel(
-                                 documentID: currentState.value.documentID,
-                                 appId: currentState.value.appId,
+                                 documentID: currentState.value!.documentID,
+                                 appId: currentState.value!.appId,
                                  reporter: null,
-                                 assigneeId: currentState.value.assigneeId,
-                                 task: currentState.value.task,
-                                 workflow: currentState.value.workflow,
-                                 workflowTaskSeqNumber: currentState.value.workflowTaskSeqNumber,
-                                 timestamp: currentState.value.timestamp,
-                                 status: currentState.value.status,
-                                 resultsCurrent: currentState.value.resultsCurrent,
-                                 resultsPrevious: currentState.value.resultsPrevious,
-                                 triggeredById: currentState.value.triggeredById,
-                                 confirmMessage: currentState.value.confirmMessage,
-                                 rejectMessage: currentState.value.rejectMessage,
+                                 assigneeId: currentState.value!.assigneeId,
+                                 task: currentState.value!.task,
+                                 workflow: currentState.value!.workflow,
+                                 workflowTaskSeqNumber: currentState.value!.workflowTaskSeqNumber,
+                                 timestamp: currentState.value!.timestamp,
+                                 status: currentState.value!.status,
+                                 resultsCurrent: currentState.value!.resultsCurrent,
+                                 resultsPrevious: currentState.value!.resultsPrevious,
+                                 triggeredById: currentState.value!.triggeredById,
+                                 confirmMessage: currentState.value!.confirmMessage,
+                                 rejectMessage: currentState.value!.rejectMessage,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentAssigneeId) {
-        newValue = currentState.value.copyWith(assigneeId: event.value);
+        newValue = currentState.value!.copyWith(assigneeId: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentTask) {
-        newValue = currentState.value.copyWith(task: event.value);
+        newValue = currentState.value!.copyWith(task: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentWorkflow) {
-        if (event.value != null)
-          newValue = currentState.value.copyWith(workflow: await workflowRepository(appId: appId).get(event.value));
+        if (event!.value != null)
+          newValue = currentState.value!.copyWith(workflow: await workflowRepository(appId: appId)!.get(event!.value));
         else
           newValue = new AssignmentModel(
-                                 documentID: currentState.value.documentID,
-                                 appId: currentState.value.appId,
-                                 reporter: currentState.value.reporter,
-                                 assigneeId: currentState.value.assigneeId,
-                                 task: currentState.value.task,
+                                 documentID: currentState.value!.documentID,
+                                 appId: currentState.value!.appId,
+                                 reporter: currentState.value!.reporter,
+                                 assigneeId: currentState.value!.assigneeId,
+                                 task: currentState.value!.task,
                                  workflow: null,
-                                 workflowTaskSeqNumber: currentState.value.workflowTaskSeqNumber,
-                                 timestamp: currentState.value.timestamp,
-                                 status: currentState.value.status,
-                                 resultsCurrent: currentState.value.resultsCurrent,
-                                 resultsPrevious: currentState.value.resultsPrevious,
-                                 triggeredById: currentState.value.triggeredById,
-                                 confirmMessage: currentState.value.confirmMessage,
-                                 rejectMessage: currentState.value.rejectMessage,
+                                 workflowTaskSeqNumber: currentState.value!.workflowTaskSeqNumber,
+                                 timestamp: currentState.value!.timestamp,
+                                 status: currentState.value!.status,
+                                 resultsCurrent: currentState.value!.resultsCurrent,
+                                 resultsPrevious: currentState.value!.resultsPrevious,
+                                 triggeredById: currentState.value!.triggeredById,
+                                 confirmMessage: currentState.value!.confirmMessage,
+                                 rejectMessage: currentState.value!.rejectMessage,
           );
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentWorkflowTaskSeqNumber) {
-        if (isInt(event.value)) {
-          newValue = currentState.value.copyWith(workflowTaskSeqNumber: int.parse(event.value));
+        if (isInt(event!.value)) {
+          newValue = currentState.value!.copyWith(workflowTaskSeqNumber: int.parse(event!.value!));
           yield SubmittableAssignmentForm(value: newValue);
 
         } else {
-          newValue = currentState.value.copyWith(workflowTaskSeqNumber: 0);
+          newValue = currentState.value!.copyWith(workflowTaskSeqNumber: 0);
           yield WorkflowTaskSeqNumberAssignmentFormError(message: "Value should be a number", value: newValue);
         }
         return;
       }
       if (event is ChangedAssignmentTimestamp) {
-        newValue = currentState.value.copyWith(timestamp: event.value);
+        newValue = currentState.value!.copyWith(timestamp: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentStatus) {
-        newValue = currentState.value.copyWith(status: event.value);
+        newValue = currentState.value!.copyWith(status: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentResultsCurrent) {
-        newValue = currentState.value.copyWith(resultsCurrent: event.value);
+        newValue = currentState.value!.copyWith(resultsCurrent: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentResultsPrevious) {
-        newValue = currentState.value.copyWith(resultsPrevious: event.value);
+        newValue = currentState.value!.copyWith(resultsPrevious: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentTriggeredById) {
-        newValue = currentState.value.copyWith(triggeredById: event.value);
+        newValue = currentState.value!.copyWith(triggeredById: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentConfirmMessage) {
-        newValue = currentState.value.copyWith(confirmMessage: event.value);
+        newValue = currentState.value!.copyWith(confirmMessage: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentRejectMessage) {
-        newValue = currentState.value.copyWith(rejectMessage: event.value);
+        newValue = currentState.value!.copyWith(rejectMessage: event!.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
@@ -204,10 +204,10 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
 
   DocumentIDAssignmentFormError error(String message, AssignmentModel newValue) => DocumentIDAssignmentFormError(message: message, value: newValue);
 
-  Future<AssignmentFormState> _isDocumentIDValid(String value, AssignmentModel newValue) async {
+  Future<AssignmentFormState> _isDocumentIDValid(String? value, AssignmentModel newValue) async {
     if (value == null) return Future.value(error("Provide value for documentID", newValue));
     if (value.length == 0) return Future.value(error("Provide value for documentID", newValue));
-    Future<AssignmentModel> findDocument = assignmentRepository(appId: appId).get(value);
+    Future<AssignmentModel?> findDocument = assignmentRepository(appId: appId)!.get(value);
     return await findDocument.then((documentFound) {
       if (documentFound == null) {
         return SubmittableAssignmentForm(value: newValue);

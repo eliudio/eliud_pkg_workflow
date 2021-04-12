@@ -29,29 +29,29 @@ import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
-typedef AssignmentResultModelTrigger(List<AssignmentResultModel> list);
-typedef AssignmentResultChanged(AssignmentResultModel value);
+typedef AssignmentResultModelTrigger(List<AssignmentResultModel?> list);
+typedef AssignmentResultChanged(AssignmentResultModel? value);
 
 abstract class AssignmentResultRepository {
   Future<AssignmentResultModel> add(AssignmentResultModel value);
   Future<void> delete(AssignmentResultModel value);
-  Future<AssignmentResultModel> get(String id, { Function(Exception) onError });
+  Future<AssignmentResultModel?> get(String? id, { Function(Exception)? onError });
   Future<AssignmentResultModel> update(AssignmentResultModel value);
 
-  Stream<List<AssignmentResultModel>> values({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Stream<List<AssignmentResultModel>> valuesWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Future<List<AssignmentResultModel>> valuesList({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Future<List<AssignmentResultModel>> valuesListWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Stream<List<AssignmentResultModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Stream<List<AssignmentResultModel?>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Future<List<AssignmentResultModel?>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Future<List<AssignmentResultModel?>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
 
-  StreamSubscription<List<AssignmentResultModel>> listen(AssignmentResultModelTrigger trigger, {String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<List<AssignmentResultModel>> listenWithDetails(AssignmentResultModelTrigger trigger, {String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed);
+  StreamSubscription<List<AssignmentResultModel?>> listen(AssignmentResultModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
+  StreamSubscription<List<AssignmentResultModel?>> listenWithDetails(AssignmentResultModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
+  StreamSubscription<AssignmentResultModel?> listenTo(String documentId, AssignmentResultChanged changed);
   void flush();
   
-  String timeStampToString(dynamic timeStamp);
+  String? timeStampToString(dynamic timeStamp);
 
   dynamic getSubCollection(String documentId, String name);
-  Future<AssignmentResultModel> changeValue(String documentId, String fieldName, num changeByThisValue);
+  Future<AssignmentResultModel?> changeValue(String documentId, String fieldName, num changeByThisValue);
 
   Future<void> deleteAll();
 }

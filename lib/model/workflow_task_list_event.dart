@@ -19,7 +19,7 @@ import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 abstract class WorkflowTaskListEvent extends Equatable {
   const WorkflowTaskListEvent();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadWorkflowTaskList extends WorkflowTaskListEvent {}
@@ -27,49 +27,49 @@ class LoadWorkflowTaskList extends WorkflowTaskListEvent {}
 class NewPage extends WorkflowTaskListEvent {}
 
 class AddWorkflowTaskList extends WorkflowTaskListEvent {
-  final WorkflowTaskModel value;
+  final WorkflowTaskModel? value;
 
   const AddWorkflowTaskList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'AddWorkflowTaskList{ value: $value }';
 }
 
 class UpdateWorkflowTaskList extends WorkflowTaskListEvent {
-  final WorkflowTaskModel value;
+  final WorkflowTaskModel? value;
 
   const UpdateWorkflowTaskList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'UpdateWorkflowTaskList{ value: $value }';
 }
 
 class DeleteWorkflowTaskList extends WorkflowTaskListEvent {
-  final WorkflowTaskModel value;
+  final WorkflowTaskModel? value;
 
   const DeleteWorkflowTaskList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'DeleteWorkflowTaskList{ value: $value }';
 }
 
 class WorkflowTaskListUpdated extends WorkflowTaskListEvent {
-  final List<WorkflowTaskModel> value;
-  final bool mightHaveMore;
+  final List<WorkflowTaskModel?>? value;
+  final bool? mightHaveMore;
 
   const WorkflowTaskListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  List<Object> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [ value, mightHaveMore ];
 
   @override
   String toString() => 'WorkflowTaskListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';

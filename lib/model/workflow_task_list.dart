@@ -45,50 +45,36 @@ import 'package:eliud_core/model/app_model.dart';
 import 'workflow_task_form.dart';
 
 
-typedef WorkflowTaskWidgetProvider(WorkflowTaskModel value);
+typedef WorkflowTaskWidgetProvider(WorkflowTaskModel? value);
 
 class WorkflowTaskListWidget extends StatefulWidget with HasFab {
-  BackgroundModel listBackground;
-  WorkflowTaskWidgetProvider widgetProvider;
-  bool readOnly;
-  String form;
-  WorkflowTaskListWidgetState state;
-  bool isEmbedded;
+  BackgroundModel? listBackground;
+  WorkflowTaskWidgetProvider? widgetProvider;
+  bool? readOnly;
+  String? form;
+  WorkflowTaskListWidgetState? state;
+  bool? isEmbedded;
 
-  WorkflowTaskListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
+  WorkflowTaskListWidget({ Key? key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   WorkflowTaskListWidgetState createState() {
     state ??= WorkflowTaskListWidgetState();
-    return state;
+    return state!;
   }
 
   @override
-  Widget fab(BuildContext context) {
-    if ((readOnly != null) && readOnly) return null;
+  Widget? fab(BuildContext context) {
+    if ((readOnly != null) && readOnly!) return null;
     state ??= WorkflowTaskListWidgetState();
     var accessState = AccessBloc.getState(context);
-    return state.fab(context, accessState);
+    return state!.fab(context, accessState);
   }
 }
 
 class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
-  WorkflowTaskListBloc bloc;
-
   @override
-  void didChangeDependencies() {
-    bloc = BlocProvider.of<WorkflowTaskListBloc>(context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose () {
-    if (bloc != null) bloc.close();
-    super.dispose();
-  }
-
-  @override
-  Widget fab(BuildContext aContext, AccessState accessState) {
+  Widget? fab(BuildContext aContext, AccessState accessState) {
     if (accessState is AppLoaded) {
       return !accessState.memberIsOwner() 
         ? null
@@ -100,7 +86,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
         onPressed: () {
           Navigator.of(context).push(
             pageRouteBuilder(accessState.app, page: BlocProvider.value(
-                value: bloc,
+                value: BlocProvider.of<WorkflowTaskListBloc>(context),
                 child: WorkflowTaskForm(
                     value: null,
                     formAction: FormAction.AddAction)
@@ -124,15 +110,15 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
           );
         } else if (state is WorkflowTaskListLoaded) {
           final values = state.values;
-          if ((widget.isEmbedded != null) && (widget.isEmbedded)) {
-            List<Widget> children = List();
+          if ((widget.isEmbedded != null) && widget.isEmbedded!) {
+            var children = <Widget>[];
             children.add(theList(context, values, accessState));
             children.add(RaisedButton(
                     color: RgbHelper.color(rgbo: accessState.app.formSubmitButtonColor),
                     onPressed: () {
                       Navigator.of(context).push(
                                 pageRouteBuilder(accessState.app, page: BlocProvider.value(
-                                    value: bloc,
+                                    value: BlocProvider.of<WorkflowTaskListBloc>(context),
                                     child: WorkflowTaskForm(
                                         value: null,
                                         formAction: FormAction.AddAction)
@@ -174,7 +160,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
         itemBuilder: (context, index) {
           final value = values[index];
           
-          if (widget.widgetProvider != null) return widget.widgetProvider(value);
+          if (widget.widgetProvider != null) return widget.widgetProvider!(value);
 
           return WorkflowTaskListItem(
             value: value,
@@ -210,7 +196,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
   }
   
   
-  Widget getForm(value, action) {
+  Widget? getForm(value, action) {
     if (widget.form == null) {
       return WorkflowTaskForm(value: value, formAction: action);
     } else {
@@ -226,36 +212,36 @@ class WorkflowTaskListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
   final AppModel app;
-  final WorkflowTaskModel value;
+  final WorkflowTaskModel? value;
 
   WorkflowTaskListItem({
-    Key key,
-    @required this.onDismissed,
-    @required this.onTap,
-    @required this.value,
-    @required this.app,
+    Key? key,
+    required this.onDismissed,
+    required this.onTap,
+    required this.value,
+    required this.app,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('__WorkflowTask_item_${value.documentID}'),
+      key: Key('__WorkflowTask_item_${value!.documentID}'),
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
         title: Hero(
-          tag: '${value.documentID}__WorkflowTaskheroTag',
+          tag: '${value!.documentID}__WorkflowTaskheroTag',
           child: Container(
             width: fullScreenWidth(context),
             child: Center(child: Text(
-              value.documentID,
+              value!.documentID!,
               style: TextStyle(color: RgbHelper.color(rgbo: app.listTextItemColor)),
             )),
           ),
         ),
-        subtitle: (value.documentID != null) && (value.documentID.isNotEmpty)
+        subtitle: (value!.documentID != null) && (value!.documentID!.isNotEmpty)
             ? Center( child: Text(
-          value.documentID,
+          value!.documentID!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(color: RgbHelper.color(rgbo: app.listTextItemColor)),

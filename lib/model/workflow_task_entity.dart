@@ -21,23 +21,23 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class WorkflowTaskEntity {
-  final int seqNumber;
-  final TaskEntity task;
-  final WorkflowNotificationEntity confirmMessage;
-  final WorkflowNotificationEntity rejectMessage;
-  final int responsible;
+  final int? seqNumber;
+  final TaskEntity? task;
+  final WorkflowNotificationEntity? confirmMessage;
+  final WorkflowNotificationEntity? rejectMessage;
+  final int? responsible;
 
   WorkflowTaskEntity({this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, });
 
 
-  List<Object> get props => [seqNumber, task, confirmMessage, rejectMessage, responsible, ];
+  List<Object?> get props => [seqNumber, task, confirmMessage, rejectMessage, responsible, ];
 
   @override
   String toString() {
     return 'WorkflowTaskEntity{seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  static WorkflowTaskEntity fromMap(Map map) {
+  static WorkflowTaskEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     var taskFromMap;
@@ -62,18 +62,18 @@ class WorkflowTaskEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    final Map<String, dynamic> taskMap = task != null 
-        ? task.toDocument()
+  Map<String, Object?> toDocument() {
+    final Map<String, dynamic>? taskMap = task != null 
+        ? task!.toDocument()
         : null;
-    final Map<String, dynamic> confirmMessageMap = confirmMessage != null 
-        ? confirmMessage.toDocument()
+    final Map<String, dynamic>? confirmMessageMap = confirmMessage != null 
+        ? confirmMessage!.toDocument()
         : null;
-    final Map<String, dynamic> rejectMessageMap = rejectMessage != null 
-        ? rejectMessage.toDocument()
+    final Map<String, dynamic>? rejectMessageMap = rejectMessage != null 
+        ? rejectMessage!.toDocument()
         : null;
 
-    Map<String, Object> theDocument = HashMap();
+    Map<String, Object?> theDocument = HashMap();
     if (seqNumber != null) theDocument["seqNumber"] = seqNumber;
       else theDocument["seqNumber"] = null;
     if (task != null) theDocument["task"] = taskMap;
@@ -87,8 +87,8 @@ class WorkflowTaskEntity {
     return theDocument;
   }
 
-  static WorkflowTaskEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static WorkflowTaskEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

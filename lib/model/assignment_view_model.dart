@@ -36,17 +36,17 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class AssignmentViewModel {
-  String documentID;
-  String appId;
-  String title;
-  String description;
-  ConditionsSimpleModel conditions;
+  String? documentID;
+  String? appId;
+  String? title;
+  String? description;
+  ConditionsSimpleModel? conditions;
 
   AssignmentViewModel({this.documentID, this.appId, this.title, this.description, this.conditions, })  {
     assert(documentID != null);
   }
 
-  AssignmentViewModel copyWith({String documentID, String appId, String title, String description, ConditionsSimpleModel conditions, }) {
+  AssignmentViewModel copyWith({String? documentID, String? appId, String? title, String? description, ConditionsSimpleModel? conditions, }) {
     return AssignmentViewModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, title: title ?? this.title, description: description ?? this.description, conditions: conditions ?? this.conditions, );
   }
 
@@ -69,16 +69,16 @@ class AssignmentViewModel {
     return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  AssignmentViewEntity toEntity({String appId}) {
+  AssignmentViewEntity toEntity({String? appId}) {
     return AssignmentViewEntity(
           appId: (appId != null) ? appId : null, 
           title: (title != null) ? title : null, 
           description: (description != null) ? description : null, 
-          conditions: (conditions != null) ? conditions.toEntity(appId: appId) : null, 
+          conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
     );
   }
 
-  static AssignmentViewModel fromEntity(String documentID, AssignmentViewEntity entity) {
+  static AssignmentViewModel? fromEntity(String documentID, AssignmentViewEntity? entity) {
     if (entity == null) return null;
     return AssignmentViewModel(
           documentID: documentID, 
@@ -90,7 +90,7 @@ class AssignmentViewModel {
     );
   }
 
-  static Future<AssignmentViewModel> fromEntityPlus(String documentID, AssignmentViewEntity entity, { String appId}) async {
+  static Future<AssignmentViewModel?> fromEntityPlus(String documentID, AssignmentViewEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return AssignmentViewModel(

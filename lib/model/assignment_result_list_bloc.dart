@@ -27,53 +27,59 @@ const _assignmentResultLimit = 5;
 
 class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, AssignmentResultListState> {
   final AssignmentResultRepository _assignmentResultRepository;
-  StreamSubscription _assignmentResultsListSubscription;
-  final EliudQuery eliudQuery;
+  StreamSubscription? _assignmentResultsListSubscription;
+  final EliudQuery? eliudQuery;
   int pages = 1;
-  final bool paged;
-  final String orderBy;
-  final bool descending;
-  final bool detailed;
+  final bool? paged;
+  final String? orderBy;
+  final bool? descending;
+  final bool? detailed;
 
-  AssignmentResultListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, @required AssignmentResultRepository assignmentResultRepository})
+  AssignmentResultListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentResultRepository assignmentResultRepository})
       : assert(assignmentResultRepository != null),
         _assignmentResultRepository = assignmentResultRepository,
         super(AssignmentResultListLoading());
 
   Stream<AssignmentResultListState> _mapLoadAssignmentResultListToState() async* {
-    int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values.length : 0;
+    int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values!.length : 0;
     _assignmentResultsListSubscription?.cancel();
     _assignmentResultsListSubscription = _assignmentResultRepository.listen(
           (list) => add(AssignmentResultListUpdated(value: list, mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && (paged)) ? pages * _assignmentResultLimit : null
+      limit: ((paged != null) && paged!) ? pages * _assignmentResultLimit : null
     );
   }
 
   Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState() async* {
-    int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values.length : 0;
+    int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values!.length : 0;
     _assignmentResultsListSubscription?.cancel();
     _assignmentResultsListSubscription = _assignmentResultRepository.listenWithDetails(
             (list) => add(AssignmentResultListUpdated(value: list, mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && (paged)) ? pages * _assignmentResultLimit : null
+        limit: ((paged != null) && paged!) ? pages * _assignmentResultLimit : null
     );
   }
 
   Stream<AssignmentResultListState> _mapAddAssignmentResultListToState(AddAssignmentResultList event) async* {
-    _assignmentResultRepository.add(event.value);
+    var value = event.value;
+    if (value != null) 
+      _assignmentResultRepository.add(value);
   }
 
   Stream<AssignmentResultListState> _mapUpdateAssignmentResultListToState(UpdateAssignmentResultList event) async* {
-    _assignmentResultRepository.update(event.value);
+    var value = event.value;
+    if (value != null) 
+      _assignmentResultRepository.update(value);
   }
 
   Stream<AssignmentResultListState> _mapDeleteAssignmentResultListToState(DeleteAssignmentResultList event) async* {
-    _assignmentResultRepository.delete(event.value);
+    var value = event.value;
+    if (value != null) 
+      _assignmentResultRepository.delete(value);
   }
 
   Stream<AssignmentResultListState> _mapAssignmentResultListUpdatedToState(
@@ -84,7 +90,7 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
   @override
   Stream<AssignmentResultListState> mapEventToState(AssignmentResultListEvent event) async* {
     if (event is LoadAssignmentResultList) {
-      if ((detailed == null) || (!detailed)) {
+      if ((detailed == null) || (!detailed!)) {
         yield* _mapLoadAssignmentResultListToState();
       } else {
         yield* _mapLoadAssignmentResultListWithDetailsToState();
