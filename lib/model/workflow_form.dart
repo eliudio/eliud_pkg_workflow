@@ -170,7 +170,7 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
           _appIdController.text = "";
       }
       if (state is WorkflowFormInitialized) {
-        List<Widget?> children = [];
+        List<Widget> children = [];
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),

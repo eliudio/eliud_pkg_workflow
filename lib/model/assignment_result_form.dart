@@ -162,7 +162,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
           _valueController.text = "";
       }
       if (state is AssignmentResultFormInitialized) {
-        List<Widget?> children = [];
+        List<Widget> children = [];
         children.add(
 
                 TextFormField(

@@ -198,7 +198,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           _triggeredByIdController.text = "";
       }
       if (state is AssignmentFormInitialized) {
-        List<Widget?> children = [];
+        List<Widget> children = [];
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),

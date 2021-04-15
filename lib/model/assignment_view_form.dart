@@ -176,7 +176,7 @@ class _MyAssignmentViewFormState extends State<MyAssignmentViewForm> {
           _descriptionController.text = "";
       }
       if (state is AssignmentViewFormInitialized) {
-        List<Widget?> children = [];
+        List<Widget> children = [];
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
