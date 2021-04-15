@@ -21,7 +21,7 @@ import '../workflow_package.dart';
 
 class AssignmentViewComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({String? id, Map<String, Object>? parameters}) {
+  Widget createNew({String? id, Map<String, dynamic>? parameters}) {
     return AssignmentViewComponentImpl(id: id);
   }
 }

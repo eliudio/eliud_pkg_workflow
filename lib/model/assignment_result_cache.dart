@@ -48,12 +48,12 @@ class AssignmentResultCache implements AssignmentResultRepository {
     return Future.value();
   }
 
-  Future<AssignmentResultModel> get(String? id, {Function(Exception)? onError}) async {
+  Future<AssignmentResultModel?> get(String? id, {Function(Exception)? onError}) async {
     var value = fullCache[id];
     if (value != null) return refreshRelations(value);
     value = await reference.get(id, onError: onError);
     fullCache[id] = value;
-    return Future.value(value);
+    return value;
   }
 
   Future<AssignmentResultModel> update(AssignmentResultModel value) {

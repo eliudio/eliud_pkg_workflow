@@ -16,7 +16,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class WorkflowActionHandler extends PackageActionHandler {
   @override
-  Future<void> navigateTo(BuildContext context, ActionModel action, {Map<String, Object>? parameters}) async {
+  Future<void> navigateTo(BuildContext context, ActionModel action, {Map<String, dynamic>? parameters}) async {
     if (action is WorkflowActionModel) {
       executeWorkflow(context, action);
     }
