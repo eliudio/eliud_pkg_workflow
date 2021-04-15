@@ -47,7 +47,7 @@ class WorkflowEntity {
     if (workflowTaskFromMap != null)
       workflowTaskList = (map['workflowTask'] as List<dynamic>)
         .map((dynamic item) =>
-        WorkflowTaskEntity.fromMap(item as Map))
+        WorkflowTaskEntity.fromMap(item as Map)!)
         .toList();
 
     return WorkflowEntity(

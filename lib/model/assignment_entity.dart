@@ -64,7 +64,7 @@ class AssignmentEntity {
     if (resultsCurrentFromMap != null)
       resultsCurrentList = (map['resultsCurrent'] as List<dynamic>)
         .map((dynamic item) =>
-        AssignmentResultEntity.fromMap(item as Map))
+        AssignmentResultEntity.fromMap(item as Map)!)
         .toList();
     var resultsPreviousFromMap;
     resultsPreviousFromMap = map['resultsPrevious'];
@@ -72,7 +72,7 @@ class AssignmentEntity {
     if (resultsPreviousFromMap != null)
       resultsPreviousList = (map['resultsPrevious'] as List<dynamic>)
         .map((dynamic item) =>
-        AssignmentResultEntity.fromMap(item as Map))
+        AssignmentResultEntity.fromMap(item as Map)!)
         .toList();
     var confirmMessageFromMap;
     confirmMessageFromMap = map['confirmMessage'];
