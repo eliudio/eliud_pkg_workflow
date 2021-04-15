@@ -52,7 +52,7 @@ abstract class WorkflowPackage extends PackageWithSubscription {
         _setState(list.length > 0, currentMember: currentMember);
       }/*, orderBy: 'timestamp',
           descending: true*/,
-          eliudQuery: getOpenAssignmentsQuery(appId, currentMember!.documentID!));
+          eliudQuery: getOpenAssignmentsQuery(appId, currentMember.documentID!));
     } else {
       _setState(false);
     }
