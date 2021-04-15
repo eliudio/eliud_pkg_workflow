@@ -71,17 +71,18 @@ class AssignmentFirestore implements AssignmentRepository {
   Future<AssignmentModel?> _populateDocPlus(DocumentSnapshot value) async {
     return AssignmentModel.fromEntityPlus(value.id, AssignmentEntity.fromMap(value.data()), appId: appId);  }
 
-  Future<AssignmentModel?> get(String? id, {Function(Exception)? onError}) {
-    return AssignmentCollection.doc(id).get().then((doc) async {
-      if (doc.data() != null)
-        return await _populateDocPlus(doc);
-      else
-        return null;
-    }).catchError((Object e) {
+  Future<AssignmentModel?> get(String? id, {Function(Exception)? onError}) async {
+    try {
+      var collection = AssignmentCollection.doc(id);
+      var doc = await collection.get();
+      return await _populateDocPlus(doc);
+    } on Exception catch(e) {
+      print("Error whilst retrieving Assignment with id $id");
+      print("Exceptoin: $e");
       if (onError != null) {
-        onError(e as Exception);
+        onError(e);
       }
-    });
+    };
   }
 
   StreamSubscription<List<AssignmentModel?>> listen(AssignmentModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery}) {

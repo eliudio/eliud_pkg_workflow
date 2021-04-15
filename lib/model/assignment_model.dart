@@ -169,19 +169,23 @@ class AssignmentModel {
     MemberModel? reporterHolder;
     if (entity.reporterId != null) {
       try {
-        await memberRepository(appId: appId)!.get(entity.reporterId).then((val) {
-          reporterHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
+          reporterHolder = await memberRepository(appId: appId)!.get(entity.reporterId);
+      } on Exception catch(e) {
+        print('Error whilst trying to initialise reporter');
+        print('Error whilst retrieving member with id ${entity.reporterId}');
+        print('Exception: $e');
+      }
     }
 
     WorkflowModel? workflowHolder;
     if (entity.workflowId != null) {
       try {
-        await workflowRepository(appId: appId)!.get(entity.workflowId).then((val) {
-          workflowHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
+          workflowHolder = await workflowRepository(appId: appId)!.get(entity.workflowId);
+      } on Exception catch(e) {
+        print('Error whilst trying to initialise workflow');
+        print('Error whilst retrieving workflow with id ${entity.workflowId}');
+        print('Exception: $e');
+      }
     }
 
     return AssignmentModel(
