@@ -58,19 +58,19 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
 
 
       if (event is InitialiseWorkflowTaskFormEvent) {
-        WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event!.value);
+        WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event.value);
         yield loaded;
         return;
       } else if (event is InitialiseWorkflowTaskFormNoLoadEvent) {
-        WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event!.value);
+        WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event.value);
         yield loaded;
         return;
       }
     } else if (currentState is WorkflowTaskFormInitialized) {
       WorkflowTaskModel? newValue = null;
       if (event is ChangedWorkflowTaskSeqNumber) {
-        if (isInt(event!.value)) {
-          newValue = currentState.value!.copyWith(seqNumber: int.parse(event!.value!));
+        if (isInt(event.value)) {
+          newValue = currentState.value!.copyWith(seqNumber: int.parse(event.value!));
           yield SubmittableWorkflowTaskForm(value: newValue);
 
         } else {
@@ -80,25 +80,25 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
         return;
       }
       if (event is ChangedWorkflowTaskTask) {
-        newValue = currentState.value!.copyWith(task: event!.value);
+        newValue = currentState.value!.copyWith(task: event.value);
         yield SubmittableWorkflowTaskForm(value: newValue);
 
         return;
       }
       if (event is ChangedWorkflowTaskConfirmMessage) {
-        newValue = currentState.value!.copyWith(confirmMessage: event!.value);
+        newValue = currentState.value!.copyWith(confirmMessage: event.value);
         yield SubmittableWorkflowTaskForm(value: newValue);
 
         return;
       }
       if (event is ChangedWorkflowTaskRejectMessage) {
-        newValue = currentState.value!.copyWith(rejectMessage: event!.value);
+        newValue = currentState.value!.copyWith(rejectMessage: event.value);
         yield SubmittableWorkflowTaskForm(value: newValue);
 
         return;
       }
       if (event is ChangedWorkflowTaskResponsible) {
-        newValue = currentState.value!.copyWith(responsible: event!.value);
+        newValue = currentState.value!.copyWith(responsible: event.value);
         yield SubmittableWorkflowTaskForm(value: newValue);
 
         return;

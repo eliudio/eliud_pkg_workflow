@@ -59,24 +59,24 @@ class AssignmentResultFormBloc extends Bloc<AssignmentResultFormEvent, Assignmen
 
 
       if (event is InitialiseAssignmentResultFormEvent) {
-        AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event!.value);
+        AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
         yield loaded;
         return;
       } else if (event is InitialiseAssignmentResultFormNoLoadEvent) {
-        AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event!.value);
+        AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
         yield loaded;
         return;
       }
     } else if (currentState is AssignmentResultFormInitialized) {
       AssignmentResultModel? newValue = null;
       if (event is ChangedAssignmentResultKey) {
-        newValue = currentState.value!.copyWith(key: event!.value);
+        newValue = currentState.value!.copyWith(key: event.value);
         yield SubmittableAssignmentResultForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentResultValue) {
-        newValue = currentState.value!.copyWith(value: event!.value);
+        newValue = currentState.value!.copyWith(value: event.value);
         yield SubmittableAssignmentResultForm(value: newValue);
 
         return;

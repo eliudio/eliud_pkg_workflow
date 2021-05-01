@@ -67,6 +67,7 @@ class AssignmentResultForm extends StatelessWidget {
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
     var app = AccessBloc.app(context);
+    if (app == null) return Text("No app available");
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentResultFormBloc >(
             create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
@@ -87,14 +88,14 @@ class AssignmentResultForm extends StatelessWidget {
       return Scaffold(
         appBar: formAction == FormAction.UpdateAction ?
                 AppBar(
-                    title: Text("Update AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
+                    title: Text("Update AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
                   ) :
                 AppBar(
-                    title: Text("Add AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
+                    title: Text("Add AssignmentResult", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
                 ),
         body: BlocProvider<AssignmentResultFormBloc >(
             create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
@@ -141,6 +142,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
   @override
   Widget build(BuildContext context) {
     var app = AccessBloc.app(context);
+    if (app == null) return Text('No app available');
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentResultFormBloc, AssignmentResultFormState>(builder: (context, state) {
       if (state is AssignmentResultFormUninitialized) return Center(
@@ -166,11 +168,11 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _keyController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'Key',
                   ),
                   keyboardType: TextInputType.text,
@@ -184,11 +186,11 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _valueController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'Value',
                   ),
                   keyboardType: TextInputType.text,
@@ -202,7 +204,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
-                  color: RgbHelper.color(rgbo: app!.formSubmitButtonColor),
+                  color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is AssignmentResultFormError) {
                       return null;
@@ -229,12 +231,12 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
                       }
                     }
                   },
-                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app!.formSubmitButtonTextColor))),
+                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app.formSubmitButtonTextColor))),
                 ));
 
         return Container(
           color: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? Colors.transparent : null,
-          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app!.formBackground),
+          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app.formBackground),
           padding:
           const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
             child: Form(

@@ -42,13 +42,13 @@ class WorkflowCache implements WorkflowRepository {
 
   Future<WorkflowModel> add(WorkflowModel value) {
     return reference.add(value).then((newValue) {
-      fullCache[value!.documentID] = newValue;
+      fullCache[value.documentID] = newValue;
       return newValue;
     });
   }
 
   Future<void> delete(WorkflowModel value){
-    fullCache.remove(value!.documentID);
+    fullCache.remove(value.documentID);
     reference.delete(value);
     return Future.value();
   }
@@ -63,7 +63,7 @@ class WorkflowCache implements WorkflowRepository {
 
   Future<WorkflowModel> update(WorkflowModel value) {
     return reference.update(value).then((newValue) {
-      fullCache[value!.documentID] = newValue;
+      fullCache[value.documentID] = newValue;
       return newValue;
     });
   }

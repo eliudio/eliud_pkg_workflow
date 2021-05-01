@@ -66,20 +66,20 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
 
       if (event is InitialiseAssignmentViewFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: await assignmentViewRepository(appId: appId)!.get(event!.value!.documentID));
+        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: await assignmentViewRepository(appId: appId)!.get(event.value!.documentID));
         yield loaded;
         return;
       } else if (event is InitialiseAssignmentViewFormNoLoadEvent) {
-        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: event!.value);
+        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: event.value);
         yield loaded;
         return;
       }
     } else if (currentState is AssignmentViewFormInitialized) {
       AssignmentViewModel? newValue = null;
       if (event is ChangedAssignmentViewDocumentID) {
-        newValue = currentState.value!.copyWith(documentID: event!.value);
+        newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event!.value, newValue).asStream();
+          yield* _isDocumentIDValid(event.value, newValue).asStream();
         } else {
           yield SubmittableAssignmentViewForm(value: newValue);
         }
@@ -87,19 +87,19 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
         return;
       }
       if (event is ChangedAssignmentViewTitle) {
-        newValue = currentState.value!.copyWith(title: event!.value);
+        newValue = currentState.value!.copyWith(title: event.value);
         yield SubmittableAssignmentViewForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentViewDescription) {
-        newValue = currentState.value!.copyWith(description: event!.value);
+        newValue = currentState.value!.copyWith(description: event.value);
         yield SubmittableAssignmentViewForm(value: newValue);
 
         return;
       }
       if (event is ChangedAssignmentViewConditions) {
-        newValue = currentState.value!.copyWith(conditions: event!.value);
+        newValue = currentState.value!.copyWith(conditions: event.value);
         yield SubmittableAssignmentViewForm(value: newValue);
 
         return;

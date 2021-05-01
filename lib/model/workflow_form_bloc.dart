@@ -66,20 +66,20 @@ class WorkflowFormBloc extends Bloc<WorkflowFormEvent, WorkflowFormState> {
 
       if (event is InitialiseWorkflowFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        WorkflowFormLoaded loaded = WorkflowFormLoaded(value: await workflowRepository(appId: appId)!.get(event!.value!.documentID));
+        WorkflowFormLoaded loaded = WorkflowFormLoaded(value: await workflowRepository(appId: appId)!.get(event.value!.documentID));
         yield loaded;
         return;
       } else if (event is InitialiseWorkflowFormNoLoadEvent) {
-        WorkflowFormLoaded loaded = WorkflowFormLoaded(value: event!.value);
+        WorkflowFormLoaded loaded = WorkflowFormLoaded(value: event.value);
         yield loaded;
         return;
       }
     } else if (currentState is WorkflowFormInitialized) {
       WorkflowModel? newValue = null;
       if (event is ChangedWorkflowDocumentID) {
-        newValue = currentState.value!.copyWith(documentID: event!.value);
+        newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event!.value, newValue).asStream();
+          yield* _isDocumentIDValid(event.value, newValue).asStream();
         } else {
           yield SubmittableWorkflowForm(value: newValue);
         }
@@ -87,19 +87,19 @@ class WorkflowFormBloc extends Bloc<WorkflowFormEvent, WorkflowFormState> {
         return;
       }
       if (event is ChangedWorkflowName) {
-        newValue = currentState.value!.copyWith(name: event!.value);
+        newValue = currentState.value!.copyWith(name: event.value);
         yield SubmittableWorkflowForm(value: newValue);
 
         return;
       }
       if (event is ChangedWorkflowWorkflowTask) {
-        newValue = currentState.value!.copyWith(workflowTask: event!.value);
+        newValue = currentState.value!.copyWith(workflowTask: event.value);
         yield SubmittableWorkflowForm(value: newValue);
 
         return;
       }
       if (event is ChangedWorkflowAppId) {
-        newValue = currentState.value!.copyWith(appId: event!.value);
+        newValue = currentState.value!.copyWith(appId: event.value);
         yield SubmittableWorkflowForm(value: newValue);
 
         return;

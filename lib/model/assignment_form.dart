@@ -72,6 +72,7 @@ class AssignmentForm extends StatelessWidget {
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
     var app = AccessBloc.app(context);
+    if (app == null) return Text("No app available");
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentFormBloc >(
             create: (context) => AssignmentFormBloc(AccessBloc.appId(context),
@@ -94,14 +95,14 @@ class AssignmentForm extends StatelessWidget {
       return Scaffold(
         appBar: formAction == FormAction.UpdateAction ?
                 AppBar(
-                    title: Text("Update Assignment", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
+                    title: Text("Update Assignment", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
                   ) :
                 AppBar(
-                    title: Text("Add Assignment", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
+                    title: Text("Add Assignment", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
                 ),
         body: BlocProvider<AssignmentFormBloc >(
             create: (context) => AssignmentFormBloc(AccessBloc.appId(context),
@@ -157,6 +158,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   @override
   Widget build(BuildContext context) {
     var app = AccessBloc.app(context);
+    if (app == null) return Text('No app available');
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentFormBloc, AssignmentFormState>(builder: (context, state) {
       if (state is AssignmentFormUninitialized) return Center(
@@ -204,17 +206,17 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('General',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _appIdController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'App Identifier',
                     hintText: "This is the identifier of the app to which this feed belongs",
                   ),
@@ -230,11 +232,11 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _workflowTaskSeqNumberController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'Workflow Sequence Id',
                     hintText: "this corresponds to the WorkflowModel.workflowTask[i].seqNumber",
                   ),
@@ -251,10 +253,10 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
                 RadioListTile(
                     value: 0,
-                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
                     groupValue: _statusSelectedRadioTile,
-                    title: Text("Success", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
-                    subtitle: Text("Success", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    title: Text("Success", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Success", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
                     onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionStatus(val);
                     },
@@ -264,10 +266,10 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
                 RadioListTile(
                     value: 1,
-                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
                     groupValue: _statusSelectedRadioTile,
-                    title: Text("Declined", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
-                    subtitle: Text("Declined", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    title: Text("Declined", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Declined", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
                     onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionStatus(val);
                     },
@@ -277,10 +279,10 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
                 RadioListTile(
                     value: 2,
-                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
                     groupValue: _statusSelectedRadioTile,
-                    title: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
-                    subtitle: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    title: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
                     onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionStatus(val);
                     },
@@ -305,7 +307,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
          children.add(Container(
@@ -313,7 +315,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Reporter',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
@@ -323,7 +325,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
          children.add(Container(
@@ -331,17 +333,17 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Assignee',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _assigneeIdController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'Assignee',
                   ),
                   keyboardType: TextInputType.text,
@@ -354,7 +356,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
          children.add(Container(
@@ -362,17 +364,17 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Triggered by',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _triggeredByIdController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'Triggered by',
                   ),
                   keyboardType: TextInputType.text,
@@ -385,7 +387,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
          children.add(Container(
@@ -393,7 +395,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Workflow',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
@@ -403,7 +405,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
          children.add(Container(
@@ -411,17 +413,17 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Assignee',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _assigneeIdController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
                     labelText: 'Assignee',
                   ),
                   keyboardType: TextInputType.text,
@@ -434,7 +436,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
          children.add(Container(
@@ -442,19 +444,19 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('WorkflowNotification',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
 
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
-                  color: RgbHelper.color(rgbo: app!.formSubmitButtonColor),
+                  color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is AssignmentFormError) {
                       return null;
@@ -503,12 +505,12 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                       }
                     }
                   },
-                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app!.formSubmitButtonTextColor))),
+                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app.formSubmitButtonTextColor))),
                 ));
 
         return Container(
           color: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? Colors.transparent : null,
-          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app!.formBackground),
+          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app.formBackground),
           padding:
           const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
             child: Form(
