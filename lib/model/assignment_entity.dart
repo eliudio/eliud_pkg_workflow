@@ -90,7 +90,7 @@ class AssignmentEntity {
       task: taskFromMap, 
       workflowId: map['workflowId'], 
       workflowTaskSeqNumber: int.tryParse(map['workflowTaskSeqNumber'].toString()), 
-      timestamp: assignmentRepository()?.timeStampToString(map['timestamp']), 
+      timestamp: assignmentRepository(appId: map['appId'])!.timeStampToString(map['timestamp']), 
       status: map['status'], 
       resultsCurrent: resultsCurrentList, 
       resultsPrevious: resultsPreviousList, 
