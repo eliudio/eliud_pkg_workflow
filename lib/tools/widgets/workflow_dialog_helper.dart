@@ -4,19 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DialogWithAssignmentResults extends StatefulWidget {
-  final String? title;
-  final String? message;
+  final String title;
+  final String message;
   final List<AssignmentResultModel>? resultsPrevious;
-  final List<String?>? buttonLabels;
-  final List<Function?>? functions;
+  final List<String> buttonLabels;
+  final List<Function> functions;
   final List<Widget>? extraFields;
 
   DialogWithAssignmentResults(
       {Key? key,
-      this.title,
-      this.message,
-      this.buttonLabels,
-      this.functions,
+      required this.title,
+      required this.message,
+      required this.buttonLabels,
+      required this.functions,
       this.resultsPrevious,
       this.extraFields})
       : super(key: key);
@@ -36,7 +36,7 @@ class _DialogWithAssignmentResultsState
         title: widget.title!,
         contents: contents(context),
         buttons: dialogHelper.getButtons(
-            context, widget.buttonLabels as List<String>, widget.functions as List<Function>));
+            context, widget.buttonLabels, widget.functions as List<Function>));
   }
 
   Widget contents(BuildContext context) {
@@ -63,20 +63,20 @@ class _DialogWithAssignmentResultsState
 }
 
 class YesNoDialogWithAssignmentResults extends StatelessWidget {
-  final String? title;
-  final String? message;
+  final String title;
+  final String message;
   final List<AssignmentResultModel>? resultsPrevious;
-  final Function? yesFunction;
-  final Function? noFunction;
+  final Function yesFunction;
+  final Function noFunction;
   final List<Widget>? extraFields;
 
   const YesNoDialogWithAssignmentResults(
       {Key? key,
-      this.title,
-      this.message,
+      required this.title,
+        required this.message,
       this.resultsPrevious,
-      this.yesFunction,
-      this.noFunction,
+        required this.yesFunction,
+        required this.noFunction,
       this.extraFields})
       : super(key: key);
 
@@ -94,22 +94,22 @@ class YesNoDialogWithAssignmentResults extends StatelessWidget {
 }
 
 class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
-  final String? title;
-  final String? message;
+  final String title;
+  final String message;
   final List<AssignmentResultModel>? resultsPrevious;
-  final Function? yesFunction;
-  final Function? noFunction;
+  final Function yesFunction;
+  final Function noFunction;
   final List<Widget>? extraFields;
   final String? yesLabel;
   final String? noLabel;
 
   const YesNoIgnoreDialogWithAssignmentResults(
       {Key? key,
-      this.title,
-      this.message,
+      required this.title,
+      required this.message,
       this.resultsPrevious,
-      this.yesFunction,
-      this.noFunction,
+      required this.yesFunction,
+      required this.noFunction,
       this.extraFields,
       this.yesLabel,
       this.noLabel})
@@ -125,7 +125,7 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
         title: title,
         message: message,
         resultsPrevious: resultsPrevious,
-        buttonLabels: ['Later', noLabel != null ? noLabel : 'Cancel', yesLabel != null ? yesLabel : 'Continue'],
+        buttonLabels: ['Later', noLabel != null ? noLabel! : 'Cancel', yesLabel != null ? yesLabel! : 'Continue'],
         functions: [
           () => Navigator.pop(context),
           noFunction,
