@@ -88,7 +88,7 @@ class WorkflowTaskForm extends StatelessWidget {
           );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().constructAppBar(context, formAction == FormAction.UpdateAction ? 'Update WorkflowTask' : 'Add WorkflowTask'),
+        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update WorkflowTask' : 'Add WorkflowTask'),
         body: BlocProvider<WorkflowTaskFormBloc >(
             create: (context) => WorkflowTaskFormBloc(AccessBloc.appId(context),
                                        
@@ -165,7 +165,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Sequence number', Icons.text_format, _readOnly(accessState, state), _seqNumberController, FieldType.Int, validator: (_) => state is SeqNumberWorkflowTaskFormError ? state.message : null, hintText: 'null')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Sequence number', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _seqNumberController, keyboardType: TextInputType.number, validator: (_) => state is SeqNumberWorkflowTaskFormError ? state.message : null, hintText: null)
           );
 
         children.add(
@@ -216,7 +216,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().submitButton(context, 'Submit',
+          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().button(context, label: 'Submit',
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is WorkflowTaskFormError) {
                       return null;

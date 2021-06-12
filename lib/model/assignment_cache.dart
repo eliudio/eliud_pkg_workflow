@@ -131,7 +131,7 @@ class AssignmentCache implements AssignmentRepository {
     MemberModel? reporterHolder;
     if (model.reporter != null) {
       try {
-        await memberRepository()!.get(model.reporter!.documentID).then((val) {
+        await memberRepository(appId: model.appId)!.get(model.reporter!.documentID).then((val) {
           reporterHolder = val;
         }).catchError((error) {});
       } catch (_) {}
@@ -140,7 +140,7 @@ class AssignmentCache implements AssignmentRepository {
     WorkflowModel? workflowHolder;
     if (model.workflow != null) {
       try {
-        await workflowRepository(appId: model.workflow!.appId)!.get(model.workflow!.documentID).then((val) {
+        await workflowRepository(appId: model.appId)!.get(model.workflow!.documentID).then((val) {
           workflowHolder = val;
         }).catchError((error) {});
       } catch (_) {}

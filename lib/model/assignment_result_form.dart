@@ -88,7 +88,7 @@ class AssignmentResultForm extends StatelessWidget {
           );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().constructAppBar(context, formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
+        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
         body: BlocProvider<AssignmentResultFormBloc >(
             create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
                                        
@@ -159,17 +159,17 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
         List<Widget> children = [];
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Key', Icons.text_format, _readOnly(accessState, state), _keyController, FieldType.String, validator: (_) => state is KeyAssignmentResultFormError ? state.message : null, hintText: 'null')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Key', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _keyController, keyboardType: TextInputType.text, validator: (_) => state is KeyAssignmentResultFormError ? state.message : null, hintText: null)
           );
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Value', Icons.text_format, _readOnly(accessState, state), _valueController, FieldType.String, validator: (_) => state is ValueAssignmentResultFormError ? state.message : null, hintText: 'null')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Value', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _valueController, keyboardType: TextInputType.text, validator: (_) => state is ValueAssignmentResultFormError ? state.message : null, hintText: null)
           );
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().submitButton(context, 'Submit',
+          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().button(context, label: 'Submit',
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is AssignmentResultFormError) {
                       return null;

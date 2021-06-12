@@ -95,7 +95,7 @@ class AssignmentForm extends StatelessWidget {
           );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().constructAppBar(context, formAction == FormAction.UpdateAction ? 'Update Assignment' : 'Add Assignment'),
+        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Assignment' : 'Add Assignment'),
         body: BlocProvider<AssignmentFormBloc >(
             create: (context) => AssignmentFormBloc(AccessBloc.appId(context),
                                        formAction: formAction,
@@ -201,13 +201,13 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'App Identifier', Icons.text_format, _readOnly(accessState, state), _appIdController, FieldType.String, validator: (_) => state is AppIdAssignmentFormError ? state.message : null, hintText: 'This is the identifier of the app to which this feed belongs')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'App Identifier', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _appIdController, keyboardType: TextInputType.text, validator: (_) => state is AppIdAssignmentFormError ? state.message : null, hintText: 'field.remark')
           );
 
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Workflow Sequence Id', Icons.text_format, _readOnly(accessState, state), _workflowTaskSeqNumberController, FieldType.Int, validator: (_) => state is WorkflowTaskSeqNumberAssignmentFormError ? state.message : null, hintText: 'this corresponds to the WorkflowModel.workflowTask[i].seqNumber')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Workflow Sequence Id', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _workflowTaskSeqNumberController, keyboardType: TextInputType.number, validator: (_) => state is WorkflowTaskSeqNumberAssignmentFormError ? state.message : null, hintText: 'field.remark')
           );
 
 
@@ -269,7 +269,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Assignee', Icons.text_format, _readOnly(accessState, state), _assigneeIdController, FieldType.String, validator: (_) => state is AssigneeIdAssignmentFormError ? state.message : null, hintText: 'null')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Assignee', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _assigneeIdController, keyboardType: TextInputType.text, validator: (_) => state is AssigneeIdAssignmentFormError ? state.message : null, hintText: null)
           );
 
 
@@ -285,7 +285,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Triggered by', Icons.text_format, _readOnly(accessState, state), _triggeredByIdController, FieldType.String, validator: (_) => state is TriggeredByIdAssignmentFormError ? state.message : null, hintText: 'null')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Triggered by', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _triggeredByIdController, keyboardType: TextInputType.text, validator: (_) => state is TriggeredByIdAssignmentFormError ? state.message : null, hintText: null)
           );
 
 
@@ -317,7 +317,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, 'Assignee', Icons.text_format, _readOnly(accessState, state), _assigneeIdController, FieldType.String, validator: (_) => state is AssigneeIdAssignmentFormError ? state.message : null, hintText: 'null')
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Assignee', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _assigneeIdController, keyboardType: TextInputType.text, validator: (_) => state is AssigneeIdAssignmentFormError ? state.message : null, hintText: null)
           );
 
 
@@ -339,7 +339,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().submitButton(context, 'Submit',
+          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().button(context, label: 'Submit',
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is AssignmentFormError) {
                       return null;
