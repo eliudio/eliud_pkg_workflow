@@ -1,5 +1,5 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/tools/registry.dart';
+import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_bloc.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_event.dart';

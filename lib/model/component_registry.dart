@@ -15,7 +15,7 @@
 
 
 import '../model/internal_component.dart';
-import 'package:eliud_core/tools/registry.dart';
+import 'package:eliud_core/core/registry.dart';
 
 import '../extensions/assignment_view_component.dart';
 import 'package:eliud_pkg_workflow/model/internal_component.dart';
