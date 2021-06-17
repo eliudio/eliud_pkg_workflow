@@ -8,8 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../assignment_view_component.dart';
-
 class MyAssignmentListItem extends StatelessWidget {
   final AssignmentModel value;
 
