@@ -37,7 +37,7 @@
     }
   ],
   "listFields": {
-    "title": "key",
-    "subTitle": "value"
+    "title": "key!",
+    "subTitle": "value!"
   }
 }

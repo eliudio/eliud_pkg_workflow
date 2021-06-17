@@ -66,8 +66,8 @@ class WorkflowDropdownButtonWidgetState extends State<WorkflowDropdownButtonWidg
 
 List<Widget> widgets(WorkflowModel pm) {
 var widgets = <Widget>[];
-if (pm.name != null) widgets.add(new Text(pm.name!));
-if (pm.name != null) widgets.add(new Text(pm.name!));
+if (pm.name! != null) widgets.add(new Text(pm.name!));
+if (pm.name! != null) widgets.add(new Text(pm.name!));
 return widgets;
 }
 

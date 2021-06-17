@@ -66,8 +66,8 @@ class AssignmentResultDropdownButtonWidgetState extends State<AssignmentResultDr
 
 List<Widget> widgets(AssignmentResultModel pm) {
 var widgets = <Widget>[];
-if (pm.key != null) widgets.add(new Text(pm.key!));
-if (pm.value != null) widgets.add(new Text(pm.value!));
+if (pm.key! != null) widgets.add(new Text(pm.key!));
+if (pm.value! != null) widgets.add(new Text(pm.value!));
 return widgets;
 }
 

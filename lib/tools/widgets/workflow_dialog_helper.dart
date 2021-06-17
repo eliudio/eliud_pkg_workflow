@@ -33,7 +33,7 @@ class _DialogWithAssignmentResultsState
   @override
   Widget build(BuildContext context) {
     return dialogHelper.build(
-        title: widget.title!,
+        title: widget.title,
         contents: contents(context),
         buttons: dialogHelper.getButtons(
             context, widget.buttonLabels, widget.functions as List<Function>));
@@ -43,7 +43,7 @@ class _DialogWithAssignmentResultsState
     List<Widget> widgets = [];
     if ((widget.resultsPrevious != null) &&
         (widget.resultsPrevious!.isNotEmpty)) {
-      widgets.add(Text(widget.message!));
+      widgets.add(Text(widget.message));
       for (int i = 0; i < widget.resultsPrevious!.length; i++) {
         var result = widget.resultsPrevious![i];
         widgets.add(Text(result.key! + ": " + result.value!));
@@ -57,7 +57,7 @@ class _DialogWithAssignmentResultsState
     if (widgets.length > 0) {
       return Column(children: widgets);
     } else {
-      return Text(widget.message!);
+      return Text(widget.message);
     }
   }
 }

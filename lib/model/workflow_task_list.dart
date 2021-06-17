@@ -230,7 +230,7 @@ class WorkflowTaskListItem extends StatelessWidget {
             child: Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!)),
           ),
         ),
-        subtitle: (value!.documentID != null) && (value!.documentID!.isNotEmpty)
+        subtitle: (value!.documentID! != null) && (value!.documentID!.isNotEmpty)
             ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!))
             : null,
       ),

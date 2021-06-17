@@ -230,7 +230,7 @@ class AssignmentResultListItem extends StatelessWidget {
             child: Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.key!)),
           ),
         ),
-        subtitle: (value!.value != null) && (value!.value!.isNotEmpty)
+        subtitle: (value!.value! != null) && (value!.value!.isNotEmpty)
             ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.value!))
             : null,
       ),
