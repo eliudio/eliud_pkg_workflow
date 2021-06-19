@@ -1,4 +1,6 @@
+import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/widgets/dialog_helper.dart';
+import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,7 @@ class DialogWithAssignmentResults extends StatefulWidget {
   final String message;
   final List<AssignmentResultModel>? resultsPrevious;
   final List<String> buttonLabels;
-  final List<Function> functions;
+  final List<VoidCallback> functions;
   final List<Widget>? extraFields;
 
   DialogWithAssignmentResults(
@@ -28,15 +30,10 @@ class DialogWithAssignmentResults extends StatefulWidget {
 
 class _DialogWithAssignmentResultsState
     extends State<DialogWithAssignmentResults> {
-  final DialogStateHelper dialogHelper = DialogStateHelper();
 
   @override
   Widget build(BuildContext context) {
-    return dialogHelper.build(
-        title: widget.title,
-        contents: contents(context),
-        buttons: dialogHelper.getButtons(
-            context, widget.buttonLabels, widget.functions as List<Function>));
+    return SimpleDialogApi.flexibleDialog(context, title: widget.title, child: contents(context), buttons: StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogButtons(context, labels:  widget.buttonLabels,  functions: widget.functions));
   }
 
   Widget contents(BuildContext context) {
@@ -66,8 +63,8 @@ class YesNoDialogWithAssignmentResults extends StatelessWidget {
   final String title;
   final String message;
   final List<AssignmentResultModel>? resultsPrevious;
-  final Function yesFunction;
-  final Function noFunction;
+  final VoidCallback yesFunction;
+  final VoidCallback noFunction;
   final List<Widget>? extraFields;
 
   const YesNoDialogWithAssignmentResults(
@@ -97,8 +94,8 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
   final String title;
   final String message;
   final List<AssignmentResultModel>? resultsPrevious;
-  final Function yesFunction;
-  final Function noFunction;
+  final VoidCallback yesFunction;
+  final VoidCallback noFunction;
   final List<Widget>? extraFields;
   final String? yesLabel;
   final String? noLabel;
