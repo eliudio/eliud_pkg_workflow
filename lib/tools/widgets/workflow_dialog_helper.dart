@@ -1,6 +1,4 @@
 import 'package:eliud_core/style/style_registry.dart';
-import 'package:eliud_core/tools/widgets/dialog_helper.dart';
-import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +28,19 @@ class DialogWithAssignmentResults extends StatefulWidget {
 
 class _DialogWithAssignmentResultsState
     extends State<DialogWithAssignmentResults> {
-
   @override
   Widget build(BuildContext context) {
-    return SimpleDialogApi.flexibleDialog(context, title: widget.title, child: contents(context), buttons: StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogButtons(context, labels:  widget.buttonLabels,  functions: widget.functions));
+    return StyleRegistry.registry()
+        .styleWithContext(context)
+        .frontEndStyle()
+        .flexibleDialog(context,
+            title: widget.title,
+            child: contents(context),
+            buttons: StyleRegistry.registry()
+                .styleWithContext(context)
+                .frontEndStyle()
+                .dialogButtons(context,
+                    labels: widget.buttonLabels, functions: widget.functions));
   }
 
   Widget contents(BuildContext context) {
@@ -70,10 +77,10 @@ class YesNoDialogWithAssignmentResults extends StatelessWidget {
   const YesNoDialogWithAssignmentResults(
       {Key? key,
       required this.title,
-        required this.message,
+      required this.message,
       this.resultsPrevious,
-        required this.yesFunction,
-        required this.noFunction,
+      required this.yesFunction,
+      required this.noFunction,
       this.extraFields})
       : super(key: key);
 
@@ -122,7 +129,11 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
         title: title,
         message: message,
         resultsPrevious: resultsPrevious,
-        buttonLabels: ['Later', noLabel != null ? noLabel! : 'Cancel', yesLabel != null ? yesLabel! : 'Continue'],
+        buttonLabels: [
+          'Later',
+          noLabel != null ? noLabel! : 'Cancel',
+          yesLabel != null ? yesLabel! : 'Continue'
+        ],
         functions: [
           () => Navigator.pop(context),
           noFunction,
@@ -131,4 +142,3 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
         extraFields: extraFields);
   }
 }
-

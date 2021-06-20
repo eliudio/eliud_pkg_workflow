@@ -89,7 +89,7 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  Future<void> startTask(BuildContext? context, AssignmentModel? assignmentModel);
+  Future<void> startTask(BuildContext context, AssignmentModel? assignmentModel);
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
@@ -134,7 +134,7 @@ abstract class TaskModel {
   }
 
   /* This method is called by the workflow framework */
-  void callExecute(BuildContext? context, AssignmentModel? assignmentModel,
+  void callExecute(BuildContext context, AssignmentModel? assignmentModel,
       bool isNewAssignment,
       {FinaliseWorkflow? finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
@@ -268,7 +268,7 @@ class ExampleTaskModel1 extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext? context, AssignmentModel? assignmentModel) {
+      BuildContext context, AssignmentModel? assignmentModel) {
     throw UnimplementedError();
   }
 }
