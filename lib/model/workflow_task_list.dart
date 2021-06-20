@@ -100,7 +100,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
     if (accessState is AppLoaded) {
       return BlocBuilder<WorkflowTaskListBloc, WorkflowTaskListState>(builder: (context, state) {
         if (state is WorkflowTaskListLoading) {
-          return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+          return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
         } else if (state is WorkflowTaskListLoaded) {
           final values = state.values;
           if ((widget.isEmbedded != null) && widget.isEmbedded!) {
@@ -130,7 +130,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
             return theList(context, values, accessState);
           }
         } else {
-          return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+          return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
         }
       });
     } else {

@@ -100,7 +100,7 @@ class AssignmentViewListWidgetState extends State<AssignmentViewListWidget> {
     if (accessState is AppLoaded) {
       return BlocBuilder<AssignmentViewListBloc, AssignmentViewListState>(builder: (context, state) {
         if (state is AssignmentViewListLoading) {
-          return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+          return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
         } else if (state is AssignmentViewListLoaded) {
           final values = state.values;
           if ((widget.isEmbedded != null) && widget.isEmbedded!) {
@@ -130,7 +130,7 @@ class AssignmentViewListWidgetState extends State<AssignmentViewListWidget> {
             return theList(context, values, accessState);
           }
         } else {
-          return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+          return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
         }
       });
     } else {

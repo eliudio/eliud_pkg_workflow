@@ -74,7 +74,7 @@ return widgets;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentListBloc, AssignmentListState>(builder: (context, state) {
       if (state is AssignmentListLoading) {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       } else if (state is AssignmentListLoaded) {
         String? valueChosen;
         if (state.values!.indexWhere((v) => (v!.documentID == widget.value)) >= 0)
@@ -125,7 +125,7 @@ return widgets;
           return Center(child: button);
         }
       } else {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       }
     });
   }

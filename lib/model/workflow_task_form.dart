@@ -137,7 +137,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<WorkflowTaskFormBloc, WorkflowTaskFormState>(builder: (context, state) {
       if (state is WorkflowTaskFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
       );
 
       if (state is WorkflowTaskFormLoaded) {
@@ -260,7 +260,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       }
     });
   }

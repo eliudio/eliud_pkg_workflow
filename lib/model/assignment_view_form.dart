@@ -147,7 +147,7 @@ class _MyAssignmentViewFormState extends State<MyAssignmentViewForm> {
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentViewFormBloc, AssignmentViewFormState>(builder: (context, state) {
       if (state is AssignmentViewFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
       );
 
       if (state is AssignmentViewFormLoaded) {
@@ -252,7 +252,7 @@ class _MyAssignmentViewFormState extends State<MyAssignmentViewForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       }
     });
   }

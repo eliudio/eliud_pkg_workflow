@@ -53,7 +53,11 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
             listBackground: BackgroundModel(documentID: "`transparent")),
       );
     } else {
-      return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+      return StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .progressIndicatorStyle()
+          .progressIndicator(context);
     }
   }
 

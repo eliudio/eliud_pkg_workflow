@@ -32,13 +32,13 @@ class _DialogWithAssignmentResultsState
   Widget build(BuildContext context) {
     return StyleRegistry.registry()
         .styleWithContext(context)
-        .frontEndStyle()
+        .frontEndStyle().dialogWidgetStyle()
         .flexibleDialog(context,
             title: widget.title,
             child: contents(context),
             buttons: StyleRegistry.registry()
                 .styleWithContext(context)
-                .frontEndStyle()
+                .frontEndStyle().buttonStyle()
                 .dialogButtons(context,
                     labels: widget.buttonLabels, functions: widget.functions));
   }

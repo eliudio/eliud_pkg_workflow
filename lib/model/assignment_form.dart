@@ -153,7 +153,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentFormBloc, AssignmentFormState>(builder: (context, state) {
       if (state is AssignmentFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
       );
 
       if (state is AssignmentFormLoaded) {
@@ -399,7 +399,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       }
     });
   }

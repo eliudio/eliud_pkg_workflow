@@ -145,7 +145,7 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<WorkflowFormBloc, WorkflowFormState>(builder: (context, state) {
       if (state is WorkflowFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
       );
 
       if (state is WorkflowFormLoaded) {
@@ -251,7 +251,7 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       }
     });
   }
