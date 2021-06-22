@@ -32,13 +32,15 @@ class _DialogWithAssignmentResultsState
   Widget build(BuildContext context) {
     return StyleRegistry.registry()
         .styleWithContext(context)
-        .frontEndStyle().dialogWidgetStyle()
+        .frontEndStyle()
+        .dialogWidgetStyle()
         .flexibleDialog(context,
             title: widget.title,
             child: contents(context),
             buttons: StyleRegistry.registry()
                 .styleWithContext(context)
-                .frontEndStyle().buttonStyle()
+                .frontEndStyle()
+                .buttonStyle()
                 .dialogButtons(context,
                     labels: widget.buttonLabels, functions: widget.functions));
   }
@@ -136,8 +138,14 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
         ],
         functions: [
           () => Navigator.pop(context),
-          noFunction,
-          yesFunction,
+          () {
+            Navigator.pop(context);
+            noFunction();
+          },
+          () {
+            Navigator.pop(context);
+            yesFunction();
+          },
         ],
         extraFields: extraFields);
   }
