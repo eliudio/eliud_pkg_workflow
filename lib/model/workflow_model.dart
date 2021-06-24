@@ -14,7 +14,6 @@
 */
 
 import 'package:collection/collection.dart';
-import 'package:eliud_core/core/global_data.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
