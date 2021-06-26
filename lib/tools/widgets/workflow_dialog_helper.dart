@@ -12,16 +12,16 @@ class DialogWithAssignmentResults {
       List<AssignmentResultModel>? resultsPrevious,
       List<Widget>? extraFields}) {
     List<Widget> widgets = [];
-    if ((resultsPrevious != null) && (resultsPrevious!.isNotEmpty)) {
+    if ((resultsPrevious != null) && (resultsPrevious.isNotEmpty)) {
       widgets.add(Text(message));
-      for (int i = 0; i < resultsPrevious!.length; i++) {
-        var result = resultsPrevious![i];
+      for (int i = 0; i < resultsPrevious.length; i++) {
+        var result = resultsPrevious[i];
         widgets.add(Text(result.key! + ": " + result.value!));
       }
     }
 
-    if ((extraFields != null) && (extraFields!.isNotEmpty)) {
-      widgets.addAll(extraFields!);
+    if ((extraFields != null) && (extraFields.isNotEmpty)) {
+      widgets.addAll(extraFields);
     }
 
     var contents;
@@ -83,8 +83,8 @@ class YesNoIgnoreDialogWithAssignmentResults {
         resultsPrevious: resultsPrevious,
         buttonLabels: [
           'Later',
-          noLabel != null ? noLabel! : 'Cancel',
-          yesLabel != null ? yesLabel! : 'Continue'
+          noLabel != null ? noLabel : 'Cancel',
+          yesLabel != null ? yesLabel : 'Continue'
         ],
         functions: [
               () => Navigator.pop(context),
