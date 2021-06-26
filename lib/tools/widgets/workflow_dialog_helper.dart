@@ -3,92 +3,60 @@ import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DialogWithAssignmentResults extends StatefulWidget {
-  final String title;
-  final String message;
-  final List<AssignmentResultModel>? resultsPrevious;
-  final List<String> buttonLabels;
-  final List<VoidCallback> functions;
-  final List<Widget>? extraFields;
+class DialogWithAssignmentResults {
+  static Widget get(BuildContext context,
+      {required String title,
+      required String message,
+      required List<String> buttonLabels,
+      required List<VoidCallback> functions,
+      List<AssignmentResultModel>? resultsPrevious,
+      List<Widget>? extraFields}) {
+    List<Widget> widgets = [];
+    if ((resultsPrevious != null) && (resultsPrevious!.isNotEmpty)) {
+      widgets.add(Text(message));
+      for (int i = 0; i < resultsPrevious!.length; i++) {
+        var result = resultsPrevious![i];
+        widgets.add(Text(result.key! + ": " + result.value!));
+      }
+    }
 
-  DialogWithAssignmentResults(
-      {Key? key,
-      required this.title,
-      required this.message,
-      required this.buttonLabels,
-      required this.functions,
-      this.resultsPrevious,
-      this.extraFields})
-      : super(key: key);
+    if ((extraFields != null) && (extraFields!.isNotEmpty)) {
+      widgets.addAll(extraFields!);
+    }
 
-  @override
-  _DialogWithAssignmentResultsState createState() =>
-      _DialogWithAssignmentResultsState();
-}
+    var contents;
+    if (widgets.length > 0) {
+      contents = Column(children: widgets);
+    } else {
+      contents = Text(message);
+    }
 
-class _DialogWithAssignmentResultsState
-    extends State<DialogWithAssignmentResults> {
-  @override
-  Widget build(BuildContext context) {
     return StyleRegistry.registry()
         .styleWithContext(context)
         .frontEndStyle()
         .dialogWidgetStyle()
         .flexibleDialog(context,
-            title: widget.title,
-            child: contents(context),
+            title: title,
+            child: contents,
             buttons: StyleRegistry.registry()
                 .styleWithContext(context)
                 .frontEndStyle()
                 .buttonStyle()
                 .dialogButtons(context,
-                    labels: widget.buttonLabels, functions: widget.functions));
-  }
-
-  Widget contents(BuildContext context) {
-    List<Widget> widgets = [];
-    if ((widget.resultsPrevious != null) &&
-        (widget.resultsPrevious!.isNotEmpty)) {
-      widgets.add(Text(widget.message));
-      for (int i = 0; i < widget.resultsPrevious!.length; i++) {
-        var result = widget.resultsPrevious![i];
-        widgets.add(Text(result.key! + ": " + result.value!));
-      }
-    }
-
-    if ((widget.extraFields != null) && (widget.extraFields!.isNotEmpty)) {
-      widgets.addAll(widget.extraFields!);
-    }
-
-    if (widgets.length > 0) {
-      return Column(children: widgets);
-    } else {
-      return Text(widget.message);
-    }
+                    labels: buttonLabels, functions: functions));
   }
 }
 
-class YesNoDialogWithAssignmentResults extends StatelessWidget {
-  final String title;
-  final String message;
-  final List<AssignmentResultModel>? resultsPrevious;
-  final VoidCallback yesFunction;
-  final VoidCallback noFunction;
-  final List<Widget>? extraFields;
-
-  const YesNoDialogWithAssignmentResults(
-      {Key? key,
-      required this.title,
-      required this.message,
-      this.resultsPrevious,
-      required this.yesFunction,
-      required this.noFunction,
-      this.extraFields})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DialogWithAssignmentResults(
+class YesNoDialogWithAssignmentResults {
+  static Widget get(BuildContext context,
+      {
+      required String title,
+      required String message,
+      List<AssignmentResultModel>? resultsPrevious,
+      required VoidCallback yesFunction,
+      required VoidCallback noFunction,
+      List<Widget>? extraFields}) {
+    return DialogWithAssignmentResults.get(context,
       title: title,
       message: message,
       resultsPrevious: resultsPrevious,
@@ -99,35 +67,17 @@ class YesNoDialogWithAssignmentResults extends StatelessWidget {
   }
 }
 
-class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
-  final String title;
-  final String message;
-  final List<AssignmentResultModel>? resultsPrevious;
-  final VoidCallback yesFunction;
-  final VoidCallback noFunction;
-  final List<Widget>? extraFields;
-  final String? yesLabel;
-  final String? noLabel;
-
-  const YesNoIgnoreDialogWithAssignmentResults(
-      {Key? key,
-      required this.title,
-      required this.message,
-      this.resultsPrevious,
-      required this.yesFunction,
-      required this.noFunction,
-      this.extraFields,
-      this.yesLabel,
-      this.noLabel})
-      : super(key: key);
-
-  void pop(BuildContext context) {
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DialogWithAssignmentResults(
+class YesNoIgnoreDialogWithAssignmentResults {
+  static Widget get(BuildContext context,
+      {required String title,
+      required String message,
+        List<AssignmentResultModel>? resultsPrevious,
+      required VoidCallback yesFunction,
+      required VoidCallback noFunction,
+        List<Widget>? extraFields,
+      String? yesLabel,
+        String? noLabel}) {
+    return DialogWithAssignmentResults.get(context,
         title: title,
         message: message,
         resultsPrevious: resultsPrevious,
@@ -137,12 +87,12 @@ class YesNoIgnoreDialogWithAssignmentResults extends StatelessWidget {
           yesLabel != null ? yesLabel! : 'Continue'
         ],
         functions: [
-          () => Navigator.pop(context),
-          () {
+              () => Navigator.pop(context),
+              () {
             Navigator.pop(context);
             noFunction();
           },
-          () {
+              () {
             Navigator.pop(context);
             yesFunction();
           },
