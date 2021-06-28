@@ -98,6 +98,7 @@ class WorkflowTaskModel {
 
   static WorkflowTaskModel? fromEntity(String documentID, WorkflowTaskEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return WorkflowTaskModel(
           documentID: documentID, 
           seqNumber: entity.seqNumber, 
@@ -114,6 +115,7 @@ class WorkflowTaskModel {
   static Future<WorkflowTaskModel?> fromEntityPlus(String documentID, WorkflowTaskEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return WorkflowTaskModel(
           documentID: documentID, 
           seqNumber: entity.seqNumber, 

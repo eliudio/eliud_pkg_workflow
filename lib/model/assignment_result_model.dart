@@ -69,6 +69,7 @@ class AssignmentResultModel {
 
   static AssignmentResultModel? fromEntity(String documentID, AssignmentResultEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return AssignmentResultModel(
           documentID: documentID, 
           key: entity.key, 
@@ -79,6 +80,7 @@ class AssignmentResultModel {
   static Future<AssignmentResultModel?> fromEntityPlus(String documentID, AssignmentResultEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return AssignmentResultModel(
           documentID: documentID, 
           key: entity.key, 

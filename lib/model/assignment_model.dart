@@ -135,6 +135,7 @@ class AssignmentModel {
 
   static AssignmentModel? fromEntity(String documentID, AssignmentEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return AssignmentModel(
           documentID: documentID, 
           appId: entity.appId, 
@@ -147,12 +148,18 @@ class AssignmentModel {
           resultsCurrent: 
             entity.resultsCurrent == null ? null :
             entity.resultsCurrent
-            !.map((item) => AssignmentResultModel.fromEntity(newRandomKey(), item)!)
+            !.map((item) {
+              counter++; 
+              return AssignmentResultModel.fromEntity(counter.toString(), item)!;
+            })
             .toList(), 
           resultsPrevious: 
             entity.resultsPrevious == null ? null :
             entity.resultsPrevious
-            !.map((item) => AssignmentResultModel.fromEntity(newRandomKey(), item)!)
+            !.map((item) {
+              counter++; 
+              return AssignmentResultModel.fromEntity(counter.toString(), item)!;
+            })
             .toList(), 
           triggeredById: entity.triggeredById, 
           confirmMessage: 
@@ -187,6 +194,7 @@ class AssignmentModel {
       }
     }
 
+    var counter = 0;
     return AssignmentModel(
           documentID: documentID, 
           appId: entity.appId, 
@@ -199,12 +207,16 @@ class AssignmentModel {
           timestamp: entity.timestamp.toString(), 
           status: toAssignmentStatus(entity.status), 
           resultsCurrent: 
-            entity. resultsCurrent == null ? null : new List<AssignmentResultModel>.from(await Future.wait(entity. resultsCurrent
-            !.map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
+            entity. resultsCurrent == null ? null : List<AssignmentResultModel>.from(await Future.wait(entity. resultsCurrent
+            !.map((item) {
+            counter++;
+            return AssignmentResultModel.fromEntityPlus(counter.toString(), item, appId: appId);})
             .toList())), 
           resultsPrevious: 
-            entity. resultsPrevious == null ? null : new List<AssignmentResultModel>.from(await Future.wait(entity. resultsPrevious
-            !.map((item) => AssignmentResultModel.fromEntityPlus(newRandomKey(), item, appId: appId))
+            entity. resultsPrevious == null ? null : List<AssignmentResultModel>.from(await Future.wait(entity. resultsPrevious
+            !.map((item) {
+            counter++;
+            return AssignmentResultModel.fromEntityPlus(counter.toString(), item, appId: appId);})
             .toList())), 
           triggeredById: entity.triggeredById, 
           confirmMessage: 

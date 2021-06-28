@@ -82,6 +82,7 @@ class WorkflowNotificationModel {
 
   static WorkflowNotificationModel? fromEntity(WorkflowNotificationEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return WorkflowNotificationModel(
           message: entity.message, 
           addressee: toWorkflowNotificationAddressee(entity.addressee), 
@@ -91,6 +92,7 @@ class WorkflowNotificationModel {
   static Future<WorkflowNotificationModel?> fromEntityPlus(WorkflowNotificationEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return WorkflowNotificationModel(
           message: entity.message, 
           addressee: toWorkflowNotificationAddressee(entity.addressee), 

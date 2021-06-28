@@ -83,13 +83,17 @@ class WorkflowModel {
 
   static WorkflowModel? fromEntity(String documentID, WorkflowEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return WorkflowModel(
           documentID: documentID, 
           name: entity.name, 
           workflowTask: 
             entity.workflowTask == null ? null :
             entity.workflowTask
-            !.map((item) => WorkflowTaskModel.fromEntity(newRandomKey(), item)!)
+            !.map((item) {
+              counter++; 
+              return WorkflowTaskModel.fromEntity(counter.toString(), item)!;
+            })
             .toList(), 
           appId: entity.appId, 
     );
@@ -98,12 +102,15 @@ class WorkflowModel {
   static Future<WorkflowModel?> fromEntityPlus(String documentID, WorkflowEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return WorkflowModel(
           documentID: documentID, 
           name: entity.name, 
           workflowTask: 
-            entity. workflowTask == null ? null : new List<WorkflowTaskModel>.from(await Future.wait(entity. workflowTask
-            !.map((item) => WorkflowTaskModel.fromEntityPlus(newRandomKey(), item, appId: appId))
+            entity. workflowTask == null ? null : List<WorkflowTaskModel>.from(await Future.wait(entity. workflowTask
+            !.map((item) {
+            counter++;
+            return WorkflowTaskModel.fromEntityPlus(counter.toString(), item, appId: appId);})
             .toList())), 
           appId: entity.appId, 
     );

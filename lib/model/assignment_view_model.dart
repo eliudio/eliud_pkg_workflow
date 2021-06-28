@@ -79,6 +79,7 @@ class AssignmentViewModel {
 
   static AssignmentViewModel? fromEntity(String documentID, AssignmentViewEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return AssignmentViewModel(
           documentID: documentID, 
           appId: entity.appId, 
@@ -92,6 +93,7 @@ class AssignmentViewModel {
   static Future<AssignmentViewModel?> fromEntityPlus(String documentID, AssignmentViewEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return AssignmentViewModel(
           documentID: documentID, 
           appId: entity.appId, 
