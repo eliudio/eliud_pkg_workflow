@@ -49,11 +49,11 @@ class WorkflowFirestore implements WorkflowRepository {
   }
 
   WorkflowModel? _populateDoc(DocumentSnapshot value) {
-    return WorkflowModel.fromEntity(value.id, WorkflowEntity.fromMap(value.data()));
+    return WorkflowModel.fromEntity(value.id, WorkflowEntity.fromMap(value.data() as Map<String, dynamic>));
   }
 
   Future<WorkflowModel?> _populateDocPlus(DocumentSnapshot value) async {
-    return WorkflowModel.fromEntityPlus(value.id, WorkflowEntity.fromMap(value.data()), appId: appId);  }
+    return WorkflowModel.fromEntityPlus(value.id, WorkflowEntity.fromMap(value.data() as Map<String, dynamic>), appId: appId);  }
 
   Future<WorkflowModel?> get(String? id, {Function(Exception)? onError}) async {
     try {

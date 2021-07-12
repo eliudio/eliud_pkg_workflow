@@ -49,11 +49,11 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
   }
 
   AssignmentViewModel? _populateDoc(DocumentSnapshot value) {
-    return AssignmentViewModel.fromEntity(value.id, AssignmentViewEntity.fromMap(value.data()));
+    return AssignmentViewModel.fromEntity(value.id, AssignmentViewEntity.fromMap(value.data() as Map<String, dynamic>));
   }
 
   Future<AssignmentViewModel?> _populateDocPlus(DocumentSnapshot value) async {
-    return AssignmentViewModel.fromEntityPlus(value.id, AssignmentViewEntity.fromMap(value.data()), appId: appId);  }
+    return AssignmentViewModel.fromEntityPlus(value.id, AssignmentViewEntity.fromMap(value.data() as Map<String, dynamic>), appId: appId);  }
 
   Future<AssignmentViewModel?> get(String? id, {Function(Exception)? onError}) async {
     try {
