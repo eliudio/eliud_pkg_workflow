@@ -34,8 +34,9 @@ class AssignmentResultEntity {
     return 'AssignmentResultEntity{key: $key, value: $value}';
   }
 
-  static AssignmentResultEntity? fromMap(Map? map) {
-    if (map == null) return null;
+  static AssignmentResultEntity? fromMap(Object? o) {
+    if (o == null) return null;
+    var map = o as Map<String, dynamic>;
 
     return AssignmentResultEntity(
       key: map['key'], 

@@ -34,8 +34,9 @@ class WorkflowNotificationEntity {
     return 'WorkflowNotificationEntity{message: $message, addressee: $addressee}';
   }
 
-  static WorkflowNotificationEntity? fromMap(Map? map) {
-    if (map == null) return null;
+  static WorkflowNotificationEntity? fromMap(Object? o) {
+    if (o == null) return null;
+    var map = o as Map<String, dynamic>;
 
     return WorkflowNotificationEntity(
       message: map['message'], 

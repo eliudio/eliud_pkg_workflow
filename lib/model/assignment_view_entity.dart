@@ -37,8 +37,9 @@ class AssignmentViewEntity {
     return 'AssignmentViewEntity{appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  static AssignmentViewEntity? fromMap(Map? map) {
-    if (map == null) return null;
+  static AssignmentViewEntity? fromMap(Object? o) {
+    if (o == null) return null;
+    var map = o as Map<String, dynamic>;
 
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];

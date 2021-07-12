@@ -37,8 +37,9 @@ class WorkflowTaskEntity {
     return 'WorkflowTaskEntity{seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  static WorkflowTaskEntity? fromMap(Map? map) {
-    if (map == null) return null;
+  static WorkflowTaskEntity? fromMap(Object? o) {
+    if (o == null) return null;
+    var map = o as Map<String, dynamic>;
 
     var taskFromMap;
     taskFromMap = map['task'];
