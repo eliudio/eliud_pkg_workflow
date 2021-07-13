@@ -152,7 +152,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
 
           return WorkflowTaskListItem(
             value: value,
-            app: accessState.app,
+//            app: accessState.app,
             onDismissed: (direction) {
               BlocProvider.of<WorkflowTaskListBloc>(context)
                   .add(DeleteWorkflowTaskList(value: value));
@@ -199,7 +199,6 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
 class WorkflowTaskListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
-  final AppModel app;
   final WorkflowTaskModel? value;
 
   WorkflowTaskListItem({
@@ -207,7 +206,6 @@ class WorkflowTaskListItem extends StatelessWidget {
     required this.onDismissed,
     required this.onTap,
     required this.value,
-    required this.app,
   }) : super(key: key);
 
   @override

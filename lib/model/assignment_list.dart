@@ -152,7 +152,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
 
           return AssignmentListItem(
             value: value,
-            app: accessState.app,
+//            app: accessState.app,
             onDismissed: (direction) {
               BlocProvider.of<AssignmentListBloc>(context)
                   .add(DeleteAssignmentList(value: value));
@@ -199,7 +199,6 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
 class AssignmentListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
-  final AppModel app;
   final AssignmentModel? value;
 
   AssignmentListItem({
@@ -207,7 +206,6 @@ class AssignmentListItem extends StatelessWidget {
     required this.onDismissed,
     required this.onTap,
     required this.value,
-    required this.app,
   }) : super(key: key);
 
   @override
