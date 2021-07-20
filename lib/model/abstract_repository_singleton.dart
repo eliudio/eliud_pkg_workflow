@@ -38,5 +38,8 @@ abstract class AbstractRepositorySingleton {
   WorkflowRepository? workflowRepository(String? appId);
 
   void flush(String? appId) {
+    assignmentRepository(appId)!.flush();
+    assignmentViewRepository(appId)!.flush();
+    workflowRepository(appId)!.flush();
   }
 }

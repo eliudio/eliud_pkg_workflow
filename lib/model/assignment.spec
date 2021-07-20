@@ -16,7 +16,7 @@
     "generateDropDownButton": true,
     "generateInternalComponent": true,
     "generateEmbeddedComponent": true,
-    "isDocumentCollection": true
+    "documentSubCollectionOf": "app"
   },
   "memberIdentifier": "assigneeId",
   "fields": [
