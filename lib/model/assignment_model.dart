@@ -15,6 +15,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -60,7 +61,7 @@ class AssignmentModel {
 
   // this corresponds to the WorkflowModel.workflowTask[i].seqNumber
   int? workflowTaskSeqNumber;
-  String? timestamp;
+  DateTime? timestamp;
   AssignmentStatus? status;
 
   // The results of the current assignment
@@ -76,7 +77,7 @@ class AssignmentModel {
     assert(documentID != null);
   }
 
-  AssignmentModel copyWith({String? documentID, String? appId, MemberModel? reporter, String? assigneeId, TaskModel? task, WorkflowModel? workflow, int? workflowTaskSeqNumber, String? timestamp, AssignmentStatus? status, List<AssignmentResultModel>? resultsCurrent, List<AssignmentResultModel>? resultsPrevious, String? triggeredById, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, }) {
+  AssignmentModel copyWith({String? documentID, String? appId, MemberModel? reporter, String? assigneeId, TaskModel? task, WorkflowModel? workflow, int? workflowTaskSeqNumber, DateTime? timestamp, AssignmentStatus? status, List<AssignmentResultModel>? resultsCurrent, List<AssignmentResultModel>? resultsPrevious, String? triggeredById, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, }) {
     return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, );
   }
 
@@ -119,7 +120,7 @@ class AssignmentModel {
           task: (task != null) ? task!.toEntity(appId: appId) : null, 
           workflowId: (workflow != null) ? workflow!.documentID : null, 
           workflowTaskSeqNumber: (workflowTaskSeqNumber != null) ? workflowTaskSeqNumber : null, 
-          timestamp: timestamp, 
+          timestamp: (timestamp == null) ? null : timestamp!.millisecondsSinceEpoch, 
           status: (status != null) ? status!.index : null, 
           resultsCurrent: (resultsCurrent != null) ? resultsCurrent
             !.map((item) => item.toEntity(appId: appId))
@@ -143,7 +144,7 @@ class AssignmentModel {
           task: 
             TaskModel.fromEntity(entity.task), 
           workflowTaskSeqNumber: entity.workflowTaskSeqNumber, 
-          timestamp: entity.timestamp.toString(), 
+          timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
           status: toAssignmentStatus(entity.status), 
           resultsCurrent: 
             entity.resultsCurrent == null ? null :
@@ -204,7 +205,7 @@ class AssignmentModel {
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 
           workflow: workflowHolder, 
           workflowTaskSeqNumber: entity.workflowTaskSeqNumber, 
-          timestamp: entity.timestamp.toString(), 
+          timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
           status: toAssignmentStatus(entity.status), 
           resultsCurrent: 
             entity. resultsCurrent == null ? null : List<AssignmentResultModel>.from(await Future.wait(entity. resultsCurrent

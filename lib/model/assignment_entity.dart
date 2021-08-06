@@ -15,12 +15,13 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/common_tools.dart';
 import 'abstract_repository_singleton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
+import 'package:eliud_core/tools/common_tools.dart';
 class AssignmentEntity {
   final String? appId;
   final String? reporterId;
@@ -91,7 +92,7 @@ class AssignmentEntity {
       task: taskFromMap, 
       workflowId: map['workflowId'], 
       workflowTaskSeqNumber: int.tryParse(map['workflowTaskSeqNumber'].toString()), 
-      timestamp: assignmentRepository(appId: map['appId'])!.timeStampToString(map['timestamp']), 
+      timestamp: map['timestamp'] == null ? null : (map['timestamp']  as Timestamp).millisecondsSinceEpoch,
       status: map['status'], 
       resultsCurrent: resultsCurrentList, 
       resultsPrevious: resultsPreviousList, 

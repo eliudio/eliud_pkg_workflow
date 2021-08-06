@@ -23,7 +23,6 @@ import 'package:eliud_pkg_workflow/model/workflow_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
 
-const _workflowLimit = 5;
 
 class WorkflowListBloc extends Bloc<WorkflowListEvent, WorkflowListState> {
   final WorkflowRepository _workflowRepository;
@@ -34,8 +33,9 @@ class WorkflowListBloc extends Bloc<WorkflowListEvent, WorkflowListState> {
   final String? orderBy;
   final bool? descending;
   final bool? detailed;
+  final int workflowLimit;
 
-  WorkflowListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required WorkflowRepository workflowRepository})
+  WorkflowListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required WorkflowRepository workflowRepository, this.workflowLimit = 5})
       : assert(workflowRepository != null),
         _workflowRepository = workflowRepository,
         super(WorkflowListLoading());
@@ -48,7 +48,7 @@ class WorkflowListBloc extends Bloc<WorkflowListEvent, WorkflowListState> {
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * _workflowLimit : null
+      limit: ((paged != null) && paged!) ? pages * workflowLimit : null
     );
   }
 
@@ -60,7 +60,7 @@ class WorkflowListBloc extends Bloc<WorkflowListEvent, WorkflowListState> {
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * _workflowLimit : null
+        limit: ((paged != null) && paged!) ? pages * workflowLimit : null
     );
   }
 

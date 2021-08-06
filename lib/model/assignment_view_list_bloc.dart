@@ -23,7 +23,6 @@ import 'package:eliud_pkg_workflow/model/assignment_view_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
 
-const _assignmentViewLimit = 5;
 
 class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentViewListState> {
   final AssignmentViewRepository _assignmentViewRepository;
@@ -34,8 +33,9 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
   final String? orderBy;
   final bool? descending;
   final bool? detailed;
+  final int assignmentViewLimit;
 
-  AssignmentViewListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentViewRepository assignmentViewRepository})
+  AssignmentViewListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentViewRepository assignmentViewRepository, this.assignmentViewLimit = 5})
       : assert(assignmentViewRepository != null),
         _assignmentViewRepository = assignmentViewRepository,
         super(AssignmentViewListLoading());
@@ -48,7 +48,7 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * _assignmentViewLimit : null
+      limit: ((paged != null) && paged!) ? pages * assignmentViewLimit : null
     );
   }
 
@@ -60,7 +60,7 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * _assignmentViewLimit : null
+        limit: ((paged != null) && paged!) ? pages * assignmentViewLimit : null
     );
   }
 

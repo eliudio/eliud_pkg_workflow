@@ -15,11 +15,12 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/common_tools.dart';
 import 'abstract_repository_singleton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
+import 'package:eliud_core/tools/common_tools.dart';
 class AssignmentResultEntity {
   final String? key;
   final String? value;

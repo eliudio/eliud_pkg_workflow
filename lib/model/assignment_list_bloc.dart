@@ -23,7 +23,6 @@ import 'package:eliud_pkg_workflow/model/assignment_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
 
-const _assignmentLimit = 5;
 
 class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> {
   final AssignmentRepository _assignmentRepository;
@@ -34,8 +33,9 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
   final String? orderBy;
   final bool? descending;
   final bool? detailed;
+  final int assignmentLimit;
 
-  AssignmentListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentRepository assignmentRepository})
+  AssignmentListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentRepository assignmentRepository, this.assignmentLimit = 5})
       : assert(assignmentRepository != null),
         _assignmentRepository = assignmentRepository,
         super(AssignmentListLoading());
@@ -48,7 +48,7 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * _assignmentLimit : null
+      limit: ((paged != null) && paged!) ? pages * assignmentLimit : null
     );
   }
 
@@ -60,7 +60,7 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * _assignmentLimit : null
+        limit: ((paged != null) && paged!) ? pages * assignmentLimit : null
     );
   }
 
