@@ -20,13 +20,13 @@ import '../workflow_package.dart';
 
 class AssignmentViewComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({String? id, Map<String, dynamic>? parameters}) {
-    return AssignmentViewComponentImpl(id: id);
+  Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
+    return AssignmentViewComponentImpl(key: key, id: id);
   }
 }
 
 class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
-  AssignmentViewComponentImpl({String? id}) : super(assignmentViewID: id);
+  AssignmentViewComponentImpl({Key? key, required String id}) : super(key: key, assignmentViewID: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {

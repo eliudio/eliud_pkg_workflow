@@ -27,7 +27,7 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
   static String componentName = "workflows";
   final String? workflowID;
 
-  AbstractWorkflowComponent({this.workflowID});
+  AbstractWorkflowComponent({Key? key, this.workflowID}): super(key: key);
 
   @override
   Widget build(BuildContext context) {

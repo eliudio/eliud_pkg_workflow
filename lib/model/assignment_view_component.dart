@@ -27,7 +27,7 @@ abstract class AbstractAssignmentViewComponent extends StatelessWidget {
   static String componentName = "assignmentViews";
   final String? assignmentViewID;
 
-  AbstractAssignmentViewComponent({this.assignmentViewID});
+  AbstractAssignmentViewComponent({Key? key, this.assignmentViewID}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
