@@ -199,7 +199,7 @@ class AssignmentResultListWidgetState extends State<AssignmentResultListWidget> 
 class AssignmentResultListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
-  final AssignmentResultModel? value;
+  final AssignmentResultModel value;
 
   AssignmentResultListItem({
     Key? key,
@@ -215,16 +215,8 @@ class AssignmentResultListItem extends StatelessWidget {
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
-        title: Hero(
-          tag: '${value!.documentID}__AssignmentResultheroTag',
-          child: Container(
-            width: fullScreenWidth(context),
-            child: Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.key!)),
-          ),
-        ),
-        subtitle: (value!.value! != null) && (value!.value!.isNotEmpty)
-            ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.value!))
-            : null,
+        title: value!.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.key!)) : Container(),
+        subtitle: value!.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.value!)) : Container(),
       ),
     );
   }

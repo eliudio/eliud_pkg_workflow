@@ -61,10 +61,9 @@ class AssignmentDropdownButtonWidgetState extends State<AssignmentDropdownButton
     super.dispose();
   }
 
-List<Widget> widgets(AssignmentModel pm) {
+List<Widget> widgets(AssignmentModel value) {
 var widgets = <Widget>[];
-if (pm.documentID! != null) widgets.add(new Text(pm.documentID!));
-if (pm.documentID! != null) widgets.add(new Text(pm.documentID!));
+widgets.add(value!.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!)) : Container());
 return widgets;
 }
 

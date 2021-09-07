@@ -61,10 +61,9 @@ class WorkflowTaskDropdownButtonWidgetState extends State<WorkflowTaskDropdownBu
     super.dispose();
   }
 
-List<Widget> widgets(WorkflowTaskModel pm) {
+List<Widget> widgets(WorkflowTaskModel value) {
 var widgets = <Widget>[];
-if (pm.documentID! != null) widgets.add(new Text(pm.documentID!));
-if (pm.documentID! != null) widgets.add(new Text(pm.documentID!));
+widgets.add(value!.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!)) : Container());
 return widgets;
 }
 
