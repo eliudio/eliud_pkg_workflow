@@ -63,8 +63,8 @@ class AssignmentResultDropdownButtonWidgetState extends State<AssignmentResultDr
 
 List<Widget> widgets(AssignmentResultModel value) {
 var widgets = <Widget>[];
-widgets.add(value!.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.key!)) : Container());
-widgets.add(value!.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.value!)) : Container());
+widgets.add(value.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.key!)) : Container());
+widgets.add(value.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.value!)) : Container());
 return widgets;
 }
 

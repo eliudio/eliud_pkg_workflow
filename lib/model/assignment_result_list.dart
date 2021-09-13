@@ -211,12 +211,12 @@ class AssignmentResultListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('__AssignmentResult_item_${value!.documentID}'),
+      key: Key('__AssignmentResult_item_${value.documentID}'),
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
-        title: value!.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.key!)) : Container(),
-        subtitle: value!.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.value!)) : Container(),
+        title: value.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.key!)) : Container(),
+        subtitle: value.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.value!)) : Container(),
       ),
     );
   }
