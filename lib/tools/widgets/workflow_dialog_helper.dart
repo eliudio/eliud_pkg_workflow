@@ -1,3 +1,5 @@
+import 'package:eliud_core/style/frontend/has_button.dart';
+import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,18 +33,10 @@ class DialogWithAssignmentResults {
       contents = Text(message);
     }
 
-    return StyleRegistry.registry()
-        .styleWithContext(context)
-        .frontEndStyle()
-        .dialogWidgetStyle()
-        .flexibleDialog(context,
+    return flexibleDialog(context,
             title: title,
             child: contents,
-            buttons: StyleRegistry.registry()
-                .styleWithContext(context)
-                .frontEndStyle()
-                .buttonStyle()
-                .dialogButtons(context,
+            buttons: dialogButtons(context,
                     labels: buttonLabels, functions: functions));
   }
 }
