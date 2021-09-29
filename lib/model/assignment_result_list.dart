@@ -215,8 +215,8 @@ class AssignmentResultListItem extends StatelessWidget {
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
-        title: value.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.key!)) : Container(),
-        subtitle: value.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.value!)) : Container(),
+        title: value.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.key!)) : Container(),
+        subtitle: value.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.value!)) : Container(),
       ),
     );
   }

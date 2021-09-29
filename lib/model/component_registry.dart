@@ -16,8 +16,11 @@
 
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
+import 'package:eliud_core/tools/component/component_spec.dart';
 
 import '../extensions/assignment_view_component.dart';
+import '../editors/assignment_view_component_editor.dart';
+import 'assignment_view_component_selector.dart';
 import 'package:eliud_pkg_workflow/model/internal_component.dart';
 
 
@@ -31,6 +34,9 @@ class ComponentRegistry {
     Registry.registry()!.register(componentName: "eliud_pkg_workflow_internalWidgets", componentConstructor: ListComponentFactory());
     Registry.registry()!.addDropDownSupporter("assignmentViews", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "assignmentViews", componentConstructor: AssignmentViewComponentConstructorDefault());
+    Registry.registry()!.addComponentSpec('eliud_pkg_workflow', [
+      ComponentSpec('assignmentViews', AssignmentViewComponentConstructorDefault(), AssignmentViewComponentSelector(), AssignmentViewComponentEditorConstructor(), ), 
+    ]);
 
   }
 }

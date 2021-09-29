@@ -37,7 +37,7 @@
     }
   ],
   "listFields": {
-    "title": "value.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.key!)) : Container()",
-    "subTitle": "value.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.value!)) : Container()"
+    "title": "value.key != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.key!)) : Container()",
+    "subTitle": "value.value != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.value!)) : Container()"
   }
 }
