@@ -23,6 +23,8 @@ import 'model/assignment_model.dart';
 
 // Todo: clearly we can introduce some caching, as we are listening as well as querying the same data. So, instead: keep a cache and update the cache adnd use it from within the isConditionOk
 abstract class WorkflowPackage extends PackageWithSubscription {
+  WorkflowPackage() : super('eliud_pkg_workflow');
+
   static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
   bool? stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
 
