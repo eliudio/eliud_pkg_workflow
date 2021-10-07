@@ -24,6 +24,9 @@ class AssignmentViewComponentConstructorDefault
   Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
     return AssignmentViewComponentImpl(key: key, id: id);
   }
+
+  @override
+  Future<dynamic> getModel({required String appId, required String id}) async => await assignmentViewRepository(appId: appId)!.get(id);
 }
 
 class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
