@@ -24,42 +24,30 @@ import 'package:flutter/services.dart';
 
 class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowComponentState> {
   final WorkflowRepository? workflowRepository;
+  StreamSubscription? _workflowSubscription;
+
+  Stream<WorkflowComponentState> _mapLoadWorkflowComponentUpdateToState(String documentId) async* {
+    _workflowSubscription?.cancel();
+    _workflowSubscription = workflowRepository!.listenTo(documentId, (value) {
+      if (value != null) add(WorkflowComponentUpdated(value: value!));
+    });
+  }
 
   WorkflowComponentBloc({ this.workflowRepository }): super(WorkflowComponentUninitialized());
+
   @override
   Stream<WorkflowComponentState> mapEventToState(WorkflowComponentEvent event) async* {
     final currentState = state;
     if (event is FetchWorkflowComponent) {
-      try {
-        if (currentState is WorkflowComponentUninitialized) {
-          bool permissionDenied = false;
-          final model = await workflowRepository!.get(event.id, onError: (error) {
-            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
-              permissionDenied = true;
-            }
-          });
-          if (permissionDenied) {
-            yield WorkflowComponentPermissionDenied();
-          } else {
-            if (model != null) {
-              yield WorkflowComponentLoaded(value: model);
-            } else {
-              String? id = event.id;
-              yield WorkflowComponentError(
-                  message: "Workflow with id = '$id' not found");
-            }
-          }
-          return;
-        }
-      } catch (_) {
-        yield WorkflowComponentError(message: "Unknown error whilst retrieving Workflow");
-      }
+      yield* _mapLoadWorkflowComponentUpdateToState(event.id!);
+    } else if (event is WorkflowComponentUpdated) {
+      yield WorkflowComponentLoaded(value: event.value);
     }
   }
 
   @override
   Future<void> close() {
+    _workflowSubscription?.cancel();
     return super.close();
   }
 

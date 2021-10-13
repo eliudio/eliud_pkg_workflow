@@ -14,6 +14,7 @@
 */
 
 import 'package:equatable/equatable.dart';
+import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
 
 abstract class AssignmentViewComponentEvent extends Equatable {
   @override
@@ -25,4 +26,11 @@ class FetchAssignmentViewComponent extends AssignmentViewComponentEvent {
 
   FetchAssignmentViewComponent({ this.id });
 }
+
+class AssignmentViewComponentUpdated extends AssignmentViewComponentEvent {
+  final AssignmentViewModel value;
+
+  AssignmentViewComponentUpdated({ required this.value });
+}
+
 

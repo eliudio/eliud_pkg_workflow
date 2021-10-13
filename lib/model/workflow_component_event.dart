@@ -14,6 +14,7 @@
 */
 
 import 'package:equatable/equatable.dart';
+import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 
 abstract class WorkflowComponentEvent extends Equatable {
   @override
@@ -25,4 +26,11 @@ class FetchWorkflowComponent extends WorkflowComponentEvent {
 
   FetchWorkflowComponent({ this.id });
 }
+
+class WorkflowComponentUpdated extends WorkflowComponentEvent {
+  final WorkflowModel value;
+
+  WorkflowComponentUpdated({ required this.value });
+}
+
 

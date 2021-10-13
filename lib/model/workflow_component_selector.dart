@@ -94,7 +94,7 @@ class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
                     if (selectedValue == 1) {
                       widget.selected(value.documentID!);
                     } else if (selectedValue == 2) {
-                      widget.editorConstructor.updateComponent(context, value);
+                      widget.editorConstructor.updateComponent(context, value, (_) {});
                     }
                   }),
               title: value.name != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.name!)) : Container(),
@@ -129,7 +129,7 @@ class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
                 child: iconButton(
               context,
               onPressed: () {
-                widget.editorConstructor.createNewComponent(context);
+                widget.editorConstructor.createNewComponent(context, (_) {});
               },
               icon: Icon(Icons.add),
             ))

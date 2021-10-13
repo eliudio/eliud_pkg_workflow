@@ -24,42 +24,30 @@ import 'package:flutter/services.dart';
 
 class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, AssignmentViewComponentState> {
   final AssignmentViewRepository? assignmentViewRepository;
+  StreamSubscription? _assignmentViewSubscription;
+
+  Stream<AssignmentViewComponentState> _mapLoadAssignmentViewComponentUpdateToState(String documentId) async* {
+    _assignmentViewSubscription?.cancel();
+    _assignmentViewSubscription = assignmentViewRepository!.listenTo(documentId, (value) {
+      if (value != null) add(AssignmentViewComponentUpdated(value: value!));
+    });
+  }
 
   AssignmentViewComponentBloc({ this.assignmentViewRepository }): super(AssignmentViewComponentUninitialized());
+
   @override
   Stream<AssignmentViewComponentState> mapEventToState(AssignmentViewComponentEvent event) async* {
     final currentState = state;
     if (event is FetchAssignmentViewComponent) {
-      try {
-        if (currentState is AssignmentViewComponentUninitialized) {
-          bool permissionDenied = false;
-          final model = await assignmentViewRepository!.get(event.id, onError: (error) {
-            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
-              permissionDenied = true;
-            }
-          });
-          if (permissionDenied) {
-            yield AssignmentViewComponentPermissionDenied();
-          } else {
-            if (model != null) {
-              yield AssignmentViewComponentLoaded(value: model);
-            } else {
-              String? id = event.id;
-              yield AssignmentViewComponentError(
-                  message: "AssignmentView with id = '$id' not found");
-            }
-          }
-          return;
-        }
-      } catch (_) {
-        yield AssignmentViewComponentError(message: "Unknown error whilst retrieving AssignmentView");
-      }
+      yield* _mapLoadAssignmentViewComponentUpdateToState(event.id!);
+    } else if (event is AssignmentViewComponentUpdated) {
+      yield AssignmentViewComponentLoaded(value: event.value);
     }
   }
 
   @override
   Future<void> close() {
+    _assignmentViewSubscription?.cancel();
     return super.close();
   }
 
