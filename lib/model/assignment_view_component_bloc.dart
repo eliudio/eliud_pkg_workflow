@@ -29,7 +29,7 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
   Stream<AssignmentViewComponentState> _mapLoadAssignmentViewComponentUpdateToState(String documentId) async* {
     _assignmentViewSubscription?.cancel();
     _assignmentViewSubscription = assignmentViewRepository!.listenTo(documentId, (value) {
-      if (value != null) add(AssignmentViewComponentUpdated(value: value!));
+      if (value != null) add(AssignmentViewComponentUpdated(value: value));
     });
   }
 

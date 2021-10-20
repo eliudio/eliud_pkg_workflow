@@ -29,7 +29,7 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
   Stream<WorkflowComponentState> _mapLoadWorkflowComponentUpdateToState(String documentId) async* {
     _workflowSubscription?.cancel();
     _workflowSubscription = workflowRepository!.listenTo(documentId, (value) {
-      if (value != null) add(WorkflowComponentUpdated(value: value!));
+      if (value != null) add(WorkflowComponentUpdated(value: value));
     });
   }
 

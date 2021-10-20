@@ -89,7 +89,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
         },
       );
     } else {
-      return Text('App not loaded');
+      return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
     }
   }
 
@@ -133,7 +133,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
         }
       });
     } else {
-      return Text("App not loaded");
+      return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
     } 
   }
   
