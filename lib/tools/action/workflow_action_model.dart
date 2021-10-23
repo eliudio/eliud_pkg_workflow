@@ -35,7 +35,6 @@ class WorkflowActionModel extends ActionModel {
     if (entity == null) return null;
     if (entity.appID == null) throw Exception('entity WorkflowActionModel.appID is null');
     WorkflowModel? workFlowModel;
-    if (entity == null) return null;
     if (entity.workflowId != null) {
       try {
         await workflowRepository(appId: entity.appID)!.get(entity.workflowId).then((val) {
@@ -60,7 +59,7 @@ class WorkflowActionModel extends ActionModel {
     if (workflow == null) {
       return 'Incorrect workflow';
     } else {
-      return 'Run workflow, ID = '  + (workflow!.documentID ?? 'no ID') + ', name = '+ (workflow!.name ?? 'no name');
+      return 'Run workflow '  + (workflow!.documentID ?? 'no ID');
     }
   }
 }
