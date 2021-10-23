@@ -37,7 +37,7 @@ class MyAssignmentListItem extends StatelessWidget {
           }
         },
         trailing: Text(formatFullPrecision(value.timestamp), style: style),
-        title: Text(value.task!.description == null ? "?" : value.task!.description!, style: style,))
+        title: Text(value.task!.description == null ? "?" : value.task!.description, style: style,))
       );
   }
 }

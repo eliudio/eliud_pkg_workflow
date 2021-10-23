@@ -12,61 +12,29 @@ import 'package:eliud_pkg_workflow/model/workflow_notification_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 import 'package:eliud_pkg_workflow/tools/helper/deterimine_member_helper.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
+import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
 import 'package:flutter/cupertino.dart';
 
-enum ExecutionStatus { success, failure, decline, delay }
+import 'execution_results.dart';
+
 typedef void FinaliseWorkflow(bool success, AssignmentModel assignmentModel);
 
-class ExecutionResults {
-  final ExecutionStatus status;
-  final List<AssignmentResultModel>? results;
-
-  ExecutionResults(this.status, {this.results});
-}
-
-class TaskModelRegistry {
-  final Map<String, TaskModelMapper> mappers = HashMap();
-  static TaskModelRegistry? _instance;
-
-  TaskModelRegistry._internal();
-
-  static TaskModelRegistry? registry() {
-    _instance ??= TaskModelRegistry._internal();
-
-    return _instance;
-  }
-
-  void addMapper(String taskString, TaskModelMapper mapper) {
-    mappers[taskString] = mapper;
-  }
-
-  TaskModelMapper? getMapper(String? taskString) {
-    return mappers[taskString!];
-  }
-}
-
-abstract class TaskModelMapper {
-  TaskModel fromEntity(TaskEntity entity);
-  TaskModel fromEntityPlus(TaskEntity entity);
-  TaskEntity fromMap(Map snap);
-}
-
 abstract class TaskModel {
-  final String? description;
-  final bool?
-      executeInstantly; // Execute instantly? When a triggering assignment has been finalised by a member and when the next assignment is also assigned to this member, then it will be executed instantly when set",
+  final String identifier;
+  String description;
+  bool executeInstantly; // Execute instantly? When a triggering assignment has been finalised by a member and when the next assignment is also assigned to this member, then it will be executed instantly when set",
 
   bool? _isNewAssignment;
   FinaliseWorkflow? _finaliseWorkflow;
 
-  TaskModel({this.description, this.executeInstantly});
+    TaskModel({required this.identifier, required this.description, required this.executeInstantly});
 
   TaskEntity toEntity({String? appId});
 
   static TaskModel? fromEntity(TaskEntity? entity) {
     if (entity == null) return null;
 
-    var mapper = TaskModelRegistry.registry()!.getMapper(entity.taskString);
+    var mapper = TaskModelRegistry.registry()!.getMapper(entity.identifier);
     if (mapper != null) {
       return mapper.fromEntity(entity);
     }
@@ -78,7 +46,7 @@ abstract class TaskModel {
       {String? appId}) async {
     if (entity == null) return null;
 
-    var mapper = TaskModelRegistry.registry()!.getMapper(entity.taskString);
+    var mapper = TaskModelRegistry.registry()!.getMapper(entity.identifier);
     if (mapper != null) {
       return mapper.fromEntityPlus(entity);
     }
@@ -114,8 +82,7 @@ abstract class TaskModel {
               MemberModel? currentMember = AccessBloc.getState(context).getMember();
               if ((currentMember != null) &&
                   (nextAssignment.assigneeId == currentMember.documentID) &&
-                  (nextAssignment.task!.executeInstantly != null) &&
-                  nextAssignment.task!.executeInstantly!) {
+                  nextAssignment.task!.executeInstantly) {
                 nextAssignment.task!.callExecute(context, nextAssignment, false,
                     finaliseWorkflow: _finaliseWorkflow);
               }
@@ -241,46 +208,4 @@ abstract class TaskModel {
       // task not found: error in workflow
     }
   }
-}
-
-class ExampleTaskModel1 extends TaskModel {
-  final String? extraParameter;
-
-  ExampleTaskModel1(
-      {this.extraParameter, String? description, bool? executeInstantly})
-      : super(description: description, executeInstantly: executeInstantly);
-
-  @override
-  TaskEntity toEntity({String? appId}) {
-    return ExampleTaskEntity1(
-        description: description, executeInstantly: executeInstantly);
-  }
-
-  static ExampleTaskModel1 fromEntity(ExampleTaskEntity1 entity) =>
-      ExampleTaskModel1(
-          extraParameter: entity.extraParameter,
-          description: entity.description,
-          executeInstantly: entity.executeInstantly);
-  static ExampleTaskEntity1 fromMap(Map snap) => ExampleTaskEntity1(
-      extraParameter: snap["extraParameter"],
-      description: snap["description"],
-      executeInstantly: snap["executeInstantly"]);
-
-  @override
-  Future<void> startTask(
-      BuildContext context, AssignmentModel? assignmentModel) {
-    throw UnimplementedError();
-  }
-}
-
-class ExampleTaskModel1Mapper implements TaskModelMapper {
-  @override
-  TaskModel fromEntity(TaskEntity entity) =>
-      ExampleTaskModel1.fromEntity(entity as ExampleTaskEntity1);
-
-  @override
-  TaskModel fromEntityPlus(TaskEntity entity) => fromEntity(entity);
-
-  @override
-  TaskEntity fromMap(Map map) => ExampleTaskModel1.fromMap(map);
 }

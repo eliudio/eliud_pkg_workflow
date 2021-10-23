@@ -56,9 +56,12 @@ class WorkflowActionModel extends ActionModel {
   }
 
   @override
-  Widget describe(BuildContext context) {
-    if (workflow == null) return text(context, 'Incorrect workflow');
-    return text(context, 'Run workflow, ID = '  + (workflow!.documentID ?? 'no ID') + ', name = '+ (workflow!.name ?? 'no name'));
+  String describe() {
+    if (workflow == null) {
+      return 'Incorrect workflow';
+    } else {
+      return 'Run workflow, ID = '  + (workflow!.documentID ?? 'no ID') + ', name = '+ (workflow!.name ?? 'no name');
+    }
   }
 }
 

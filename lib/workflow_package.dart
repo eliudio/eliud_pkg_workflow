@@ -7,6 +7,9 @@ import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_workflow/tasks/example_task_editor.dart';
+import 'package:eliud_pkg_workflow/tasks/example_task_model_1.dart';
+import 'package:eliud_pkg_workflow/tasks/example_task_model_1_mapper.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_handler.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
@@ -14,6 +17,7 @@ import 'package:eliud_pkg_workflow/tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
 import 'package:eliud_core/package/package_with_subscription.dart';
+import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
 import 'model/abstract_repository_singleton.dart';
 import 'model/repository_singleton.dart';
 
@@ -29,13 +33,11 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   bool? stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
 
   static EliudQuery getOpenAssignmentsQuery(String appId, String assigneeId) {
-    return EliudQuery(
-        theConditions: [
-          EliudQueryCondition('assigneeId', isEqualTo: assigneeId),
-          EliudQueryCondition('appId', isEqualTo: appId),
-          EliudQueryCondition('status', isEqualTo: AssignmentStatus.Open.index)
-        ]
-    );
+    return EliudQuery(theConditions: [
+      EliudQueryCondition('assigneeId', isEqualTo: assigneeId),
+      EliudQueryCondition('appId', isEqualTo: appId),
+      EliudQueryCondition('status', isEqualTo: AssignmentStatus.Open.index)
+    ]);
   }
 
   void _setState(bool newState, {MemberModel? currentMember}) {
@@ -52,9 +54,11 @@ abstract class WorkflowPackage extends PackageWithSubscription {
         // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
         // then we must inform the AccessBloc, so that it can refresh the state
         _setState(list.length > 0, currentMember: currentMember);
-      }/*, orderBy: 'timestamp',
-          descending: true*/,
-          eliudQuery: getOpenAssignmentsQuery(appId, currentMember.documentID!));
+      } /*, orderBy: 'timestamp',
+          descending: true*/
+          ,
+          eliudQuery:
+              getOpenAssignmentsQuery(appId, currentMember.documentID!));
     } else {
       _setState(false);
     }
@@ -66,7 +70,13 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   }
 
   @override
-  Future<bool?> isConditionOk(String? packageCondition, AppModel? app, MemberModel? member, bool? isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async {
+  Future<bool?> isConditionOk(
+      String? packageCondition,
+      AppModel? app,
+      MemberModel? member,
+      bool? isOwner,
+      bool? isBlocked,
+      PrivilegeLevel? privilegeLevel) async {
     if (packageCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
       if (stateCONDITION_MUST_HAVE_ASSIGNMENTS == null) return false;
       return stateCONDITION_MUST_HAVE_ASSIGNMENTS;
@@ -80,7 +90,8 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   }
 
   @override
-  List<String> retrieveAllPackageConditions() => [CONDITION_MUST_HAVE_ASSIGNMENTS];
+  List<String> retrieveAllPackageConditions() =>
+      [CONDITION_MUST_HAVE_ASSIGNMENTS];
 
   @override
   void init() {
@@ -93,12 +104,19 @@ abstract class WorkflowPackage extends PackageWithSubscription {
     eliud_router.Router.register(WorkflowActionHandler());
 
     // Register a mapper for an extra action: the mapper for the WorkflowAction
-    ActionModelRegistry.registry()!.addMapper(WorkflowActionEntity.label, WorkflowActionMapper());
+    ActionModelRegistry.registry()!
+        .addMapper(WorkflowActionEntity.label, WorkflowActionMapper());
 
-    // Register a mapper for an extra task: the mapper for the ExampleTask1
-    TaskModelRegistry.registry()!.addMapper(ExampleTaskEntity1.label, ExampleTaskModel1Mapper());
+    // Register a task
+    TaskModelRegistry.registry()!.addTask(
+        identifier: ExampleTaskModel1.label,
+        definition: ExampleTaskModel1.definition,
+        editor: (model) => ExampleTaskModel1EditorWidget(model: model),
+        createNewInstance: () => ExampleTaskModel1(identifier: ExampleTaskModel1.label, description: 'new example task model 1', executeInstantly: true),
+        mapper: ExampleTaskModel1Mapper());
   }
 
   @override
-  List<MemberCollectionInfo> getMemberCollectionInfo() => AbstractRepositorySingleton.collections;
+  List<MemberCollectionInfo> getMemberCollectionInfo() =>
+      AbstractRepositorySingleton.collections;
 }
