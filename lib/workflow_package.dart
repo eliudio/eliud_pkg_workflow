@@ -43,7 +43,6 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   void _setState(bool newState, {MemberModel? currentMember}) {
     if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
       stateCONDITION_MUST_HAVE_ASSIGNMENTS = newState;
-      accessBloc!.add(MemberUpdated(currentMember));
     }
   }
 
