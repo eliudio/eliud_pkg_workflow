@@ -13,8 +13,9 @@
 
 */
 
-import 'package:eliud_core/core/access/bloc/access_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
+import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
 import 'package:eliud_core/tools/screen_size.dart';
@@ -66,11 +67,11 @@ class WorkflowTaskForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
     if (formAction == FormAction.ShowData) {
       return BlocProvider<WorkflowTaskFormBloc >(
-            create: (context) => WorkflowTaskFormBloc(AccessBloc.appId(context),
+            create: (context) => WorkflowTaskFormBloc(AccessBloc.currentAppId(context),
                                        
                                                 )..add(InitialiseWorkflowTaskFormEvent(value: value)),
   
@@ -78,7 +79,7 @@ class WorkflowTaskForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<WorkflowTaskFormBloc >(
-            create: (context) => WorkflowTaskFormBloc(AccessBloc.appId(context),
+            create: (context) => WorkflowTaskFormBloc(AccessBloc.currentAppId(context),
                                        
                                                 )..add(InitialiseWorkflowTaskFormNoLoadEvent(value: value)),
   
@@ -88,7 +89,7 @@ class WorkflowTaskForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update WorkflowTask' : 'Add WorkflowTask'),
         body: BlocProvider<WorkflowTaskFormBloc >(
-            create: (context) => WorkflowTaskFormBloc(AccessBloc.appId(context),
+            create: (context) => WorkflowTaskFormBloc(AccessBloc.currentAppId(context),
                                        
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseWorkflowTaskFormEvent(value: value) : InitialiseNewWorkflowTaskFormEvent())),
   
@@ -131,7 +132,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<WorkflowTaskFormBloc, WorkflowTaskFormState>(builder: (context, state) {
@@ -168,19 +169,19 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'CurrentMember', 'CurrentMember', !accessState.memberIsOwner() ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'CurrentMember', 'CurrentMember', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'Owner', 'Owner', !accessState.memberIsOwner() ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'Owner', 'Owner', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'First', 'First', !accessState.memberIsOwner() ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'First', 'First', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'Previous', 'Previous', !accessState.memberIsOwner() ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'Previous', 'Previous', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
           );
 
 
@@ -291,7 +292,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   }
 
   bool _readOnly(AccessState accessState, WorkflowTaskFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner());
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
   }
   
 

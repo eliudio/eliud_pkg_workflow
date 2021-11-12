@@ -1,4 +1,4 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
@@ -19,7 +19,7 @@ class MyAssignmentListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     var style = /*((value.read == null) || (value.read)) ? null : */new TextStyle(fontWeight: FontWeight.bold);
     return Dismissible(
       key: Key('_Assignment_item_${value.documentID}'),
@@ -29,7 +29,7 @@ class MyAssignmentListItem extends StatelessWidget {
       },
       child: ListTile(
         onTap: () async {
-          var valueWithRelations = await assignmentRepository(appId: app!.documentID)!.get(value.documentID);
+          var valueWithRelations = await assignmentRepository(appId: app.documentID)!.get(value.documentID);
           var theContext = Registry.navigatorKey.currentContext;
           if (theContext != null) {
             value.task!.callExecute(

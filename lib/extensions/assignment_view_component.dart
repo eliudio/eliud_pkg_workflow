@@ -1,5 +1,6 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_core/core/widgets/alert_widget.dart';
 import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
@@ -42,14 +43,15 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
   @override
   Widget yourWidget(BuildContext context, AssignmentViewModel? view) {
     //theInstance = context;
-    var state = AccessBloc.getState(context);
-    if (state is AppLoaded) {
+    return BlocBuilder<AccessBloc, AccessState>(
+    builder: (context, accessState) {
+    if (accessState is AccessDetermined) {
       return BlocProvider<AssignmentListBloc>(
         create: (context) => AssignmentListBloc(
           eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
-              state.app.documentID!, state.getMember()!.documentID!),
+              accessState.currentApp.documentID!, accessState.getMember()!.documentID!),
           assignmentRepository:
-              assignmentRepository(appId: AccessBloc.appId(context))!,
+              assignmentRepository(appId: accessState.currentAppId())!,
         )..add(LoadAssignmentList()),
         child: AssignmentListWidget(
             readOnly: true,
@@ -58,7 +60,7 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
       );
     } else {
       return progressIndicator(context);
-    }
+    }});
   }
 
   Widget widgetProvider(AssignmentModel? value) {
@@ -72,6 +74,6 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
   @override
   AssignmentViewRepository getAssignmentViewRepository(BuildContext context) {
     return AbstractRepositorySingleton.singleton
-        .assignmentViewRepository(AccessBloc.appId(context))!;
+        .assignmentViewRepository(AccessBloc.currentAppId(context))!;
   }
 }

@@ -1,5 +1,5 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/navigate/router.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
@@ -24,32 +24,40 @@ class WorkflowActionHandler extends PackageActionHandler {
 
   static void executeWorkflow(BuildContext context, WorkflowActionModel action, {FinaliseWorkflow? finaliseWorkflow}) {
     var accessState = AccessBloc.getState(context);
-    if (accessState is LoggedIn) {
+    if (accessState is AccessDetermined) {
       var workflowModel = action.workflow!;
-      if ((workflowModel.workflowTask != null) &&
-          (workflowModel.workflowTask!.length > 0)) {
-        var firstWorkflowTask = workflowModel.workflowTask![0];
-        var firstTask = firstWorkflowTask.task!;
-        var assignment = AssignmentModel(
-          documentID: newRandomKey(),
-          appId: action.appID,
-          reporter: accessState.member,
-          assigneeId: accessState.member.documentID,
-          task: firstTask,
-          workflow: workflowModel,
-          timestamp: null,
-          triggeredById: null,
-          workflowTaskSeqNumber: firstWorkflowTask.seqNumber,
-          resultsPrevious: null,
-          confirmMessage: firstWorkflowTask.confirmMessage,
-          rejectMessage: firstWorkflowTask.rejectMessage,
-          status: AssignmentStatus.Open,
-        );
-        firstTask.callExecute(
-            context, assignment, true, finaliseWorkflow: finaliseWorkflow);
+      var member = accessState.getMember();
+      if (member != null) {
+        var memberId = member.documentID;
+        if ((workflowModel.workflowTask != null) &&
+            (workflowModel.workflowTask!.length > 0)) {
+          var firstWorkflowTask = workflowModel.workflowTask![0];
+          var firstTask = firstWorkflowTask.task!;
+          var assignment = AssignmentModel(
+            documentID: newRandomKey(),
+            appId: action.appID,
+            reporter: accessState.getMember(),
+            assigneeId: memberId,
+            task: firstTask,
+            workflow: workflowModel,
+            timestamp: null,
+            triggeredById: null,
+            workflowTaskSeqNumber: firstWorkflowTask.seqNumber,
+            resultsPrevious: null,
+            confirmMessage: firstWorkflowTask.confirmMessage,
+            rejectMessage: firstWorkflowTask.rejectMessage,
+            status: AssignmentStatus.Open,
+          );
+          firstTask.callExecute(
+              context, assignment, true, finaliseWorkflow: finaliseWorkflow);
+        } else {
+          throw Exception("No tasks in workflow");
+        }
       } else {
-        // no tasks in workflow
+        throw Exception("No member logged on. Can't execute workflow");
       }
+    } else {
+      throw Exception("AccessState is not AccessDetermined. Can't execute workflow");
     }
 
   }

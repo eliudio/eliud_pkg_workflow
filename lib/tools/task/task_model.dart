@@ -1,7 +1,7 @@
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_pkg_notifications/platform/platform.dart';
 import 'dart:collection';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/random.dart';
@@ -68,15 +68,15 @@ abstract class TaskModel {
     await _handleCurrentAssignment(
         context, assignmentModel, _isNewAssignment, executionResult);
     var state = AccessBloc.getState(context);
-    if (state is AppLoaded) {
+    if (state is AccessDetermined) {
       if (state.getMember() != null) {
         var member = state.getMember();
         if (member != null) {
           if (executionResult.status == ExecutionStatus.success) {
-            _sendMessage(context, assignmentModel.confirmMessage, state.app,
+            _sendMessage(context, assignmentModel.confirmMessage, state.currentApp,
                 member, assignmentModel, feedback);
             var nextAssignment = await _nextAssignment(
-                context, assignmentModel, executionResult, member, state.app);
+                context, assignmentModel, executionResult, member, state.currentApp);
             if (nextAssignment != null) {
               // if the next assignment is assigned to the currently logged in member, then present it instantly:
               MemberModel? currentMember = AccessBloc.getState(context).getMember();
@@ -88,7 +88,7 @@ abstract class TaskModel {
               }
             }
           } else {
-            _sendMessage(context, assignmentModel.rejectMessage, state.app,
+            _sendMessage(context, assignmentModel.rejectMessage, state.currentApp,
                 member, assignmentModel, feedback);
           }
         }

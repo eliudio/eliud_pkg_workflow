@@ -13,8 +13,9 @@
 
 */
 
-import 'package:eliud_core/core/access/bloc/access_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
+import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
 import 'package:eliud_core/tools/screen_size.dart';
@@ -66,11 +67,11 @@ class AssignmentResultForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
+            create: (context) => AssignmentResultFormBloc(AccessBloc.currentAppId(context),
                                        
                                                 )..add(InitialiseAssignmentResultFormEvent(value: value)),
   
@@ -78,7 +79,7 @@ class AssignmentResultForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
+            create: (context) => AssignmentResultFormBloc(AccessBloc.currentAppId(context),
                                        
                                                 )..add(InitialiseAssignmentResultFormNoLoadEvent(value: value)),
   
@@ -88,7 +89,7 @@ class AssignmentResultForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
         body: BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(AccessBloc.appId(context),
+            create: (context) => AssignmentResultFormBloc(AccessBloc.currentAppId(context),
                                        
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseAssignmentResultFormEvent(value: value) : InitialiseNewAssignmentResultFormEvent())),
   
@@ -131,7 +132,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentResultFormBloc, AssignmentResultFormState>(builder: (context, state) {
@@ -236,7 +237,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
   }
 
   bool _readOnly(AccessState accessState, AssignmentResultFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner());
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
   }
   
 

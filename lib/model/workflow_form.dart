@@ -13,8 +13,9 @@
 
 */
 
-import 'package:eliud_core/core/access/bloc/access_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
+import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
 import 'package:eliud_core/tools/screen_size.dart';
@@ -71,11 +72,11 @@ class WorkflowForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
     if (formAction == FormAction.ShowData) {
       return BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(AccessBloc.appId(context),
+            create: (context) => WorkflowFormBloc(AccessBloc.currentAppId(context),
                                        formAction: formAction,
 
                                                 )..add(InitialiseWorkflowFormEvent(value: value)),
@@ -84,7 +85,7 @@ class WorkflowForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(AccessBloc.appId(context),
+            create: (context) => WorkflowFormBloc(AccessBloc.currentAppId(context),
                                        formAction: formAction,
 
                                                 )..add(InitialiseWorkflowFormNoLoadEvent(value: value)),
@@ -95,7 +96,7 @@ class WorkflowForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Workflow' : 'Add Workflow'),
         body: BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(AccessBloc.appId(context),
+            create: (context) => WorkflowFormBloc(AccessBloc.currentAppId(context),
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseWorkflowFormEvent(value: value) : InitialiseNewWorkflowFormEvent())),
@@ -139,7 +140,7 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<WorkflowFormBloc, WorkflowFormState>(builder: (context, state) {
@@ -286,7 +287,7 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
   }
 
   bool _readOnly(AccessState accessState, WorkflowFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner());
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
   }
   
 

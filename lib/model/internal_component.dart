@@ -15,7 +15,7 @@
 
 
 import 'package:eliud_core/tools/component/component_constructor.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -155,7 +155,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
-            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context))!,
+            assignmentRepository: assignmentRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadAssignmentList()),
         )
       ],
@@ -168,7 +168,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
-            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context))!,
+            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadAssignmentViewList()),
         )
       ],
@@ -181,7 +181,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
-            workflowRepository: workflowRepository(appId: AccessBloc.appId(context))!,
+            workflowRepository: workflowRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadWorkflowList()),
         )
       ],
@@ -217,7 +217,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
-            assignmentRepository: assignmentRepository(appId: AccessBloc.appId(context))!,
+            assignmentRepository: assignmentRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadAssignmentList()),
         )
       ],
@@ -230,7 +230,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
-            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.appId(context))!,
+            assignmentViewRepository: assignmentViewRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadAssignmentViewList()),
         )
       ],
@@ -243,7 +243,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
-            workflowRepository: workflowRepository(appId: AccessBloc.appId(context))!,
+            workflowRepository: workflowRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadWorkflowList()),
         )
       ],

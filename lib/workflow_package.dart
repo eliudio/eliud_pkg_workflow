@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
@@ -14,20 +14,22 @@ import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_handler.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/bespoke_models.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
-import 'package:eliud_core/package/package_with_subscription.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
 import 'model/abstract_repository_singleton.dart';
 import 'model/repository_singleton.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/access_event.dart';
 
 import 'package:eliud_pkg_workflow/model/component_registry.dart';
 
 import 'model/assignment_model.dart';
 
 // Todo: clearly we can introduce some caching, as we are listening as well as querying the same data. So, instead: keep a cache and update the cache adnd use it from within the isConditionOk
-abstract class WorkflowPackage extends PackageWithSubscription {
+abstract class WorkflowPackage extends Package {
   WorkflowPackage() : super('eliud_pkg_workflow');
+
+  late StreamSubscription<List<AssignmentModel?>> subscription;
 
   static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
   bool? stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
@@ -43,6 +45,7 @@ abstract class WorkflowPackage extends PackageWithSubscription {
   void _setState(bool newState, {MemberModel? currentMember}) {
     if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
       stateCONDITION_MUST_HAVE_ASSIGNMENTS = newState;
+//      BlocProvider.of<AccessBloc>(context).add(UpdatePackageCondition());
     }
   }
 
@@ -61,11 +64,6 @@ abstract class WorkflowPackage extends PackageWithSubscription {
     } else {
       _setState(false);
     }
-  }
-
-  void unsubscribe() {
-    super.unsubscribe();
-    _setState(false);
   }
 
   @override
