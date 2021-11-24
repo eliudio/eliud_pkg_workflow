@@ -69,14 +69,15 @@ abstract class TaskModel {
         context, assignmentModel, _isNewAssignment, executionResult);
     var state = AccessBloc.getState(context);
     if (state is AccessDetermined) {
+      var app = state.currentApp(context);
       if (state.getMember() != null) {
         var member = state.getMember();
         if (member != null) {
           if (executionResult.status == ExecutionStatus.success) {
-            _sendMessage(context, assignmentModel.confirmMessage, state.currentApp,
+            _sendMessage(context, assignmentModel.confirmMessage, app,
                 member, assignmentModel, feedback);
             var nextAssignment = await _nextAssignment(
-                context, assignmentModel, executionResult, member, state.currentApp);
+                context, assignmentModel, executionResult, member, app);
             if (nextAssignment != null) {
               // if the next assignment is assigned to the currently logged in member, then present it instantly:
               MemberModel? currentMember = AccessBloc.getState(context).getMember();
@@ -88,7 +89,7 @@ abstract class TaskModel {
               }
             }
           } else {
-            _sendMessage(context, assignmentModel.rejectMessage, state.currentApp,
+            _sendMessage(context, assignmentModel.rejectMessage, app,
                 member, assignmentModel, feedback);
           }
         }

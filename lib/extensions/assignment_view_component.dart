@@ -22,45 +22,47 @@ import '../workflow_package.dart';
 
 class AssignmentViewComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
-    return AssignmentViewComponentImpl(key: key, id: id);
+  Widget createNew(
+      {Key? key,
+      required String appId,
+      required String id,
+      Map<String, dynamic>? parameters}) {
+    return AssignmentViewComponentImpl(key: key, appId: appId, id: id);
   }
 
   @override
-  Future<dynamic> getModel({required String appId, required String id}) async => await assignmentViewRepository(appId: appId)!.get(id);
+  Future<dynamic> getModel({required String appId, required String id}) async =>
+      await assignmentViewRepository(appId: appId)!.get(id);
 }
 
 class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
-  AssignmentViewComponentImpl({Key? key, required String id}) : super(key: key, assignmentViewID: id);
-
-  @override
-  Widget alertWidget({title = String, content = String}) {
-    return AlertWidget(title: title, content: content);
-  }
-
-//  static BuildContext theInstance;
+  AssignmentViewComponentImpl(
+      {Key? key, required String appId, required String id})
+      : super(key: key, theAppId: appId, assignmentViewId: id);
 
   @override
   Widget yourWidget(BuildContext context, AssignmentViewModel? view) {
     //theInstance = context;
     return BlocBuilder<AccessBloc, AccessState>(
-    builder: (context, accessState) {
-    if (accessState is AccessDetermined) {
-      return BlocProvider<AssignmentListBloc>(
-        create: (context) => AssignmentListBloc(
-          eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
-              accessState.currentApp.documentID!, accessState.getMember()!.documentID!),
-          assignmentRepository:
-              assignmentRepository(appId: accessState.currentAppId())!,
-        )..add(LoadAssignmentList()),
-        child: AssignmentListWidget(
-            readOnly: true,
-            widgetProvider: widgetProvider,
-            listBackground: BackgroundModel(documentID: "`transparent")),
-      );
-    } else {
-      return progressIndicator(context);
-    }});
+        builder: (context, accessState) {
+      if (accessState is AccessDetermined) {
+        return BlocProvider<AssignmentListBloc>(
+          create: (context) => AssignmentListBloc(
+            eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
+                accessState.currentApp(context).documentID!,
+                accessState.getMember()!.documentID!),
+            assignmentRepository:
+                assignmentRepository(appId: accessState.currentAppId(context))!,
+          )..add(LoadAssignmentList()),
+          child: AssignmentListWidget(
+              readOnly: true,
+              widgetProvider: widgetProvider,
+              listBackground: BackgroundModel(documentID: "`transparent")),
+        );
+      } else {
+        return progressIndicator(context);
+      }
+    });
   }
 
   Widget widgetProvider(AssignmentModel? value) {
@@ -69,11 +71,5 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
     } else {
       return MyAssignmentListItem(value: value);
     }
-  }
-
-  @override
-  AssignmentViewRepository getAssignmentViewRepository(BuildContext context) {
-    return AbstractRepositorySingleton.singleton
-        .assignmentViewRepository(AccessBloc.currentAppId(context))!;
   }
 }

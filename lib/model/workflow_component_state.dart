@@ -35,9 +35,9 @@ class WorkflowComponentPermissionDenied extends WorkflowComponentState {
 }
 
 class WorkflowComponentLoaded extends WorkflowComponentState {
-  final WorkflowModel? value;
+  final WorkflowModel value;
 
-  const WorkflowComponentLoaded({ this.value });
+  const WorkflowComponentLoaded({ required this.value });
 
   WorkflowComponentLoaded copyWith({ WorkflowModel? copyThis }) {
     return WorkflowComponentLoaded(value: copyThis ?? this.value);

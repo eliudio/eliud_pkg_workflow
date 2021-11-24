@@ -107,7 +107,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
                       context, label: 'Add',
                       onPressed: () {
                         Navigator.of(context).push(
-                                  pageRouteBuilder(accessState.currentApp, page: BlocProvider.value(
+                                  pageRouteBuilder(accessState.currentApp(context), page: BlocProvider.value(
                                       value: BlocProvider.of<AssignmentListBloc>(context),
                                       child: AssignmentForm(
                                           value: null,

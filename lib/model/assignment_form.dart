@@ -74,6 +74,7 @@ class AssignmentForm extends StatelessWidget {
     var accessState = AccessBloc.getState(context);
     var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
+    var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentFormBloc >(
             create: (context) => AssignmentFormBloc(AccessBloc.currentAppId(context),
@@ -150,6 +151,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   Widget build(BuildContext context) {
     var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
+    var appId = app.documentID!;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentFormBloc, AssignmentFormState>(builder: (context, state) {
       if (state is AssignmentFormUninitialized) return Center(
@@ -252,7 +254,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "members", value: _reporter, trigger: _onReporterSelected, optional: false),
+                DropdownButtonComponentFactory().createNew(appId: appId, id: "members", value: _reporter, trigger: _onReporterSelected, optional: false),
           );
 
 
@@ -300,7 +302,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "workflows", value: _workflow, trigger: _onWorkflowSelected, optional: false),
+                DropdownButtonComponentFactory().createNew(appId: appId, id: "workflows", value: _workflow, trigger: _onWorkflowSelected, optional: false),
           );
 
 

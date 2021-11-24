@@ -35,9 +35,9 @@ class AssignmentViewComponentPermissionDenied extends AssignmentViewComponentSta
 }
 
 class AssignmentViewComponentLoaded extends AssignmentViewComponentState {
-  final AssignmentViewModel? value;
+  final AssignmentViewModel value;
 
-  const AssignmentViewComponentLoaded({ this.value });
+  const AssignmentViewComponentLoaded({ required this.value });
 
   AssignmentViewComponentLoaded copyWith({ AssignmentViewModel? copyThis }) {
     return AssignmentViewComponentLoaded(value: copyThis ?? this.value);

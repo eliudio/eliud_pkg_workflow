@@ -13,9 +13,6 @@
 
 */
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core/style/style_registry.dart';
 
 import 'package:eliud_pkg_workflow/model/workflow_component_bloc.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_event.dart';
@@ -23,18 +20,26 @@ import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_repository.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_state.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eliud_core/style/style_registry.dart';
+import 'abstract_repository_singleton.dart';
+import 'package:eliud_core/core/widgets/alert_widget.dart';
+import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
+
 abstract class AbstractWorkflowComponent extends StatelessWidget {
   static String componentName = "workflows";
-  final String? workflowID;
+  final String theAppId;
+  final String workflowId;
 
-  AbstractWorkflowComponent({Key? key, this.workflowID}): super(key: key);
+  AbstractWorkflowComponent({Key? key, required this.theAppId, required this.workflowId}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WorkflowComponentBloc> (
           create: (context) => WorkflowComponentBloc(
-            workflowRepository: getWorkflowRepository(context))
-        ..add(FetchWorkflowComponent(id: workflowID)),
+            workflowRepository: workflowRepository(appId: theAppId)!)
+        ..add(FetchWorkflowComponent(id: workflowId)),
       child: _workflowBlockBuilder(context),
     );
   }
@@ -43,7 +48,7 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
     return BlocBuilder<WorkflowComponentBloc, WorkflowComponentState>(builder: (context, state) {
       if (state is WorkflowComponentLoaded) {
         if (state.value == null) {
-          return alertWidget(title: 'Error', content: 'No Workflow defined');
+          return AlertWidget(title: "Error", content: 'No Workflow defined');
         } else {
           return yourWidget(context, state.value);
         }
@@ -54,7 +59,7 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
           size: 30.0,
         );
       } else if (state is WorkflowComponentError) {
-        return alertWidget(title: 'Error', content: state.message);
+        return AlertWidget(title: 'Error', content: state.message);
       } else {
         return Center(
           child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicatorStyle().progressIndicator(context),
@@ -63,8 +68,6 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
     });
   }
 
-  Widget yourWidget(BuildContext context, WorkflowModel? value);
-  Widget alertWidget({ title: String, content: String});
-  WorkflowRepository getWorkflowRepository(BuildContext context);
+  Widget yourWidget(BuildContext context, WorkflowModel value);
 }
 
