@@ -51,6 +51,7 @@ abstract class WorkflowPackage extends Package {
 
   void resubscribe(AppModel? app, MemberModel? currentMember) {
     String appId = app!.documentID!;
+    //subscription?.cancel();
     if (currentMember != null) {
       subscription = assignmentRepository(appId: appId)!.listen((list) {
         // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
@@ -111,6 +112,8 @@ abstract class WorkflowPackage extends Package {
         editor: (model) => ExampleTaskModel1EditorWidget(model: model),
         createNewInstance: () => ExampleTaskModel1(identifier: ExampleTaskModel1.label, description: 'new example task model 1', executeInstantly: true),
         mapper: ExampleTaskModel1Mapper());
+
+
   }
 
   @override
