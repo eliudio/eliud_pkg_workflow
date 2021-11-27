@@ -77,7 +77,7 @@ class WorkflowForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => WorkflowFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseWorkflowFormEvent(value: value)),
@@ -86,7 +86,7 @@ class WorkflowForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => WorkflowFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseWorkflowFormNoLoadEvent(value: value)),
@@ -97,7 +97,7 @@ class WorkflowForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Workflow' : 'Add Workflow'),
         body: BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => WorkflowFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseWorkflowFormEvent(value: value) : InitialiseNewWorkflowFormEvent())),

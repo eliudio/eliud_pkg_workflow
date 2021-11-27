@@ -35,10 +35,11 @@ class AssignmentViewComponentSelector extends ComponentSelector {
   @override
   Widget createSelectWidget(BuildContext context, double height,
       SelectComponent selected, editorConstructor) {
+    var appId = AccessBloc.currentAppId(context);
     return BlocProvider<AssignmentViewListBloc>(
           create: (context) => AssignmentViewListBloc(
             assignmentViewRepository:
-                assignmentViewRepository(appId: AccessBloc.currentAppId(context))!,
+                assignmentViewRepository(appId: appId)!,
           )..add(LoadAssignmentViewList()),
       child: SelectAssignmentViewWidget(
           height: height,

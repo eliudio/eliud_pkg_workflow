@@ -77,7 +77,7 @@ class AssignmentForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentFormBloc >(
-            create: (context) => AssignmentFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => AssignmentFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseAssignmentFormEvent(value: value)),
@@ -86,7 +86,7 @@ class AssignmentForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<AssignmentFormBloc >(
-            create: (context) => AssignmentFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => AssignmentFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseAssignmentFormNoLoadEvent(value: value)),
@@ -97,7 +97,7 @@ class AssignmentForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Assignment' : 'Add Assignment'),
         body: BlocProvider<AssignmentFormBloc >(
-            create: (context) => AssignmentFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => AssignmentFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseAssignmentFormEvent(value: value) : InitialiseNewAssignmentFormEvent())),

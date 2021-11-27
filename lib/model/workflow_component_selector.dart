@@ -35,10 +35,11 @@ class WorkflowComponentSelector extends ComponentSelector {
   @override
   Widget createSelectWidget(BuildContext context, double height,
       SelectComponent selected, editorConstructor) {
+    var appId = AccessBloc.currentAppId(context);
     return BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
             workflowRepository:
-                workflowRepository(appId: AccessBloc.currentAppId(context))!,
+                workflowRepository(appId: appId)!,
           )..add(LoadWorkflowList()),
       child: SelectWorkflowWidget(
           height: height,

@@ -72,7 +72,7 @@ class AssignmentResultForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => AssignmentResultFormBloc(appId,
                                        
                                                 )..add(InitialiseAssignmentResultFormEvent(value: value)),
   
@@ -80,7 +80,7 @@ class AssignmentResultForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => AssignmentResultFormBloc(appId,
                                        
                                                 )..add(InitialiseAssignmentResultFormNoLoadEvent(value: value)),
   
@@ -90,7 +90,7 @@ class AssignmentResultForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
         body: BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => AssignmentResultFormBloc(appId,
                                        
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseAssignmentResultFormEvent(value: value) : InitialiseNewAssignmentResultFormEvent())),
   
