@@ -29,10 +29,10 @@ import 'model/assignment_model.dart';
 abstract class WorkflowPackage extends Package {
   WorkflowPackage() : super('eliud_pkg_workflow');
 
-  late StreamSubscription<List<AssignmentModel?>> subscription;
+  Map<String, StreamSubscription<List<AssignmentModel?>>> subscription = {};
 
   static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
-  bool? stateCONDITION_MUST_HAVE_ASSIGNMENTS = null;
+  Map<String, bool?> stateCONDITION_MUST_HAVE_ASSIGNMENTS = {};
 
   static EliudQuery getOpenAssignmentsQuery(String appId, String assigneeId) {
     return EliudQuery(theConditions: [
@@ -42,47 +42,41 @@ abstract class WorkflowPackage extends Package {
     ]);
   }
 
-  void _setState(bool newState, {MemberModel? currentMember}) {
-    if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS) {
-      stateCONDITION_MUST_HAVE_ASSIGNMENTS = newState;
-//      BlocProvider.of<AccessBloc>(context).add(UpdatePackageCondition());
+  void _setState(AccessBloc accessBloc, bool newState, AppModel app,
+      {MemberModel? currentMember}) {
+    if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS[app.documentID!]) {
+      stateCONDITION_MUST_HAVE_ASSIGNMENTS[app.documentID!] = newState;
+      accessBloc.add(UpdatePackageConditionEvent(app, this, CONDITION_MUST_HAVE_ASSIGNMENTS, newState));
     }
   }
 
-  void resubscribe(AppModel? app, MemberModel? currentMember) {
-    String appId = app!.documentID!;
-    //subscription?.cancel();
+  void resubscribe(
+      AccessBloc accessBloc, AppModel app, MemberModel? currentMember) {
+    String appId = app.documentID!;
     if (currentMember != null) {
-      subscription = assignmentRepository(appId: appId)!.listen((list) {
-        // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
-        // then we must inform the AccessBloc, so that it can refresh the state
-        _setState(list.length > 0, currentMember: currentMember);
-      } /*, orderBy: 'timestamp',
-          descending: true*/
-          ,
-          eliudQuery:
-              getOpenAssignmentsQuery(appId, currentMember.documentID!));
+      if (subscription[app.documentID] == null)
+        subscription[appId] = assignmentRepository(appId: appId)!.listen(
+            (list) {
+          // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
+          // then we must inform the AccessBloc, so that it can refresh the state
+          _setState(accessBloc, list.length > 0, app,
+              currentMember: currentMember);
+        },
+            eliudQuery:
+                getOpenAssignmentsQuery(appId, currentMember.documentID!));
     } else {
-      _setState(false);
+      subscription[app.documentID]?.cancel();
+      _setState(accessBloc, false, app);
     }
   }
 
   @override
-  Future<bool?> isConditionOk(
-      String? packageCondition,
-      AppModel? app,
-      MemberModel? member,
-      bool? isOwner,
-      bool? isBlocked,
-      PrivilegeLevel? privilegeLevel) async {
-    if (packageCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
+  Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async {
+    // just trying
+    if (pluginCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
+      resubscribe(accessBloc, app, member);
       if (stateCONDITION_MUST_HAVE_ASSIGNMENTS == null) return false;
-      return stateCONDITION_MUST_HAVE_ASSIGNMENTS;
-/*
-      if (member == null) return false;
-      var values = await assignmentRepository(appId: app.documentID).valuesList(eliudQuery: getOpenAssignmentsQuery(app.documentID, member.documentID));
-      return values != null && values.length > 0;
-*/
+      return stateCONDITION_MUST_HAVE_ASSIGNMENTS[app.documentID!];
     }
     return null;
   }
@@ -110,10 +104,11 @@ abstract class WorkflowPackage extends Package {
         identifier: ExampleTaskModel1.label,
         definition: ExampleTaskModel1.definition,
         editor: (model) => ExampleTaskModel1EditorWidget(model: model),
-        createNewInstance: () => ExampleTaskModel1(identifier: ExampleTaskModel1.label, description: 'new example task model 1', executeInstantly: true),
+        createNewInstance: () => ExampleTaskModel1(
+            identifier: ExampleTaskModel1.label,
+            description: 'new example task model 1',
+            executeInstantly: true),
         mapper: ExampleTaskModel1Mapper());
-
-
   }
 
   @override
