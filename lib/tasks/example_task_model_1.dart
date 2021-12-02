@@ -34,7 +34,7 @@ class ExampleTaskModel1 extends TaskModel {
 
   @override
   Future<void> startTask(
-      BuildContext context, AssignmentModel? assignmentModel) {
+      BuildContext context, String appId, AssignmentModel? assignmentModel) {
     throw UnimplementedError();
   }
 }

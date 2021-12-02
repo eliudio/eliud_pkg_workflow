@@ -33,7 +33,7 @@ class MyAssignmentListItem extends StatelessWidget {
           var theContext = Registry.navigatorKey.currentContext;
           if (theContext != null) {
             value.task!.callExecute(
-                theContext, valueWithRelations, false);
+                context, app.documentID!, valueWithRelations, false);
           }
         },
         trailing: Text(formatFullPrecision(value.timestamp), style: style),

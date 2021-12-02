@@ -1,5 +1,6 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_pkg_notifications/platform/platform.dart';
 import 'dart:collection';
 import 'package:eliud_core/model/app_model.dart';
@@ -57,7 +58,7 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  Future<void> startTask(BuildContext context, AssignmentModel? assignmentModel);
+  Future<void> startTask(BuildContext context, String appId, AssignmentModel? assignmentModel);
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
@@ -84,7 +85,7 @@ abstract class TaskModel {
               if ((currentMember != null) &&
                   (nextAssignment.assigneeId == currentMember.documentID) &&
                   nextAssignment.task!.executeInstantly) {
-                nextAssignment.task!.callExecute(context, nextAssignment, false,
+                nextAssignment.task!.callExecute(context, app.documentID!, nextAssignment, false,
                     finaliseWorkflow: _finaliseWorkflow);
               }
             }
@@ -102,12 +103,12 @@ abstract class TaskModel {
   }
 
   /* This method is called by the workflow framework */
-  void callExecute(BuildContext context, AssignmentModel? assignmentModel,
+  void callExecute(BuildContext context, String appId, AssignmentModel? assignmentModel,
       bool isNewAssignment,
       {FinaliseWorkflow? finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
     _finaliseWorkflow = finaliseWorkflow;
-    startTask(context, assignmentModel);
+    startTask(context, appId, assignmentModel);
   }
 
   Future<void> _handleCurrentAssignment(

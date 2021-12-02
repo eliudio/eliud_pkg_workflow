@@ -25,14 +25,12 @@ import 'package:eliud_pkg_workflow/model/component_registry.dart';
 
 import 'model/assignment_model.dart';
 
-// Todo: clearly we can introduce some caching, as we are listening as well as querying the same data. So, instead: keep a cache and update the cache adnd use it from within the isConditionOk
 abstract class WorkflowPackage extends Package {
   WorkflowPackage() : super('eliud_pkg_workflow');
 
   Map<String, StreamSubscription<List<AssignmentModel?>>> subscription = {};
-
-  static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
   Map<String, bool?> stateCONDITION_MUST_HAVE_ASSIGNMENTS = {};
+  static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
 
   static EliudQuery getOpenAssignmentsQuery(String appId, String assigneeId) {
     return EliudQuery(theConditions: [
@@ -42,43 +40,48 @@ abstract class WorkflowPackage extends Package {
     ]);
   }
 
-  void _setState(AccessBloc accessBloc, bool newState, AppModel app,
-      {MemberModel? currentMember}) {
-    if (newState != stateCONDITION_MUST_HAVE_ASSIGNMENTS[app.documentID!]) {
-      stateCONDITION_MUST_HAVE_ASSIGNMENTS[app.documentID!] = newState;
-      accessBloc.add(UpdatePackageConditionEvent(app, this, CONDITION_MUST_HAVE_ASSIGNMENTS, newState));
-    }
-  }
-
-  void resubscribe(
-      AccessBloc accessBloc, AppModel app, MemberModel? currentMember) {
-    String appId = app.documentID!;
-    if (currentMember != null) {
-      if (subscription[app.documentID] == null)
-        subscription[appId] = assignmentRepository(appId: appId)!.listen(
-            (list) {
-          // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
-          // then we must inform the AccessBloc, so that it can refresh the state
-          _setState(accessBloc, list.length > 0, app,
-              currentMember: currentMember);
-        },
-            eliudQuery:
-                getOpenAssignmentsQuery(appId, currentMember.documentID!));
-    } else {
-      subscription[app.documentID]?.cancel();
-      _setState(accessBloc, false, app);
-    }
-  }
-
   @override
-  Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async {
-    // just trying
-    if (pluginCondition == CONDITION_MUST_HAVE_ASSIGNMENTS) {
-      resubscribe(accessBloc, app, member);
-      if (stateCONDITION_MUST_HAVE_ASSIGNMENTS == null) return false;
-      return stateCONDITION_MUST_HAVE_ASSIGNMENTS[app.documentID!];
+  Future<List<PackageConditionDetails>>? getAndSubscribe(
+      AccessBloc accessBloc,
+      AppModel app,
+      MemberModel? member,
+      bool isOwner,
+      bool? isBlocked,
+      PrivilegeLevel? privilegeLevel) {
+    var appId = app.documentID!;
+    subscription[appId]?.cancel();
+    if (member != null) {
+      final c = Completer<List<PackageConditionDetails>>();
+      subscription[appId] = assignmentRepository(appId: appId)!.listen((list) {
+        // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
+        // then we must inform the AccessBloc, so that it can refresh the state
+        var value = list.length > 0;
+        if (!c.isCompleted) {
+          // the first time we get this trigger, it's upon entry of the getAndSubscribe. Now we simply return the value
+          c.complete([
+            PackageConditionDetails(
+                packageName: packageName,
+                conditionName: CONDITION_MUST_HAVE_ASSIGNMENTS,
+                value: value)
+          ]);
+        } else {
+          // subsequent calls we get this trigger, it's when the date has changed. Now add the event to the bloc
+          if (value != stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId]) {
+            stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = value;
+            accessBloc.add(UpdatePackageConditionEvent(
+                app, this, CONDITION_MUST_HAVE_ASSIGNMENTS, value));
+          }
+        }
+      }, eliudQuery: getOpenAssignmentsQuery(appId, member.documentID!));
+      return c.future;
+    } else {
+      return Future.value([
+        PackageConditionDetails(
+            packageName: packageName,
+            conditionName: CONDITION_MUST_HAVE_ASSIGNMENTS,
+            value: false)
+      ]);
     }
-    return null;
   }
 
   @override

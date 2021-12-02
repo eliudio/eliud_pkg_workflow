@@ -1,4 +1,5 @@
 import 'package:eliud_pkg_workflow/workflow_package.dart';
+import 'package:flutter/foundation.dart';
 import 'model/component_registry.dart';
 
 class WorkflowMobilePackage extends WorkflowPackage {
@@ -13,5 +14,5 @@ class WorkflowMobilePackage extends WorkflowPackage {
       identical(this, other) ||
           other is WorkflowMobilePackage &&
               runtimeType == other.runtimeType &&
-              stateCONDITION_MUST_HAVE_ASSIGNMENTS == other.stateCONDITION_MUST_HAVE_ASSIGNMENTS;
+              mapEquals(stateCONDITION_MUST_HAVE_ASSIGNMENTS, other.stateCONDITION_MUST_HAVE_ASSIGNMENTS);
 }
