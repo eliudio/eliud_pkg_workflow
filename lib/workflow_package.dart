@@ -75,6 +75,7 @@ abstract class WorkflowPackage extends Package {
       }, eliudQuery: getOpenAssignmentsQuery(appId, member.documentID!));
       return c.future;
     } else {
+      stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = false;
       return Future.value([
         PackageConditionDetails(
             packageName: packageName,
