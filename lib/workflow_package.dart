@@ -58,6 +58,7 @@ abstract class WorkflowPackage extends Package {
         var value = list.length > 0;
         if (!c.isCompleted) {
           // the first time we get this trigger, it's upon entry of the getAndSubscribe. Now we simply return the value
+          stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = value;
           c.complete([
             PackageConditionDetails(
                 packageName: packageName,

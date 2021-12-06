@@ -66,16 +66,16 @@ abstract class TaskModel {
    */
   Future<void> finishTask(BuildContext context, AssignmentModel assignmentModel,
       ExecutionResults executionResult, String? feedback) async {
-    await _handleCurrentAssignment(
-        context, assignmentModel, _isNewAssignment, executionResult);
     var state = AccessBloc.getState(context);
     if (state is AccessDetermined) {
       var app = state.currentApp(context);
+      await _handleCurrentAssignment(
+          context, assignmentModel, _isNewAssignment, executionResult);
       if (state.getMember() != null) {
         var member = state.getMember();
         if (member != null) {
           if (executionResult.status == ExecutionStatus.success) {
-            _sendMessage(context, assignmentModel.confirmMessage, app,
+            await _sendMessage(context, assignmentModel.confirmMessage, app,
                 member, assignmentModel, feedback);
             var nextAssignment = await _nextAssignment(
                 context, assignmentModel, executionResult, member, app);
@@ -90,7 +90,7 @@ abstract class TaskModel {
               }
             }
           } else {
-            _sendMessage(context, assignmentModel.rejectMessage, app,
+            await _sendMessage(context, assignmentModel.rejectMessage, app,
                 member, assignmentModel, feedback);
           }
         }
@@ -108,6 +108,7 @@ abstract class TaskModel {
       {FinaliseWorkflow? finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
     _finaliseWorkflow = finaliseWorkflow;
+
     startTask(context, appId, assignmentModel);
   }
 
@@ -159,7 +160,7 @@ abstract class TaskModel {
       if (to == null) {
         print("error can't determing addressee to send message");
       } else {
-        AbstractNotificationPlatform.platform!.sendMessage(
+        await AbstractNotificationPlatform.platform!.sendMessage(
             context, to, message!);
       }
     }

@@ -30,11 +30,8 @@ class MyAssignmentListItem extends StatelessWidget {
       child: ListTile(
         onTap: () async {
           var valueWithRelations = await assignmentRepository(appId: app.documentID)!.get(value.documentID);
-          var theContext = Registry.navigatorKey.currentContext;
-          if (theContext != null) {
-            value.task!.callExecute(
-                context, app.documentID!, valueWithRelations, false);
-          }
+          value.task!.callExecute(
+              context, app.documentID!, valueWithRelations, false);
         },
         trailing: Text(formatFullPrecision(value.timestamp), style: style),
         title: Text(value.task!.description == null ? "?" : value.task!.description, style: style,))

@@ -83,12 +83,11 @@ class YesNoIgnoreDialogWithAssignmentResults {
         functions: [
               () => Navigator.pop(context),
               () {
-            Navigator.pop(context);
             noFunction();
           },
               () {
-            Navigator.pop(context);
             yesFunction();
+            Navigator.pop(context);
           },
         ],
         extraFields: extraFields);
