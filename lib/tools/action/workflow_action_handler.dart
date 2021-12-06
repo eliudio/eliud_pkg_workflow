@@ -49,7 +49,7 @@ class WorkflowActionHandler extends PackageActionHandler {
             status: AssignmentStatus.Open,
           );
           firstTask.callExecute(
-              context, action.appID, assignment, true, finaliseWorkflow: finaliseWorkflow);
+              context, action.appID, memberId!, assignment, true, finaliseWorkflow: finaliseWorkflow);
         } else {
           throw Exception("No tasks in workflow");
         }

@@ -58,7 +58,7 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  Future<void> startTask(BuildContext context, String appId, AssignmentModel? assignmentModel);
+  Future<void> startTask(BuildContext context, String appId, String? memberId, AssignmentModel? assignmentModel);
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
@@ -75,7 +75,7 @@ abstract class TaskModel {
         var member = state.getMember();
         if (member != null) {
           if (executionResult.status == ExecutionStatus.success) {
-            await _sendMessage(context, assignmentModel.confirmMessage, app,
+            await _sendMessage(app.documentID!, member.documentID!, assignmentModel.confirmMessage, app,
                 member, assignmentModel, feedback);
             var nextAssignment = await _nextAssignment(
                 context, assignmentModel, executionResult, member, app);
@@ -85,12 +85,12 @@ abstract class TaskModel {
               if ((currentMember != null) &&
                   (nextAssignment.assigneeId == currentMember.documentID) &&
                   nextAssignment.task!.executeInstantly) {
-                nextAssignment.task!.callExecute(context, app.documentID!, nextAssignment, false,
+                nextAssignment.task!.callExecute(context, app.documentID!, currentMember.documentID!, nextAssignment, false,
                     finaliseWorkflow: _finaliseWorkflow);
               }
             }
           } else {
-            await _sendMessage(context, assignmentModel.rejectMessage, app,
+            await _sendMessage(app.documentID!, member.documentID!, assignmentModel.rejectMessage, app,
                 member, assignmentModel, feedback);
           }
         }
@@ -103,13 +103,13 @@ abstract class TaskModel {
   }
 
   /* This method is called by the workflow framework */
-  void callExecute(BuildContext context, String appId, AssignmentModel? assignmentModel,
+  void callExecute(BuildContext context, String appId, String? memberId, AssignmentModel? assignmentModel,
       bool isNewAssignment,
       {FinaliseWorkflow? finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
     _finaliseWorkflow = finaliseWorkflow;
 
-    startTask(context, appId, assignmentModel);
+    startTask(context, appId, memberId, assignmentModel);
   }
 
   Future<void> _handleCurrentAssignment(
@@ -142,7 +142,8 @@ abstract class TaskModel {
   }
 
   Future<void> _sendMessage(
-      BuildContext context,
+      String appId,
+      String memberId,
       WorkflowNotificationModel? workflowNotificationModel,
       AppModel app,
       MemberModel member,
@@ -160,8 +161,7 @@ abstract class TaskModel {
       if (to == null) {
         print("error can't determing addressee to send message");
       } else {
-        await AbstractNotificationPlatform.platform!.sendMessage(
-            context, to, message!);
+        await AbstractNotificationPlatform.platform!.sendMessage(appId, memberId, to, message!);
       }
     }
   }

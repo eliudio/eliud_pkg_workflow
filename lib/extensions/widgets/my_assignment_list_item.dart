@@ -20,6 +20,7 @@ class MyAssignmentListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var app = AccessBloc.currentApp(context);
+    var member = AccessBloc.member(context);
     var style = /*((value.read == null) || (value.read)) ? null : */new TextStyle(fontWeight: FontWeight.bold);
     return Dismissible(
       key: Key('_Assignment_item_${value.documentID}'),
@@ -31,7 +32,7 @@ class MyAssignmentListItem extends StatelessWidget {
         onTap: () async {
           var valueWithRelations = await assignmentRepository(appId: app.documentID)!.get(value.documentID);
           value.task!.callExecute(
-              context, app.documentID!, valueWithRelations, false);
+              context, app.documentID!, member == null ? null : member.documentID, valueWithRelations, false);
         },
         trailing: Text(formatFullPrecision(value.timestamp), style: style),
         title: Text(value.task!.description == null ? "?" : value.task!.description, style: style,))
