@@ -1,13 +1,13 @@
 import 'dart:collection';
-
-import 'package:eliud_core/model/conditions_entity.dart';
+import 'package:eliud_core/model/display_conditions_entity.dart';
+import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/tools/action/action_entity.dart';
 
 class WorkflowActionEntity extends ActionEntity {
   static const String label = "Workflow";
   final String? workflowId;
 
-  const WorkflowActionEntity({String? appId, ConditionsEntity? conditions, this.workflowId}) : super(appId, conditions: conditions, actionType : label);
+  const WorkflowActionEntity({String? appId, DisplayConditionsEntity? conditions, this.workflowId}) : super(appId, conditions: conditions, actionType : label);
 
   Map<String, Object?> toDocument() {
     Map<String, Object?> theDocument = HashMap();
@@ -21,8 +21,8 @@ class WorkflowActionEntity extends ActionEntity {
   }
 
   static WorkflowActionEntity? fromMap(Map snap) {
-    var fromMap = ConditionsEntity.fromMap(snap['conditions']);
-    if (ConditionsEntity.fromMap(snap['conditions']) != null) {
+    var fromMap = DisplayConditionsEntity.fromMap(snap['conditions']);
+    if (DisplayConditionsEntity.fromMap(snap['conditions']) != null) {
       return WorkflowActionEntity(
         appId: snap["appID"],
         workflowId: snap["workflowId"],

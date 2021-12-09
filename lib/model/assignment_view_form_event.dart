@@ -108,7 +108,7 @@ class ChangedAssignmentViewDescription extends AssignmentViewFormEvent {
 }
 
 class ChangedAssignmentViewConditions extends AssignmentViewFormEvent {
-  final ConditionsSimpleModel? value;
+  final StorageConditionsModel? value;
 
   ChangedAssignmentViewConditions({this.value});
 

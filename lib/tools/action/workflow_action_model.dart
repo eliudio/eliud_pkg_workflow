@@ -1,4 +1,4 @@
-import 'package:eliud_core/model/conditions_model.dart';
+import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
 import 'package:eliud_core/tools/action/action_entity.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 class WorkflowActionModel extends ActionModel {
   final WorkflowModel? workflow;
 
-  WorkflowActionModel(String appId, { this.workflow, ConditionsModel? conditions} ) : super(appId, actionType: WorkflowActionEntity.label, conditions: conditions);
+  WorkflowActionModel(String appId, { this.workflow, DisplayConditionsModel? conditions} ) : super(appId, actionType: WorkflowActionEntity.label, conditions: conditions);
 
   @override
   WorkflowActionEntity toEntity({String? appId}) {
@@ -27,7 +27,7 @@ class WorkflowActionModel extends ActionModel {
     if (entity.appID == null) throw Exception('entity WorkflowActionModel.appID is null');
     return WorkflowActionModel(
       entity.appID!,
-      conditions: ConditionsModel.fromEntity(entity.conditions),
+      conditions: DisplayConditionsModel.fromEntity(entity.conditions),
     );
   }
 
@@ -45,7 +45,7 @@ class WorkflowActionModel extends ActionModel {
 
     return WorkflowActionModel(
         entity.appID!,
-        conditions: ConditionsModel.fromEntity(entity.conditions),
+        conditions: DisplayConditionsModel.fromEntity(entity.conditions),
         workflow: workFlowModel
     );
   }

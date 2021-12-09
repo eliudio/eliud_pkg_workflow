@@ -40,13 +40,13 @@ class AssignmentViewModel {
   String? appId;
   String? title;
   String? description;
-  ConditionsSimpleModel? conditions;
+  StorageConditionsModel? conditions;
 
   AssignmentViewModel({this.documentID, this.appId, this.title, this.description, this.conditions, })  {
     assert(documentID != null);
   }
 
-  AssignmentViewModel copyWith({String? documentID, String? appId, String? title, String? description, ConditionsSimpleModel? conditions, }) {
+  AssignmentViewModel copyWith({String? documentID, String? appId, String? title, String? description, StorageConditionsModel? conditions, }) {
     return AssignmentViewModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, title: title ?? this.title, description: description ?? this.description, conditions: conditions ?? this.conditions, );
   }
 
@@ -87,7 +87,7 @@ class AssignmentViewModel {
           title: entity.title, 
           description: entity.description, 
           conditions: 
-            ConditionsSimpleModel.fromEntity(entity.conditions), 
+            StorageConditionsModel.fromEntity(entity.conditions), 
     );
   }
 
@@ -101,7 +101,7 @@ class AssignmentViewModel {
           title: entity.title, 
           description: entity.description, 
           conditions: 
-            await ConditionsSimpleModel.fromEntityPlus(entity.conditions, appId: appId), 
+            await StorageConditionsModel.fromEntityPlus(entity.conditions, appId: appId), 
     );
   }
 

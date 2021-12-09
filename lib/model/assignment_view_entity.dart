@@ -26,7 +26,7 @@ class AssignmentViewEntity {
   final String? appId;
   final String? title;
   final String? description;
-  final ConditionsSimpleEntity? conditions;
+  final StorageConditionsEntity? conditions;
 
   AssignmentViewEntity({this.appId, this.title, this.description, this.conditions, });
 
@@ -45,7 +45,7 @@ class AssignmentViewEntity {
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];
     if (conditionsFromMap != null)
-      conditionsFromMap = ConditionsSimpleEntity.fromMap(conditionsFromMap);
+      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap);
 
     return AssignmentViewEntity(
       appId: map['appId'], 

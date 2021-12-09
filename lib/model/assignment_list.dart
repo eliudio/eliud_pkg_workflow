@@ -63,18 +63,14 @@ class AssignmentListWidget extends StatefulWidget with HasFab {
 
   @override
   Widget? fab(BuildContext context) {
-/*
     if ((readOnly != null) && readOnly!) return null;
     state ??= AssignmentListWidgetState();
     var accessState = AccessBloc.getState(context);
     return state!.fab(context, accessState);
-*/
-    return null;
   }
 }
 
 class AssignmentListWidgetState extends State<AssignmentListWidget> {
-/*
   @override
   Widget? fab(BuildContext aContext, AccessState accessState) {
     return !accessState.memberIsOwner(AccessBloc.currentAppId(context)) 
@@ -92,7 +88,6 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
       },
     );
   }
-*/
 
   @override
   Widget build(BuildContext context) {
