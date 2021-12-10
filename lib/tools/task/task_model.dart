@@ -68,7 +68,7 @@ abstract class TaskModel {
       ExecutionResults executionResult, String? feedback) async {
     var state = AccessBloc.getState(context);
     if (state is AccessDetermined) {
-      var app = state.currentApp(context);
+      var app = state.currentApp;
       await _handleCurrentAssignment(
           context, assignmentModel, _isNewAssignment, executionResult);
       if (state.getMember() != null) {

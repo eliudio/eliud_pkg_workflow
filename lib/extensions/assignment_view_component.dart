@@ -46,7 +46,7 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (context, accessState) {
       if (accessState is AccessDetermined) {
-        var currentAppId = accessState.currentAppId(context);
+        var currentAppId = accessState.currentApp.documentID!;
         return BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
             eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
