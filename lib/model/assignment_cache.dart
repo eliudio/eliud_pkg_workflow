@@ -128,15 +128,6 @@ class AssignmentCache implements AssignmentRepository {
 
   static Future<AssignmentModel> refreshRelations(AssignmentModel model) async {
 
-    MemberModel? reporterHolder;
-    if (model.reporter != null) {
-      try {
-        await memberRepository(appId: model.appId)!.get(model.reporter!.documentID).then((val) {
-          reporterHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
-    }
-
     WorkflowModel? workflowHolder;
     if (model.workflow != null) {
       try {
@@ -161,8 +152,6 @@ class AssignmentCache implements AssignmentRepository {
     }
 
     return model.copyWith(
-        reporter: reporterHolder,
-
         workflow: workflowHolder,
 
         resultsCurrent: resultsCurrentHolder,

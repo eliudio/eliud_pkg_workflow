@@ -125,7 +125,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _appIdController = TextEditingController();
-  String? _reporter;
+  final TextEditingController _reporterIdController = TextEditingController();
   final TextEditingController _assigneeIdController = TextEditingController();
   String? _workflow;
   final TextEditingController _workflowTaskSeqNumberController = TextEditingController();
@@ -141,6 +141,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
     _myFormBloc = BlocProvider.of<AssignmentFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
     _appIdController.addListener(_onAppIdChanged);
+    _reporterIdController.addListener(_onReporterIdChanged);
     _assigneeIdController.addListener(_onAssigneeIdChanged);
     _workflowTaskSeqNumberController.addListener(_onWorkflowTaskSeqNumberChanged);
     _statusSelectedRadioTile = 0;
@@ -167,10 +168,10 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
           _appIdController.text = state.value!.appId.toString();
         else
           _appIdController.text = "";
-        if (state.value!.reporter != null)
-          _reporter= state.value!.reporter!.documentID;
+        if (state.value!.reporterId != null)
+          _reporterIdController.text = state.value!.reporterId.toString();
         else
-          _reporter= "";
+          _reporterIdController.text = "";
         if (state.value!.assigneeId != null)
           _assigneeIdController.text = state.value!.assigneeId.toString();
         else
@@ -254,7 +255,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(appId: appId, id: "members", value: _reporter, trigger: _onReporterSelected, optional: false),
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Reporter', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _reporterIdController, keyboardType: TextInputType.text, validator: (_) => state is ReporterIdAssignmentFormError ? state.message : null, hintText: null)
           );
 
 
@@ -350,7 +351,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                           UpdateAssignmentList(value: state.value!.copyWith(
                               documentID: state.value!.documentID, 
                               appId: state.value!.appId, 
-                              reporter: state.value!.reporter, 
+                              reporterId: state.value!.reporterId, 
                               assigneeId: state.value!.assigneeId, 
                               task: state.value!.task, 
                               workflow: state.value!.workflow, 
@@ -368,7 +369,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
                           AddAssignmentList(value: AssignmentModel(
                               documentID: state.value!.documentID, 
                               appId: state.value!.appId, 
-                              reporter: state.value!.reporter, 
+                              reporterId: state.value!.reporterId, 
                               assigneeId: state.value!.assigneeId, 
                               task: state.value!.task, 
                               workflow: state.value!.workflow, 
@@ -416,11 +417,8 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
 
-  void _onReporterSelected(String? val) {
-    setState(() {
-      _reporter = val;
-    });
-    _myFormBloc.add(ChangedAssignmentReporter(value: val));
+  void _onReporterIdChanged() {
+    _myFormBloc.add(ChangedAssignmentReporterId(value: _reporterIdController.text));
   }
 
 
@@ -472,6 +470,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   void dispose() {
     _documentIDController.dispose();
     _appIdController.dispose();
+    _reporterIdController.dispose();
     _assigneeIdController.dispose();
     _workflowTaskSeqNumberController.dispose();
     _triggeredByIdController.dispose();

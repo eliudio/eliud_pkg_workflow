@@ -189,7 +189,7 @@ abstract class TaskModel {
         var nextAssignment = AssignmentModel(
             documentID: newRandomKey(),
             appId: currentAssignment.appId,
-            reporter: member,
+            reporterId: member.documentID!,
             assigneeId: await DetermineMemberHelper
                 .determineMemberWithWorkflowTaskResponsible(
                     nextTask.responsible, app, member, currentAssignment),

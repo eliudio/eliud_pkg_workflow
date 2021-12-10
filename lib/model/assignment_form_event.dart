@@ -83,16 +83,16 @@ class ChangedAssignmentAppId extends AssignmentFormEvent {
   String toString() => 'ChangedAssignmentAppId{ value: $value }';
 }
 
-class ChangedAssignmentReporter extends AssignmentFormEvent {
+class ChangedAssignmentReporterId extends AssignmentFormEvent {
   final String? value;
 
-  ChangedAssignmentReporter({this.value});
+  ChangedAssignmentReporterId({this.value});
 
   @override
   List<Object?> get props => [ value ];
 
   @override
-  String toString() => 'ChangedAssignmentReporter{ value: $value }';
+  String toString() => 'ChangedAssignmentReporterId{ value: $value }';
 }
 
 class ChangedAssignmentAssigneeId extends AssignmentFormEvent {

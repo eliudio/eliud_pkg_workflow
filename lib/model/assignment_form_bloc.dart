@@ -55,6 +55,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: AssignmentModel(
                                                documentID: "IDENTIFIER", 
                                  appId: "",
+                                 reporterId: "",
                                  assigneeId: "",
                                  workflowTaskSeqNumber: 0,
                                  resultsCurrent: [],
@@ -86,26 +87,8 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
 
         return;
       }
-      if (event is ChangedAssignmentReporter) {
-        if (event.value != null)
-          newValue = currentState.value!.copyWith(reporter: await memberRepository(appId: appId)!.get(event.value));
-        else
-          newValue = new AssignmentModel(
-                                 documentID: currentState.value!.documentID,
-                                 appId: currentState.value!.appId,
-                                 reporter: null,
-                                 assigneeId: currentState.value!.assigneeId,
-                                 task: currentState.value!.task,
-                                 workflow: currentState.value!.workflow,
-                                 workflowTaskSeqNumber: currentState.value!.workflowTaskSeqNumber,
-                                 timestamp: currentState.value!.timestamp,
-                                 status: currentState.value!.status,
-                                 resultsCurrent: currentState.value!.resultsCurrent,
-                                 resultsPrevious: currentState.value!.resultsPrevious,
-                                 triggeredById: currentState.value!.triggeredById,
-                                 confirmMessage: currentState.value!.confirmMessage,
-                                 rejectMessage: currentState.value!.rejectMessage,
-          );
+      if (event is ChangedAssignmentReporterId) {
+        newValue = currentState.value!.copyWith(reporterId: event.value);
         yield SubmittableAssignmentForm(value: newValue);
 
         return;
@@ -129,7 +112,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
           newValue = new AssignmentModel(
                                  documentID: currentState.value!.documentID,
                                  appId: currentState.value!.appId,
-                                 reporter: currentState.value!.reporter,
+                                 reporterId: currentState.value!.reporterId,
                                  assigneeId: currentState.value!.assigneeId,
                                  task: currentState.value!.task,
                                  workflow: null,

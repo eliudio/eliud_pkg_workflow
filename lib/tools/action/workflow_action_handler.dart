@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/abstract_repository_singleton.dart' as coreRepo;
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/navigate/router.dart';
@@ -36,7 +37,7 @@ class WorkflowActionHandler extends PackageActionHandler {
           var assignment = AssignmentModel(
             documentID: newRandomKey(),
             appId: action.appID,
-            reporter: accessState.getMember(),
+            reporterId: accessState.getMember()!.documentID!,
             assigneeId: memberId,
             task: firstTask,
             workflow: workflowModel,

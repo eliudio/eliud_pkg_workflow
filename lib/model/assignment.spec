@@ -36,11 +36,10 @@
       "group": "general"
     },
     {
-      "fieldName": "reporter",
+      "fieldName": "reporterId",
       "remarks": "The one who initiated the assignment",
       "displayName": "Reporter",
-      "fieldType": "Member",
-      "association": true,
+      "fieldType": "String",
       "group": "Reporter"
     },
     {

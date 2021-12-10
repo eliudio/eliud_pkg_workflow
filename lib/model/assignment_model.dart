@@ -54,7 +54,7 @@ class AssignmentModel {
 
   // This is the identifier of the app to which this feed belongs
   String? appId;
-  MemberModel? reporter;
+  String? reporterId;
   String? assigneeId;
   TaskModel? task;
   WorkflowModel? workflow;
@@ -73,16 +73,16 @@ class AssignmentModel {
   WorkflowNotificationModel? confirmMessage;
   WorkflowNotificationModel? rejectMessage;
 
-  AssignmentModel({this.documentID, this.appId, this.reporter, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, })  {
+  AssignmentModel({this.documentID, this.appId, this.reporterId, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, })  {
     assert(documentID != null);
   }
 
-  AssignmentModel copyWith({String? documentID, String? appId, MemberModel? reporter, String? assigneeId, TaskModel? task, WorkflowModel? workflow, int? workflowTaskSeqNumber, DateTime? timestamp, AssignmentStatus? status, List<AssignmentResultModel>? resultsCurrent, List<AssignmentResultModel>? resultsPrevious, String? triggeredById, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, }) {
-    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporter: reporter ?? this.reporter, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, );
+  AssignmentModel copyWith({String? documentID, String? appId, String? reporterId, String? assigneeId, TaskModel? task, WorkflowModel? workflow, int? workflowTaskSeqNumber, DateTime? timestamp, AssignmentStatus? status, List<AssignmentResultModel>? resultsCurrent, List<AssignmentResultModel>? resultsPrevious, String? triggeredById, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, }) {
+    return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporterId: reporterId ?? this.reporterId, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporter.hashCode ^ assigneeId.hashCode ^ task.hashCode ^ workflow.hashCode ^ workflowTaskSeqNumber.hashCode ^ timestamp.hashCode ^ status.hashCode ^ resultsCurrent.hashCode ^ resultsPrevious.hashCode ^ triggeredById.hashCode ^ confirmMessage.hashCode ^ rejectMessage.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ reporterId.hashCode ^ assigneeId.hashCode ^ task.hashCode ^ workflow.hashCode ^ workflowTaskSeqNumber.hashCode ^ timestamp.hashCode ^ status.hashCode ^ resultsCurrent.hashCode ^ resultsPrevious.hashCode ^ triggeredById.hashCode ^ confirmMessage.hashCode ^ rejectMessage.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -91,7 +91,7 @@ class AssignmentModel {
           runtimeType == other.runtimeType && 
           documentID == other.documentID &&
           appId == other.appId &&
-          reporter == other.reporter &&
+          reporterId == other.reporterId &&
           assigneeId == other.assigneeId &&
           task == other.task &&
           workflow == other.workflow &&
@@ -109,13 +109,13 @@ class AssignmentModel {
     String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent!.join(', ');
     String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious!.join(', ');
 
-    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporter: $reporter, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
+    return 'AssignmentModel{documentID: $documentID, appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
   AssignmentEntity toEntity({String? appId}) {
     return AssignmentEntity(
           appId: (appId != null) ? appId : null, 
-          reporterId: (reporter != null) ? reporter!.documentID : null, 
+          reporterId: (reporterId != null) ? reporterId : null, 
           assigneeId: (assigneeId != null) ? assigneeId : null, 
           task: (task != null) ? task!.toEntity(appId: appId) : null, 
           workflowId: (workflow != null) ? workflow!.documentID : null, 
@@ -140,6 +140,7 @@ class AssignmentModel {
     return AssignmentModel(
           documentID: documentID, 
           appId: entity.appId, 
+          reporterId: entity.reporterId, 
           assigneeId: entity.assigneeId, 
           task: 
             TaskModel.fromEntity(entity.task), 
@@ -173,17 +174,6 @@ class AssignmentModel {
   static Future<AssignmentModel?> fromEntityPlus(String documentID, AssignmentEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
-    MemberModel? reporterHolder;
-    if (entity.reporterId != null) {
-      try {
-          reporterHolder = await memberRepository(appId: appId)!.get(entity.reporterId);
-      } on Exception catch(e) {
-        print('Error whilst trying to initialise reporter');
-        print('Error whilst retrieving member with id ${entity.reporterId}');
-        print('Exception: $e');
-      }
-    }
-
     WorkflowModel? workflowHolder;
     if (entity.workflowId != null) {
       try {
@@ -199,7 +189,7 @@ class AssignmentModel {
     return AssignmentModel(
           documentID: documentID, 
           appId: entity.appId, 
-          reporter: reporterHolder, 
+          reporterId: entity.reporterId, 
           assigneeId: entity.assigneeId, 
           task: 
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 

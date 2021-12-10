@@ -95,15 +95,15 @@ class AppIdAssignmentFormError extends AssignmentFormError {
 }
 
 
-class ReporterAssignmentFormError extends AssignmentFormError { 
-  const ReporterAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
+class ReporterIdAssignmentFormError extends AssignmentFormError { 
+  const ReporterIdAssignmentFormError({ String? message, AssignmentModel? value }): super(message: message, value: value);
 
   @override
   List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''ReporterAssignmentFormError {
+    return '''ReporterIdAssignmentFormError {
       value: $value,
       message: $message,
     }''';
