@@ -155,7 +155,7 @@ class WorkflowListWidgetState extends State<WorkflowListWidget> {
               BlocProvider.of<WorkflowListBloc>(context)
                   .add(DeleteWorkflowList(value: value));
               Scaffold.of(context).showSnackBar(DeleteSnackBar(
-                message: "Workflow " + value.,
+                message: "Workflow " + value.documentID,
                 onUndo: () => BlocProvider.of<WorkflowListBloc>(context)
                     .add(AddWorkflowList(value: value)),
               ));
@@ -168,7 +168,7 @@ class WorkflowListWidgetState extends State<WorkflowListWidget> {
                       if (removedItem != null) {
                         Scaffold.of(context).showSnackBar(
                           DeleteSnackBar(
-                        message: "Workflow " + value.,
+                        message: "Workflow " + value.documentID,
                             onUndo: () => BlocProvider.of<WorkflowListBloc>(context)
                                 .add(AddWorkflowList(value: value)),
                           ),
@@ -214,7 +214,6 @@ class WorkflowListItem extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         title: value.name != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.name!)) : Container(),
-        subtitle: ,
       ),
     );
   }
