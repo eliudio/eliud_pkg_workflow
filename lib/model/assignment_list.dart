@@ -155,7 +155,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
               BlocProvider.of<AssignmentListBloc>(context)
                   .add(DeleteAssignmentList(value: value));
               Scaffold.of(context).showSnackBar(DeleteSnackBar(
-                message: "Assignment " + value.documentID,
+                message: "Assignment " + value.,
                 onUndo: () => BlocProvider.of<AssignmentListBloc>(context)
                     .add(AddAssignmentList(value: value)),
               ));
@@ -168,7 +168,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
                       if (removedItem != null) {
                         Scaffold.of(context).showSnackBar(
                           DeleteSnackBar(
-                        message: "Assignment " + value.documentID,
+                        message: "Assignment " + value.,
                             onUndo: () => BlocProvider.of<AssignmentListBloc>(context)
                                 .add(AddAssignmentList(value: value)),
                           ),
@@ -214,6 +214,7 @@ class AssignmentListItem extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         title: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.documentID!)) : Container(),
+        subtitle: ,
       ),
     );
   }

@@ -118,7 +118,12 @@ class AssignmentResultCache implements AssignmentResultRepository {
 
   @override
   StreamSubscription<AssignmentResultModel?> listenTo(String documentId, AssignmentResultChanged changed) {
-    return reference.listenTo(documentId, changed);
+    return reference.listenTo(documentId, ((value) {
+      if (value != null) {
+        fullCache[value.documentID] = value;
+      }
+      changed(value);
+    }));
   }
 
   static Future<AssignmentResultModel> refreshRelations(AssignmentResultModel model) async {

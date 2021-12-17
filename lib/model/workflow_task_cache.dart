@@ -118,7 +118,12 @@ class WorkflowTaskCache implements WorkflowTaskRepository {
 
   @override
   StreamSubscription<WorkflowTaskModel?> listenTo(String documentId, WorkflowTaskChanged changed) {
-    return reference.listenTo(documentId, changed);
+    return reference.listenTo(documentId, ((value) {
+      if (value != null) {
+        fullCache[value.documentID] = value;
+      }
+      changed(value);
+    }));
   }
 
   static Future<WorkflowTaskModel> refreshRelations(WorkflowTaskModel model) async {

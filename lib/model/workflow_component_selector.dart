@@ -99,7 +99,7 @@ class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
                     }
                   }),
               title: value.name != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.name!)) : Container(),
-              subtitle: null,
+              subtitle: ,
             );
           } else {
             return Container();
