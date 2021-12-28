@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
@@ -33,8 +34,8 @@ class ExampleTaskModel1 extends TaskModel {
       executeInstantly: snap["executeInstantly"]);
 
   @override
-  Future<void> startTask(
-      BuildContext context, String appId, String? memberId, AssignmentModel? assignmentModel) {
+  Future<void> startTask(AppModel app,
+      BuildContext context, String? memberId, AssignmentModel? assignmentModel) {
     throw UnimplementedError();
   }
 }

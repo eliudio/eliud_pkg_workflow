@@ -82,20 +82,19 @@ class WorkflowModel {
     );
   }
 
-  static WorkflowModel? fromEntity(String documentID, WorkflowEntity? entity) {
+  static Future<WorkflowModel?> fromEntity(String documentID, WorkflowEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return WorkflowModel(
           documentID: documentID, 
           name: entity.name, 
           workflowTask: 
-            entity.workflowTask == null ? null :
-            entity.workflowTask
+            entity.workflowTask == null ? null : List<WorkflowTaskModel>.from(await Future.wait(entity. workflowTask
             !.map((item) {
-              counter++; 
-              return WorkflowTaskModel.fromEntity(counter.toString(), item)!;
+            counter++;
+              return WorkflowTaskModel.fromEntity(counter.toString(), item);
             })
-            .toList(), 
+            .toList())), 
           appId: entity.appId, 
     );
   }

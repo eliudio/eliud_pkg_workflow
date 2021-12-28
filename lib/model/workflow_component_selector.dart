@@ -14,6 +14,7 @@
 */
 
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_divider.dart';
 import 'package:eliud_core/style/frontend/has_list_tile.dart';
@@ -33,15 +34,15 @@ import 'workflow_model.dart';
 
 class WorkflowComponentSelector extends ComponentSelector {
   @override
-  Widget createSelectWidget(BuildContext context, double height,
+  Widget createSelectWidget(BuildContext context, AppModel app, double height,
       SelectComponent selected, editorConstructor) {
-    var appId = AccessBloc.currentAppId(context);
+    var appId = app.documentID!;
     return BlocProvider<WorkflowListBloc>(
           create: (context) => WorkflowListBloc(
             workflowRepository:
                 workflowRepository(appId: appId)!,
           )..add(LoadWorkflowList()),
-      child: SelectWorkflowWidget(
+      child: SelectWorkflowWidget(app: app,
           height: height,
           selected: selected,
           editorConstructor: editorConstructor),
@@ -50,12 +51,14 @@ class WorkflowComponentSelector extends ComponentSelector {
 }
 
 class SelectWorkflowWidget extends StatefulWidget {
+  final AppModel app;
   final double height;
   final SelectComponent selected;
   final ComponentEditorConstructor editorConstructor;
 
   const SelectWorkflowWidget(
       {Key? key,
+      required this.app,
       required this.height,
       required this.selected,
       required this.editorConstructor})
@@ -69,6 +72,7 @@ class SelectWorkflowWidget extends StatefulWidget {
 
 class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
   Widget theList(BuildContext context, List<WorkflowModel?> values) {
+    var app = widget.app; 
     return ListView.builder(
         shrinkWrap: true,
         physics: ScrollPhysics(),
@@ -78,27 +82,28 @@ class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
           if (value != null) {
             return getListTile(
               context,
+              widget.app,
               trailing: PopupMenuButton<int>(
                   child: Icon(Icons.more_vert),
                   elevation: 10,
                   itemBuilder: (context) => [
                         PopupMenuItem(
                           value: 1,
-                          child: text(context, 'Add to page'),
+                          child: text(widget.app, context, 'Add to page'),
                         ),
                         PopupMenuItem(
                           value: 2,
-                          child: text(context, 'Update'),
+                          child: text(widget.app, context, 'Update'),
                         ),
                       ],
                   onSelected: (selectedValue) {
                     if (selectedValue == 1) {
                       widget.selected(value.documentID!);
                     } else if (selectedValue == 2) {
-                      widget.editorConstructor.updateComponent(context, value, (_) {});
+                      widget.editorConstructor.updateComponent(widget.app, context, value, (_) {});
                     }
                   }),
-              title: value.name != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.name!)) : Container(),
+              title: value.name != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.name!)) : Container(),
               subtitle: null,
             );
           } else {
@@ -112,10 +117,10 @@ class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
     return BlocBuilder<WorkflowListBloc, WorkflowListState>(
         builder: (context, state) {
       if (state is WorkflowListLoading) {
-        return progressIndicator(context);
+        return progressIndicator(widget.app, context);
       } else if (state is WorkflowListLoaded) {
         if (state.values == null) {
-          return text(context, 'No items');
+          return text(widget.app, context, 'No items');
         } else {
           var children = <Widget>[];
           children.add(Container(
@@ -125,12 +130,12 @@ class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget> {
                 state.values!,
               )));
           children.add(Column(children: [
-            divider(context),
+            divider(widget.app, context),
             Center(
-                child: iconButton(
+                child: iconButton(widget.app, 
               context,
               onPressed: () {
-                widget.editorConstructor.createNewComponent(context, (_) {});
+                widget.editorConstructor.createNewComponent(widget.app, context, (_) {});
               },
               icon: Icon(Icons.add),
             ))

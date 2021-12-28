@@ -1,8 +1,9 @@
 import 'dart:collection';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_mapper.dart';
 import 'package:flutter/cupertino.dart';
 
-typedef Widget TaskEditor(model);
+typedef Widget TaskEditor(AppModel app, model);
 typedef dynamic CreateNewInstance();
 
 class TaskDetails {

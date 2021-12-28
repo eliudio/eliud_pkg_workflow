@@ -78,7 +78,7 @@ class AssignmentViewModel {
     );
   }
 
-  static AssignmentViewModel? fromEntity(String documentID, AssignmentViewEntity? entity) {
+  static Future<AssignmentViewModel?> fromEntity(String documentID, AssignmentViewEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return AssignmentViewModel(
@@ -87,7 +87,7 @@ class AssignmentViewModel {
           title: entity.title, 
           description: entity.description, 
           conditions: 
-            StorageConditionsModel.fromEntity(entity.conditions), 
+            await StorageConditionsModel.fromEntity(entity.conditions), 
     );
   }
 

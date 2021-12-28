@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
 import 'package:eliud_core/style/style_registry.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DialogWithAssignmentResults {
-  static Widget get(BuildContext context,
+  static Widget get(AppModel app, BuildContext context,
       {required String title,
       required String message,
       required List<String> buttonLabels,
@@ -33,16 +34,16 @@ class DialogWithAssignmentResults {
       contents = Text(message);
     }
 
-    return flexibleDialog(context,
+    return flexibleDialog(app, context,
             title: title,
             child: contents,
-            buttons: dialogButtons(context,
+            buttons: dialogButtons(app, context,
                     labels: buttonLabels, functions: functions));
   }
 }
 
 class YesNoDialogWithAssignmentResults {
-  static Widget get(BuildContext context,
+  static Widget get(AppModel app, BuildContext context,
       {
       required String title,
       required String message,
@@ -50,7 +51,7 @@ class YesNoDialogWithAssignmentResults {
       required VoidCallback yesFunction,
       required VoidCallback noFunction,
       List<Widget>? extraFields}) {
-    return DialogWithAssignmentResults.get(context,
+    return DialogWithAssignmentResults.get(app, context,
       title: title,
       message: message,
       resultsPrevious: resultsPrevious,
@@ -62,7 +63,7 @@ class YesNoDialogWithAssignmentResults {
 }
 
 class YesNoIgnoreDialogWithAssignmentResults {
-  static Widget get(BuildContext context,
+  static Widget get(AppModel app, BuildContext context,
       {required String title,
       required String message,
         List<AssignmentResultModel>? resultsPrevious,
@@ -71,7 +72,7 @@ class YesNoIgnoreDialogWithAssignmentResults {
         List<Widget>? extraFields,
       String? yesLabel,
         String? noLabel}) {
-    return DialogWithAssignmentResults.get(context,
+    return DialogWithAssignmentResults.get(app, context,
         title: title,
         message: message,
         resultsPrevious: resultsPrevious,

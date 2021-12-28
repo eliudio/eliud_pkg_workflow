@@ -97,18 +97,18 @@ class WorkflowTaskModel {
     );
   }
 
-  static WorkflowTaskModel? fromEntity(String documentID, WorkflowTaskEntity? entity) {
+  static Future<WorkflowTaskModel?> fromEntity(String documentID, WorkflowTaskEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return WorkflowTaskModel(
           documentID: documentID, 
           seqNumber: entity.seqNumber, 
           task: 
-            TaskModel.fromEntity(entity.task), 
+            await TaskModel.fromEntity(entity.task), 
           confirmMessage: 
-            WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
+            await WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
           rejectMessage: 
-            WorkflowNotificationModel.fromEntity(entity.rejectMessage), 
+            await WorkflowNotificationModel.fromEntity(entity.rejectMessage), 
           responsible: toWorkflowTaskResponsible(entity.responsible), 
     );
   }

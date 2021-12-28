@@ -26,19 +26,20 @@ import 'package:eliud_core/style/style_registry.dart';
 import 'abstract_repository_singleton.dart';
 import 'package:eliud_core/core/widgets/alert_widget.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
+import 'package:eliud_core/model/app_model.dart';
 
 abstract class AbstractAssignmentViewComponent extends StatelessWidget {
   static String componentName = "assignmentViews";
-  final String theAppId;
+  final AppModel app;
   final String assignmentViewId;
 
-  AbstractAssignmentViewComponent({Key? key, required this.theAppId, required this.assignmentViewId}): super(key: key);
+  AbstractAssignmentViewComponent({Key? key, required this.app, required this.assignmentViewId}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AssignmentViewComponentBloc> (
           create: (context) => AssignmentViewComponentBloc(
-            assignmentViewRepository: assignmentViewRepository(appId: theAppId)!)
+            assignmentViewRepository: assignmentViewRepository(appId: app.documentID!)!)
         ..add(FetchAssignmentViewComponent(id: assignmentViewId)),
       child: _assignmentViewBlockBuilder(context),
     );
@@ -48,7 +49,7 @@ abstract class AbstractAssignmentViewComponent extends StatelessWidget {
     return BlocBuilder<AssignmentViewComponentBloc, AssignmentViewComponentState>(builder: (context, state) {
       if (state is AssignmentViewComponentLoaded) {
         if (state.value == null) {
-          return AlertWidget(title: "Error", content: 'No AssignmentView defined');
+          return AlertWidget(app: app, title: "Error", content: 'No AssignmentView defined');
         } else {
           return yourWidget(context, state.value);
         }
@@ -59,10 +60,10 @@ abstract class AbstractAssignmentViewComponent extends StatelessWidget {
           size: 30.0,
         );
       } else if (state is AssignmentViewComponentError) {
-        return AlertWidget(title: 'Error', content: state.message);
+        return AlertWidget(app: app, title: 'Error', content: state.message);
       } else {
         return Center(
-          child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicatorStyle().progressIndicator(context),
+          child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().progressIndicatorStyle().progressIndicator(app, context),
         );
       }
     });

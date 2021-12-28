@@ -68,7 +68,7 @@ class AssignmentResultModel {
     );
   }
 
-  static AssignmentResultModel? fromEntity(String documentID, AssignmentResultEntity? entity) {
+  static Future<AssignmentResultModel?> fromEntity(String documentID, AssignmentResultEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return AssignmentResultModel(

@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
 import 'package:eliud_core/style/frontend/has_dialog_field.dart';
 import 'package:eliud_core/style/frontend/has_list_tile.dart';
@@ -5,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'example_task_model_1.dart';
 
 class ExampleTaskModel1EditorWidget extends StatefulWidget {
-  static taskEditor (model) => ExampleTaskModel1EditorWidget(model: model,);
+  final AppModel app;
+  static taskEditor (AppModel app, model) => ExampleTaskModel1EditorWidget(model: model, app: app,);
 
   final ExampleTaskModel1 model;
 
   const ExampleTaskModel1EditorWidget(
       {Key? key,
-      required this.model})
+      required this.model, required this.app})
       : super(key: key);
 
   @override
@@ -22,9 +24,9 @@ class _ExampleTaskModel1EditorWidgetState extends State<ExampleTaskModel1EditorW
   @override
   Widget build(BuildContext context) {
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
-            getListTile(context,
+            getListTile(context,widget.app,
                 leading: Icon(Icons.description),
-                title: dialogField(
+                title: dialogField(widget.app,
                   context,
                   initialValue: widget.model.extraParameter,
                   valueChanged: (value) {

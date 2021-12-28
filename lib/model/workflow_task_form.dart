@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
@@ -58,17 +59,16 @@ import 'package:eliud_pkg_workflow/model/workflow_task_form_state.dart';
 
 
 class WorkflowTaskForm extends StatelessWidget {
+  final AppModel app;
   FormAction formAction;
   WorkflowTaskModel? value;
   ActionModel? submitAction;
 
-  WorkflowTaskForm({Key? key, required this.formAction, required this.value, this.submitAction}) : super(key: key);
+  WorkflowTaskForm({Key? key, required this.app, required this.formAction, required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.currentApp(context);
-    if (app == null) return Text("No app available");
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<WorkflowTaskFormBloc >(
@@ -76,7 +76,7 @@ class WorkflowTaskForm extends StatelessWidget {
                                        
                                                 )..add(InitialiseWorkflowTaskFormEvent(value: value)),
   
-        child: MyWorkflowTaskForm(submitAction: submitAction, formAction: formAction),
+        child: MyWorkflowTaskForm(app:app, submitAction: submitAction, formAction: formAction),
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<WorkflowTaskFormBloc >(
@@ -84,17 +84,17 @@ class WorkflowTaskForm extends StatelessWidget {
                                        
                                                 )..add(InitialiseWorkflowTaskFormNoLoadEvent(value: value)),
   
-        child: MyWorkflowTaskForm(submitAction: submitAction, formAction: formAction),
+        child: MyWorkflowTaskForm(app:app, submitAction: submitAction, formAction: formAction),
           );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update WorkflowTask' : 'Add WorkflowTask'),
+        appBar: StyleRegistry.registry().styleWithApp(app).adminFormStyle().appBarWithString(app, context, title: formAction == FormAction.UpdateAction ? 'Update WorkflowTask' : 'Add WorkflowTask'),
         body: BlocProvider<WorkflowTaskFormBloc >(
             create: (context) => WorkflowTaskFormBloc(appId,
                                        
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseWorkflowTaskFormEvent(value: value) : InitialiseNewWorkflowTaskFormEvent())),
   
-        child: MyWorkflowTaskForm(submitAction: submitAction, formAction: formAction),
+        child: MyWorkflowTaskForm(app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
@@ -102,10 +102,11 @@ class WorkflowTaskForm extends StatelessWidget {
 
 
 class MyWorkflowTaskForm extends StatefulWidget {
+  final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyWorkflowTaskForm({this.formAction, this.submitAction});
+  MyWorkflowTaskForm({required this.app, this.formAction, this.submitAction});
 
   _MyWorkflowTaskFormState createState() => _MyWorkflowTaskFormState(this.formAction);
 }
@@ -133,13 +134,10 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.currentApp(context);
-    if (app == null) return Text('No app available');
-    var appId = app.documentID!;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<WorkflowTaskFormBloc, WorkflowTaskFormState>(builder: (context, state) {
       if (state is WorkflowTaskFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context),
       );
 
       if (state is WorkflowTaskFormLoaded) {
@@ -161,63 +159,63 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'General')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'General')
                 ));
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Sequence number', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _seqNumberController, keyboardType: TextInputType.number, validator: (_) => state is SeqNumberWorkflowTaskFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Sequence number', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _seqNumberController, keyboardType: TextInputType.number, validator: (_) => state is SeqNumberWorkflowTaskFormError ? state.message : null, hintText: null)
           );
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'CurrentMember', 'CurrentMember', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'CurrentMember', 'CurrentMember', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'Owner', 'Owner', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'Owner', 'Owner', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'First', 'First', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'First', 'First', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _responsibleSelectedRadioTile, 'Previous', 'Previous', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'Previous', 'Previous', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
           );
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'Task')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'Task')
                 ));
 
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'WorkflowNotification')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'WorkflowNotification')
                 ));
 
 
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().button(context, label: 'Submit',
+          children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app, context, label: 'Submit',
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is WorkflowTaskFormError) {
                       return null;
@@ -252,7 +250,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
                   },
                 ));
 
-        return StyleRegistry.registry().styleWithContext(context).adminFormStyle().container(context, Form(
+        return StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().container(widget.app, context, Form(
             child: ListView(
               padding: const EdgeInsets.all(8),
               physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
@@ -262,7 +260,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       }
     });
   }
@@ -294,7 +292,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   }
 
   bool _readOnly(AccessState accessState, WorkflowTaskFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID!));
   }
   
 

@@ -134,7 +134,7 @@ class AssignmentModel {
     );
   }
 
-  static AssignmentModel? fromEntity(String documentID, AssignmentEntity? entity) {
+  static Future<AssignmentModel?> fromEntity(String documentID, AssignmentEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return AssignmentModel(
@@ -143,31 +143,29 @@ class AssignmentModel {
           reporterId: entity.reporterId, 
           assigneeId: entity.assigneeId, 
           task: 
-            TaskModel.fromEntity(entity.task), 
+            await TaskModel.fromEntity(entity.task), 
           workflowTaskSeqNumber: entity.workflowTaskSeqNumber, 
           timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
           status: toAssignmentStatus(entity.status), 
           resultsCurrent: 
-            entity.resultsCurrent == null ? null :
-            entity.resultsCurrent
+            entity.resultsCurrent == null ? null : List<AssignmentResultModel>.from(await Future.wait(entity. resultsCurrent
             !.map((item) {
-              counter++; 
-              return AssignmentResultModel.fromEntity(counter.toString(), item)!;
+            counter++;
+              return AssignmentResultModel.fromEntity(counter.toString(), item);
             })
-            .toList(), 
+            .toList())), 
           resultsPrevious: 
-            entity.resultsPrevious == null ? null :
-            entity.resultsPrevious
+            entity.resultsPrevious == null ? null : List<AssignmentResultModel>.from(await Future.wait(entity. resultsPrevious
             !.map((item) {
-              counter++; 
-              return AssignmentResultModel.fromEntity(counter.toString(), item)!;
+            counter++;
+              return AssignmentResultModel.fromEntity(counter.toString(), item);
             })
-            .toList(), 
+            .toList())), 
           triggeredById: entity.triggeredById, 
           confirmMessage: 
-            WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
+            await WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
           rejectMessage: 
-            WorkflowNotificationModel.fromEntity(entity.rejectMessage), 
+            await WorkflowNotificationModel.fromEntity(entity.rejectMessage), 
     );
   }
 

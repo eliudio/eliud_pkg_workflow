@@ -1,15 +1,8 @@
-import 'package:eliud_core/model/abstract_repository_singleton.dart' as coreRepo;
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/navigate/router.dart';
-import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
-import 'package:eliud_pkg_workflow/model/workflow_firestore.dart';
-import 'package:eliud_pkg_workflow/model/workflow_model.dart';
-import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -24,6 +17,7 @@ class WorkflowActionHandler extends PackageActionHandler {
   }
 
   static void executeWorkflow(BuildContext context, WorkflowActionModel action, {FinaliseWorkflow? finaliseWorkflow}) {
+    var app = action.app;
     var accessState = AccessBloc.getState(context);
     if (accessState is AccessDetermined) {
       var workflowModel = action.workflow!;
@@ -36,7 +30,7 @@ class WorkflowActionHandler extends PackageActionHandler {
           var firstTask = firstWorkflowTask.task!;
           var assignment = AssignmentModel(
             documentID: newRandomKey(),
-            appId: action.appID,
+            appId: app.documentID!,
             reporterId: accessState.getMember()!.documentID!,
             assigneeId: memberId,
             task: firstTask,
@@ -50,7 +44,7 @@ class WorkflowActionHandler extends PackageActionHandler {
             status: AssignmentStatus.Open,
           );
           firstTask.callExecute(
-              context, action.appID, memberId!, assignment, true, finaliseWorkflow: finaliseWorkflow);
+              app, context, memberId!, assignment, true, finaliseWorkflow: finaliseWorkflow);
         } else {
           throw Exception("No tasks in workflow");
         }

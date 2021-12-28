@@ -108,7 +108,7 @@ abstract class WorkflowPackage extends Package {
     TaskModelRegistry.registry()!.addTask(
         identifier: ExampleTaskModel1.label,
         definition: ExampleTaskModel1.definition,
-        editor: (model) => ExampleTaskModel1EditorWidget(model: model),
+        editor: (app, model) => ExampleTaskModel1EditorWidget(app: app, model: model),
         createNewInstance: () => ExampleTaskModel1(
             identifier: ExampleTaskModel1.label,
             description: 'new example task model 1',

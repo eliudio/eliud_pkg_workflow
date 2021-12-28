@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
@@ -58,17 +59,16 @@ import 'package:eliud_pkg_workflow/model/assignment_result_form_state.dart';
 
 
 class AssignmentResultForm extends StatelessWidget {
+  final AppModel app;
   FormAction formAction;
   AssignmentResultModel? value;
   ActionModel? submitAction;
 
-  AssignmentResultForm({Key? key, required this.formAction, required this.value, this.submitAction}) : super(key: key);
+  AssignmentResultForm({Key? key, required this.app, required this.formAction, required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.currentApp(context);
-    if (app == null) return Text("No app available");
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentResultFormBloc >(
@@ -76,7 +76,7 @@ class AssignmentResultForm extends StatelessWidget {
                                        
                                                 )..add(InitialiseAssignmentResultFormEvent(value: value)),
   
-        child: MyAssignmentResultForm(submitAction: submitAction, formAction: formAction),
+        child: MyAssignmentResultForm(app:app, submitAction: submitAction, formAction: formAction),
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<AssignmentResultFormBloc >(
@@ -84,17 +84,17 @@ class AssignmentResultForm extends StatelessWidget {
                                        
                                                 )..add(InitialiseAssignmentResultFormNoLoadEvent(value: value)),
   
-        child: MyAssignmentResultForm(submitAction: submitAction, formAction: formAction),
+        child: MyAssignmentResultForm(app:app, submitAction: submitAction, formAction: formAction),
           );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
+        appBar: StyleRegistry.registry().styleWithApp(app).adminFormStyle().appBarWithString(app, context, title: formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
         body: BlocProvider<AssignmentResultFormBloc >(
             create: (context) => AssignmentResultFormBloc(appId,
                                        
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseAssignmentResultFormEvent(value: value) : InitialiseNewAssignmentResultFormEvent())),
   
-        child: MyAssignmentResultForm(submitAction: submitAction, formAction: formAction),
+        child: MyAssignmentResultForm(app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
@@ -102,10 +102,11 @@ class AssignmentResultForm extends StatelessWidget {
 
 
 class MyAssignmentResultForm extends StatefulWidget {
+  final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyAssignmentResultForm({this.formAction, this.submitAction});
+  MyAssignmentResultForm({required this.app, this.formAction, this.submitAction});
 
   _MyAssignmentResultFormState createState() => _MyAssignmentResultFormState(this.formAction);
 }
@@ -133,13 +134,10 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.currentApp(context);
-    if (app == null) return Text('No app available');
-    var appId = app.documentID!;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<AssignmentResultFormBloc, AssignmentResultFormState>(builder: (context, state) {
       if (state is AssignmentResultFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context),
       );
 
       if (state is AssignmentResultFormLoaded) {
@@ -160,17 +158,17 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
         List<Widget> children = [];
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Key', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _keyController, keyboardType: TextInputType.text, validator: (_) => state is KeyAssignmentResultFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Key', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _keyController, keyboardType: TextInputType.text, validator: (_) => state is KeyAssignmentResultFormError ? state.message : null, hintText: null)
           );
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Value', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _valueController, keyboardType: TextInputType.text, validator: (_) => state is ValueAssignmentResultFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Value', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _valueController, keyboardType: TextInputType.text, validator: (_) => state is ValueAssignmentResultFormError ? state.message : null, hintText: null)
           );
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().button(context, label: 'Submit',
+          children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app, context, label: 'Submit',
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is AssignmentResultFormError) {
                       return null;
@@ -199,7 +197,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
                   },
                 ));
 
-        return StyleRegistry.registry().styleWithContext(context).adminFormStyle().container(context, Form(
+        return StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().container(widget.app, context, Form(
             child: ListView(
               padding: const EdgeInsets.all(8),
               physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
@@ -209,7 +207,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       }
     });
   }
@@ -239,7 +237,7 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
   }
 
   bool _readOnly(AccessState accessState, AssignmentResultFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID!));
   }
   
 

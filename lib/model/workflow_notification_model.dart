@@ -81,7 +81,7 @@ class WorkflowNotificationModel {
     );
   }
 
-  static WorkflowNotificationModel? fromEntity(WorkflowNotificationEntity? entity) {
+  static Future<WorkflowNotificationModel?> fromEntity(WorkflowNotificationEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return WorkflowNotificationModel(

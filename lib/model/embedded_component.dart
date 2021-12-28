@@ -17,6 +17,7 @@
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core/model/app_model.dart';
 
 import 'dart:async';
 
@@ -46,13 +47,13 @@ typedef AssignmentListChanged(List<AssignmentModel> values);
 typedef AssignmentResultListChanged(List<AssignmentResultModel> values);
 typedef WorkflowTaskListChanged(List<WorkflowTaskModel> values);
 
-assignmentsList(context, value, trigger) => EmbeddedComponentFactory.assignmentsList(context, value, trigger);
-assignmentResultsList(context, value, trigger) => EmbeddedComponentFactory.assignmentResultsList(context, value, trigger);
-workflowTasksList(context, value, trigger) => EmbeddedComponentFactory.workflowTasksList(context, value, trigger);
+assignmentsList(app, context, value, trigger) => EmbeddedComponentFactory.assignmentsList(app, context, value, trigger);
+assignmentResultsList(app, context, value, trigger) => EmbeddedComponentFactory.assignmentResultsList(app, context, value, trigger);
+workflowTasksList(app, context, value, trigger) => EmbeddedComponentFactory.workflowTasksList(app, context, value, trigger);
 
 class EmbeddedComponentFactory {
 
-static Widget assignmentsList(BuildContext context, List<AssignmentModel> values, AssignmentListChanged trigger) {
+static Widget assignmentsList(BuildContext context, AppModel app, List<AssignmentModel> values, AssignmentListChanged trigger) {
   AssignmentInMemoryRepository inMemoryRepository = AssignmentInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
@@ -62,11 +63,11 @@ static Widget assignmentsList(BuildContext context, List<AssignmentModel> values
           )..add(LoadAssignmentList()),
         )
         ],
-    child: AssignmentListWidget(isEmbedded: true),
+    child: AssignmentListWidget(app: app, isEmbedded: true),
   );
 }
 
-static Widget assignmentResultsList(BuildContext context, List<AssignmentResultModel> values, AssignmentResultListChanged trigger) {
+static Widget assignmentResultsList(BuildContext context, AppModel app, List<AssignmentResultModel> values, AssignmentResultListChanged trigger) {
   AssignmentResultInMemoryRepository inMemoryRepository = AssignmentResultInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
@@ -76,11 +77,11 @@ static Widget assignmentResultsList(BuildContext context, List<AssignmentResultM
           )..add(LoadAssignmentResultList()),
         )
         ],
-    child: AssignmentResultListWidget(isEmbedded: true),
+    child: AssignmentResultListWidget(app: app, isEmbedded: true),
   );
 }
 
-static Widget workflowTasksList(BuildContext context, List<WorkflowTaskModel> values, WorkflowTaskListChanged trigger) {
+static Widget workflowTasksList(BuildContext context, AppModel app, List<WorkflowTaskModel> values, WorkflowTaskListChanged trigger) {
   WorkflowTaskInMemoryRepository inMemoryRepository = WorkflowTaskInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
@@ -90,7 +91,7 @@ static Widget workflowTasksList(BuildContext context, List<WorkflowTaskModel> va
           )..add(LoadWorkflowTaskList()),
         )
         ],
-    child: WorkflowTaskListWidget(isEmbedded: true),
+    child: WorkflowTaskListWidget(app: app, isEmbedded: true),
   );
 }
 
