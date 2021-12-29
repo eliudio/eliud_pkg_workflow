@@ -53,7 +53,7 @@ workflowTasksList(app, context, value, trigger) => EmbeddedComponentFactory.work
 
 class EmbeddedComponentFactory {
 
-static Widget assignmentsList(BuildContext context, AppModel app, List<AssignmentModel> values, AssignmentListChanged trigger) {
+static Widget assignmentsList(AppModel app, BuildContext context, List<AssignmentModel> values, AssignmentListChanged trigger) {
   AssignmentInMemoryRepository inMemoryRepository = AssignmentInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
@@ -67,7 +67,7 @@ static Widget assignmentsList(BuildContext context, AppModel app, List<Assignmen
   );
 }
 
-static Widget assignmentResultsList(BuildContext context, AppModel app, List<AssignmentResultModel> values, AssignmentResultListChanged trigger) {
+static Widget assignmentResultsList(AppModel app, BuildContext context, List<AssignmentResultModel> values, AssignmentResultListChanged trigger) {
   AssignmentResultInMemoryRepository inMemoryRepository = AssignmentResultInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
@@ -81,7 +81,7 @@ static Widget assignmentResultsList(BuildContext context, AppModel app, List<Ass
   );
 }
 
-static Widget workflowTasksList(BuildContext context, AppModel app, List<WorkflowTaskModel> values, WorkflowTaskListChanged trigger) {
+static Widget workflowTasksList(AppModel app, BuildContext context, List<WorkflowTaskModel> values, WorkflowTaskListChanged trigger) {
   WorkflowTaskInMemoryRepository inMemoryRepository = WorkflowTaskInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
