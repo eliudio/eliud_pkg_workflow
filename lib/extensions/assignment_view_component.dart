@@ -59,7 +59,7 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
             app: app,
               readOnly: true,
               widgetProvider: widgetProvider,
-              listBackground: BackgroundModel(documentID: "`transparent")),
+              listBackground: BackgroundModel()),
         );
       } else {
         return progressIndicator(app, context);
