@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eliud_core/core/wizards/registry/registry.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
@@ -24,6 +23,7 @@ import 'package:eliud_core/core/blocs/access/access_event.dart';
 import 'package:eliud_pkg_workflow/model/component_registry.dart';
 
 import 'model/assignment_model.dart';
+import 'wizards/assignment_dashboard_dialog_wizard.dart';
 
 abstract class WorkflowPackage extends Package {
   WorkflowPackage() : super('eliud_pkg_workflow');
@@ -93,6 +93,9 @@ abstract class WorkflowPackage extends Package {
   @override
   void init() {
     ComponentRegistry().init();
+
+    // wizards
+    NewAppWizardRegistry.registry().register(AssignmentDashboardDialogWizard());
 
     // initialise repository
     AbstractRepositorySingleton.singleton = RepositorySingleton();
