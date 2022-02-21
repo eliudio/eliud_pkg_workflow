@@ -89,6 +89,9 @@ class AssignmentDashboardDialogWizard
   String? getPageID(String pageType) => null;
 
   @override
+  ActionModel? getAction(AppModel app, String actionType) => null;
+
+  @override
   List<MenuItemModel>? getMenuItemsFor(AppModel app, NewAppWizardParameters parameters, MenuType type) {
     if (parameters is JoinActionSpecificationParameters) {
       var feedSpecifications = parameters.joinActionSpecifications;

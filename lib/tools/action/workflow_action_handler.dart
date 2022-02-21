@@ -9,10 +9,21 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:eliud_core/tools/random.dart';
 
 class WorkflowActionHandler extends PackageActionHandler {
+  static String FINALISE_WORKFLOW = 'finaliseworkflow';
+
   @override
   Future<void> navigateTo(BuildContext context, ActionModel action, {Map<String, dynamic>? parameters}) async {
     if (action is WorkflowActionModel) {
-      executeWorkflow(context, action);
+      if (parameters != null) {
+        var something = parameters[FINALISE_WORKFLOW];
+        if (something is FinaliseWorkflow) {
+          executeWorkflow(context, action, finaliseWorkflow: something);
+        } else {
+          executeWorkflow(context, action);
+        }
+      } else {
+        executeWorkflow(context, action);
+      }
     }
   }
 
