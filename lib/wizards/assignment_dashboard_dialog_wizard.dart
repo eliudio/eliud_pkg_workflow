@@ -60,6 +60,8 @@ class AssignmentDashboardDialogWizard
     AppBarProvider appBarProvider,
     DrawerProvider leftDrawerProvider,
     DrawerProvider rightDrawerProvider,
+    PageProvider pageProvider,
+    ActionProvider actionProvider,
   ) {
     if (parameters is JoinActionSpecificationParameters) {
       var assignmentSpecifications = parameters.joinActionSpecifications;
@@ -86,23 +88,15 @@ class AssignmentDashboardDialogWizard
       adjustMe;
 
   @override
-  String? getPageID(String pageType) => null;
+  String? getPageID(NewAppWizardParameters parameters, String pageType) => null;
 
   @override
-  ActionModel? getAction(AppModel app, String actionType, ) => null;
+  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
 
   @override
   List<MenuItemModel>? getMenuItemsFor(AppModel app, NewAppWizardParameters parameters, MenuType type) {
     if (parameters is JoinActionSpecificationParameters) {
-      var feedSpecifications = parameters.joinActionSpecifications;
-      bool generate = (type == MenuType.leftDrawerMenu) &&
-          feedSpecifications.availableInLeftDrawer ||
-          (type == MenuType.rightDrawerMenu) &&
-              feedSpecifications.availableInRightDrawer ||
-          (type == MenuType.bottomNavBarMenu) &&
-              feedSpecifications.availableInHomeMenu ||
-          (type == MenuType.appBarMenu) && feedSpecifications.availableInAppBar;
-      if (generate) {
+      if (parameters.joinActionSpecifications.should(type)) {
         return getThoseMenuItems(app);
       }
     } else {
