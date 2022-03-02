@@ -1,5 +1,4 @@
-import 'package:eliud_core/core/wizards/registry/action_specification.dart';
-import 'package:eliud_core/core/wizards/registry/new_app_wizard_info_with_action_specification.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
 import 'package:eliud_core/core/wizards/widgets/action_specification_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -7,52 +6,52 @@ import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/model/icon_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/model/menu_item_model.dart';
+import 'package:eliud_core/model/public_medium_model.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_core/wizards/join_action_specification_parameters.dart';
 import 'package:eliud_pkg_workflow/workflow_package.dart';
 import 'package:flutter/material.dart';
-
 import 'builders/dialog/assignment_dialog_builder.dart';
 
-class AssignmentDashboardDialogWizard
-    extends NewAppWizardInfo {
-  static String ASSIGNMENT_DASHBOARD_DIALOG_ID = 'assignment_dashboard';
+class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
+  static String assignmentDashboardDialogId = 'assignment_dashboard';
 
-  AssignmentDashboardDialogWizard()
-      : super('assignment', 'Assignment');
+  AssignmentDashboardDialogWizard() : super('assignment', 'Assignment');
 
   @override
-  NewAppWizardParameters newAppWizardParameters() => JoinActionSpecificationParameters(
-    requiresAccessToLocalFileSystem: false,
-    paymentType: JoinPaymentType.Manual,
-    availableInLeftDrawer: false,
-    availableInRightDrawer: false,
-    availableInAppBar: true,
-    availableInHomeMenu: false,
-    available: false,
-  );
+  NewAppWizardParameters newAppWizardParameters() =>
+      JoinActionSpecificationParameters(
+        requiresAccessToLocalFileSystem: false,
+        paymentType: JoinPaymentType.Manual,
+        availableInLeftDrawer: false,
+        availableInRightDrawer: false,
+        availableInAppBar: true,
+        availableInHomeMenu: false,
+        available: false,
+      );
 
-  @override
-  List<MenuItemModel>? getThoseMenuItems(AppModel app) =>[
-      MenuItemModel(
-          documentID: 'assignments',
-          text: 'Assignments',
-          description: 'Assignments',
-          icon: IconModel(
-              codePoint: Icons.playlist_add_check.codePoint,
-              fontFamily: Icons.notifications.fontFamily),
-          action: OpenDialog(app,
-              dialogID: ASSIGNMENT_DASHBOARD_DIALOG_ID,
-              conditions: DisplayConditionsModel(
-                  packageCondition:
-                  WorkflowPackage.CONDITION_MUST_HAVE_ASSIGNMENTS,
-                  conditionOverride: ConditionOverride
-                      .InclusiveForBlockedMembers // allow blocked members to see
-              )))];
+  List<MenuItemModel>? getThoseMenuItems(String uniqueId, AppModel app) => [
+        MenuItemModel(
+            documentID: 'assignments',
+            text: 'Assignments',
+            description: 'Assignments',
+            icon: IconModel(
+                codePoint: Icons.playlist_add_check.codePoint,
+                fontFamily: Icons.notifications.fontFamily),
+            action: OpenDialog(app,
+                dialogID: constructDocumentId(uniqueId: uniqueId, documentId: assignmentDashboardDialogId),
+                conditions: DisplayConditionsModel(
+                    packageCondition:
+                        WorkflowPackage.CONDITION_MUST_HAVE_ASSIGNMENTS,
+                    conditionOverride: ConditionOverride
+                        .InclusiveForBlockedMembers // allow blocked members to see
+                    )))
+      ];
 
   @override
   List<NewAppTask>? getCreateTasks(
+    String uniqueId,
     AppModel app,
     NewAppWizardParameters parameters,
     MemberModel member,
@@ -69,7 +68,7 @@ class AssignmentDashboardDialogWizard
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("Assignment Dialog");
-          await AssignmentDialogBuilder(app, ASSIGNMENT_DASHBOARD_DIALOG_ID)
+          await AssignmentDialogBuilder(uniqueId, app, assignmentDashboardDialogId)
               .create();
         });
         return tasks;
@@ -82,22 +81,32 @@ class AssignmentDashboardDialogWizard
 
   @override
   AppModel updateApp(
+    String uniqueId,
     NewAppWizardParameters parameters,
     AppModel adjustMe,
   ) =>
       adjustMe;
 
   @override
-  String? getPageID(NewAppWizardParameters parameters, String pageType) => null;
+  String? getPageID(String uniqueId, NewAppWizardParameters parameters,
+          String pageType) =>
+      null;
 
   @override
-  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
+  ActionModel? getAction(
+    String uniqueId,
+    NewAppWizardParameters parameters,
+    AppModel app,
+    String actionType,
+  ) =>
+      null;
 
   @override
-  List<MenuItemModel>? getMenuItemsFor(AppModel app, NewAppWizardParameters parameters, MenuType type) {
+  List<MenuItemModel>? getMenuItemsFor(String uniqueId, AppModel app,
+      NewAppWizardParameters parameters, MenuType type) {
     if (parameters is JoinActionSpecificationParameters) {
       if (parameters.joinActionSpecifications.should(type)) {
-        return getThoseMenuItems(app);
+        return getThoseMenuItems(uniqueId, app);
       }
     } else {
       throw Exception(
@@ -107,16 +116,20 @@ class AssignmentDashboardDialogWizard
   }
 
   @override
-  Widget wizardParametersWidget(AppModel app, BuildContext context, NewAppWizardParameters parameters) {
+  Widget wizardParametersWidget(
+      AppModel app, BuildContext context, NewAppWizardParameters parameters) {
     if (parameters is JoinActionSpecificationParameters) {
       return ActionSpecificationWidget(
           app: app,
           enabled: true,
           actionSpecification: parameters.joinActionSpecifications,
-          label: 'Generate Assignment Dialog');
+          label: 'Generate a default Assignment Dialog');
     } else {
       return text(app, context,
           'Unexpected class for parameters: ' + parameters.toString());
     }
   }
+
+  @override
+  PublicMediumModel? getPublicMediumModel(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
 }
