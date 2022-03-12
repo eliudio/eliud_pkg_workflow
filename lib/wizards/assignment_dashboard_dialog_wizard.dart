@@ -42,6 +42,7 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
             action: OpenDialog(app,
                 dialogID: constructDocumentId(uniqueId: uniqueId, documentId: assignmentDashboardDialogId),
                 conditions: DisplayConditionsModel(
+                    privilegeLevelRequired: PrivilegeLevelRequired.NoPrivilegeRequired,
                     packageCondition:
                         WorkflowPackage.CONDITION_MUST_HAVE_ASSIGNMENTS,
                     conditionOverride: ConditionOverride
