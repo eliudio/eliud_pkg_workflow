@@ -61,7 +61,6 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
     DrawerProvider leftDrawerProvider,
     DrawerProvider rightDrawerProvider,
     PageProvider pageProvider,
-    ActionProvider actionProvider,
   ) {
     if (parameters is JoinActionSpecificationParameters) {
       var assignmentSpecifications = parameters.joinActionSpecifications;
