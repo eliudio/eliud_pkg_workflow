@@ -20,6 +20,9 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
   AssignmentDashboardDialogWizard() : super('assignment', 'Assignment');
 
   @override
+  String getPackageName() => "eliud_pkg_workflow";
+
+  @override
   NewAppWizardParameters newAppWizardParameters() =>
       JoinActionSpecificationParameters(
         requiresAccessToLocalFileSystem: false,
