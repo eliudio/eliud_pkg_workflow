@@ -124,7 +124,6 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
     if (parameters is JoinActionSpecificationParameters) {
       return ActionSpecificationWidget(
           app: app,
-          enabled: true,
           actionSpecification: parameters.joinActionSpecifications,
           label: 'Generate a default Assignment Dialog');
     } else {
