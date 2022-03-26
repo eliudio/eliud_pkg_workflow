@@ -32,11 +32,12 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/repository_base.dart';
 
 typedef WorkflowModelTrigger(List<WorkflowModel?> list);
 typedef WorkflowChanged(WorkflowModel? value);
 
-abstract class WorkflowRepository {
+abstract class WorkflowRepository extends RepositoryBase<WorkflowModel> {
   Future<WorkflowModel> add(WorkflowModel value);
   Future<void> delete(WorkflowModel value);
   Future<WorkflowModel?> get(String? id, { Function(Exception)? onError });

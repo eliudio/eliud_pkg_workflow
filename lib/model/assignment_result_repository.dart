@@ -28,11 +28,12 @@ import 'package:eliud_pkg_workflow/model/entity_export.dart';
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/repository_base.dart';
 
 typedef AssignmentResultModelTrigger(List<AssignmentResultModel?> list);
 typedef AssignmentResultChanged(AssignmentResultModel? value);
 
-abstract class AssignmentResultRepository {
+abstract class AssignmentResultRepository extends RepositoryBase<AssignmentResultModel> {
   Future<AssignmentResultModel> add(AssignmentResultModel value);
   Future<void> delete(AssignmentResultModel value);
   Future<AssignmentResultModel?> get(String? id, { Function(Exception)? onError });
