@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 
@@ -73,5 +74,17 @@ class WorkflowListUpdated extends WorkflowListEvent {
 
   @override
   String toString() => 'WorkflowListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+}
+
+class WorkflowChangeQuery extends WorkflowListEvent {
+  final EliudQuery newQuery;
+
+  const WorkflowChangeQuery({ required this.newQuery });
+
+  @override
+  List<Object?> get props => [ newQuery ];
+
+  @override
+  String toString() => 'WorkflowChangeQuery{ value: $newQuery }';
 }
 

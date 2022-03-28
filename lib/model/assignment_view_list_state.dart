@@ -13,6 +13,7 @@
 
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
 
@@ -36,6 +37,13 @@ class AssignmentViewListLoaded extends AssignmentViewListState {
 
   @override
   String toString() => 'AssignmentViewListLoaded { values: $values }';
+
+  @override
+  bool operator ==(Object other) => 
+          other is AssignmentViewListLoaded &&
+              runtimeType == other.runtimeType &&
+              ListEquality().equals(values, other.values) &&
+              mightHaveMore == other.mightHaveMore;
 }
 
 class AssignmentViewNotLoaded extends AssignmentViewListState {}

@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 
@@ -73,5 +74,17 @@ class AssignmentListUpdated extends AssignmentListEvent {
 
   @override
   String toString() => 'AssignmentListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+}
+
+class AssignmentChangeQuery extends AssignmentListEvent {
+  final EliudQuery newQuery;
+
+  const AssignmentChangeQuery({ required this.newQuery });
+
+  @override
+  List<Object?> get props => [ newQuery ];
+
+  @override
+  String toString() => 'AssignmentChangeQuery{ value: $newQuery }';
 }
 

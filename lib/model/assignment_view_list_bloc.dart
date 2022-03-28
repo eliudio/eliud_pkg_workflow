@@ -27,7 +27,7 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentViewListState> {
   final AssignmentViewRepository _assignmentViewRepository;
   StreamSubscription? _assignmentViewsListSubscription;
-  final EliudQuery? eliudQuery;
+  EliudQuery? eliudQuery;
   int pages = 1;
   final bool? paged;
   final String? orderBy;
@@ -99,6 +99,13 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
     if (event is NewPage) {
       pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadAssignmentViewListWithDetailsToState();
+    } else if (event is AssignmentViewChangeQuery) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        yield* _mapLoadAssignmentViewListToState();
+      } else {
+        yield* _mapLoadAssignmentViewListWithDetailsToState();
+      }
     } else if (event is AddAssignmentViewList) {
       yield* _mapAddAssignmentViewListToState(event);
     } else if (event is UpdateAssignmentViewList) {

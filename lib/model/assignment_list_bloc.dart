@@ -27,7 +27,7 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> {
   final AssignmentRepository _assignmentRepository;
   StreamSubscription? _assignmentsListSubscription;
-  final EliudQuery? eliudQuery;
+  EliudQuery? eliudQuery;
   int pages = 1;
   final bool? paged;
   final String? orderBy;
@@ -99,6 +99,13 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
     if (event is NewPage) {
       pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadAssignmentListWithDetailsToState();
+    } else if (event is AssignmentChangeQuery) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        yield* _mapLoadAssignmentListToState();
+      } else {
+        yield* _mapLoadAssignmentListWithDetailsToState();
+      }
     } else if (event is AddAssignmentList) {
       yield* _mapAddAssignmentListToState(event);
     } else if (event is UpdateAssignmentList) {

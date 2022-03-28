@@ -27,7 +27,7 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListState> {
   final WorkflowTaskRepository _workflowTaskRepository;
   StreamSubscription? _workflowTasksListSubscription;
-  final EliudQuery? eliudQuery;
+  EliudQuery? eliudQuery;
   int pages = 1;
   final bool? paged;
   final String? orderBy;
@@ -99,6 +99,13 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     if (event is NewPage) {
       pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadWorkflowTaskListWithDetailsToState();
+    } else if (event is WorkflowTaskChangeQuery) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        yield* _mapLoadWorkflowTaskListToState();
+      } else {
+        yield* _mapLoadWorkflowTaskListWithDetailsToState();
+      }
     } else if (event is AddWorkflowTaskList) {
       yield* _mapAddWorkflowTaskListToState(event);
     } else if (event is UpdateWorkflowTaskList) {
