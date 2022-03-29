@@ -22,6 +22,8 @@ import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_bloc.dart';
 import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_event.dart';
 import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_state.dart';
 
+import 'bloc/assignment_bloc.dart';
+
 class AssignmentViewComponentEditorConstructor
     extends ComponentEditorConstructor {
   @override
@@ -83,29 +85,6 @@ class AssignmentViewComponentEditorConstructor
             app: app,
           )),
     );
-  }
-}
-
-class AssignmentViewBloc
-    extends EditorBaseBloc<AssignmentViewModel> {
-
-  AssignmentViewBloc(String appId, EditorFeedback feedback)
-      : super(appId, assignmentViewRepository(appId: appId)!, feedback);
-
-  @override
-  AssignmentViewModel newInstance(StorageConditionsModel conditions) {
-    return AssignmentViewModel(
-        documentID: newRandomKey(), conditions: conditions);
-  }
-
-  @override
-  AssignmentViewModel setDefaultConditions(
-      AssignmentViewModel t, StorageConditionsModel conditions) {
-    return t.copyWith(
-        conditions: t.conditions ??
-            StorageConditionsModel(
-                privilegeLevelRequired:
-                PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple));
   }
 }
 
