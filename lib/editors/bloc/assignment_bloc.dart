@@ -33,7 +33,7 @@ class AssignmentViewBloc extends EditorBaseBloc<AssignmentViewModel> {
   }
 
   @override
-  AssignmentViewModel setDefaultConditions(
+  AssignmentViewModel setDefaultValues(
       AssignmentViewModel t, StorageConditionsModel conditions) {
     return t.copyWith(
         conditions: t.conditions ??
