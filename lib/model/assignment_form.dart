@@ -301,7 +301,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(app: widget.app, id: "workflows", value: _workflow, trigger: _onWorkflowSelected, optional: false),
+                DropdownButtonComponentFactory().createNew(app: widget.app, id: "workflows", value: _workflow, trigger: (value, privilegeLevel) => _onWorkflowSelected(value), optional: false),
           );
 
 
