@@ -35,10 +35,6 @@ class AssignmentViewBloc extends EditorBaseBloc<AssignmentViewModel> {
   @override
   AssignmentViewModel setDefaultValues(
       AssignmentViewModel t, StorageConditionsModel conditions) {
-    return t.copyWith(
-        conditions: t.conditions ??
-            StorageConditionsModel(
-                privilegeLevelRequired:
-                    PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple));
+    return t.copyWith(conditions: t.conditions ?? conditions);
   }
 }
