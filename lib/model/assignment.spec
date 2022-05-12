@@ -1,6 +1,7 @@
 {
   "id": "Assignment",
   "packageName": "eliud_pkg_workflow",
+  "packageFriendlyName": "workflow",
   "isAppModel": true,
   "generate": {
     "generateComponent": false,

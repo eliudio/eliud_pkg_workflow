@@ -42,6 +42,7 @@ class AssignmentViewComponentEditorConstructor
         AssignmentViewModel(
           appId: app.documentID,
           documentID: newRandomKey(),
+          description: 'Assignment View',
           conditions: StorageConditionsModel(
               privilegeLevelRequired:
               PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),

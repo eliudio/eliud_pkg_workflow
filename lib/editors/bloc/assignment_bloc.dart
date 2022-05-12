@@ -29,7 +29,10 @@ class AssignmentViewBloc extends EditorBaseBloc<AssignmentViewModel> {
   @override
   AssignmentViewModel newInstance(StorageConditionsModel conditions) {
     return AssignmentViewModel(
-        appId: appId, documentID: newRandomKey(), conditions: conditions);
+        appId: appId,
+        documentID: newRandomKey(),
+        description: 'Assignment View',
+        conditions: conditions);
   }
 
   @override

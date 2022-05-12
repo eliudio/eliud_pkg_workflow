@@ -1,12 +1,13 @@
 {
   "id": "Workflow",
   "packageName": "eliud_pkg_workflow",
+  "packageFriendlyName": "workflow",
   "isAppModel": true,
   "generate": {
     "generateComponent": true,
     "generateRepository": true,
     "generateCache": true,
-	"hasPersistentRepository": true,
+    "hasPersistentRepository": true,
     "generateFirestoreRepository": true,
     "generateRepositorySingleton": true,
     "generateModel": true,

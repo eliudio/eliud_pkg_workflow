@@ -34,7 +34,7 @@ class ComponentRegistry {
     Registry.registry()!.register(componentName: "eliud_pkg_workflow_internalWidgets", componentConstructor: ListComponentFactory());
     Registry.registry()!.addDropDownSupporter("assignmentViews", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "assignmentViews", componentConstructor: AssignmentViewComponentConstructorDefault());
-    Registry.registry()!.addComponentSpec('eliud_pkg_workflow', [
+    Registry.registry()!.addComponentSpec('eliud_pkg_workflow', 'workflow', [
       ComponentSpec('assignmentViews', AssignmentViewComponentConstructorDefault(), AssignmentViewComponentSelector(), AssignmentViewComponentEditorConstructor(), ), 
     ]);
 
