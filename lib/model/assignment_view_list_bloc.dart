@@ -38,9 +38,47 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
   AssignmentViewListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentViewRepository assignmentViewRepository, this.assignmentViewLimit = 5})
       : assert(assignmentViewRepository != null),
         _assignmentViewRepository = assignmentViewRepository,
-        super(AssignmentViewListLoading());
+        super(AssignmentViewListLoading()) {
+    on <LoadAssignmentViewList> ((event, emit) {
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadAssignmentViewListToState();
+      } else {
+        _mapLoadAssignmentViewListWithDetailsToState();
+      }
+    });
+    
+    on <NewPage> ((event, emit) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+      _mapLoadAssignmentViewListWithDetailsToState();
+    });
+    
+    on <AssignmentViewChangeQuery> ((event, emit) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadAssignmentViewListToState();
+      } else {
+        _mapLoadAssignmentViewListWithDetailsToState();
+      }
+    });
+      
+    on <AddAssignmentViewList> ((event, emit) async {
+      await _mapAddAssignmentViewListToState(event);
+    });
+    
+    on <UpdateAssignmentViewList> ((event, emit) async {
+      await _mapUpdateAssignmentViewListToState(event);
+    });
+    
+    on <DeleteAssignmentViewList> ((event, emit) async {
+      await _mapDeleteAssignmentViewListToState(event);
+    });
+    
+    on <AssignmentViewListUpdated> ((event, emit) {
+      emit(_mapAssignmentViewListUpdatedToState(event));
+    });
+  }
 
-  Stream<AssignmentViewListState> _mapLoadAssignmentViewListToState() async* {
+  Future<void> _mapLoadAssignmentViewListToState() async {
     int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values!.length : 0;
     _assignmentViewsListSubscription?.cancel();
     _assignmentViewsListSubscription = _assignmentViewRepository.listen(
@@ -52,7 +90,7 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
     );
   }
 
-  Stream<AssignmentViewListState> _mapLoadAssignmentViewListWithDetailsToState() async* {
+  Future<void> _mapLoadAssignmentViewListWithDetailsToState() async {
     int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values!.length : 0;
     _assignmentViewsListSubscription?.cancel();
     _assignmentViewsListSubscription = _assignmentViewRepository.listenWithDetails(
@@ -64,58 +102,29 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
     );
   }
 
-  Stream<AssignmentViewListState> _mapAddAssignmentViewListToState(AddAssignmentViewList event) async* {
+  Future<void> _mapAddAssignmentViewListToState(AddAssignmentViewList event) async {
     var value = event.value;
-    if (value != null) 
-      _assignmentViewRepository.add(value);
-  }
-
-  Stream<AssignmentViewListState> _mapUpdateAssignmentViewListToState(UpdateAssignmentViewList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _assignmentViewRepository.update(value);
-  }
-
-  Stream<AssignmentViewListState> _mapDeleteAssignmentViewListToState(DeleteAssignmentViewList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _assignmentViewRepository.delete(value);
-  }
-
-  Stream<AssignmentViewListState> _mapAssignmentViewListUpdatedToState(
-      AssignmentViewListUpdated event) async* {
-    yield AssignmentViewListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
-  }
-
-  @override
-  Stream<AssignmentViewListState> mapEventToState(AssignmentViewListEvent event) async* {
-    if (event is LoadAssignmentViewList) {
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadAssignmentViewListToState();
-      } else {
-        yield* _mapLoadAssignmentViewListWithDetailsToState();
-      }
-    }
-    if (event is NewPage) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
-      yield* _mapLoadAssignmentViewListWithDetailsToState();
-    } else if (event is AssignmentViewChangeQuery) {
-      eliudQuery = event.newQuery;
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadAssignmentViewListToState();
-      } else {
-        yield* _mapLoadAssignmentViewListWithDetailsToState();
-      }
-    } else if (event is AddAssignmentViewList) {
-      yield* _mapAddAssignmentViewListToState(event);
-    } else if (event is UpdateAssignmentViewList) {
-      yield* _mapUpdateAssignmentViewListToState(event);
-    } else if (event is DeleteAssignmentViewList) {
-      yield* _mapDeleteAssignmentViewListToState(event);
-    } else if (event is AssignmentViewListUpdated) {
-      yield* _mapAssignmentViewListUpdatedToState(event);
+    if (value != null) {
+      await _assignmentViewRepository.add(value);
     }
   }
+
+  Future<void> _mapUpdateAssignmentViewListToState(UpdateAssignmentViewList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _assignmentViewRepository.update(value);
+    }
+  }
+
+  Future<void> _mapDeleteAssignmentViewListToState(DeleteAssignmentViewList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _assignmentViewRepository.delete(value);
+    }
+  }
+
+  AssignmentViewListLoaded _mapAssignmentViewListUpdatedToState(
+      AssignmentViewListUpdated event) => AssignmentViewListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {

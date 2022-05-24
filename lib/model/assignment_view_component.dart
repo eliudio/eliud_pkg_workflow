@@ -39,7 +39,7 @@ abstract class AbstractAssignmentViewComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AssignmentViewComponentBloc> (
           create: (context) => AssignmentViewComponentBloc(
-            assignmentViewRepository: assignmentViewRepository(appId: app.documentID!)!)
+            assignmentViewRepository: assignmentViewRepository(appId: app.documentID)!)
         ..add(FetchAssignmentViewComponent(id: assignmentViewId)),
       child: _assignmentViewBlockBuilder(context),
     );

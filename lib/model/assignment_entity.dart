@@ -37,7 +37,7 @@ class AssignmentEntity {
   final WorkflowNotificationEntity? confirmMessage;
   final WorkflowNotificationEntity? rejectMessage;
 
-  AssignmentEntity({this.appId, this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, });
+  AssignmentEntity({required this.appId, required this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, });
 
   AssignmentEntity copyWith({Object? timestamp, }) {
     return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, workflowTaskSeqNumber: workflowTaskSeqNumber, timestamp : timestamp, status: status, resultsCurrent: resultsCurrent, resultsPrevious: resultsPrevious, triggeredById: triggeredById, confirmMessage: confirmMessage, rejectMessage: rejectMessage, );

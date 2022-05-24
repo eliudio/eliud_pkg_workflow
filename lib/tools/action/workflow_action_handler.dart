@@ -41,8 +41,8 @@ class WorkflowActionHandler extends PackageActionHandler {
           var firstTask = firstWorkflowTask.task!;
           var assignment = AssignmentModel(
             documentID: newRandomKey(),
-            appId: app.documentID!,
-            reporterId: accessState.getMember()!.documentID!,
+            appId: app.documentID,
+            reporterId: accessState.getMember()!.documentID,
             assigneeId: memberId,
             task: firstTask,
             workflow: workflowModel,
@@ -55,7 +55,7 @@ class WorkflowActionHandler extends PackageActionHandler {
             status: AssignmentStatus.Open,
           );
           firstTask.callExecute(
-              app, context, memberId!, assignment, true, finaliseWorkflow: finaliseWorkflow);
+              app, context, memberId, assignment, true, finaliseWorkflow: finaliseWorkflow);
         } else {
           throw Exception("No tasks in workflow");
         }

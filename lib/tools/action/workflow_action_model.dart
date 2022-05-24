@@ -72,7 +72,7 @@ class WorkflowActionModel extends ActionModel {
     if (workflow == null) {
       return 'Incorrect workflow';
     } else {
-      return 'Run workflow '  + (workflow!.documentID ?? 'no ID');
+      return 'Run workflow '  + (workflow!.documentID);
     }
   }
 }

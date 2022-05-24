@@ -160,9 +160,9 @@ class ListComponent extends StatelessWidget with HasFab {
           create: (context) => AssignmentListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            assignmentRepository: assignmentRepository(appId: app.documentID!)!,
+            assignmentRepository: assignmentRepository(appId: app.documentID)!,
           )..add(LoadAssignmentList()),
         )
       ],
@@ -177,9 +177,9 @@ class ListComponent extends StatelessWidget with HasFab {
           create: (context) => AssignmentViewListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            assignmentViewRepository: assignmentViewRepository(appId: app.documentID!)!,
+            assignmentViewRepository: assignmentViewRepository(appId: app.documentID)!,
           )..add(LoadAssignmentViewList()),
         )
       ],
@@ -194,9 +194,9 @@ class ListComponent extends StatelessWidget with HasFab {
           create: (context) => WorkflowListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            workflowRepository: workflowRepository(appId: app.documentID!)!,
+            workflowRepository: workflowRepository(appId: app.documentID)!,
           )..add(LoadWorkflowList()),
         )
       ],
@@ -236,9 +236,9 @@ class DropdownButtonComponent extends StatelessWidget {
           create: (context) => AssignmentListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            assignmentRepository: assignmentRepository(appId: app.documentID!)!,
+            assignmentRepository: assignmentRepository(appId: app.documentID)!,
           )..add(LoadAssignmentList()),
         )
       ],
@@ -253,9 +253,9 @@ class DropdownButtonComponent extends StatelessWidget {
           create: (context) => AssignmentViewListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            assignmentViewRepository: assignmentViewRepository(appId: app.documentID!)!,
+            assignmentViewRepository: assignmentViewRepository(appId: app.documentID)!,
           )..add(LoadAssignmentViewList()),
         )
       ],
@@ -270,9 +270,9 @@ class DropdownButtonComponent extends StatelessWidget {
           create: (context) => WorkflowListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            workflowRepository: workflowRepository(appId: app.documentID!)!,
+            workflowRepository: workflowRepository(appId: app.documentID)!,
           )..add(LoadWorkflowList()),
         )
       ],

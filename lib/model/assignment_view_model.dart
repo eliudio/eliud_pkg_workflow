@@ -15,6 +15,7 @@
 
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -35,14 +36,14 @@ import 'package:eliud_core/tools/random.dart';
 
 
 
-class AssignmentViewModel {
-  String? documentID;
-  String? appId;
+class AssignmentViewModel implements ModelBase, WithAppId {
+  String documentID;
+  String appId;
   String? title;
   String? description;
   StorageConditionsModel? conditions;
 
-  AssignmentViewModel({this.documentID, this.appId, this.title, this.description, this.conditions, })  {
+  AssignmentViewModel({required this.documentID, required this.appId, this.title, this.description, this.conditions, })  {
     assert(documentID != null);
   }
 
@@ -83,7 +84,7 @@ class AssignmentViewModel {
     var counter = 0;
     return AssignmentViewModel(
           documentID: documentID, 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           title: entity.title, 
           description: entity.description, 
           conditions: 
@@ -97,7 +98,7 @@ class AssignmentViewModel {
     var counter = 0;
     return AssignmentViewModel(
           documentID: documentID, 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           title: entity.title, 
           description: entity.description, 
           conditions: 

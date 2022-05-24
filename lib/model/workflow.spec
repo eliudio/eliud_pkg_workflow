@@ -23,6 +23,7 @@
   "fields": [
     {
       "fieldName": "documentID",
+      "required": true,
       "displayName": "Document ID",
       "fieldType": "String",
       "iconName": "vpn_key",
@@ -41,6 +42,7 @@
     },
     {
       "fieldName": "appId",
+      "required": true,
       "displayName": "App Identifier",
       "remark": "This is the identifier of the app to which this feed belongs",
       "fieldType": "String",

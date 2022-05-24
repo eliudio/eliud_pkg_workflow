@@ -46,64 +46,55 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
   Stream<WorkflowTaskFormState> mapEventToState(WorkflowTaskFormEvent event) async* {
     final currentState = state;
     if (currentState is WorkflowTaskFormUninitialized) {
-      if (event is InitialiseNewWorkflowTaskFormEvent) {
+      on <InitialiseNewWorkflowTaskFormEvent> ((event, emit) {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: WorkflowTaskModel(
                                                documentID: "IDENTIFIER", 
                                  seqNumber: 0,
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseWorkflowTaskFormEvent) {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseWorkflowTaskFormNoLoadEvent) {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is WorkflowTaskFormInitialized) {
       WorkflowTaskModel? newValue = null;
-      if (event is ChangedWorkflowTaskSeqNumber) {
+      on <ChangedWorkflowTaskSeqNumber> ((event, emit) async {
         if (isInt(event.value)) {
           newValue = currentState.value!.copyWith(seqNumber: int.parse(event.value!));
-          yield SubmittableWorkflowTaskForm(value: newValue);
+          emit(SubmittableWorkflowTaskForm(value: newValue));
 
         } else {
           newValue = currentState.value!.copyWith(seqNumber: 0);
-          yield SeqNumberWorkflowTaskFormError(message: "Value should be a number", value: newValue);
+          emit(SeqNumberWorkflowTaskFormError(message: "Value should be a number", value: newValue));
         }
-        return;
-      }
-      if (event is ChangedWorkflowTaskTask) {
+      });
+      on <ChangedWorkflowTaskTask> ((event, emit) async {
         newValue = currentState.value!.copyWith(task: event.value);
-        yield SubmittableWorkflowTaskForm(value: newValue);
+        emit(SubmittableWorkflowTaskForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedWorkflowTaskConfirmMessage) {
+      });
+      on <ChangedWorkflowTaskConfirmMessage> ((event, emit) async {
         newValue = currentState.value!.copyWith(confirmMessage: event.value);
-        yield SubmittableWorkflowTaskForm(value: newValue);
+        emit(SubmittableWorkflowTaskForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedWorkflowTaskRejectMessage) {
+      });
+      on <ChangedWorkflowTaskRejectMessage> ((event, emit) async {
         newValue = currentState.value!.copyWith(rejectMessage: event.value);
-        yield SubmittableWorkflowTaskForm(value: newValue);
+        emit(SubmittableWorkflowTaskForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedWorkflowTaskResponsible) {
+      });
+      on <ChangedWorkflowTaskResponsible> ((event, emit) async {
         newValue = currentState.value!.copyWith(responsible: event.value);
-        yield SubmittableWorkflowTaskForm(value: newValue);
+        emit(SubmittableWorkflowTaskForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

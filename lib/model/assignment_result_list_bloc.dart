@@ -38,9 +38,47 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
   AssignmentResultListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentResultRepository assignmentResultRepository, this.assignmentResultLimit = 5})
       : assert(assignmentResultRepository != null),
         _assignmentResultRepository = assignmentResultRepository,
-        super(AssignmentResultListLoading());
+        super(AssignmentResultListLoading()) {
+    on <LoadAssignmentResultList> ((event, emit) {
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadAssignmentResultListToState();
+      } else {
+        _mapLoadAssignmentResultListWithDetailsToState();
+      }
+    });
+    
+    on <NewPage> ((event, emit) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+      _mapLoadAssignmentResultListWithDetailsToState();
+    });
+    
+    on <AssignmentResultChangeQuery> ((event, emit) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadAssignmentResultListToState();
+      } else {
+        _mapLoadAssignmentResultListWithDetailsToState();
+      }
+    });
+      
+    on <AddAssignmentResultList> ((event, emit) async {
+      await _mapAddAssignmentResultListToState(event);
+    });
+    
+    on <UpdateAssignmentResultList> ((event, emit) async {
+      await _mapUpdateAssignmentResultListToState(event);
+    });
+    
+    on <DeleteAssignmentResultList> ((event, emit) async {
+      await _mapDeleteAssignmentResultListToState(event);
+    });
+    
+    on <AssignmentResultListUpdated> ((event, emit) {
+      emit(_mapAssignmentResultListUpdatedToState(event));
+    });
+  }
 
-  Stream<AssignmentResultListState> _mapLoadAssignmentResultListToState() async* {
+  Future<void> _mapLoadAssignmentResultListToState() async {
     int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values!.length : 0;
     _assignmentResultsListSubscription?.cancel();
     _assignmentResultsListSubscription = _assignmentResultRepository.listen(
@@ -52,7 +90,7 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
     );
   }
 
-  Stream<AssignmentResultListState> _mapLoadAssignmentResultListWithDetailsToState() async* {
+  Future<void> _mapLoadAssignmentResultListWithDetailsToState() async {
     int amountNow =  (state is AssignmentResultListLoaded) ? (state as AssignmentResultListLoaded).values!.length : 0;
     _assignmentResultsListSubscription?.cancel();
     _assignmentResultsListSubscription = _assignmentResultRepository.listenWithDetails(
@@ -64,58 +102,29 @@ class AssignmentResultListBloc extends Bloc<AssignmentResultListEvent, Assignmen
     );
   }
 
-  Stream<AssignmentResultListState> _mapAddAssignmentResultListToState(AddAssignmentResultList event) async* {
+  Future<void> _mapAddAssignmentResultListToState(AddAssignmentResultList event) async {
     var value = event.value;
-    if (value != null) 
-      _assignmentResultRepository.add(value);
-  }
-
-  Stream<AssignmentResultListState> _mapUpdateAssignmentResultListToState(UpdateAssignmentResultList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _assignmentResultRepository.update(value);
-  }
-
-  Stream<AssignmentResultListState> _mapDeleteAssignmentResultListToState(DeleteAssignmentResultList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _assignmentResultRepository.delete(value);
-  }
-
-  Stream<AssignmentResultListState> _mapAssignmentResultListUpdatedToState(
-      AssignmentResultListUpdated event) async* {
-    yield AssignmentResultListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
-  }
-
-  @override
-  Stream<AssignmentResultListState> mapEventToState(AssignmentResultListEvent event) async* {
-    if (event is LoadAssignmentResultList) {
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadAssignmentResultListToState();
-      } else {
-        yield* _mapLoadAssignmentResultListWithDetailsToState();
-      }
-    }
-    if (event is NewPage) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
-      yield* _mapLoadAssignmentResultListWithDetailsToState();
-    } else if (event is AssignmentResultChangeQuery) {
-      eliudQuery = event.newQuery;
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadAssignmentResultListToState();
-      } else {
-        yield* _mapLoadAssignmentResultListWithDetailsToState();
-      }
-    } else if (event is AddAssignmentResultList) {
-      yield* _mapAddAssignmentResultListToState(event);
-    } else if (event is UpdateAssignmentResultList) {
-      yield* _mapUpdateAssignmentResultListToState(event);
-    } else if (event is DeleteAssignmentResultList) {
-      yield* _mapDeleteAssignmentResultListToState(event);
-    } else if (event is AssignmentResultListUpdated) {
-      yield* _mapAssignmentResultListUpdatedToState(event);
+    if (value != null) {
+      await _assignmentResultRepository.add(value);
     }
   }
+
+  Future<void> _mapUpdateAssignmentResultListToState(UpdateAssignmentResultList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _assignmentResultRepository.update(value);
+    }
+  }
+
+  Future<void> _mapDeleteAssignmentResultListToState(DeleteAssignmentResultList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _assignmentResultRepository.delete(value);
+    }
+  }
+
+  AssignmentResultListLoaded _mapAssignmentResultListUpdatedToState(
+      AssignmentResultListUpdated event) => AssignmentResultListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {

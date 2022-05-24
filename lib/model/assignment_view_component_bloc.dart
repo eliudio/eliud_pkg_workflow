@@ -26,23 +26,22 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
   final AssignmentViewRepository? assignmentViewRepository;
   StreamSubscription? _assignmentViewSubscription;
 
-  Stream<AssignmentViewComponentState> _mapLoadAssignmentViewComponentUpdateToState(String documentId) async* {
+  void _mapLoadAssignmentViewComponentUpdateToState(String documentId) {
     _assignmentViewSubscription?.cancel();
     _assignmentViewSubscription = assignmentViewRepository!.listenTo(documentId, (value) {
-      if (value != null) add(AssignmentViewComponentUpdated(value: value));
+      if (value != null) {
+        add(AssignmentViewComponentUpdated(value: value));
+      }
     });
   }
 
-  AssignmentViewComponentBloc({ this.assignmentViewRepository }): super(AssignmentViewComponentUninitialized());
-
-  @override
-  Stream<AssignmentViewComponentState> mapEventToState(AssignmentViewComponentEvent event) async* {
-    final currentState = state;
-    if (event is FetchAssignmentViewComponent) {
-      yield* _mapLoadAssignmentViewComponentUpdateToState(event.id!);
-    } else if (event is AssignmentViewComponentUpdated) {
-      yield AssignmentViewComponentLoaded(value: event.value);
-    }
+  AssignmentViewComponentBloc({ this.assignmentViewRepository }): super(AssignmentViewComponentUninitialized()) {
+    on <FetchAssignmentViewComponent> ((event, emit) {
+      _mapLoadAssignmentViewComponentUpdateToState(event.id!);
+    });
+    on <AssignmentViewComponentUpdated> ((event, emit) {
+      emit(AssignmentViewComponentLoaded(value: event.value));
+    });
   }
 
   @override

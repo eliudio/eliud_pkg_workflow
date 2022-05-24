@@ -69,7 +69,7 @@ class WorkflowTaskForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var appId = app.documentID!;
+    var appId = app.documentID;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<WorkflowTaskFormBloc >(
             create: (context) => WorkflowTaskFormBloc(appId,
@@ -169,19 +169,19 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'CurrentMember', 'CurrentMember', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'CurrentMember', 'CurrentMember', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'Owner', 'Owner', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'Owner', 'Owner', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'First', 'First', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'First', 'First', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionResponsible(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'Previous', 'Previous', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionResponsible(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _responsibleSelectedRadioTile, 'Previous', 'Previous', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionResponsible(val))
           );
 
 
@@ -292,7 +292,7 @@ class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
   }
 
   bool _readOnly(AccessState accessState, WorkflowTaskFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID!));
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID));
   }
   
 

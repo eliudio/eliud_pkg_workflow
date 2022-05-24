@@ -16,6 +16,7 @@
 import 'package:collection/collection.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -49,12 +50,12 @@ AssignmentStatus toAssignmentStatus(int? index) {
 }
 
 
-class AssignmentModel {
-  String? documentID;
+class AssignmentModel implements ModelBase, WithAppId {
+  String documentID;
 
   // This is the identifier of the app to which this feed belongs
-  String? appId;
-  String? reporterId;
+  String appId;
+  String reporterId;
   String? assigneeId;
   TaskModel? task;
   WorkflowModel? workflow;
@@ -73,7 +74,7 @@ class AssignmentModel {
   WorkflowNotificationModel? confirmMessage;
   WorkflowNotificationModel? rejectMessage;
 
-  AssignmentModel({this.documentID, this.appId, this.reporterId, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, })  {
+  AssignmentModel({required this.documentID, required this.appId, required this.reporterId, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, })  {
     assert(documentID != null);
   }
 
@@ -139,8 +140,8 @@ class AssignmentModel {
     var counter = 0;
     return AssignmentModel(
           documentID: documentID, 
-          appId: entity.appId, 
-          reporterId: entity.reporterId, 
+          appId: entity.appId ?? '', 
+          reporterId: entity.reporterId ?? '', 
           assigneeId: entity.assigneeId, 
           task: 
             await TaskModel.fromEntity(entity.task), 
@@ -186,8 +187,8 @@ class AssignmentModel {
     var counter = 0;
     return AssignmentModel(
           documentID: documentID, 
-          appId: entity.appId, 
-          reporterId: entity.reporterId, 
+          appId: entity.appId ?? '', 
+          reporterId: entity.reporterId ?? '', 
           assigneeId: entity.assigneeId, 
           task: 
             await TaskModel.fromEntityPlus(entity.task, appId: appId), 

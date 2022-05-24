@@ -39,7 +39,7 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<WorkflowComponentBloc> (
           create: (context) => WorkflowComponentBloc(
-            workflowRepository: workflowRepository(appId: app.documentID!)!)
+            workflowRepository: workflowRepository(appId: app.documentID)!)
         ..add(FetchWorkflowComponent(id: workflowId)),
       child: _workflowBlockBuilder(context),
     );

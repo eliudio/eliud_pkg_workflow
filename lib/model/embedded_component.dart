@@ -127,14 +127,14 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
     }
 
     Future<void> delete(AssignmentModel value) {
-      int index = _index(value.documentID!);
+      int index = _index(value.documentID);
       if (index >= 0) items.removeAt(index);
       trigger(items);
       return Future.value(value);
     }
 
     Future<AssignmentModel> update(AssignmentModel value) {
-      int index = _index(value.documentID!);
+      int index = _index(value.documentID);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
         trigger(items);
@@ -230,14 +230,14 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
     }
 
     Future<void> delete(AssignmentResultModel value) {
-      int index = _index(value.documentID!);
+      int index = _index(value.documentID);
       if (index >= 0) items.removeAt(index);
       trigger(items);
       return Future.value(value);
     }
 
     Future<AssignmentResultModel> update(AssignmentResultModel value) {
-      int index = _index(value.documentID!);
+      int index = _index(value.documentID);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
         trigger(items);
@@ -333,14 +333,14 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
     }
 
     Future<void> delete(WorkflowTaskModel value) {
-      int index = _index(value.documentID!);
+      int index = _index(value.documentID);
       if (index >= 0) items.removeAt(index);
       trigger(items);
       return Future.value(value);
     }
 
     Future<WorkflowTaskModel> update(WorkflowTaskModel value) {
-      int index = _index(value.documentID!);
+      int index = _index(value.documentID);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
         trigger(items);

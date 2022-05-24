@@ -15,7 +15,7 @@ class AssignmentDialogBuilder extends DialogBuilder {
 
   Future<DialogModel> _setupDialog() async {
     return await corerepo.AbstractRepositorySingleton.singleton
-        .dialogRepository(app.documentID!)!
+        .dialogRepository(app.documentID)!
         .add(_dialog());
   }
 
@@ -28,7 +28,7 @@ class AssignmentDialogBuilder extends DialogBuilder {
 
     return DialogModel(
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-        appId: app.documentID!,
+        appId: app.documentID,
         title: "Assignments",
         layout: DialogLayout.ListView,
         conditions: StorageConditionsModel(
@@ -41,7 +41,7 @@ class AssignmentDialogBuilder extends DialogBuilder {
   AssignmentViewModel _assignmentViewModel() {
     return AssignmentViewModel(
       documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-      appId: app.documentID!,
+      appId: app.documentID,
       description: "My Assignments",
       conditions: StorageConditionsModel(
           privilegeLevelRequired:
@@ -51,7 +51,7 @@ class AssignmentDialogBuilder extends DialogBuilder {
 
   Future<AssignmentViewModel> _setupAssignmentView() async {
     return await AbstractRepositorySingleton.singleton
-        .assignmentViewRepository(app.documentID!)!
+        .assignmentViewRepository(app.documentID)!
         .add(_assignmentViewModel());
   }
 

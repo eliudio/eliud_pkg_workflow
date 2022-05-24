@@ -27,7 +27,7 @@ class WorkflowEntity {
   final List<WorkflowTaskEntity>? workflowTask;
   final String? appId;
 
-  WorkflowEntity({this.name, this.workflowTask, this.appId, });
+  WorkflowEntity({this.name, this.workflowTask, required this.appId, });
 
 
   List<Object?> get props => [name, workflowTask, appId, ];

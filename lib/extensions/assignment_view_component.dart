@@ -33,7 +33,7 @@ class AssignmentViewComponentConstructorDefault
 
   @override
   Future<dynamic> getModel({required AppModel app, required String id}) async =>
-      await assignmentViewRepository(appId: app.documentID!)!.get(id);
+      await assignmentViewRepository(appId: app.documentID)!.get(id);
 }
 
 class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
@@ -50,10 +50,10 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
         return BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
             eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
-                app.documentID!,
-                accessState.getMember()!.documentID!),
+                app.documentID,
+                accessState.getMember()!.documentID),
             assignmentRepository:
-                assignmentRepository(appId: app.documentID!)!,
+                assignmentRepository(appId: app.documentID)!,
           )..add(LoadAssignmentList()),
           child: AssignmentListWidget(
             app: app,

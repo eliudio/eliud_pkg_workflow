@@ -16,6 +16,7 @@
 import 'package:collection/collection.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -36,15 +37,15 @@ import 'package:eliud_core/tools/random.dart';
 
 
 
-class WorkflowModel {
-  String? documentID;
+class WorkflowModel implements ModelBase, WithAppId {
+  String documentID;
   String? name;
   List<WorkflowTaskModel>? workflowTask;
 
   // This is the identifier of the app to which this feed belongs
-  String? appId;
+  String appId;
 
-  WorkflowModel({this.documentID, this.name, this.workflowTask, this.appId, })  {
+  WorkflowModel({required this.documentID, this.name, this.workflowTask, required this.appId, })  {
     assert(documentID != null);
   }
 
@@ -95,7 +96,7 @@ class WorkflowModel {
               return WorkflowTaskModel.fromEntity(counter.toString(), item);
             })
             .toList())), 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
     );
   }
 
@@ -112,7 +113,7 @@ class WorkflowModel {
             counter++;
             return WorkflowTaskModel.fromEntityPlus(counter.toString(), item, appId: appId);})
             .toList())), 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
     );
   }
 

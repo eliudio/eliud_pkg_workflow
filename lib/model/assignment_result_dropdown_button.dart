@@ -207,7 +207,7 @@ return widgets;
     BlocProvider.of<AssignmentResultListBloc>(context).add(AssignmentResultChangeQuery(
        newQuery: EliudQuery(theConditions: [
          EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: value ?? 0),
-         EliudQueryCondition('appId', isEqualTo: widget.app.documentID!),]
+         EliudQueryCondition('appId', isEqualTo: widget.app.documentID),]
        ),
      ));
      widget.trigger!(null, value);

@@ -77,7 +77,7 @@ class WorkflowTaskListUpdated extends WorkflowTaskListEvent {
 }
 
 class WorkflowTaskChangeQuery extends WorkflowTaskListEvent {
-  final EliudQuery newQuery;
+  final EliudQuery? newQuery;
 
   const WorkflowTaskChangeQuery({ required this.newQuery });
 

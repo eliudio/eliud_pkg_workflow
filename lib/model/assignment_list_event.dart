@@ -77,7 +77,7 @@ class AssignmentListUpdated extends AssignmentListEvent {
 }
 
 class AssignmentChangeQuery extends AssignmentListEvent {
-  final EliudQuery newQuery;
+  final EliudQuery? newQuery;
 
   const AssignmentChangeQuery({ required this.newQuery });
 

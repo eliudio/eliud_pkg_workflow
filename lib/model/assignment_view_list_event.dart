@@ -77,7 +77,7 @@ class AssignmentViewListUpdated extends AssignmentViewListEvent {
 }
 
 class AssignmentViewChangeQuery extends AssignmentViewListEvent {
-  final EliudQuery newQuery;
+  final EliudQuery? newQuery;
 
   const AssignmentViewChangeQuery({ required this.newQuery });
 

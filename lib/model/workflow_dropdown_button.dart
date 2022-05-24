@@ -206,7 +206,7 @@ return widgets;
     BlocProvider.of<WorkflowListBloc>(context).add(WorkflowChangeQuery(
        newQuery: EliudQuery(theConditions: [
          EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: value ?? 0),
-         EliudQueryCondition('appId', isEqualTo: widget.app.documentID!),]
+         EliudQueryCondition('appId', isEqualTo: widget.app.documentID),]
        ),
      ));
      widget.trigger!(null, value);

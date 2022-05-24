@@ -74,7 +74,7 @@ abstract class TaskModel {
         var member = state.getMember();
         if (member != null) {
           if (executionResult.status == ExecutionStatus.success) {
-            await _sendMessage(app.documentID!, member.documentID!, assignmentModel.confirmMessage, app,
+            await _sendMessage(app.documentID, member.documentID, assignmentModel.confirmMessage, app,
                 member, assignmentModel, feedback);
             var nextAssignment = await _nextAssignment(
                 context, assignmentModel, executionResult, member, app);
@@ -84,12 +84,12 @@ abstract class TaskModel {
               if ((currentMember != null) &&
                   (nextAssignment.assigneeId == currentMember.documentID) &&
                   nextAssignment.task!.executeInstantly) {
-                nextAssignment.task!.callExecute(app, context, currentMember.documentID!, nextAssignment, false,
+                nextAssignment.task!.callExecute(app, context, currentMember.documentID, nextAssignment, false,
                     finaliseWorkflow: _finaliseWorkflow);
               }
             }
           } else {
-            await _sendMessage(app.documentID!, member.documentID!, assignmentModel.rejectMessage, app,
+            await _sendMessage(app.documentID, member.documentID, assignmentModel.rejectMessage, app,
                 member, assignmentModel, feedback);
           }
         }
@@ -188,7 +188,7 @@ abstract class TaskModel {
         var nextAssignment = AssignmentModel(
             documentID: newRandomKey(),
             appId: currentAssignment.appId,
-            reporterId: member.documentID!,
+            reporterId: member.documentID,
             assigneeId: await DetermineMemberHelper
                 .determineMemberWithWorkflowTaskResponsible(
                     nextTask.responsible, app, member, currentAssignment),

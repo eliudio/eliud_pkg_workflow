@@ -74,7 +74,7 @@ class AssignmentForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var appId = app.documentID!;
+    var appId = app.documentID;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<AssignmentFormBloc >(
             create: (context) => AssignmentFormBloc(appId,
@@ -213,15 +213,15 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Success', 'Success', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Success', 'Success', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionStatus(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Declined', 'Declined', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Declined', 'Declined', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionStatus(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Open', 'Open', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Open', 'Open', !accessState.memberIsOwner(widget.app.documentID) ? null : (dynamic val) => setSelectionStatus(val))
           );
 
         children.add(
@@ -476,7 +476,7 @@ class _MyAssignmentFormState extends State<MyAssignmentForm> {
   }
 
   bool _readOnly(AccessState accessState, AssignmentFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID!));
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID));
   }
   
 

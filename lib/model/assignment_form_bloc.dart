@@ -51,7 +51,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
   Stream<AssignmentFormState> mapEventToState(AssignmentFormEvent event) async* {
     final currentState = state;
     if (currentState is AssignmentFormUninitialized) {
-      if (event is InitialiseNewAssignmentFormEvent) {
+      on <InitialiseNewAssignmentFormEvent> ((event, emit) {
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: AssignmentModel(
                                                documentID: "IDENTIFIER", 
                                  appId: "",
@@ -63,125 +63,91 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
                                  triggeredById: "",
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseAssignmentFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: await assignmentRepository(appId: appId)!.get(event.value!.documentID));
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseAssignmentFormNoLoadEvent) {
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is AssignmentFormInitialized) {
       AssignmentModel? newValue = null;
-      if (event is ChangedAssignmentAppId) {
+      on <ChangedAssignmentAppId> ((event, emit) async {
         newValue = currentState.value!.copyWith(appId: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentReporterId) {
+      });
+      on <ChangedAssignmentReporterId> ((event, emit) async {
         newValue = currentState.value!.copyWith(reporterId: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentAssigneeId) {
+      });
+      on <ChangedAssignmentAssigneeId> ((event, emit) async {
         newValue = currentState.value!.copyWith(assigneeId: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentTask) {
+      });
+      on <ChangedAssignmentTask> ((event, emit) async {
         newValue = currentState.value!.copyWith(task: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentWorkflow) {
+      });
+      on <ChangedAssignmentWorkflow> ((event, emit) async {
         if (event.value != null)
           newValue = currentState.value!.copyWith(workflow: await workflowRepository(appId: appId)!.get(event.value));
-        else
-          newValue = new AssignmentModel(
-                                 documentID: currentState.value!.documentID,
-                                 appId: currentState.value!.appId,
-                                 reporterId: currentState.value!.reporterId,
-                                 assigneeId: currentState.value!.assigneeId,
-                                 task: currentState.value!.task,
-                                 workflow: null,
-                                 workflowTaskSeqNumber: currentState.value!.workflowTaskSeqNumber,
-                                 timestamp: currentState.value!.timestamp,
-                                 status: currentState.value!.status,
-                                 resultsCurrent: currentState.value!.resultsCurrent,
-                                 resultsPrevious: currentState.value!.resultsPrevious,
-                                 triggeredById: currentState.value!.triggeredById,
-                                 confirmMessage: currentState.value!.confirmMessage,
-                                 rejectMessage: currentState.value!.rejectMessage,
-          );
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentWorkflowTaskSeqNumber) {
+      });
+      on <ChangedAssignmentWorkflowTaskSeqNumber> ((event, emit) async {
         if (isInt(event.value)) {
           newValue = currentState.value!.copyWith(workflowTaskSeqNumber: int.parse(event.value!));
-          yield SubmittableAssignmentForm(value: newValue);
+          emit(SubmittableAssignmentForm(value: newValue));
 
         } else {
           newValue = currentState.value!.copyWith(workflowTaskSeqNumber: 0);
-          yield WorkflowTaskSeqNumberAssignmentFormError(message: "Value should be a number", value: newValue);
+          emit(WorkflowTaskSeqNumberAssignmentFormError(message: "Value should be a number", value: newValue));
         }
-        return;
-      }
-      if (event is ChangedAssignmentTimestamp) {
+      });
+      on <ChangedAssignmentTimestamp> ((event, emit) async {
         newValue = currentState.value!.copyWith(timestamp: dateTimeFromTimestampString(event.value!));
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentStatus) {
+      });
+      on <ChangedAssignmentStatus> ((event, emit) async {
         newValue = currentState.value!.copyWith(status: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentResultsCurrent) {
+      });
+      on <ChangedAssignmentResultsCurrent> ((event, emit) async {
         newValue = currentState.value!.copyWith(resultsCurrent: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentResultsPrevious) {
+      });
+      on <ChangedAssignmentResultsPrevious> ((event, emit) async {
         newValue = currentState.value!.copyWith(resultsPrevious: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentTriggeredById) {
+      });
+      on <ChangedAssignmentTriggeredById> ((event, emit) async {
         newValue = currentState.value!.copyWith(triggeredById: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentConfirmMessage) {
+      });
+      on <ChangedAssignmentConfirmMessage> ((event, emit) async {
         newValue = currentState.value!.copyWith(confirmMessage: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentRejectMessage) {
+      });
+      on <ChangedAssignmentRejectMessage> ((event, emit) async {
         newValue = currentState.value!.copyWith(rejectMessage: event.value);
-        yield SubmittableAssignmentForm(value: newValue);
+        emit(SubmittableAssignmentForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

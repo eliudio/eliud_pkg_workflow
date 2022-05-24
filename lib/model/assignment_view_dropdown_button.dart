@@ -76,7 +76,7 @@ class AssignmentViewDropdownButtonWidgetState extends State<AssignmentViewDropdo
 List<Widget> widgets(AssignmentViewModel value) {
 var app = widget.app;
 var widgets = <Widget>[];
-widgets.add(value.description != null ? Center(child: text(app, context, value.description!)) : value.documentID != null ? Center(child: text(app, context, value.documentID!)) : Container());
+widgets.add(value.description != null ? Center(child: text(app, context, value.description!)) : value.documentID != null ? Center(child: text(app, context, value.documentID)) : Container());
 return widgets;
 }
 
@@ -206,7 +206,7 @@ return widgets;
     BlocProvider.of<AssignmentViewListBloc>(context).add(AssignmentViewChangeQuery(
        newQuery: EliudQuery(theConditions: [
          EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: value ?? 0),
-         EliudQueryCondition('appId', isEqualTo: widget.app.documentID!),]
+         EliudQueryCondition('appId', isEqualTo: widget.app.documentID),]
        ),
      ));
      widget.trigger!(null, value);

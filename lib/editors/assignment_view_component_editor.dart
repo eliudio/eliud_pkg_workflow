@@ -54,11 +54,11 @@ class AssignmentViewComponentEditorConstructor
   void updateComponentWithID(AppModel app, BuildContext context, String id,
       EditorFeedback feedback) async {
     var assignmentView =
-    await assignmentViewRepository(appId: app.documentID!)!.get(id);
+    await assignmentViewRepository(appId: app.documentID)!.get(id);
     if (assignmentView != null) {
       _openIt(app, context, false, assignmentView, feedback);
     } else {
-      openErrorDialog(app, context, app.documentID! + '/_error',
+      openErrorDialog(app, context, app.documentID + '/_error',
           title: 'Error',
           errorMessage: 'Cannot find notification dashboard with id $id');
     }
@@ -69,7 +69,7 @@ class AssignmentViewComponentEditorConstructor
     openComplexDialog(
       app,
       context,
-      app.documentID! + '/notificationdashboard',
+      app.documentID + '/notificationdashboard',
       title: create
           ? 'Create Notification Dashboard'
           : 'Update Notification Dashboard',
@@ -77,7 +77,7 @@ class AssignmentViewComponentEditorConstructor
       widthFraction: .9,
       child: BlocProvider<AssignmentViewBloc>(
           create: (context) => AssignmentViewBloc(
-            app.documentID!,
+            app.documentID,
             /*create,
             */
             feedback,
@@ -137,7 +137,7 @@ class _AssignmentViewComponentEditorState
                                 getListTile(context, widget.app,
                                     leading: Icon(Icons.vpn_key),
                                     title: text(widget.app, context,
-                                        assignmentViewState.model.documentID!)),
+                                        assignmentViewState.model.documentID)),
                                 getListTile(context, widget.app,
                                     leading: Icon(Icons.description),
                                     title: dialogField(

@@ -38,9 +38,47 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
   WorkflowTaskListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required WorkflowTaskRepository workflowTaskRepository, this.workflowTaskLimit = 5})
       : assert(workflowTaskRepository != null),
         _workflowTaskRepository = workflowTaskRepository,
-        super(WorkflowTaskListLoading());
+        super(WorkflowTaskListLoading()) {
+    on <LoadWorkflowTaskList> ((event, emit) {
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadWorkflowTaskListToState();
+      } else {
+        _mapLoadWorkflowTaskListWithDetailsToState();
+      }
+    });
+    
+    on <NewPage> ((event, emit) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+      _mapLoadWorkflowTaskListWithDetailsToState();
+    });
+    
+    on <WorkflowTaskChangeQuery> ((event, emit) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadWorkflowTaskListToState();
+      } else {
+        _mapLoadWorkflowTaskListWithDetailsToState();
+      }
+    });
+      
+    on <AddWorkflowTaskList> ((event, emit) async {
+      await _mapAddWorkflowTaskListToState(event);
+    });
+    
+    on <UpdateWorkflowTaskList> ((event, emit) async {
+      await _mapUpdateWorkflowTaskListToState(event);
+    });
+    
+    on <DeleteWorkflowTaskList> ((event, emit) async {
+      await _mapDeleteWorkflowTaskListToState(event);
+    });
+    
+    on <WorkflowTaskListUpdated> ((event, emit) {
+      emit(_mapWorkflowTaskListUpdatedToState(event));
+    });
+  }
 
-  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListToState() async* {
+  Future<void> _mapLoadWorkflowTaskListToState() async {
     int amountNow =  (state is WorkflowTaskListLoaded) ? (state as WorkflowTaskListLoaded).values!.length : 0;
     _workflowTasksListSubscription?.cancel();
     _workflowTasksListSubscription = _workflowTaskRepository.listen(
@@ -52,7 +90,7 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     );
   }
 
-  Stream<WorkflowTaskListState> _mapLoadWorkflowTaskListWithDetailsToState() async* {
+  Future<void> _mapLoadWorkflowTaskListWithDetailsToState() async {
     int amountNow =  (state is WorkflowTaskListLoaded) ? (state as WorkflowTaskListLoaded).values!.length : 0;
     _workflowTasksListSubscription?.cancel();
     _workflowTasksListSubscription = _workflowTaskRepository.listenWithDetails(
@@ -64,58 +102,29 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     );
   }
 
-  Stream<WorkflowTaskListState> _mapAddWorkflowTaskListToState(AddWorkflowTaskList event) async* {
+  Future<void> _mapAddWorkflowTaskListToState(AddWorkflowTaskList event) async {
     var value = event.value;
-    if (value != null) 
-      _workflowTaskRepository.add(value);
-  }
-
-  Stream<WorkflowTaskListState> _mapUpdateWorkflowTaskListToState(UpdateWorkflowTaskList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _workflowTaskRepository.update(value);
-  }
-
-  Stream<WorkflowTaskListState> _mapDeleteWorkflowTaskListToState(DeleteWorkflowTaskList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _workflowTaskRepository.delete(value);
-  }
-
-  Stream<WorkflowTaskListState> _mapWorkflowTaskListUpdatedToState(
-      WorkflowTaskListUpdated event) async* {
-    yield WorkflowTaskListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
-  }
-
-  @override
-  Stream<WorkflowTaskListState> mapEventToState(WorkflowTaskListEvent event) async* {
-    if (event is LoadWorkflowTaskList) {
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadWorkflowTaskListToState();
-      } else {
-        yield* _mapLoadWorkflowTaskListWithDetailsToState();
-      }
-    }
-    if (event is NewPage) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
-      yield* _mapLoadWorkflowTaskListWithDetailsToState();
-    } else if (event is WorkflowTaskChangeQuery) {
-      eliudQuery = event.newQuery;
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadWorkflowTaskListToState();
-      } else {
-        yield* _mapLoadWorkflowTaskListWithDetailsToState();
-      }
-    } else if (event is AddWorkflowTaskList) {
-      yield* _mapAddWorkflowTaskListToState(event);
-    } else if (event is UpdateWorkflowTaskList) {
-      yield* _mapUpdateWorkflowTaskListToState(event);
-    } else if (event is DeleteWorkflowTaskList) {
-      yield* _mapDeleteWorkflowTaskListToState(event);
-    } else if (event is WorkflowTaskListUpdated) {
-      yield* _mapWorkflowTaskListUpdatedToState(event);
+    if (value != null) {
+      await _workflowTaskRepository.add(value);
     }
   }
+
+  Future<void> _mapUpdateWorkflowTaskListToState(UpdateWorkflowTaskList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _workflowTaskRepository.update(value);
+    }
+  }
+
+  Future<void> _mapDeleteWorkflowTaskListToState(DeleteWorkflowTaskList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _workflowTaskRepository.delete(value);
+    }
+  }
+
+  WorkflowTaskListLoaded _mapWorkflowTaskListUpdatedToState(
+      WorkflowTaskListUpdated event) => WorkflowTaskListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {

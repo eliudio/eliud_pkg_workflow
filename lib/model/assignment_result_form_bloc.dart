@@ -46,42 +46,36 @@ class AssignmentResultFormBloc extends Bloc<AssignmentResultFormEvent, Assignmen
   Stream<AssignmentResultFormState> mapEventToState(AssignmentResultFormEvent event) async* {
     final currentState = state;
     if (currentState is AssignmentResultFormUninitialized) {
-      if (event is InitialiseNewAssignmentResultFormEvent) {
+      on <InitialiseNewAssignmentResultFormEvent> ((event, emit) {
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: AssignmentResultModel(
                                                documentID: "IDENTIFIER", 
                                  key: "",
                                  value: "",
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseAssignmentResultFormEvent) {
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseAssignmentResultFormNoLoadEvent) {
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is AssignmentResultFormInitialized) {
       AssignmentResultModel? newValue = null;
-      if (event is ChangedAssignmentResultKey) {
+      on <ChangedAssignmentResultKey> ((event, emit) async {
         newValue = currentState.value!.copyWith(key: event.value);
-        yield SubmittableAssignmentResultForm(value: newValue);
+        emit(SubmittableAssignmentResultForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentResultValue) {
+      });
+      on <ChangedAssignmentResultValue> ((event, emit) async {
         newValue = currentState.value!.copyWith(value: event.value);
-        yield SubmittableAssignmentResultForm(value: newValue);
+        emit(SubmittableAssignmentResultForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

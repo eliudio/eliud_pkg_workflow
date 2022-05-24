@@ -48,7 +48,7 @@ abstract class WorkflowPackage extends Package {
       bool isOwner,
       bool? isBlocked,
       PrivilegeLevel? privilegeLevel) {
-    var appId = app.documentID!;
+    var appId = app.documentID;
     subscription[appId]?.cancel();
     if (member != null) {
       final c = Completer<List<PackageConditionDetails>>();
@@ -73,7 +73,7 @@ abstract class WorkflowPackage extends Package {
                 app, this, CONDITION_MUST_HAVE_ASSIGNMENTS, value));
           }
         }
-      }, eliudQuery: getOpenAssignmentsQuery(appId, member.documentID!));
+      }, eliudQuery: getOpenAssignmentsQuery(appId, member.documentID));
       return c.future;
     } else {
       stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = false;

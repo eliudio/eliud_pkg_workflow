@@ -26,23 +26,22 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
   final WorkflowRepository? workflowRepository;
   StreamSubscription? _workflowSubscription;
 
-  Stream<WorkflowComponentState> _mapLoadWorkflowComponentUpdateToState(String documentId) async* {
+  void _mapLoadWorkflowComponentUpdateToState(String documentId) {
     _workflowSubscription?.cancel();
     _workflowSubscription = workflowRepository!.listenTo(documentId, (value) {
-      if (value != null) add(WorkflowComponentUpdated(value: value));
+      if (value != null) {
+        add(WorkflowComponentUpdated(value: value));
+      }
     });
   }
 
-  WorkflowComponentBloc({ this.workflowRepository }): super(WorkflowComponentUninitialized());
-
-  @override
-  Stream<WorkflowComponentState> mapEventToState(WorkflowComponentEvent event) async* {
-    final currentState = state;
-    if (event is FetchWorkflowComponent) {
-      yield* _mapLoadWorkflowComponentUpdateToState(event.id!);
-    } else if (event is WorkflowComponentUpdated) {
-      yield WorkflowComponentLoaded(value: event.value);
-    }
+  WorkflowComponentBloc({ this.workflowRepository }): super(WorkflowComponentUninitialized()) {
+    on <FetchWorkflowComponent> ((event, emit) {
+      _mapLoadWorkflowComponentUpdateToState(event.id!);
+    });
+    on <WorkflowComponentUpdated> ((event, emit) {
+      emit(WorkflowComponentLoaded(value: event.value));
+    });
   }
 
   @override

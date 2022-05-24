@@ -51,7 +51,7 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
   Stream<AssignmentViewFormState> mapEventToState(AssignmentViewFormEvent event) async* {
     final currentState = state;
     if (currentState is AssignmentViewFormUninitialized) {
-      if (event is InitialiseNewAssignmentViewFormEvent) {
+      on <InitialiseNewAssignmentViewFormEvent> ((event, emit) {
         AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: AssignmentViewModel(
                                                documentID: "",
                                  appId: "",
@@ -59,52 +59,44 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
                                  description: "",
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseAssignmentViewFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
         AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: await assignmentViewRepository(appId: appId)!.get(event.value!.documentID));
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseAssignmentViewFormNoLoadEvent) {
         AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is AssignmentViewFormInitialized) {
       AssignmentViewModel? newValue = null;
-      if (event is ChangedAssignmentViewDocumentID) {
+      on <ChangedAssignmentViewDocumentID> ((event, emit) async {
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event.value, newValue).asStream();
+          emit(await _isDocumentIDValid(event.value, newValue!));
         } else {
-          yield SubmittableAssignmentViewForm(value: newValue);
+          emit(SubmittableAssignmentViewForm(value: newValue));
         }
 
-        return;
-      }
-      if (event is ChangedAssignmentViewTitle) {
+      });
+      on <ChangedAssignmentViewTitle> ((event, emit) async {
         newValue = currentState.value!.copyWith(title: event.value);
-        yield SubmittableAssignmentViewForm(value: newValue);
+        emit(SubmittableAssignmentViewForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentViewDescription) {
+      });
+      on <ChangedAssignmentViewDescription> ((event, emit) async {
         newValue = currentState.value!.copyWith(description: event.value);
-        yield SubmittableAssignmentViewForm(value: newValue);
+        emit(SubmittableAssignmentViewForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedAssignmentViewConditions) {
+      });
+      on <ChangedAssignmentViewConditions> ((event, emit) async {
         newValue = currentState.value!.copyWith(conditions: event.value);
-        yield SubmittableAssignmentViewForm(value: newValue);
+        emit(SubmittableAssignmentViewForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

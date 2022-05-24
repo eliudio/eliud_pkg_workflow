@@ -15,6 +15,7 @@
 
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
@@ -45,8 +46,8 @@ WorkflowTaskResponsible toWorkflowTaskResponsible(int? index) {
 }
 
 
-class WorkflowTaskModel {
-  String? documentID;
+class WorkflowTaskModel implements ModelBase {
+  String documentID;
   int? seqNumber;
   TaskModel? task;
 
@@ -59,7 +60,7 @@ class WorkflowTaskModel {
   // Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
   WorkflowTaskResponsible? responsible;
 
-  WorkflowTaskModel({this.documentID, this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, })  {
+  WorkflowTaskModel({required this.documentID, this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, })  {
     assert(documentID != null);
   }
 

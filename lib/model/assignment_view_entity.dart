@@ -28,7 +28,7 @@ class AssignmentViewEntity {
   final String? description;
   final StorageConditionsEntity? conditions;
 
-  AssignmentViewEntity({this.appId, this.title, this.description, this.conditions, });
+  AssignmentViewEntity({required this.appId, this.title, this.description, this.conditions, });
 
 
   List<Object?> get props => [appId, title, description, conditions, ];
