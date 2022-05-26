@@ -30,6 +30,7 @@ class AssignmentDialogBuilder extends DialogBuilder {
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID,
         title: "Assignments",
+        description: "Assignments",
         layout: DialogLayout.ListView,
         conditions: StorageConditionsModel(
           privilegeLevelRequired:
