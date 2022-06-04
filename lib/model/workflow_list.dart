@@ -156,7 +156,7 @@ class WorkflowListWidgetState extends State<WorkflowListWidget> {
             onDismissed: (direction) {
               BlocProvider.of<WorkflowListBloc>(context)
                   .add(DeleteWorkflowList(value: value));
-              Scaffold.of(context).showSnackBar(DeleteSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
                 message: "Workflow " + value.documentID,
                 onUndo: () => BlocProvider.of<WorkflowListBloc>(context)
                     .add(AddWorkflowList(value: value)),
@@ -168,7 +168,7 @@ class WorkflowListWidgetState extends State<WorkflowListWidget> {
                               value: BlocProvider.of<WorkflowListBloc>(context),
                               child: getForm(value, FormAction.UpdateAction))));
                       if (removedItem != null) {
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           DeleteSnackBar(
                         message: "Workflow " + value.documentID,
                             onUndo: () => BlocProvider.of<WorkflowListBloc>(context)

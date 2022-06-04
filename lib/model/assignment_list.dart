@@ -156,7 +156,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
             onDismissed: (direction) {
               BlocProvider.of<AssignmentListBloc>(context)
                   .add(DeleteAssignmentList(value: value));
-              Scaffold.of(context).showSnackBar(DeleteSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
                 message: "Assignment " + value.documentID,
                 onUndo: () => BlocProvider.of<AssignmentListBloc>(context)
                     .add(AddAssignmentList(value: value)),
@@ -168,7 +168,7 @@ class AssignmentListWidgetState extends State<AssignmentListWidget> {
                               value: BlocProvider.of<AssignmentListBloc>(context),
                               child: getForm(value, FormAction.UpdateAction))));
                       if (removedItem != null) {
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           DeleteSnackBar(
                         message: "Assignment " + value.documentID,
                             onUndo: () => BlocProvider.of<AssignmentListBloc>(context)

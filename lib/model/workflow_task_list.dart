@@ -156,7 +156,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
             onDismissed: (direction) {
               BlocProvider.of<WorkflowTaskListBloc>(context)
                   .add(DeleteWorkflowTaskList(value: value));
-              Scaffold.of(context).showSnackBar(DeleteSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
                 message: "WorkflowTask " + value.documentID,
                 onUndo: () => BlocProvider.of<WorkflowTaskListBloc>(context)
                     .add(AddWorkflowTaskList(value: value)),
@@ -168,7 +168,7 @@ class WorkflowTaskListWidgetState extends State<WorkflowTaskListWidget> {
                               value: BlocProvider.of<WorkflowTaskListBloc>(context),
                               child: getForm(value, FormAction.UpdateAction))));
                       if (removedItem != null) {
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           DeleteSnackBar(
                         message: "WorkflowTask " + value.documentID,
                             onUndo: () => BlocProvider.of<WorkflowTaskListBloc>(context)
