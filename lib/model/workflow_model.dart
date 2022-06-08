@@ -66,6 +66,10 @@ class WorkflowModel implements ModelBase, WithAppId {
           ListEquality().equals(workflowTask, other.workflowTask) &&
           appId == other.appId;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     String workflowTaskCsv = (workflowTask == null) ? '' : workflowTask!.join(', ');

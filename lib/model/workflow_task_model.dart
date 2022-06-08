@@ -83,6 +83,10 @@ class WorkflowTaskModel implements ModelBase {
           rejectMessage == other.rejectMessage &&
           responsible == other.responsible;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';

@@ -65,6 +65,10 @@ class AssignmentViewModel implements ModelBase, WithAppId {
           description == other.description &&
           conditions == other.conditions;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';

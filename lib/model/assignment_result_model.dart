@@ -57,6 +57,10 @@ class AssignmentResultModel implements ModelBase {
           key == other.key &&
           value == other.value;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     return 'AssignmentResultModel{documentID: $documentID, key: $key, value: $value}';

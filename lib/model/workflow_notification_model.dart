@@ -70,6 +70,10 @@ class WorkflowNotificationModel {
           message == other.message &&
           addressee == other.addressee;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     return 'WorkflowNotificationModel{message: $message, addressee: $addressee}';

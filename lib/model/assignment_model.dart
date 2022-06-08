@@ -105,6 +105,10 @@ class AssignmentModel implements ModelBase, WithAppId {
           confirmMessage == other.confirmMessage &&
           rejectMessage == other.rejectMessage;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent!.join(', ');
