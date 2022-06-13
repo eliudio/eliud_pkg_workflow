@@ -17,6 +17,8 @@ import 'package:collection/collection.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -66,8 +68,11 @@ class WorkflowModel implements ModelBase, WithAppId {
           ListEquality().equals(workflowTask, other.workflowTask) &&
           appId == other.appId;
 
-  String toJsonString({String? appId}) {
-    return toEntity(appId: appId).toJsonString();
+  @override
+  Future<String> toRichJsonString({String? appId}) async {
+    var document = toEntity(appId: appId).toDocument();
+    document['documentID'] = documentID;
+    return jsonEncode(document);
   }
 
   @override

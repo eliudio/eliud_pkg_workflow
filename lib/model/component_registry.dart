@@ -17,6 +17,7 @@
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/tools/component/component_spec.dart';
+import 'abstract_repository_singleton.dart';
 
 import '../extensions/assignment_view_component.dart';
 import '../editors/assignment_view_component_editor.dart';
@@ -35,7 +36,7 @@ class ComponentRegistry {
     Registry.registry()!.addDropDownSupporter("assignmentViews", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "assignmentViews", componentConstructor: AssignmentViewComponentConstructorDefault());
     Registry.registry()!.addComponentSpec('eliud_pkg_workflow', 'workflow', [
-      ComponentSpec('assignmentViews', AssignmentViewComponentConstructorDefault(), AssignmentViewComponentSelector(), AssignmentViewComponentEditorConstructor(), ), 
+      ComponentSpec('assignmentViews', AssignmentViewComponentConstructorDefault(), AssignmentViewComponentSelector(), AssignmentViewComponentEditorConstructor(), ({String? appId}) => assignmentViewRepository(appId: appId)! ), 
     ]);
 
   }
