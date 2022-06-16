@@ -29,18 +29,21 @@ import '../model/assignment_list_bloc.dart';
 import '../model/assignment_list.dart';
 import '../model/assignment_list_event.dart';
 import '../model/assignment_model.dart';
+import '../model/assignment_entity.dart';
 import '../model/assignment_repository.dart';
 
 import '../model/assignment_result_list_bloc.dart';
 import '../model/assignment_result_list.dart';
 import '../model/assignment_result_list_event.dart';
 import '../model/assignment_result_model.dart';
+import '../model/assignment_result_entity.dart';
 import '../model/assignment_result_repository.dart';
 
 import '../model/workflow_task_list_bloc.dart';
 import '../model/workflow_task_list.dart';
 import '../model/workflow_task_list_event.dart';
 import '../model/workflow_task_model.dart';
+import '../model/workflow_task_entity.dart';
 import '../model/workflow_task_repository.dart';
 
 typedef AssignmentListChanged(List<AssignmentModel> values);
@@ -118,6 +121,14 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
         i++;
       }
       return -1;
+    }
+
+    Future<AssignmentEntity> addEntity(String documentID, AssignmentEntity value) {
+      throw Exception('Not implemented'); 
+    }
+
+    Future<AssignmentEntity> updateEntity(String documentID, AssignmentEntity value) {
+      throw Exception('Not implemented'); 
     }
 
     Future<AssignmentModel> add(AssignmentModel value) {
@@ -223,6 +234,14 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
       return -1;
     }
 
+    Future<AssignmentResultEntity> addEntity(String documentID, AssignmentResultEntity value) {
+      throw Exception('Not implemented'); 
+    }
+
+    Future<AssignmentResultEntity> updateEntity(String documentID, AssignmentResultEntity value) {
+      throw Exception('Not implemented'); 
+    }
+
     Future<AssignmentResultModel> add(AssignmentResultModel value) {
         items.add(value.copyWith(documentID: newRandomKey()));
         trigger(items);
@@ -324,6 +343,14 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
         i++;
       }
       return -1;
+    }
+
+    Future<WorkflowTaskEntity> addEntity(String documentID, WorkflowTaskEntity value) {
+      throw Exception('Not implemented'); 
+    }
+
+    Future<WorkflowTaskEntity> updateEntity(String documentID, WorkflowTaskEntity value) {
+      throw Exception('Not implemented'); 
     }
 
     Future<WorkflowTaskModel> add(WorkflowTaskModel value) {

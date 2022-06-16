@@ -36,6 +36,14 @@ import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentViewFirestore implements AssignmentViewRepository {
+  Future<AssignmentViewEntity> addEntity(String documentID, AssignmentViewEntity value) {
+    return AssignmentViewCollection.doc(documentID).set(value.toDocument()).then((_) => value);
+  }
+
+  Future<AssignmentViewEntity> updateEntity(String documentID, AssignmentViewEntity value) {
+    return AssignmentViewCollection.doc(documentID).update(value.toDocument()).then((_) => value);
+  }
+
   Future<AssignmentViewModel> add(AssignmentViewModel value) {
     return AssignmentViewCollection.doc(value.documentID).set(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
@@ -54,6 +62,21 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
 
   Future<AssignmentViewModel?> _populateDocPlus(DocumentSnapshot value) async {
     return AssignmentViewModel.fromEntityPlus(value.id, AssignmentViewEntity.fromMap(value.data()), appId: appId);  }
+
+  Future<AssignmentViewEntity?> getEntity(String? id, {Function(Exception)? onError}) async {
+    try {
+      var collection = AssignmentViewCollection.doc(id);
+      var doc = await collection.get();
+      return AssignmentViewEntity.fromMap(doc.data());
+    } on Exception catch(e) {
+      if (onError != null) {
+        onError(e);
+      } else {
+        print("Error whilst retrieving AssignmentView with id $id");
+        print("Exceptoin: $e");
+      }
+    };
+  }
 
   Future<AssignmentViewModel?> get(String? id, {Function(Exception)? onError}) async {
     try {

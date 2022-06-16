@@ -34,6 +34,8 @@ typedef WorkflowTaskModelTrigger(List<WorkflowTaskModel?> list);
 typedef WorkflowTaskChanged(WorkflowTaskModel? value);
 
 abstract class WorkflowTaskRepository extends RepositoryBase<WorkflowTaskModel> {
+  Future<WorkflowTaskEntity> addEntity(String documentID, WorkflowTaskEntity value);
+  Future<WorkflowTaskEntity> updateEntity(String documentID, WorkflowTaskEntity value);
   Future<WorkflowTaskModel> add(WorkflowTaskModel value);
   Future<void> delete(WorkflowTaskModel value);
   Future<WorkflowTaskModel?> get(String? id, { Function(Exception)? onError });

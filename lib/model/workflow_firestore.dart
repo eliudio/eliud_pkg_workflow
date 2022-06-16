@@ -36,6 +36,14 @@ import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class WorkflowFirestore implements WorkflowRepository {
+  Future<WorkflowEntity> addEntity(String documentID, WorkflowEntity value) {
+    return WorkflowCollection.doc(documentID).set(value.toDocument()).then((_) => value);
+  }
+
+  Future<WorkflowEntity> updateEntity(String documentID, WorkflowEntity value) {
+    return WorkflowCollection.doc(documentID).update(value.toDocument()).then((_) => value);
+  }
+
   Future<WorkflowModel> add(WorkflowModel value) {
     return WorkflowCollection.doc(value.documentID).set(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
@@ -54,6 +62,21 @@ class WorkflowFirestore implements WorkflowRepository {
 
   Future<WorkflowModel?> _populateDocPlus(DocumentSnapshot value) async {
     return WorkflowModel.fromEntityPlus(value.id, WorkflowEntity.fromMap(value.data()), appId: appId);  }
+
+  Future<WorkflowEntity?> getEntity(String? id, {Function(Exception)? onError}) async {
+    try {
+      var collection = WorkflowCollection.doc(id);
+      var doc = await collection.get();
+      return WorkflowEntity.fromMap(doc.data());
+    } on Exception catch(e) {
+      if (onError != null) {
+        onError(e);
+      } else {
+        print("Error whilst retrieving Workflow with id $id");
+        print("Exceptoin: $e");
+      }
+    };
+  }
 
   Future<WorkflowModel?> get(String? id, {Function(Exception)? onError}) async {
     try {

@@ -38,6 +38,8 @@ typedef WorkflowModelTrigger(List<WorkflowModel?> list);
 typedef WorkflowChanged(WorkflowModel? value);
 
 abstract class WorkflowRepository extends RepositoryBase<WorkflowModel> {
+  Future<WorkflowEntity> addEntity(String documentID, WorkflowEntity value);
+  Future<WorkflowEntity> updateEntity(String documentID, WorkflowEntity value);
   Future<WorkflowModel> add(WorkflowModel value);
   Future<void> delete(WorkflowModel value);
   Future<WorkflowModel?> get(String? id, { Function(Exception)? onError });

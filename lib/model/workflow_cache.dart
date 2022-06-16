@@ -47,6 +47,14 @@ class WorkflowCache implements WorkflowRepository {
     });
   }
 
+  Future<WorkflowEntity> addEntity(String documentID, WorkflowEntity value) {
+    return reference.addEntity(documentID, value);
+  }
+
+  Future<WorkflowEntity> updateEntity(String documentID, WorkflowEntity value) {
+    return reference.updateEntity(documentID, value);
+  }
+
   Future<void> delete(WorkflowModel value){
     fullCache.remove(value.documentID);
     reference.delete(value);

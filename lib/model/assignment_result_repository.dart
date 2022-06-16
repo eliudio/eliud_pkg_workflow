@@ -34,6 +34,8 @@ typedef AssignmentResultModelTrigger(List<AssignmentResultModel?> list);
 typedef AssignmentResultChanged(AssignmentResultModel? value);
 
 abstract class AssignmentResultRepository extends RepositoryBase<AssignmentResultModel> {
+  Future<AssignmentResultEntity> addEntity(String documentID, AssignmentResultEntity value);
+  Future<AssignmentResultEntity> updateEntity(String documentID, AssignmentResultEntity value);
   Future<AssignmentResultModel> add(AssignmentResultModel value);
   Future<void> delete(AssignmentResultModel value);
   Future<AssignmentResultModel?> get(String? id, { Function(Exception)? onError });

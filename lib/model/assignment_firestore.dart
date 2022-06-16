@@ -36,6 +36,30 @@ import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentFirestore implements AssignmentRepository {
+  Future<AssignmentEntity> addEntity(String documentID, AssignmentEntity value) {
+    return AssignmentCollection.doc(documentID).set(value.toDocument()).then((_) => value).then((v) async {
+      var newValue = await getEntity(documentID);
+      if (newValue == null) {
+        return value;
+      } else {
+        return newValue;
+      }
+    })
+;
+  }
+
+  Future<AssignmentEntity> updateEntity(String documentID, AssignmentEntity value) {
+    return AssignmentCollection.doc(documentID).update(value.toDocument()).then((_) => value).then((v) async {
+      var newValue = await getEntity(documentID);
+      if (newValue == null) {
+        return value;
+      } else {
+        return newValue;
+      }
+    })
+;
+  }
+
   Future<AssignmentModel> add(AssignmentModel value) {
     return AssignmentCollection.doc(value.documentID).set(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) async {
       var newValue = await get(value.documentID);
@@ -70,6 +94,21 @@ class AssignmentFirestore implements AssignmentRepository {
 
   Future<AssignmentModel?> _populateDocPlus(DocumentSnapshot value) async {
     return AssignmentModel.fromEntityPlus(value.id, AssignmentEntity.fromMap(value.data()), appId: appId);  }
+
+  Future<AssignmentEntity?> getEntity(String? id, {Function(Exception)? onError}) async {
+    try {
+      var collection = AssignmentCollection.doc(id);
+      var doc = await collection.get();
+      return AssignmentEntity.fromMap(doc.data());
+    } on Exception catch(e) {
+      if (onError != null) {
+        onError(e);
+      } else {
+        print("Error whilst retrieving Assignment with id $id");
+        print("Exceptoin: $e");
+      }
+    };
+  }
 
   Future<AssignmentModel?> get(String? id, {Function(Exception)? onError}) async {
     try {
