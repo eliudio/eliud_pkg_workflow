@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
@@ -17,7 +18,7 @@ class ExampleTaskModel1 extends TaskModel {
       : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
 
   @override
-  TaskEntity toEntity({String? appId}) {
+  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
     return ExampleTaskEntity1(
         description: description, executeInstantly: executeInstantly);
   }

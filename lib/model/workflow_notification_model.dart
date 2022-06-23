@@ -18,6 +18,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:eliud_core/model/app_model.dart';
 
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
@@ -73,17 +74,13 @@ class WorkflowNotificationModel {
           addressee == other.addressee;
 
   @override
-  Future<String> toRichJsonString({String? appId}) async {
-    var document = toEntity(appId: appId).toDocument();
-    return jsonEncode(document);
-  }
-
-  @override
   String toString() {
     return 'WorkflowNotificationModel{message: $message, addressee: $addressee}';
   }
 
-  WorkflowNotificationEntity toEntity({String? appId}) {
+  WorkflowNotificationEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+    if (referencesCollector != null) {
+    }
     return WorkflowNotificationEntity(
           message: (message != null) ? message : null, 
           addressee: (addressee != null) ? addressee!.index : null, 

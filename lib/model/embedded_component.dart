@@ -208,6 +208,15 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
     throw UnimplementedError();
   }
   
+  @override
+  Future<AssignmentEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  AssignmentEntity? fromMap(Object? o) {
+    throw UnimplementedError();
+  }
 
     Future<void> deleteAll() async {}
 }
@@ -319,6 +328,15 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
     throw UnimplementedError();
   }
   
+  @override
+  Future<AssignmentResultEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  AssignmentResultEntity? fromMap(Object? o) {
+    throw UnimplementedError();
+  }
 
     Future<void> deleteAll() async {}
 }
@@ -430,6 +448,15 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
     throw UnimplementedError();
   }
   
+  @override
+  Future<WorkflowTaskEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  WorkflowTaskEntity? fromMap(Object? o) {
+    throw UnimplementedError();
+  }
 
     Future<void> deleteAll() async {}
 }

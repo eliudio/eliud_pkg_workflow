@@ -18,6 +18,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:eliud_core/model/app_model.dart';
 
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
@@ -86,23 +87,18 @@ class WorkflowTaskModel implements ModelBase {
           responsible == other.responsible;
 
   @override
-  Future<String> toRichJsonString({String? appId}) async {
-    var document = toEntity(appId: appId).toDocument();
-    document['documentID'] = documentID;
-    return jsonEncode(document);
-  }
-
-  @override
   String toString() {
     return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  WorkflowTaskEntity toEntity({String? appId}) {
+  WorkflowTaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+    if (referencesCollector != null) {
+    }
     return WorkflowTaskEntity(
           seqNumber: (seqNumber != null) ? seqNumber : null, 
-          task: (task != null) ? task!.toEntity(appId: appId) : null, 
-          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId) : null, 
-          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId) : null, 
+          task: (task != null) ? task!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
           responsible: (responsible != null) ? responsible!.index : null, 
     );
   }

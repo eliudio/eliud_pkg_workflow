@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
@@ -17,7 +18,7 @@ class WorkflowActionModel extends ActionModel {
   WorkflowActionModel(AppModel app, { this.workflow, DisplayConditionsModel? conditions} ) : super(app, actionType: WorkflowActionEntity.label, conditions: conditions);
 
   @override
-  WorkflowActionEntity toEntity({String? appId}) {
+  WorkflowActionEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow!.documentID : null,
         conditions: (conditions != null) ? conditions!.toEntity(): null,

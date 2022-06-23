@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/blocs/access/state/access_state.dart';
@@ -30,7 +31,7 @@ abstract class TaskModel {
 
     TaskModel({required this.identifier, required this.description, required this.executeInstantly});
 
-  TaskEntity toEntity({String? appId});
+  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector});
 
   static TaskModel? fromEntity(TaskEntity? entity) {
     if (entity == null) return null;

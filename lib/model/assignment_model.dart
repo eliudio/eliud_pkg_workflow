@@ -19,6 +19,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:eliud_core/model/app_model.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -108,13 +109,6 @@ class AssignmentModel implements ModelBase, WithAppId {
           rejectMessage == other.rejectMessage;
 
   @override
-  Future<String> toRichJsonString({String? appId}) async {
-    var document = toEntity(appId: appId).toDocument();
-    document['documentID'] = documentID;
-    return jsonEncode(document);
-  }
-
-  @override
   String toString() {
     String resultsCurrentCsv = (resultsCurrent == null) ? '' : resultsCurrent!.join(', ');
     String resultsPreviousCsv = (resultsPrevious == null) ? '' : resultsPrevious!.join(', ');
@@ -122,25 +116,28 @@ class AssignmentModel implements ModelBase, WithAppId {
     return 'AssignmentModel{documentID: $documentID, appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
-  AssignmentEntity toEntity({String? appId}) {
+  AssignmentEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+    if (referencesCollector != null) {
+      if (workflow != null) referencesCollector.add(workflow!);
+    }
     return AssignmentEntity(
           appId: (appId != null) ? appId : null, 
           reporterId: (reporterId != null) ? reporterId : null, 
           assigneeId: (assigneeId != null) ? assigneeId : null, 
-          task: (task != null) ? task!.toEntity(appId: appId) : null, 
+          task: (task != null) ? task!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
           workflowId: (workflow != null) ? workflow!.documentID : null, 
           workflowTaskSeqNumber: (workflowTaskSeqNumber != null) ? workflowTaskSeqNumber : null, 
           timestamp: (timestamp == null) ? null : timestamp!.millisecondsSinceEpoch, 
           status: (status != null) ? status!.index : null, 
           resultsCurrent: (resultsCurrent != null) ? resultsCurrent
-            !.map((item) => item.toEntity(appId: appId))
+            !.map((item) => item.toEntity(appId: appId, referencesCollector: referencesCollector))
             .toList() : null, 
           resultsPrevious: (resultsPrevious != null) ? resultsPrevious
-            !.map((item) => item.toEntity(appId: appId))
+            !.map((item) => item.toEntity(appId: appId, referencesCollector: referencesCollector))
             .toList() : null, 
           triggeredById: (triggeredById != null) ? triggeredById : null, 
-          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId) : null, 
-          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId) : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
     );
   }
 

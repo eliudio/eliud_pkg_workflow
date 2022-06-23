@@ -115,6 +115,16 @@ class WorkflowCache implements WorkflowRepository {
     });
   }
 
+  @override
+  Future<WorkflowEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    return reference.getEntity(id, onError: onError);
+  }
+
+  @override
+  WorkflowEntity? fromMap(Object? o) {
+    return reference.fromMap(o);
+  }
+
   Future<void> deleteAll() {
     return reference.deleteAll();
   }

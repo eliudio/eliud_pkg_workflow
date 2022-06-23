@@ -37,7 +37,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 typedef AssignmentViewModelTrigger(List<AssignmentViewModel?> list);
 typedef AssignmentViewChanged(AssignmentViewModel? value);
 
-abstract class AssignmentViewRepository extends RepositoryBase<AssignmentViewModel> {
+abstract class AssignmentViewRepository extends RepositoryBase<AssignmentViewModel, AssignmentViewEntity> {
   Future<AssignmentViewEntity> addEntity(String documentID, AssignmentViewEntity value);
   Future<AssignmentViewEntity> updateEntity(String documentID, AssignmentViewEntity value);
   Future<AssignmentViewModel> add(AssignmentViewModel value);

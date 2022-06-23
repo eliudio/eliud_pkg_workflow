@@ -37,7 +37,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 typedef WorkflowModelTrigger(List<WorkflowModel?> list);
 typedef WorkflowChanged(WorkflowModel? value);
 
-abstract class WorkflowRepository extends RepositoryBase<WorkflowModel> {
+abstract class WorkflowRepository extends RepositoryBase<WorkflowModel, WorkflowEntity> {
   Future<WorkflowEntity> addEntity(String documentID, WorkflowEntity value);
   Future<WorkflowEntity> updateEntity(String documentID, WorkflowEntity value);
   Future<WorkflowModel> add(WorkflowModel value);

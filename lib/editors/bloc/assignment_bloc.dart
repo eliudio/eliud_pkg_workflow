@@ -22,7 +22,9 @@ import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_bloc.dart';
 import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_event.dart';
 import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_state.dart';
 
-class AssignmentViewBloc extends EditorBaseBloc<AssignmentViewModel> {
+import '../../model/assignment_view_entity.dart';
+
+class AssignmentViewBloc extends EditorBaseBloc<AssignmentViewModel, AssignmentViewEntity> {
   AssignmentViewBloc(String appId, EditorFeedback feedback)
       : super(appId, assignmentViewRepository(appId: appId)!, feedback);
 

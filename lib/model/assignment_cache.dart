@@ -115,6 +115,16 @@ class AssignmentCache implements AssignmentRepository {
     });
   }
 
+  @override
+  Future<AssignmentEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    return reference.getEntity(id, onError: onError);
+  }
+
+  @override
+  AssignmentEntity? fromMap(Object? o) {
+    return reference.fromMap(o);
+  }
+
   Future<void> deleteAll() {
     return reference.deleteAll();
   }
