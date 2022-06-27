@@ -40,6 +40,9 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class AssignmentViewModel implements ModelBase, WithAppId {
+  static const String packageName = 'eliud_pkg_workflow';
+  static const String id = 'AssignmentView';
+
   String documentID;
   String appId;
   String? title;
@@ -73,7 +76,7 @@ class AssignmentViewModel implements ModelBase, WithAppId {
     return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  AssignmentViewEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  AssignmentViewEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return AssignmentViewEntity(

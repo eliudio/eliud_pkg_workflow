@@ -50,6 +50,9 @@ WorkflowNotificationAddressee toWorkflowNotificationAddressee(int? index) {
 
 
 class WorkflowNotificationModel {
+  static const String packageName = 'eliud_pkg_workflow';
+  static const String id = 'WorkflowNotification';
+
   String? message;
 
   // Who's to be notified after completing the  to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
@@ -78,7 +81,7 @@ class WorkflowNotificationModel {
     return 'WorkflowNotificationModel{message: $message, addressee: $addressee}';
   }
 
-  WorkflowNotificationEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  WorkflowNotificationEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return WorkflowNotificationEntity(

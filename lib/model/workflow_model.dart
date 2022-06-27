@@ -41,6 +41,9 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class WorkflowModel implements ModelBase, WithAppId {
+  static const String packageName = 'eliud_pkg_workflow';
+  static const String id = 'Workflow';
+
   String documentID;
   String? name;
   List<WorkflowTaskModel>? workflowTask;
@@ -76,7 +79,7 @@ class WorkflowModel implements ModelBase, WithAppId {
     return 'WorkflowModel{documentID: $documentID, name: $name, workflowTask: WorkflowTask[] { $workflowTaskCsv }, appId: $appId}';
   }
 
-  WorkflowEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  WorkflowEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return WorkflowEntity(

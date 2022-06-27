@@ -54,6 +54,9 @@ AssignmentStatus toAssignmentStatus(int? index) {
 
 
 class AssignmentModel implements ModelBase, WithAppId {
+  static const String packageName = 'eliud_pkg_workflow';
+  static const String id = 'Assignment';
+
   String documentID;
 
   // This is the identifier of the app to which this feed belongs
@@ -116,9 +119,9 @@ class AssignmentModel implements ModelBase, WithAppId {
     return 'AssignmentModel{documentID: $documentID, appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
-  AssignmentEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  AssignmentEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
-      if (workflow != null) referencesCollector.add(workflow!);
+      if (workflow != null) referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
     }
     return AssignmentEntity(
           appId: (appId != null) ? appId : null, 

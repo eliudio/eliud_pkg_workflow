@@ -36,6 +36,9 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class AssignmentResultModel implements ModelBase {
+  static const String packageName = 'eliud_pkg_workflow';
+  static const String id = 'AssignmentResult';
+
   String documentID;
   String? key;
   String? value;
@@ -65,7 +68,7 @@ class AssignmentResultModel implements ModelBase {
     return 'AssignmentResultModel{documentID: $documentID, key: $key, value: $value}';
   }
 
-  AssignmentResultEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  AssignmentResultEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return AssignmentResultEntity(

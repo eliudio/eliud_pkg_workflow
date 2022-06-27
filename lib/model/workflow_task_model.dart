@@ -50,6 +50,9 @@ WorkflowTaskResponsible toWorkflowTaskResponsible(int? index) {
 
 
 class WorkflowTaskModel implements ModelBase {
+  static const String packageName = 'eliud_pkg_workflow';
+  static const String id = 'WorkflowTask';
+
   String documentID;
   int? seqNumber;
   TaskModel? task;
@@ -91,7 +94,7 @@ class WorkflowTaskModel implements ModelBase {
     return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  WorkflowTaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  WorkflowTaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return WorkflowTaskEntity(

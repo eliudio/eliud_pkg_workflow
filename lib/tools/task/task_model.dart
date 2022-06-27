@@ -31,7 +31,7 @@ abstract class TaskModel {
 
     TaskModel({required this.identifier, required this.description, required this.executeInstantly});
 
-  TaskEntity toEntity({String? appId, List<ModelBase>? referencesCollector});
+  TaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector});
 
   static TaskModel? fromEntity(TaskEntity? entity) {
     if (entity == null) return null;
