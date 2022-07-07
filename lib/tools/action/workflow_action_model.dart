@@ -18,7 +18,10 @@ class WorkflowActionModel extends ActionModel {
   WorkflowActionModel(AppModel app, { this.workflow, DisplayConditionsModel? conditions} ) : super(app, actionType: WorkflowActionEntity.label, conditions: conditions);
 
   @override
-  WorkflowActionEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  WorkflowActionEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
+    if (referencesCollector != null) {
+      if (workflow != null) referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
+    }
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow!.documentID : null,
         conditions: (conditions != null) ? conditions!.toEntity(): null,

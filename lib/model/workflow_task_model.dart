@@ -94,7 +94,7 @@ class WorkflowTaskModel implements ModelBase {
     return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  WorkflowTaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  WorkflowTaskEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return WorkflowTaskEntity(

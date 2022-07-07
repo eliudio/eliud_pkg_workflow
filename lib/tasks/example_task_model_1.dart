@@ -18,7 +18,7 @@ class ExampleTaskModel1 extends TaskModel {
       : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
 
   @override
-  TaskEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  TaskEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     return ExampleTaskEntity1(
         description: description, executeInstantly: executeInstantly);
   }

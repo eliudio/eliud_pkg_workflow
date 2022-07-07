@@ -79,7 +79,7 @@ class WorkflowModel implements ModelBase, WithAppId {
     return 'WorkflowModel{documentID: $documentID, name: $name, workflowTask: WorkflowTask[] { $workflowTaskCsv }, appId: $appId}';
   }
 
-  WorkflowEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  WorkflowEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return WorkflowEntity(

@@ -76,7 +76,7 @@ class AssignmentViewModel implements ModelBase, WithAppId {
     return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  AssignmentViewEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  AssignmentViewEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return AssignmentViewEntity(
