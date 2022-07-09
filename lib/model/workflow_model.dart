@@ -42,7 +42,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class WorkflowModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_workflow';
-  static const String id = 'Workflow';
+  static const String id = 'workflows';
 
   String documentID;
   String? name;

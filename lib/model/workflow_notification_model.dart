@@ -51,7 +51,7 @@ WorkflowNotificationAddressee toWorkflowNotificationAddressee(int? index) {
 
 class WorkflowNotificationModel {
   static const String packageName = 'eliud_pkg_workflow';
-  static const String id = 'WorkflowNotification';
+  static const String id = 'workflowNotifications';
 
   String? message;
 

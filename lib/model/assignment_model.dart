@@ -55,7 +55,7 @@ AssignmentStatus toAssignmentStatus(int? index) {
 
 class AssignmentModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_workflow';
-  static const String id = 'Assignment';
+  static const String id = 'assignments';
 
   String documentID;
 

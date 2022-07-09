@@ -51,7 +51,7 @@ WorkflowTaskResponsible toWorkflowTaskResponsible(int? index) {
 
 class WorkflowTaskModel implements ModelBase {
   static const String packageName = 'eliud_pkg_workflow';
-  static const String id = 'WorkflowTask';
+  static const String id = 'workflowTasks';
 
   String documentID;
   int? seqNumber;

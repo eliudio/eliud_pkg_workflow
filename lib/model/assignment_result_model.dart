@@ -37,7 +37,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class AssignmentResultModel implements ModelBase {
   static const String packageName = 'eliud_pkg_workflow';
-  static const String id = 'AssignmentResult';
+  static const String id = 'assignmentResults';
 
   String documentID;
   String? key;

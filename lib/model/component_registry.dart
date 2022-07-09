@@ -38,6 +38,9 @@ class ComponentRegistry {
     Registry.registry()!.addComponentSpec('eliud_pkg_workflow', 'workflow', [
       ComponentSpec('assignmentViews', AssignmentViewComponentConstructorDefault(), AssignmentViewComponentSelector(), AssignmentViewComponentEditorConstructor(), ({String? appId}) => assignmentViewRepository(appId: appId)! ), 
     ]);
+      Registry.registry()!.registerRetrieveRepository('eliud_pkg_workflow', 'assignments', ({String? appId}) => assignmentRepository(appId: appId)!);
+      Registry.registry()!.registerRetrieveRepository('eliud_pkg_workflow', 'assignmentViews', ({String? appId}) => assignmentViewRepository(appId: appId)!);
+      Registry.registry()!.registerRetrieveRepository('eliud_pkg_workflow', 'workflows', ({String? appId}) => workflowRepository(appId: appId)!);
 
   }
 }

@@ -41,7 +41,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class AssignmentViewModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_workflow';
-  static const String id = 'AssignmentView';
+  static const String id = 'assignmentViews';
 
   String documentID;
   String appId;
