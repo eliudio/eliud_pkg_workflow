@@ -94,14 +94,20 @@ class WorkflowTaskModel implements ModelBase {
     return 'WorkflowTaskModel{documentID: $documentID, seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  WorkflowTaskEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-    }
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    if (task != null) referencesCollector.addAll(await task!.collectReferences(appId: appId));
+    if (confirmMessage != null) referencesCollector.addAll(await confirmMessage!.collectReferences(appId: appId));
+    if (rejectMessage != null) referencesCollector.addAll(await rejectMessage!.collectReferences(appId: appId));
+    return referencesCollector;
+  }
+
+  WorkflowTaskEntity toEntity({String? appId}) {
     return WorkflowTaskEntity(
           seqNumber: (seqNumber != null) ? seqNumber : null, 
-          task: (task != null) ? task!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
-          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
-          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          task: (task != null) ? task!.toEntity(appId: appId) : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId) : null, 
           responsible: (responsible != null) ? responsible!.index : null, 
     );
   }

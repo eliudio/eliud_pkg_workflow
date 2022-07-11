@@ -31,7 +31,9 @@ abstract class TaskModel {
 
     TaskModel({required this.identifier, required this.description, required this.executeInstantly});
 
-  TaskEntity toEntity({String? appId, List<ModelReference>? referencesCollector});
+  TaskEntity toEntity({String? appId});
+
+  Future<List<ModelReference>> collectReferences({String? appId});
 
   static TaskModel? fromEntity(TaskEntity? entity) {
     if (entity == null) return null;

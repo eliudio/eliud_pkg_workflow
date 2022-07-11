@@ -79,13 +79,21 @@ class WorkflowModel implements ModelBase, WithAppId {
     return 'WorkflowModel{documentID: $documentID, name: $name, workflowTask: WorkflowTask[] { $workflowTaskCsv }, appId: $appId}';
   }
 
-  WorkflowEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    if (workflowTask != null) {
+      for (var item in workflowTask!) {
+        referencesCollector.addAll(await item.collectReferences(appId: appId));
+      }
     }
+    return referencesCollector;
+  }
+
+  WorkflowEntity toEntity({String? appId}) {
     return WorkflowEntity(
           name: (name != null) ? name : null, 
           workflowTask: (workflowTask != null) ? workflowTask
-            !.map((item) => item.toEntity(appId: appId, referencesCollector: referencesCollector))
+            !.map((item) => item.toEntity(appId: appId))
             .toList() : null, 
           appId: (appId != null) ? appId : null, 
     );

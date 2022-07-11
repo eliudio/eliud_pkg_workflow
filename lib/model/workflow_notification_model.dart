@@ -81,9 +81,12 @@ class WorkflowNotificationModel {
     return 'WorkflowNotificationModel{message: $message, addressee: $addressee}';
   }
 
-  WorkflowNotificationEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-    }
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    return referencesCollector;
+  }
+
+  WorkflowNotificationEntity toEntity({String? appId}) {
     return WorkflowNotificationEntity(
           message: (message != null) ? message : null, 
           addressee: (addressee != null) ? addressee!.index : null, 

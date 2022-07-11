@@ -18,14 +18,18 @@ class WorkflowActionModel extends ActionModel {
   WorkflowActionModel(AppModel app, { this.workflow, DisplayConditionsModel? conditions} ) : super(app, actionType: WorkflowActionEntity.label, conditions: conditions);
 
   @override
-  WorkflowActionEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-      if (workflow != null) referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
-    }
+  WorkflowActionEntity toEntity({String? appId}) {
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow!.documentID : null,
         conditions: (conditions != null) ? conditions!.toEntity(): null,
         appId: appId);
+  }
+
+  @override
+  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+    List<ModelReference> referencesCollector = [];
+    if (workflow != null) referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
+    return referencesCollector;
   }
 
   static Future<WorkflowActionModel?> fromEntity(WorkflowActionEntity? entity) async {
@@ -79,6 +83,7 @@ class WorkflowActionModel extends ActionModel {
       return 'Run workflow '  + (workflow!.documentID);
     }
   }
+
 }
 
 class WorkflowActionMapper implements ActionModelMapper {

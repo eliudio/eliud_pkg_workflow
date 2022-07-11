@@ -68,9 +68,12 @@ class AssignmentResultModel implements ModelBase {
     return 'AssignmentResultModel{documentID: $documentID, key: $key, value: $value}';
   }
 
-  AssignmentResultEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-    }
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    return referencesCollector;
+  }
+
+  AssignmentResultEntity toEntity({String? appId}) {
     return AssignmentResultEntity(
           key: (key != null) ? key : null, 
           value: (value != null) ? value : null, 

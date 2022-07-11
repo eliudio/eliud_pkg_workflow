@@ -76,14 +76,18 @@ class AssignmentViewModel implements ModelBase, WithAppId {
     return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  AssignmentViewEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-    }
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    if (conditions != null) referencesCollector.addAll(await conditions!.collectReferences(appId: appId));
+    return referencesCollector;
+  }
+
+  AssignmentViewEntity toEntity({String? appId}) {
     return AssignmentViewEntity(
           appId: (appId != null) ? appId : null, 
           title: (title != null) ? title : null, 
           description: (description != null) ? description : null, 
-          conditions: (conditions != null) ? conditions!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
     );
   }
 

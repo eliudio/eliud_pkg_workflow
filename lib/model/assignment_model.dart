@@ -119,28 +119,47 @@ class AssignmentModel implements ModelBase, WithAppId {
     return 'AssignmentModel{documentID: $documentID, appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflow: $workflow, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
-  AssignmentEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-      if (workflow != null) referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    if (workflow != null) {
+      referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
     }
+    if (task != null) referencesCollector.addAll(await task!.collectReferences(appId: appId));
+    if (workflow != null) referencesCollector.addAll(await workflow!.collectReferences(appId: appId));
+    if (resultsCurrent != null) {
+      for (var item in resultsCurrent!) {
+        referencesCollector.addAll(await item.collectReferences(appId: appId));
+      }
+    }
+    if (resultsPrevious != null) {
+      for (var item in resultsPrevious!) {
+        referencesCollector.addAll(await item.collectReferences(appId: appId));
+      }
+    }
+    if (confirmMessage != null) referencesCollector.addAll(await confirmMessage!.collectReferences(appId: appId));
+    if (rejectMessage != null) referencesCollector.addAll(await rejectMessage!.collectReferences(appId: appId));
+    return referencesCollector;
+  }
+
+  AssignmentEntity toEntity({String? appId}) {
     return AssignmentEntity(
           appId: (appId != null) ? appId : null, 
           reporterId: (reporterId != null) ? reporterId : null, 
           assigneeId: (assigneeId != null) ? assigneeId : null, 
-          task: (task != null) ? task!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          task: (task != null) ? task!.toEntity(appId: appId) : null, 
           workflowId: (workflow != null) ? workflow!.documentID : null, 
           workflowTaskSeqNumber: (workflowTaskSeqNumber != null) ? workflowTaskSeqNumber : null, 
           timestamp: (timestamp == null) ? null : timestamp!.millisecondsSinceEpoch, 
           status: (status != null) ? status!.index : null, 
           resultsCurrent: (resultsCurrent != null) ? resultsCurrent
-            !.map((item) => item.toEntity(appId: appId, referencesCollector: referencesCollector))
+            !.map((item) => item.toEntity(appId: appId))
             .toList() : null, 
           resultsPrevious: (resultsPrevious != null) ? resultsPrevious
-            !.map((item) => item.toEntity(appId: appId, referencesCollector: referencesCollector))
+            !.map((item) => item.toEntity(appId: appId))
             .toList() : null, 
           triggeredById: (triggeredById != null) ? triggeredById : null, 
-          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
-          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          confirmMessage: (confirmMessage != null) ? confirmMessage!.toEntity(appId: appId) : null, 
+          rejectMessage: (rejectMessage != null) ? rejectMessage!.toEntity(appId: appId) : null, 
     );
   }
 
