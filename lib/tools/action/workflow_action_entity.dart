@@ -32,4 +32,9 @@ class WorkflowActionEntity extends ActionEntity {
       return null;
     }
   }
+
+  @override
+  WorkflowActionEntity copyWith({String? appId, DisplayConditionsEntity? conditions, String? workflowId }) {
+    return WorkflowActionEntity(appId: appId ?? this.appID, conditions : conditions ?? this.conditions, workflowId: workflowId ?? this.workflowId);
+  }
 }

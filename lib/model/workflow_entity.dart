@@ -30,7 +30,9 @@ class WorkflowEntity implements EntityBase {
 
   WorkflowEntity({this.name, this.workflowTask, required this.appId, });
 
-
+  WorkflowEntity copyWith({String? documentID, String? name, List<WorkflowTaskEntity>? workflowTask, String? appId, }) {
+    return WorkflowEntity(name : name ?? this.name, workflowTask : workflowTask ?? this.workflowTask, appId : appId ?? this.appId, );
+  }
   List<Object?> get props => [name, workflowTask, appId, ];
 
   @override
@@ -73,6 +75,12 @@ class WorkflowEntity implements EntityBase {
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
     return theDocument;
+  }
+
+  @override
+  WorkflowEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith(appId: newAppId);
+    return newEntity;
   }
 
   static WorkflowEntity? fromJsonString(String json) {

@@ -31,7 +31,9 @@ class AssignmentViewEntity implements EntityBase {
 
   AssignmentViewEntity({required this.appId, this.title, this.description, this.conditions, });
 
-
+  AssignmentViewEntity copyWith({String? documentID, String? appId, String? title, String? description, StorageConditionsEntity? conditions, }) {
+    return AssignmentViewEntity(appId : appId ?? this.appId, title : title ?? this.title, description : description ?? this.description, conditions : conditions ?? this.conditions, );
+  }
   List<Object?> get props => [appId, title, description, conditions, ];
 
   @override
@@ -71,6 +73,12 @@ class AssignmentViewEntity implements EntityBase {
     if (conditions != null) theDocument["conditions"] = conditionsMap;
       else theDocument["conditions"] = null;
     return theDocument;
+  }
+
+  @override
+  AssignmentViewEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith(appId: newAppId);
+    return newEntity;
   }
 
   static AssignmentViewEntity? fromJsonString(String json) {

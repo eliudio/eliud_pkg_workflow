@@ -31,7 +31,9 @@ class WorkflowTaskEntity implements EntityBase {
 
   WorkflowTaskEntity({this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, });
 
-
+  WorkflowTaskEntity copyWith({String? documentID, int? seqNumber, TaskEntity? task, WorkflowNotificationEntity? confirmMessage, WorkflowNotificationEntity? rejectMessage, int? responsible, }) {
+    return WorkflowTaskEntity(seqNumber : seqNumber ?? this.seqNumber, task : task ?? this.task, confirmMessage : confirmMessage ?? this.confirmMessage, rejectMessage : rejectMessage ?? this.rejectMessage, responsible : responsible ?? this.responsible, );
+  }
   List<Object?> get props => [seqNumber, task, confirmMessage, rejectMessage, responsible, ];
 
   @override
@@ -88,6 +90,12 @@ class WorkflowTaskEntity implements EntityBase {
     if (responsible != null) theDocument["responsible"] = responsible;
       else theDocument["responsible"] = null;
     return theDocument;
+  }
+
+  @override
+  WorkflowTaskEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith();
+    return newEntity;
   }
 
   static WorkflowTaskEntity? fromJsonString(String json) {

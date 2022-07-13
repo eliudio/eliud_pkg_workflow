@@ -40,8 +40,8 @@ class AssignmentEntity implements EntityBase {
 
   AssignmentEntity({required this.appId, required this.reporterId, this.assigneeId, this.task, this.workflowId, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, });
 
-  AssignmentEntity copyWith({Object? timestamp, }) {
-    return AssignmentEntity(appId: appId, reporterId: reporterId, assigneeId: assigneeId, task: task, workflowId: workflowId, workflowTaskSeqNumber: workflowTaskSeqNumber, timestamp : timestamp, status: status, resultsCurrent: resultsCurrent, resultsPrevious: resultsPrevious, triggeredById: triggeredById, confirmMessage: confirmMessage, rejectMessage: rejectMessage, );
+  AssignmentEntity copyWith({String? documentID, String? appId, String? reporterId, String? assigneeId, TaskEntity? task, String? workflowId, int? workflowTaskSeqNumber, Object? timestamp, int? status, List<AssignmentResultEntity>? resultsCurrent, List<AssignmentResultEntity>? resultsPrevious, String? triggeredById, WorkflowNotificationEntity? confirmMessage, WorkflowNotificationEntity? rejectMessage, }) {
+    return AssignmentEntity(appId : appId ?? this.appId, reporterId : reporterId ?? this.reporterId, assigneeId : assigneeId ?? this.assigneeId, task : task ?? this.task, workflowId : workflowId ?? this.workflowId, workflowTaskSeqNumber : workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp : timestamp ?? this.timestamp, status : status ?? this.status, resultsCurrent : resultsCurrent ?? this.resultsCurrent, resultsPrevious : resultsPrevious ?? this.resultsPrevious, triggeredById : triggeredById ?? this.triggeredById, confirmMessage : confirmMessage ?? this.confirmMessage, rejectMessage : rejectMessage ?? this.rejectMessage, );
   }
   List<Object?> get props => [appId, reporterId, assigneeId, task, workflowId, workflowTaskSeqNumber, timestamp, status, resultsCurrent, resultsPrevious, triggeredById, confirmMessage, rejectMessage, ];
 
@@ -147,6 +147,12 @@ class AssignmentEntity implements EntityBase {
     if (rejectMessage != null) theDocument["rejectMessage"] = rejectMessageMap;
       else theDocument["rejectMessage"] = null;
     return theDocument;
+  }
+
+  @override
+  AssignmentEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith(appId: newAppId);
+    return newEntity;
   }
 
   static AssignmentEntity? fromJsonString(String json) {

@@ -28,7 +28,9 @@ class AssignmentResultEntity implements EntityBase {
 
   AssignmentResultEntity({this.key, this.value, });
 
-
+  AssignmentResultEntity copyWith({String? documentID, String? key, String? value, }) {
+    return AssignmentResultEntity(key : key ?? this.key, value : value ?? this.value, );
+  }
   List<Object?> get props => [key, value, ];
 
   @override
@@ -53,6 +55,12 @@ class AssignmentResultEntity implements EntityBase {
     if (value != null) theDocument["value"] = value;
       else theDocument["value"] = null;
     return theDocument;
+  }
+
+  @override
+  AssignmentResultEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith();
+    return newEntity;
   }
 
   static AssignmentResultEntity? fromJsonString(String json) {

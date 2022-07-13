@@ -28,7 +28,9 @@ class WorkflowNotificationEntity implements EntityBase {
 
   WorkflowNotificationEntity({this.message, this.addressee, });
 
-
+  WorkflowNotificationEntity copyWith({String? message, int? addressee, }) {
+    return WorkflowNotificationEntity(message : message ?? this.message, addressee : addressee ?? this.addressee, );
+  }
   List<Object?> get props => [message, addressee, ];
 
   @override
@@ -53,6 +55,12 @@ class WorkflowNotificationEntity implements EntityBase {
     if (addressee != null) theDocument["addressee"] = addressee;
       else theDocument["addressee"] = null;
     return theDocument;
+  }
+
+  @override
+  WorkflowNotificationEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith();
+    return newEntity;
   }
 
   static WorkflowNotificationEntity? fromJsonString(String json) {
