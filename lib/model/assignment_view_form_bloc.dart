@@ -46,11 +46,7 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
   final FormAction? formAction;
   final String? appId;
 
-  AssignmentViewFormBloc(this.appId, { this.formAction }): super(AssignmentViewFormUninitialized());
-  @override
-  Stream<AssignmentViewFormState> mapEventToState(AssignmentViewFormEvent event) async* {
-    final currentState = state;
-    if (currentState is AssignmentViewFormUninitialized) {
+  AssignmentViewFormBloc(this.appId, { this.formAction }): super(AssignmentViewFormUninitialized()) {
       on <InitialiseNewAssignmentViewFormEvent> ((event, emit) {
         AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: AssignmentViewModel(
                                                documentID: "",
@@ -63,17 +59,19 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
       });
 
 
-      if (event is InitialiseAssignmentViewFormEvent) {
+      on <InitialiseAssignmentViewFormEvent> ((event, emit) async {
         // Need to re-retrieve the document from the repository so that I get all associated types
         AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: await assignmentViewRepository(appId: appId)!.get(event.value!.documentID));
         emit(loaded);
-      } else if (event is InitialiseAssignmentViewFormNoLoadEvent) {
+      });
+      on <InitialiseAssignmentViewFormNoLoadEvent> ((event, emit) async {
         AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is AssignmentViewFormInitialized) {
+      });
       AssignmentViewModel? newValue = null;
       on <ChangedAssignmentViewDocumentID> ((event, emit) async {
+      if (state is AssignmentViewFormInitialized) {
+        final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
           emit(await _isDocumentIDValid(event.value, newValue!));
@@ -81,23 +79,32 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
           emit(SubmittableAssignmentViewForm(value: newValue));
         }
 
+      }
       });
       on <ChangedAssignmentViewTitle> ((event, emit) async {
+      if (state is AssignmentViewFormInitialized) {
+        final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(title: event.value);
         emit(SubmittableAssignmentViewForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentViewDescription> ((event, emit) async {
+      if (state is AssignmentViewFormInitialized) {
+        final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(description: event.value);
         emit(SubmittableAssignmentViewForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentViewConditions> ((event, emit) async {
+      if (state is AssignmentViewFormInitialized) {
+        final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(conditions: event.value);
         emit(SubmittableAssignmentViewForm(value: newValue));
 
+      }
       });
-    }
   }
 
 

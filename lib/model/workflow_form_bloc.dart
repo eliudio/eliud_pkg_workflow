@@ -46,11 +46,7 @@ class WorkflowFormBloc extends Bloc<WorkflowFormEvent, WorkflowFormState> {
   final FormAction? formAction;
   final String? appId;
 
-  WorkflowFormBloc(this.appId, { this.formAction }): super(WorkflowFormUninitialized());
-  @override
-  Stream<WorkflowFormState> mapEventToState(WorkflowFormEvent event) async* {
-    final currentState = state;
-    if (currentState is WorkflowFormUninitialized) {
+  WorkflowFormBloc(this.appId, { this.formAction }): super(WorkflowFormUninitialized()) {
       on <InitialiseNewWorkflowFormEvent> ((event, emit) {
         WorkflowFormLoaded loaded = WorkflowFormLoaded(value: WorkflowModel(
                                                documentID: "",
@@ -63,17 +59,19 @@ class WorkflowFormBloc extends Bloc<WorkflowFormEvent, WorkflowFormState> {
       });
 
 
-      if (event is InitialiseWorkflowFormEvent) {
+      on <InitialiseWorkflowFormEvent> ((event, emit) async {
         // Need to re-retrieve the document from the repository so that I get all associated types
         WorkflowFormLoaded loaded = WorkflowFormLoaded(value: await workflowRepository(appId: appId)!.get(event.value!.documentID));
         emit(loaded);
-      } else if (event is InitialiseWorkflowFormNoLoadEvent) {
+      });
+      on <InitialiseWorkflowFormNoLoadEvent> ((event, emit) async {
         WorkflowFormLoaded loaded = WorkflowFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is WorkflowFormInitialized) {
+      });
       WorkflowModel? newValue = null;
       on <ChangedWorkflowDocumentID> ((event, emit) async {
+      if (state is WorkflowFormInitialized) {
+        final currentState = state as WorkflowFormInitialized;
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
           emit(await _isDocumentIDValid(event.value, newValue!));
@@ -81,23 +79,32 @@ class WorkflowFormBloc extends Bloc<WorkflowFormEvent, WorkflowFormState> {
           emit(SubmittableWorkflowForm(value: newValue));
         }
 
+      }
       });
       on <ChangedWorkflowName> ((event, emit) async {
+      if (state is WorkflowFormInitialized) {
+        final currentState = state as WorkflowFormInitialized;
         newValue = currentState.value!.copyWith(name: event.value);
         emit(SubmittableWorkflowForm(value: newValue));
 
+      }
       });
       on <ChangedWorkflowWorkflowTask> ((event, emit) async {
+      if (state is WorkflowFormInitialized) {
+        final currentState = state as WorkflowFormInitialized;
         newValue = currentState.value!.copyWith(workflowTask: event.value);
         emit(SubmittableWorkflowForm(value: newValue));
 
+      }
       });
       on <ChangedWorkflowAppId> ((event, emit) async {
+      if (state is WorkflowFormInitialized) {
+        final currentState = state as WorkflowFormInitialized;
         newValue = currentState.value!.copyWith(appId: event.value);
         emit(SubmittableWorkflowForm(value: newValue));
 
+      }
       });
-    }
   }
 
 

@@ -41,11 +41,7 @@ import 'package:eliud_pkg_workflow/model/workflow_task_repository.dart';
 class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormState> {
   final String? appId;
 
-  WorkflowTaskFormBloc(this.appId, ): super(WorkflowTaskFormUninitialized());
-  @override
-  Stream<WorkflowTaskFormState> mapEventToState(WorkflowTaskFormEvent event) async* {
-    final currentState = state;
-    if (currentState is WorkflowTaskFormUninitialized) {
+  WorkflowTaskFormBloc(this.appId, ): super(WorkflowTaskFormUninitialized()) {
       on <InitialiseNewWorkflowTaskFormEvent> ((event, emit) {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: WorkflowTaskModel(
                                                documentID: "IDENTIFIER", 
@@ -56,16 +52,18 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
       });
 
 
-      if (event is InitialiseWorkflowTaskFormEvent) {
+      on <InitialiseWorkflowTaskFormEvent> ((event, emit) async {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event.value);
         emit(loaded);
-      } else if (event is InitialiseWorkflowTaskFormNoLoadEvent) {
+      });
+      on <InitialiseWorkflowTaskFormNoLoadEvent> ((event, emit) async {
         WorkflowTaskFormLoaded loaded = WorkflowTaskFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is WorkflowTaskFormInitialized) {
+      });
       WorkflowTaskModel? newValue = null;
       on <ChangedWorkflowTaskSeqNumber> ((event, emit) async {
+      if (state is WorkflowTaskFormInitialized) {
+        final currentState = state as WorkflowTaskFormInitialized;
         if (isInt(event.value)) {
           newValue = currentState.value!.copyWith(seqNumber: int.parse(event.value!));
           emit(SubmittableWorkflowTaskForm(value: newValue));
@@ -74,28 +72,40 @@ class WorkflowTaskFormBloc extends Bloc<WorkflowTaskFormEvent, WorkflowTaskFormS
           newValue = currentState.value!.copyWith(seqNumber: 0);
           emit(SeqNumberWorkflowTaskFormError(message: "Value should be a number", value: newValue));
         }
+      }
       });
       on <ChangedWorkflowTaskTask> ((event, emit) async {
+      if (state is WorkflowTaskFormInitialized) {
+        final currentState = state as WorkflowTaskFormInitialized;
         newValue = currentState.value!.copyWith(task: event.value);
         emit(SubmittableWorkflowTaskForm(value: newValue));
 
+      }
       });
       on <ChangedWorkflowTaskConfirmMessage> ((event, emit) async {
+      if (state is WorkflowTaskFormInitialized) {
+        final currentState = state as WorkflowTaskFormInitialized;
         newValue = currentState.value!.copyWith(confirmMessage: event.value);
         emit(SubmittableWorkflowTaskForm(value: newValue));
 
+      }
       });
       on <ChangedWorkflowTaskRejectMessage> ((event, emit) async {
+      if (state is WorkflowTaskFormInitialized) {
+        final currentState = state as WorkflowTaskFormInitialized;
         newValue = currentState.value!.copyWith(rejectMessage: event.value);
         emit(SubmittableWorkflowTaskForm(value: newValue));
 
+      }
       });
       on <ChangedWorkflowTaskResponsible> ((event, emit) async {
+      if (state is WorkflowTaskFormInitialized) {
+        final currentState = state as WorkflowTaskFormInitialized;
         newValue = currentState.value!.copyWith(responsible: event.value);
         emit(SubmittableWorkflowTaskForm(value: newValue));
 
+      }
       });
-    }
   }
 
 

@@ -41,11 +41,7 @@ import 'package:eliud_pkg_workflow/model/assignment_result_repository.dart';
 class AssignmentResultFormBloc extends Bloc<AssignmentResultFormEvent, AssignmentResultFormState> {
   final String? appId;
 
-  AssignmentResultFormBloc(this.appId, ): super(AssignmentResultFormUninitialized());
-  @override
-  Stream<AssignmentResultFormState> mapEventToState(AssignmentResultFormEvent event) async* {
-    final currentState = state;
-    if (currentState is AssignmentResultFormUninitialized) {
+  AssignmentResultFormBloc(this.appId, ): super(AssignmentResultFormUninitialized()) {
       on <InitialiseNewAssignmentResultFormEvent> ((event, emit) {
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: AssignmentResultModel(
                                                documentID: "IDENTIFIER", 
@@ -57,26 +53,31 @@ class AssignmentResultFormBloc extends Bloc<AssignmentResultFormEvent, Assignmen
       });
 
 
-      if (event is InitialiseAssignmentResultFormEvent) {
+      on <InitialiseAssignmentResultFormEvent> ((event, emit) async {
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
         emit(loaded);
-      } else if (event is InitialiseAssignmentResultFormNoLoadEvent) {
+      });
+      on <InitialiseAssignmentResultFormNoLoadEvent> ((event, emit) async {
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is AssignmentResultFormInitialized) {
+      });
       AssignmentResultModel? newValue = null;
       on <ChangedAssignmentResultKey> ((event, emit) async {
+      if (state is AssignmentResultFormInitialized) {
+        final currentState = state as AssignmentResultFormInitialized;
         newValue = currentState.value!.copyWith(key: event.value);
         emit(SubmittableAssignmentResultForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentResultValue> ((event, emit) async {
+      if (state is AssignmentResultFormInitialized) {
+        final currentState = state as AssignmentResultFormInitialized;
         newValue = currentState.value!.copyWith(value: event.value);
         emit(SubmittableAssignmentResultForm(value: newValue));
 
+      }
       });
-    }
   }
 
 

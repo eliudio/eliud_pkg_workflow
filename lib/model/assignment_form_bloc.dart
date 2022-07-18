@@ -46,11 +46,7 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
   final FormAction? formAction;
   final String? appId;
 
-  AssignmentFormBloc(this.appId, { this.formAction }): super(AssignmentFormUninitialized());
-  @override
-  Stream<AssignmentFormState> mapEventToState(AssignmentFormEvent event) async* {
-    final currentState = state;
-    if (currentState is AssignmentFormUninitialized) {
+  AssignmentFormBloc(this.appId, { this.formAction }): super(AssignmentFormUninitialized()) {
       on <InitialiseNewAssignmentFormEvent> ((event, emit) {
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: AssignmentModel(
                                                documentID: "IDENTIFIER", 
@@ -67,43 +63,60 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
       });
 
 
-      if (event is InitialiseAssignmentFormEvent) {
+      on <InitialiseAssignmentFormEvent> ((event, emit) async {
         // Need to re-retrieve the document from the repository so that I get all associated types
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: await assignmentRepository(appId: appId)!.get(event.value!.documentID));
         emit(loaded);
-      } else if (event is InitialiseAssignmentFormNoLoadEvent) {
+      });
+      on <InitialiseAssignmentFormNoLoadEvent> ((event, emit) async {
         AssignmentFormLoaded loaded = AssignmentFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is AssignmentFormInitialized) {
+      });
       AssignmentModel? newValue = null;
       on <ChangedAssignmentAppId> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(appId: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentReporterId> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(reporterId: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentAssigneeId> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(assigneeId: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentTask> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(task: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentWorkflow> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         if (event.value != null)
           newValue = currentState.value!.copyWith(workflow: await workflowRepository(appId: appId)!.get(event.value));
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentWorkflowTaskSeqNumber> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         if (isInt(event.value)) {
           newValue = currentState.value!.copyWith(workflowTaskSeqNumber: int.parse(event.value!));
           emit(SubmittableAssignmentForm(value: newValue));
@@ -112,43 +125,64 @@ class AssignmentFormBloc extends Bloc<AssignmentFormEvent, AssignmentFormState> 
           newValue = currentState.value!.copyWith(workflowTaskSeqNumber: 0);
           emit(WorkflowTaskSeqNumberAssignmentFormError(message: "Value should be a number", value: newValue));
         }
+      }
       });
       on <ChangedAssignmentTimestamp> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(timestamp: dateTimeFromTimestampString(event.value!));
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentStatus> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(status: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentResultsCurrent> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(resultsCurrent: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentResultsPrevious> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(resultsPrevious: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentTriggeredById> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(triggeredById: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentConfirmMessage> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(confirmMessage: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
       on <ChangedAssignmentRejectMessage> ((event, emit) async {
+      if (state is AssignmentFormInitialized) {
+        final currentState = state as AssignmentFormInitialized;
         newValue = currentState.value!.copyWith(rejectMessage: event.value);
         emit(SubmittableAssignmentForm(value: newValue));
 
+      }
       });
-    }
   }
 
 
