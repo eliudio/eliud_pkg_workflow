@@ -15,6 +15,7 @@
 
 import 'dart:collection';
 import 'dart:convert';
+import 'package:eliud_core/tools/random.dart';
 import 'abstract_repository_singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/entity_base.dart';
@@ -53,21 +54,21 @@ class AssignmentEntity implements EntityBase {
     return 'AssignmentEntity{appId: $appId, reporterId: $reporterId, assigneeId: $assigneeId, task: $task, workflowId: $workflowId, workflowTaskSeqNumber: $workflowTaskSeqNumber, timestamp: $timestamp, status: $status, resultsCurrent: AssignmentResult[] { $resultsCurrentCsv }, resultsPrevious: AssignmentResult[] { $resultsPreviousCsv }, triggeredById: $triggeredById, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage}';
   }
 
-  static AssignmentEntity? fromMap(Object? o) {
+  static AssignmentEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
     var taskFromMap;
     taskFromMap = map['task'];
     if (taskFromMap != null)
-      taskFromMap = TaskEntity.fromMap(taskFromMap);
+      taskFromMap = TaskEntity.fromMap(taskFromMap, newDocumentIds: newDocumentIds);
     var resultsCurrentFromMap;
     resultsCurrentFromMap = map['resultsCurrent'];
     var resultsCurrentList;
     if (resultsCurrentFromMap != null)
       resultsCurrentList = (map['resultsCurrent'] as List<dynamic>)
         .map((dynamic item) =>
-        AssignmentResultEntity.fromMap(item as Map)!)
+        AssignmentResultEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
     var resultsPreviousFromMap;
     resultsPreviousFromMap = map['resultsPrevious'];
@@ -75,16 +76,16 @@ class AssignmentEntity implements EntityBase {
     if (resultsPreviousFromMap != null)
       resultsPreviousList = (map['resultsPrevious'] as List<dynamic>)
         .map((dynamic item) =>
-        AssignmentResultEntity.fromMap(item as Map)!)
+        AssignmentResultEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
     var confirmMessageFromMap;
     confirmMessageFromMap = map['confirmMessage'];
     if (confirmMessageFromMap != null)
-      confirmMessageFromMap = WorkflowNotificationEntity.fromMap(confirmMessageFromMap);
+      confirmMessageFromMap = WorkflowNotificationEntity.fromMap(confirmMessageFromMap, newDocumentIds: newDocumentIds);
     var rejectMessageFromMap;
     rejectMessageFromMap = map['rejectMessage'];
     if (rejectMessageFromMap != null)
-      rejectMessageFromMap = WorkflowNotificationEntity.fromMap(rejectMessageFromMap);
+      rejectMessageFromMap = WorkflowNotificationEntity.fromMap(rejectMessageFromMap, newDocumentIds: newDocumentIds);
 
     return AssignmentEntity(
       appId: map['appId'], 
@@ -155,9 +156,9 @@ class AssignmentEntity implements EntityBase {
     return newEntity;
   }
 
-  static AssignmentEntity? fromJsonString(String json) {
+  static AssignmentEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
-    return fromMap(generationSpecificationMap);
+    return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
 
   String toJsonString() {

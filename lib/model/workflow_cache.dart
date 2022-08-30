@@ -121,8 +121,8 @@ class WorkflowCache implements WorkflowRepository {
   }
 
   @override
-  WorkflowEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  WorkflowEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {

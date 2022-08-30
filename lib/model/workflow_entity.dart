@@ -15,6 +15,7 @@
 
 import 'dart:collection';
 import 'dart:convert';
+import 'package:eliud_core/tools/random.dart';
 import 'abstract_repository_singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/entity_base.dart';
@@ -42,7 +43,7 @@ class WorkflowEntity implements EntityBase {
     return 'WorkflowEntity{name: $name, workflowTask: WorkflowTask[] { $workflowTaskCsv }, appId: $appId}';
   }
 
-  static WorkflowEntity? fromMap(Object? o) {
+  static WorkflowEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
@@ -52,7 +53,7 @@ class WorkflowEntity implements EntityBase {
     if (workflowTaskFromMap != null)
       workflowTaskList = (map['workflowTask'] as List<dynamic>)
         .map((dynamic item) =>
-        WorkflowTaskEntity.fromMap(item as Map)!)
+        WorkflowTaskEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
 
     return WorkflowEntity(
@@ -83,9 +84,9 @@ class WorkflowEntity implements EntityBase {
     return newEntity;
   }
 
-  static WorkflowEntity? fromJsonString(String json) {
+  static WorkflowEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
-    return fromMap(generationSpecificationMap);
+    return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
 
   String toJsonString() {

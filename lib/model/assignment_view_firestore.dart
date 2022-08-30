@@ -37,8 +37,8 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class AssignmentViewFirestore implements AssignmentViewRepository {
   @override
-  AssignmentViewEntity? fromMap(Object? o) {
-    return AssignmentViewEntity.fromMap(o);
+  AssignmentViewEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return AssignmentViewEntity.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<AssignmentViewEntity> addEntity(String documentID, AssignmentViewEntity value) {

@@ -15,6 +15,7 @@
 
 import 'dart:collection';
 import 'dart:convert';
+import 'package:eliud_core/tools/random.dart';
 import 'abstract_repository_singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/entity_base.dart';
@@ -41,22 +42,22 @@ class WorkflowTaskEntity implements EntityBase {
     return 'WorkflowTaskEntity{seqNumber: $seqNumber, task: $task, confirmMessage: $confirmMessage, rejectMessage: $rejectMessage, responsible: $responsible}';
   }
 
-  static WorkflowTaskEntity? fromMap(Object? o) {
+  static WorkflowTaskEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
     var taskFromMap;
     taskFromMap = map['task'];
     if (taskFromMap != null)
-      taskFromMap = TaskEntity.fromMap(taskFromMap);
+      taskFromMap = TaskEntity.fromMap(taskFromMap, newDocumentIds: newDocumentIds);
     var confirmMessageFromMap;
     confirmMessageFromMap = map['confirmMessage'];
     if (confirmMessageFromMap != null)
-      confirmMessageFromMap = WorkflowNotificationEntity.fromMap(confirmMessageFromMap);
+      confirmMessageFromMap = WorkflowNotificationEntity.fromMap(confirmMessageFromMap, newDocumentIds: newDocumentIds);
     var rejectMessageFromMap;
     rejectMessageFromMap = map['rejectMessage'];
     if (rejectMessageFromMap != null)
-      rejectMessageFromMap = WorkflowNotificationEntity.fromMap(rejectMessageFromMap);
+      rejectMessageFromMap = WorkflowNotificationEntity.fromMap(rejectMessageFromMap, newDocumentIds: newDocumentIds);
 
     return WorkflowTaskEntity(
       seqNumber: int.tryParse(map['seqNumber'].toString()), 
@@ -98,9 +99,9 @@ class WorkflowTaskEntity implements EntityBase {
     return newEntity;
   }
 
-  static WorkflowTaskEntity? fromJsonString(String json) {
+  static WorkflowTaskEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
-    return fromMap(generationSpecificationMap);
+    return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
 
   String toJsonString() {

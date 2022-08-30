@@ -116,8 +116,8 @@ class AssignmentResultCache implements AssignmentResultRepository {
   }
 
   @override
-  AssignmentResultEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  AssignmentResultEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {

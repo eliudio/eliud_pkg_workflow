@@ -121,8 +121,8 @@ class AssignmentViewCache implements AssignmentViewRepository {
   }
 
   @override
-  AssignmentViewEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  AssignmentViewEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {

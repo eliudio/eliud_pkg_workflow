@@ -214,7 +214,7 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
   }
 
   @override
-  AssignmentEntity? fromMap(Object? o) {
+  AssignmentEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     throw UnimplementedError();
   }
 
@@ -334,7 +334,7 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
   }
 
   @override
-  AssignmentResultEntity? fromMap(Object? o) {
+  AssignmentResultEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     throw UnimplementedError();
   }
 
@@ -454,7 +454,7 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
   }
 
   @override
-  WorkflowTaskEntity? fromMap(Object? o) {
+  WorkflowTaskEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     throw UnimplementedError();
   }
 

@@ -37,8 +37,8 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class WorkflowFirestore implements WorkflowRepository {
   @override
-  WorkflowEntity? fromMap(Object? o) {
-    return WorkflowEntity.fromMap(o);
+  WorkflowEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return WorkflowEntity.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<WorkflowEntity> addEntity(String documentID, WorkflowEntity value) {

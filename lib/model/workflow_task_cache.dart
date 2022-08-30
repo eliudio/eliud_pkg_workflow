@@ -116,8 +116,8 @@ class WorkflowTaskCache implements WorkflowTaskRepository {
   }
 
   @override
-  WorkflowTaskEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  WorkflowTaskEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {
