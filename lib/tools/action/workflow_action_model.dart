@@ -84,6 +84,12 @@ class WorkflowActionModel extends ActionModel {
     }
   }
 
+  @override
+  ActionModel copyWith(AppModel newApp) =>
+      WorkflowActionModel(newApp, workflow: workflow, conditions: conditions);
+
+  @override
+  String toString() => describe();
 }
 
 class WorkflowActionMapper implements ActionModelMapper {

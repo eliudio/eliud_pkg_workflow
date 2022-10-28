@@ -22,15 +22,11 @@ class WorkflowActionEntity extends ActionEntity {
 
   static WorkflowActionEntity? fromMap(Map snap) {
     var fromMap = DisplayConditionsEntity.fromMap(snap['conditions']);
-    if (DisplayConditionsEntity.fromMap(snap['conditions']) != null) {
-      return WorkflowActionEntity(
-        appId: snap["appID"],
-        workflowId: snap["workflowId"],
-        conditions: fromMap!,
-      );
-    } else {
-      return null;
-    }
+    return WorkflowActionEntity(
+      appId: snap["appID"],
+      workflowId: snap["workflowId"],
+      conditions: fromMap,
+    );
   }
 
   @override
