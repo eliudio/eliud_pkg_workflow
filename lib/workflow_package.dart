@@ -25,6 +25,10 @@ import 'package:eliud_pkg_workflow/model/component_registry.dart';
 import 'model/assignment_model.dart';
 import 'wizards/assignment_dashboard_dialog_wizard.dart';
 
+import 'package:eliud_pkg_workflow/workflow_package_stub.dart'
+if (dart.library.io) 'workflow_mobile_package.dart'
+if (dart.library.html) 'workflow_web_package.dart';
+
 abstract class WorkflowPackage extends Package {
   WorkflowPackage() : super('eliud_pkg_workflow');
 
@@ -122,4 +126,6 @@ abstract class WorkflowPackage extends Package {
   @override
   List<MemberCollectionInfo> getMemberCollectionInfo() =>
       AbstractRepositorySingleton.collections;
+
+  static WorkflowPackage instance() => getWorkflowPackage();
 }

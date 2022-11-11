@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 
 import 'model/abstract_repository_singleton.dart';
 
+WorkflowPackage getWorkflowPackage() => WorkflowWebPackage();
+
 class WorkflowWebPackage extends WorkflowPackage {
 
   @override
@@ -16,4 +18,5 @@ class WorkflowWebPackage extends WorkflowPackage {
           other is WorkflowWebPackage &&
               runtimeType == other.runtimeType &&
               mapEquals(stateCONDITION_MUST_HAVE_ASSIGNMENTS, other.stateCONDITION_MUST_HAVE_ASSIGNMENTS);
+
 }
