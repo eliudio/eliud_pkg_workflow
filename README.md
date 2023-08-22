@@ -4,7 +4,7 @@ Eliud workflow package
 
 ## Dependency diagram
 
-![Dependency diagram](https://github.com/eliudio/eliud_pkg_workflow/blob/main/depends.jpg)
+![Dependency diagram](https://github.com/eliudio/eliud_pkg_workflow/raw/main/depends.jpg)
 
 ## eliud.io
 
