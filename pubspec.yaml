@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  eliud_core: ^1.0.6+1
+  eliud_core: ^1.0.7
   eliud_pkg_notifications: ^1.0.1+6
   bloc: ^8.1.0
   cloud_firestore: ^4.6.0
