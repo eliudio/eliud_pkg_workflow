@@ -36,6 +36,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 
 typedef WorkflowModelTrigger(List<WorkflowModel?> list);
 typedef WorkflowChanged(WorkflowModel? value);
+typedef WorkflowErrorHandler(o, e);
 
 abstract class WorkflowRepository extends RepositoryBase<WorkflowModel, WorkflowEntity> {
   Future<WorkflowEntity> addEntity(String documentID, WorkflowEntity value);
@@ -52,7 +53,7 @@ abstract class WorkflowRepository extends RepositoryBase<WorkflowModel, Workflow
 
   StreamSubscription<List<WorkflowModel?>> listen(WorkflowModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
   StreamSubscription<List<WorkflowModel?>> listenWithDetails(WorkflowModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<WorkflowModel?> listenTo(String documentId, WorkflowChanged changed);
+  StreamSubscription<WorkflowModel?> listenTo(String documentId, WorkflowChanged changed, {WorkflowErrorHandler? errorHandler});
   void flush();
   
   String? timeStampToString(dynamic timeStamp);

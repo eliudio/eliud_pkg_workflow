@@ -140,13 +140,13 @@ class AssignmentCache implements AssignmentRepository {
   }
 
   @override
-  StreamSubscription<AssignmentModel?> listenTo(String documentId, AssignmentChanged changed) {
+  StreamSubscription<AssignmentModel?> listenTo(String documentId, AssignmentChanged changed, {AssignmentErrorHandler? errorHandler}) {
     return reference.listenTo(documentId, ((value) {
       if (value != null) {
         fullCache[value.documentID] = value;
       }
       changed(value);
-    }));
+    }), errorHandler: errorHandler);
   }
 
   static Future<AssignmentModel> refreshRelations(AssignmentModel model) async {

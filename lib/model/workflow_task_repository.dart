@@ -32,6 +32,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 
 typedef WorkflowTaskModelTrigger(List<WorkflowTaskModel?> list);
 typedef WorkflowTaskChanged(WorkflowTaskModel? value);
+typedef WorkflowTaskErrorHandler(o, e);
 
 abstract class WorkflowTaskRepository extends RepositoryBase<WorkflowTaskModel, WorkflowTaskEntity> {
   Future<WorkflowTaskEntity> addEntity(String documentID, WorkflowTaskEntity value);
@@ -48,7 +49,7 @@ abstract class WorkflowTaskRepository extends RepositoryBase<WorkflowTaskModel, 
 
   StreamSubscription<List<WorkflowTaskModel?>> listen(WorkflowTaskModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
   StreamSubscription<List<WorkflowTaskModel?>> listenWithDetails(WorkflowTaskModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<WorkflowTaskModel?> listenTo(String documentId, WorkflowTaskChanged changed);
+  StreamSubscription<WorkflowTaskModel?> listenTo(String documentId, WorkflowTaskChanged changed, {WorkflowTaskErrorHandler? errorHandler});
   void flush();
   
   String? timeStampToString(dynamic timeStamp);

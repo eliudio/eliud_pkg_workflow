@@ -140,13 +140,13 @@ class WorkflowCache implements WorkflowRepository {
   }
 
   @override
-  StreamSubscription<WorkflowModel?> listenTo(String documentId, WorkflowChanged changed) {
+  StreamSubscription<WorkflowModel?> listenTo(String documentId, WorkflowChanged changed, {WorkflowErrorHandler? errorHandler}) {
     return reference.listenTo(documentId, ((value) {
       if (value != null) {
         fullCache[value.documentID] = value;
       }
       changed(value);
-    }));
+    }), errorHandler: errorHandler);
   }
 
   static Future<WorkflowModel> refreshRelations(WorkflowModel model) async {

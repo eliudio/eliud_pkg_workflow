@@ -36,6 +36,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 
 typedef AssignmentModelTrigger(List<AssignmentModel?> list);
 typedef AssignmentChanged(AssignmentModel? value);
+typedef AssignmentErrorHandler(o, e);
 
 abstract class AssignmentRepository extends RepositoryBase<AssignmentModel, AssignmentEntity> {
   Future<AssignmentEntity> addEntity(String documentID, AssignmentEntity value);
@@ -52,7 +53,7 @@ abstract class AssignmentRepository extends RepositoryBase<AssignmentModel, Assi
 
   StreamSubscription<List<AssignmentModel?>> listen(AssignmentModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
   StreamSubscription<List<AssignmentModel?>> listenWithDetails(AssignmentModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<AssignmentModel?> listenTo(String documentId, AssignmentChanged changed);
+  StreamSubscription<AssignmentModel?> listenTo(String documentId, AssignmentChanged changed, {AssignmentErrorHandler? errorHandler});
   void flush();
   
   String? timeStampToString(dynamic timeStamp);

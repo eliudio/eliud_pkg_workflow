@@ -140,13 +140,13 @@ class AssignmentViewCache implements AssignmentViewRepository {
   }
 
   @override
-  StreamSubscription<AssignmentViewModel?> listenTo(String documentId, AssignmentViewChanged changed) {
+  StreamSubscription<AssignmentViewModel?> listenTo(String documentId, AssignmentViewChanged changed, {AssignmentViewErrorHandler? errorHandler}) {
     return reference.listenTo(documentId, ((value) {
       if (value != null) {
         fullCache[value.documentID] = value;
       }
       changed(value);
-    }));
+    }), errorHandler: errorHandler);
   }
 
   static Future<AssignmentViewModel> refreshRelations(AssignmentViewModel model) async {

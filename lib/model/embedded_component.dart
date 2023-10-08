@@ -199,7 +199,7 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
   }
   
   @override
-  StreamSubscription<AssignmentModel> listenTo(String documentId, AssignmentChanged changed) {
+  StreamSubscription<AssignmentModel> listenTo(String documentId, AssignmentChanged changed, {AssignmentErrorHandler? errorHandler}) {
     throw UnimplementedError();
   }
 
@@ -319,7 +319,7 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
   }
   
   @override
-  StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed) {
+  StreamSubscription<AssignmentResultModel> listenTo(String documentId, AssignmentResultChanged changed, {AssignmentResultErrorHandler? errorHandler}) {
     throw UnimplementedError();
   }
 
@@ -439,7 +439,7 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
   }
   
   @override
-  StreamSubscription<WorkflowTaskModel> listenTo(String documentId, WorkflowTaskChanged changed) {
+  StreamSubscription<WorkflowTaskModel> listenTo(String documentId, WorkflowTaskChanged changed, {WorkflowTaskErrorHandler? errorHandler}) {
     throw UnimplementedError();
   }
 
