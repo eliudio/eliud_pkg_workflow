@@ -1,6 +1,5 @@
 import 'package:eliud_pkg_workflow/workflow_package.dart';
 import 'package:flutter/foundation.dart';
-import 'model/component_registry.dart';
 
 WorkflowPackage getWorkflowPackage() => WorkflowMobilePackage();
 

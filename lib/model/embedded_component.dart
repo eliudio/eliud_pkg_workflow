@@ -23,7 +23,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 
 import '../model/assignment_list_bloc.dart';
 import '../model/assignment_list.dart';
@@ -108,7 +107,7 @@ class AssignmentInMemoryRepository implements AssignmentRepository {
 
     AssignmentInMemoryRepository(this.trigger, this.items) {
         List<List<AssignmentModel>> myList = <List<AssignmentModel>>[];
-        if (items != null) myList.add(items);
+        myList.add(items);
         theValues = Stream<List<AssignmentModel>>.fromIterable(myList);
     }
 
@@ -228,7 +227,7 @@ class AssignmentResultInMemoryRepository implements AssignmentResultRepository {
 
     AssignmentResultInMemoryRepository(this.trigger, this.items) {
         List<List<AssignmentResultModel>> myList = <List<AssignmentResultModel>>[];
-        if (items != null) myList.add(items);
+        myList.add(items);
         theValues = Stream<List<AssignmentResultModel>>.fromIterable(myList);
     }
 
@@ -348,7 +347,7 @@ class WorkflowTaskInMemoryRepository implements WorkflowTaskRepository {
 
     WorkflowTaskInMemoryRepository(this.trigger, this.items) {
         List<List<WorkflowTaskModel>> myList = <List<WorkflowTaskModel>>[];
-        if (items != null) myList.add(items);
+        myList.add(items);
         theValues = Stream<List<WorkflowTaskModel>>.fromIterable(myList);
     }
 

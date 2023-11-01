@@ -13,25 +13,13 @@
 
 */
 
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import '../tools/bespoke_models.dart';
-import 'package:eliud_pkg_workflow/model/model_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_workflow/model/workflow_notification_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 enum WorkflowNotificationAddressee {
   CurrentMember, Owner, First, Previous, Unknown
@@ -58,8 +46,7 @@ class WorkflowNotificationModel {
   // Who's to be notified after completing the  to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
   WorkflowNotificationAddressee? addressee;
 
-  WorkflowNotificationModel({this.message, this.addressee, })  {
-  }
+  WorkflowNotificationModel({this.message, this.addressee, });
 
   WorkflowNotificationModel copyWith({String? message, WorkflowNotificationAddressee? addressee, }) {
     return WorkflowNotificationModel(message: message ?? this.message, addressee: addressee ?? this.addressee, );

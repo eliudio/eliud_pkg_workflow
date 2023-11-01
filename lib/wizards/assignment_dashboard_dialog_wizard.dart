@@ -79,6 +79,7 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
       throw Exception(
           'Unexpected class for parameters: ' + parameters.toString());
     }
+    return null;
   }
 
   @override

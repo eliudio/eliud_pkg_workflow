@@ -16,21 +16,11 @@
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
-import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_repository.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import 'package:eliud_core/model/cache_export.dart';
 import 'package:eliud_pkg_workflow/model/cache_export.dart';
-import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class WorkflowCache implements WorkflowRepository {
@@ -153,7 +143,7 @@ class WorkflowCache implements WorkflowRepository {
 
     List<WorkflowTaskModel>? workflowTaskHolder;
     if (model.workflowTask != null) {
-      workflowTaskHolder = List<WorkflowTaskModel>.from(await Future.wait(await model.workflowTask!.map((element) async {
+      workflowTaskHolder = List<WorkflowTaskModel>.from(await Future.wait(model.workflowTask!.map((element) async {
         return await WorkflowTaskCache.refreshRelations(element);
       }))).toList();
     }

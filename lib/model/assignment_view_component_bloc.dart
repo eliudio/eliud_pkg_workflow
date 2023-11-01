@@ -16,11 +16,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 
-import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_component_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_component_state.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
-import 'package:flutter/services.dart';
 
 class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, AssignmentViewComponentState> {
   final AssignmentViewRepository? assignmentViewRepository;

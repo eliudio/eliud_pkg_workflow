@@ -15,15 +15,11 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/random.dart';
-import 'abstract_repository_singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/entity_base.dart';
-import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
-import 'package:eliud_core/tools/common_tools.dart';
 class AssignmentEntity implements EntityBase {
   final String? appId;
   final String? reporterId;
@@ -64,20 +60,26 @@ class AssignmentEntity implements EntityBase {
       taskFromMap = TaskEntity.fromMap(taskFromMap, newDocumentIds: newDocumentIds);
     var resultsCurrentFromMap;
     resultsCurrentFromMap = map['resultsCurrent'];
-    var resultsCurrentList;
-    if (resultsCurrentFromMap != null)
+    List<AssignmentResultEntity> resultsCurrentList;
+    if (resultsCurrentFromMap != null) {
       resultsCurrentList = (map['resultsCurrent'] as List<dynamic>)
         .map((dynamic item) =>
         AssignmentResultEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
+    } else {
+      resultsCurrentList = [];
+    }
     var resultsPreviousFromMap;
     resultsPreviousFromMap = map['resultsPrevious'];
-    var resultsPreviousList;
-    if (resultsPreviousFromMap != null)
+    List<AssignmentResultEntity> resultsPreviousList;
+    if (resultsPreviousFromMap != null) {
       resultsPreviousList = (map['resultsPrevious'] as List<dynamic>)
         .map((dynamic item) =>
         AssignmentResultEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
+    } else {
+      resultsPreviousList = [];
+    }
     var confirmMessageFromMap;
     confirmMessageFromMap = map['confirmMessage'];
     if (confirmMessageFromMap != null)

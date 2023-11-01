@@ -13,25 +13,13 @@
 
 */
 
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import '../tools/bespoke_models.dart';
-import 'package:eliud_pkg_workflow/model/model_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_workflow/model/assignment_result_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 
 
@@ -43,9 +31,7 @@ class AssignmentResultModel implements ModelBase {
   String? key;
   String? value;
 
-  AssignmentResultModel({required this.documentID, this.key, this.value, })  {
-    assert(documentID != null);
-  }
+  AssignmentResultModel({required this.documentID, this.key, this.value, });
 
   AssignmentResultModel copyWith({String? documentID, String? key, String? value, }) {
     return AssignmentResultModel(documentID: documentID ?? this.documentID, key: key ?? this.key, value: value ?? this.value, );

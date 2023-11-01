@@ -1,15 +1,12 @@
 import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/display_conditions_model.dart';
-import 'package:eliud_core/style/frontend/has_text.dart';
 import 'package:eliud_core/tools/action/action_entity.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
-import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
-import 'package:flutter/material.dart';
 
 // Start a workflow
 class WorkflowActionModel extends ActionModel {

@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'package:eliud_core/model/display_conditions_entity.dart';
-import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/tools/action/action_entity.dart';
 
 class WorkflowActionEntity extends ActionEntity {

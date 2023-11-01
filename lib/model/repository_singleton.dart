@@ -19,18 +19,13 @@ import 'dart:collection';
 import '../model/assignment_firestore.dart';
 import '../model/assignment_repository.dart';
 import '../model/assignment_cache.dart';
-import '../model/assignment_result_repository.dart';
-import '../model/assignment_result_cache.dart';
 import '../model/assignment_view_firestore.dart';
 import '../model/assignment_view_repository.dart';
 import '../model/assignment_view_cache.dart';
 import '../model/workflow_firestore.dart';
 import '../model/workflow_repository.dart';
 import '../model/workflow_cache.dart';
-import '../model/workflow_task_repository.dart';
-import '../model/workflow_task_cache.dart';
 
-import '../model/assignment_model.dart';
 
 class RepositorySingleton extends AbstractRepositorySingleton {
     var _assignmentRepository = HashMap<String, AssignmentRepository>();

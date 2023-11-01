@@ -13,25 +13,15 @@
 
 */
 
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/repository_export.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_workflow/model/workflow_task_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 enum WorkflowTaskResponsible {
   CurrentMember, Owner, First, Previous, Unknown
@@ -66,9 +56,7 @@ class WorkflowTaskModel implements ModelBase {
   // Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
   WorkflowTaskResponsible? responsible;
 
-  WorkflowTaskModel({required this.documentID, this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, })  {
-    assert(documentID != null);
-  }
+  WorkflowTaskModel({required this.documentID, this.seqNumber, this.task, this.confirmMessage, this.rejectMessage, this.responsible, });
 
   WorkflowTaskModel copyWith({String? documentID, int? seqNumber, TaskModel? task, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, WorkflowTaskResponsible? responsible, }) {
     return WorkflowTaskModel(documentID: documentID ?? this.documentID, seqNumber: seqNumber ?? this.seqNumber, task: task ?? this.task, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, responsible: responsible ?? this.responsible, );
@@ -119,7 +107,7 @@ class WorkflowTaskModel implements ModelBase {
           documentID: documentID, 
           seqNumber: entity.seqNumber, 
           task: 
-            await TaskModel.fromEntity(entity.task), 
+            TaskModel.fromEntity(entity.task), 
           confirmMessage: 
             await WorkflowNotificationModel.fromEntity(entity.confirmMessage), 
           rejectMessage: 

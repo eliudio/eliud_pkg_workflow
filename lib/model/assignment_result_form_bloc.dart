@@ -13,30 +13,16 @@
 
 */
 
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:eliud_core/tools/firestore/firestore_tools.dart';
-import 'package:flutter/cupertino.dart';
 
-import 'package:eliud_core/tools/enums.dart';
-import 'package:eliud_core/tools/common_tools.dart';
 
-import 'package:eliud_core/model/rgb_model.dart';
 
-import 'package:eliud_core/tools/string_validator.dart';
 
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
-import '../tools/bespoke_entities.dart';
-import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 import 'package:eliud_pkg_workflow/model/assignment_result_form_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_form_state.dart';
-import 'package:eliud_pkg_workflow/model/assignment_result_repository.dart';
 
 class AssignmentResultFormBloc extends Bloc<AssignmentResultFormEvent, AssignmentResultFormState> {
   final String? appId;
@@ -61,7 +47,7 @@ class AssignmentResultFormBloc extends Bloc<AssignmentResultFormEvent, Assignmen
         AssignmentResultFormLoaded loaded = AssignmentResultFormLoaded(value: event.value);
         emit(loaded);
       });
-      AssignmentResultModel? newValue = null;
+      AssignmentResultModel? newValue;
       on <ChangedAssignmentResultKey> ((event, emit) async {
       if (state is AssignmentResultFormInitialized) {
         final currentState = state as AssignmentResultFormInitialized;

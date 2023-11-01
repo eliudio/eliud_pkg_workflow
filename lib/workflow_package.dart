@@ -18,7 +18,6 @@ import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/bespoke_models.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
 import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
-import 'model/abstract_repository_singleton.dart';
 import 'model/repository_singleton.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/access_event.dart';

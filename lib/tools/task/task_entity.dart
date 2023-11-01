@@ -1,6 +1,4 @@
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
-import 'package:equatable/equatable.dart';
 
 abstract class TaskEntity {
   final String identifier;

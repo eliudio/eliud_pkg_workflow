@@ -15,16 +15,20 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_list_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
+import 'assignment_view_model.dart';
+
+typedef List<AssignmentViewModel?> FilterAssignmentViewModels(List<AssignmentViewModel?> values);
+
 
 
 class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentViewListState> {
+  final FilterAssignmentViewModels? filter;
   final AssignmentViewRepository _assignmentViewRepository;
   StreamSubscription? _assignmentViewsListSubscription;
   EliudQuery? eliudQuery;
@@ -35,9 +39,8 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
   final bool? detailed;
   final int assignmentViewLimit;
 
-  AssignmentViewListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentViewRepository assignmentViewRepository, this.assignmentViewLimit = 5})
-      : assert(assignmentViewRepository != null),
-        _assignmentViewRepository = assignmentViewRepository,
+  AssignmentViewListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentViewRepository assignmentViewRepository, this.assignmentViewLimit = 5})
+      : _assignmentViewRepository = assignmentViewRepository,
         super(AssignmentViewListLoading()) {
     on <LoadAssignmentViewList> ((event, emit) {
       if ((detailed == null) || (!detailed!)) {
@@ -78,11 +81,19 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
     });
   }
 
+  List<AssignmentViewModel?> _filter(List<AssignmentViewModel?> original) {
+    if (filter != null) {
+      return filter!(original);
+    } else {
+      return original;
+    }
+  }
+
   Future<void> _mapLoadAssignmentViewListToState() async {
     int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values!.length : 0;
     _assignmentViewsListSubscription?.cancel();
     _assignmentViewsListSubscription = _assignmentViewRepository.listen(
-          (list) => add(AssignmentViewListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+          (list) => add(AssignmentViewListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
@@ -94,7 +105,7 @@ class AssignmentViewListBloc extends Bloc<AssignmentViewListEvent, AssignmentVie
     int amountNow =  (state is AssignmentViewListLoaded) ? (state as AssignmentViewListLoaded).values!.length : 0;
     _assignmentViewsListSubscription?.cancel();
     _assignmentViewsListSubscription = _assignmentViewRepository.listenWithDetails(
-            (list) => add(AssignmentViewListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+            (list) => add(AssignmentViewListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,

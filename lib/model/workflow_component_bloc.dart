@@ -16,11 +16,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 
-import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_state.dart';
 import 'package:eliud_pkg_workflow/model/workflow_repository.dart';
-import 'package:flutter/services.dart';
 
 class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowComponentState> {
   final WorkflowRepository? workflowRepository;

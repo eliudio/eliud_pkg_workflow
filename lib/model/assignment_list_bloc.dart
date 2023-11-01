@@ -15,16 +15,20 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_workflow/model/assignment_repository.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
+import 'assignment_model.dart';
+
+typedef List<AssignmentModel?> FilterAssignmentModels(List<AssignmentModel?> values);
+
 
 
 class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> {
+  final FilterAssignmentModels? filter;
   final AssignmentRepository _assignmentRepository;
   StreamSubscription? _assignmentsListSubscription;
   EliudQuery? eliudQuery;
@@ -35,9 +39,8 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
   final bool? detailed;
   final int assignmentLimit;
 
-  AssignmentListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentRepository assignmentRepository, this.assignmentLimit = 5})
-      : assert(assignmentRepository != null),
-        _assignmentRepository = assignmentRepository,
+  AssignmentListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentRepository assignmentRepository, this.assignmentLimit = 5})
+      : _assignmentRepository = assignmentRepository,
         super(AssignmentListLoading()) {
     on <LoadAssignmentList> ((event, emit) {
       if ((detailed == null) || (!detailed!)) {
@@ -78,11 +81,19 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
     });
   }
 
+  List<AssignmentModel?> _filter(List<AssignmentModel?> original) {
+    if (filter != null) {
+      return filter!(original);
+    } else {
+      return original;
+    }
+  }
+
   Future<void> _mapLoadAssignmentListToState() async {
     int amountNow =  (state is AssignmentListLoaded) ? (state as AssignmentListLoaded).values!.length : 0;
     _assignmentsListSubscription?.cancel();
     _assignmentsListSubscription = _assignmentRepository.listen(
-          (list) => add(AssignmentListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+          (list) => add(AssignmentListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
@@ -94,7 +105,7 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
     int amountNow =  (state is AssignmentListLoaded) ? (state as AssignmentListLoaded).values!.length : 0;
     _assignmentsListSubscription?.cancel();
     _assignmentsListSubscription = _assignmentRepository.listenWithDetails(
-            (list) => add(AssignmentListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+            (list) => add(AssignmentListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,

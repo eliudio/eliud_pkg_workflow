@@ -16,16 +16,8 @@
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
 
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 
@@ -80,7 +72,8 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
         print("Error whilst retrieving AssignmentView with id $id");
         print("Exceptoin: $e");
       }
-    };
+    }
+return null;
   }
 
   Future<AssignmentViewModel?> get(String? id, {Function(Exception)? onError}) async {
@@ -95,7 +88,8 @@ class AssignmentViewFirestore implements AssignmentViewRepository {
         print("Error whilst retrieving AssignmentView with id $id");
         print("Exceptoin: $e");
       }
-    };
+    }
+return null;
   }
 
   StreamSubscription<List<AssignmentViewModel?>> listen(AssignmentViewModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery}) {

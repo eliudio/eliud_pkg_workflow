@@ -1,5 +1,4 @@
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
-import 'package:equatable/equatable.dart';
 
 import 'example_task_model_1.dart';
 

@@ -15,16 +15,20 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_workflow/model/workflow_task_repository.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_list_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
+import 'workflow_task_model.dart';
+
+typedef List<WorkflowTaskModel?> FilterWorkflowTaskModels(List<WorkflowTaskModel?> values);
+
 
 
 class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListState> {
+  final FilterWorkflowTaskModels? filter;
   final WorkflowTaskRepository _workflowTaskRepository;
   StreamSubscription? _workflowTasksListSubscription;
   EliudQuery? eliudQuery;
@@ -35,9 +39,8 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
   final bool? detailed;
   final int workflowTaskLimit;
 
-  WorkflowTaskListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required WorkflowTaskRepository workflowTaskRepository, this.workflowTaskLimit = 5})
-      : assert(workflowTaskRepository != null),
-        _workflowTaskRepository = workflowTaskRepository,
+  WorkflowTaskListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required WorkflowTaskRepository workflowTaskRepository, this.workflowTaskLimit = 5})
+      : _workflowTaskRepository = workflowTaskRepository,
         super(WorkflowTaskListLoading()) {
     on <LoadWorkflowTaskList> ((event, emit) {
       if ((detailed == null) || (!detailed!)) {
@@ -78,11 +81,19 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     });
   }
 
+  List<WorkflowTaskModel?> _filter(List<WorkflowTaskModel?> original) {
+    if (filter != null) {
+      return filter!(original);
+    } else {
+      return original;
+    }
+  }
+
   Future<void> _mapLoadWorkflowTaskListToState() async {
     int amountNow =  (state is WorkflowTaskListLoaded) ? (state as WorkflowTaskListLoaded).values!.length : 0;
     _workflowTasksListSubscription?.cancel();
     _workflowTasksListSubscription = _workflowTaskRepository.listen(
-          (list) => add(WorkflowTaskListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+          (list) => add(WorkflowTaskListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
@@ -94,7 +105,7 @@ class WorkflowTaskListBloc extends Bloc<WorkflowTaskListEvent, WorkflowTaskListS
     int amountNow =  (state is WorkflowTaskListLoaded) ? (state as WorkflowTaskListLoaded).values!.length : 0;
     _workflowTasksListSubscription?.cancel();
     _workflowTasksListSubscription = _workflowTaskRepository.listenWithDetails(
-            (list) => add(WorkflowTaskListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+            (list) => add(WorkflowTaskListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,

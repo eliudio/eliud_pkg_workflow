@@ -14,29 +14,17 @@
 */
 
 import 'package:collection/collection.dart';
-import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import 'package:eliud_core/model/model_export.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_workflow/model/assignment_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 enum AssignmentStatus {
   Success, Declined, Open, Unknown
@@ -80,9 +68,7 @@ class AssignmentModel implements ModelBase, WithAppId {
   WorkflowNotificationModel? confirmMessage;
   WorkflowNotificationModel? rejectMessage;
 
-  AssignmentModel({required this.documentID, required this.appId, required this.reporterId, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, })  {
-    assert(documentID != null);
-  }
+  AssignmentModel({required this.documentID, required this.appId, required this.reporterId, this.assigneeId, this.task, this.workflow, this.workflowTaskSeqNumber, this.timestamp, this.status, this.resultsCurrent, this.resultsPrevious, this.triggeredById, this.confirmMessage, this.rejectMessage, });
 
   AssignmentModel copyWith({String? documentID, String? appId, String? reporterId, String? assigneeId, TaskModel? task, WorkflowModel? workflow, int? workflowTaskSeqNumber, DateTime? timestamp, AssignmentStatus? status, List<AssignmentResultModel>? resultsCurrent, List<AssignmentResultModel>? resultsPrevious, String? triggeredById, WorkflowNotificationModel? confirmMessage, WorkflowNotificationModel? rejectMessage, }) {
     return AssignmentModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, reporterId: reporterId ?? this.reporterId, assigneeId: assigneeId ?? this.assigneeId, task: task ?? this.task, workflow: workflow ?? this.workflow, workflowTaskSeqNumber: workflowTaskSeqNumber ?? this.workflowTaskSeqNumber, timestamp: timestamp ?? this.timestamp, status: status ?? this.status, resultsCurrent: resultsCurrent ?? this.resultsCurrent, resultsPrevious: resultsPrevious ?? this.resultsPrevious, triggeredById: triggeredById ?? this.triggeredById, confirmMessage: confirmMessage ?? this.confirmMessage, rejectMessage: rejectMessage ?? this.rejectMessage, );
@@ -172,7 +158,7 @@ class AssignmentModel implements ModelBase, WithAppId {
           reporterId: entity.reporterId ?? '', 
           assigneeId: entity.assigneeId, 
           task: 
-            await TaskModel.fromEntity(entity.task), 
+            TaskModel.fromEntity(entity.task), 
           workflowTaskSeqNumber: entity.workflowTaskSeqNumber, 
           timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
           status: toAssignmentStatus(entity.status), 

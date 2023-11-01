@@ -22,7 +22,6 @@ import 'abstract_repository_singleton.dart';
 import '../extensions/assignment_view_component.dart';
 import '../editors/assignment_view_component_editor.dart';
 import 'assignment_view_component_selector.dart';
-import 'package:eliud_pkg_workflow/model/internal_component.dart';
 
 
 

@@ -14,13 +14,8 @@
 */
 
 import '../model/assignment_repository.dart';
-import '../model/assignment_result_repository.dart';
 import '../model/assignment_view_repository.dart';
 import '../model/workflow_repository.dart';
-import '../model/workflow_task_repository.dart';
-import 'package:eliud_core/core/blocs/access/repo/user_repository.dart';
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_core/package/package.dart';
 
 AssignmentRepository? assignmentRepository({ String? appId }) => AbstractRepositorySingleton.singleton.assignmentRepository(appId);

@@ -16,21 +16,12 @@
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_repository.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/repository_export.dart';
-import 'package:eliud_core/model/cache_export.dart';
 import 'package:eliud_pkg_workflow/model/cache_export.dart';
-import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
 class AssignmentCache implements AssignmentRepository {
@@ -162,14 +153,14 @@ class AssignmentCache implements AssignmentRepository {
 
     List<AssignmentResultModel>? resultsCurrentHolder;
     if (model.resultsCurrent != null) {
-      resultsCurrentHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsCurrent!.map((element) async {
+      resultsCurrentHolder = List<AssignmentResultModel>.from(await Future.wait(model.resultsCurrent!.map((element) async {
         return await AssignmentResultCache.refreshRelations(element);
       }))).toList();
     }
 
     List<AssignmentResultModel>? resultsPreviousHolder;
     if (model.resultsPrevious != null) {
-      resultsPreviousHolder = List<AssignmentResultModel>.from(await Future.wait(await model.resultsPrevious!.map((element) async {
+      resultsPreviousHolder = List<AssignmentResultModel>.from(await Future.wait(model.resultsPrevious!.map((element) async {
         return await AssignmentResultCache.refreshRelations(element);
       }))).toList();
     }

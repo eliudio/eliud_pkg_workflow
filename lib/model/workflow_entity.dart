@@ -15,15 +15,9 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/random.dart';
-import 'abstract_repository_singleton.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/entity_base.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
-import 'package:eliud_core/tools/common_tools.dart';
 class WorkflowEntity implements EntityBase {
   final String? name;
   final List<WorkflowTaskEntity>? workflowTask;
@@ -49,12 +43,15 @@ class WorkflowEntity implements EntityBase {
 
     var workflowTaskFromMap;
     workflowTaskFromMap = map['workflowTask'];
-    var workflowTaskList;
-    if (workflowTaskFromMap != null)
+    List<WorkflowTaskEntity> workflowTaskList;
+    if (workflowTaskFromMap != null) {
       workflowTaskList = (map['workflowTask'] as List<dynamic>)
         .map((dynamic item) =>
         WorkflowTaskEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
+    } else {
+      workflowTaskList = [];
+    }
 
     return WorkflowEntity(
       name: map['name'], 

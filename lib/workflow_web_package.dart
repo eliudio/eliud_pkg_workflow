@@ -1,7 +1,6 @@
 import 'package:eliud_pkg_workflow/workflow_package.dart';
 import 'package:flutter/foundation.dart';
 
-import 'model/abstract_repository_singleton.dart';
 
 WorkflowPackage getWorkflowPackage() => WorkflowWebPackage();
 
