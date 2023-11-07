@@ -23,9 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/style/style_registry.dart';
 
-
-
-
 import 'package:eliud_pkg_workflow/model/embedded_component.dart';
 
 import 'package:eliud_core/tools/enums.dart';
@@ -40,52 +37,65 @@ import 'package:eliud_pkg_workflow/model/workflow_form_bloc.dart';
 import 'package:eliud_pkg_workflow/model/workflow_form_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_form_state.dart';
 
-
 class WorkflowForm extends StatelessWidget {
   final AppModel app;
-  FormAction formAction;
-  WorkflowModel? value;
-  ActionModel? submitAction;
+  final FormAction formAction;
+  final WorkflowModel? value;
+  final ActionModel? submitAction;
 
-  WorkflowForm({Key? key, required this.app, required this.formAction, required this.value, this.submitAction}) : super(key: key);
+  WorkflowForm(
+      {super.key,
+      required this.app,
+      required this.formAction,
+      required this.value,
+      this.submitAction});
 
+  /// Build the WorkflowForm
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
+    //var accessState = AccessBloc.getState(context);
     var appId = app.documentID;
-    if (formAction == FormAction.ShowData) {
-      return BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(appId,
-                                       formAction: formAction,
-
-                                                )..add(InitialiseWorkflowFormEvent(value: value)),
-  
-        child: MyWorkflowForm(app:app, submitAction: submitAction, formAction: formAction),
-          );
-    } if (formAction == FormAction.ShowPreloadedData) {
-      return BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(appId,
-                                       formAction: formAction,
-
-                                                )..add(InitialiseWorkflowFormNoLoadEvent(value: value)),
-  
-        child: MyWorkflowForm(app:app, submitAction: submitAction, formAction: formAction),
-          );
+    if (formAction == FormAction.showData) {
+      return BlocProvider<WorkflowFormBloc>(
+        create: (context) => WorkflowFormBloc(
+          appId,
+          formAction: formAction,
+        )..add(InitialiseWorkflowFormEvent(value: value)),
+        child: MyWorkflowForm(
+            app: app, submitAction: submitAction, formAction: formAction),
+      );
+    }
+    if (formAction == FormAction.showPreloadedData) {
+      return BlocProvider<WorkflowFormBloc>(
+        create: (context) => WorkflowFormBloc(
+          appId,
+          formAction: formAction,
+        )..add(InitialiseWorkflowFormNoLoadEvent(value: value)),
+        child: MyWorkflowForm(
+            app: app, submitAction: submitAction, formAction: formAction),
+      );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithApp(app).adminFormStyle().appBarWithString(app, context, title: formAction == FormAction.UpdateAction ? 'Update Workflow' : 'Add Workflow'),
-        body: BlocProvider<WorkflowFormBloc >(
-            create: (context) => WorkflowFormBloc(appId,
-                                       formAction: formAction,
-
-                                                )..add((formAction == FormAction.UpdateAction ? InitialiseWorkflowFormEvent(value: value) : InitialiseNewWorkflowFormEvent())),
-  
-        child: MyWorkflowForm(app: app, submitAction: submitAction, formAction: formAction),
+          appBar: StyleRegistry.registry()
+              .styleWithApp(app)
+              .adminFormStyle()
+              .appBarWithString(app, context,
+                  title: formAction == FormAction.updateAction
+                      ? 'Update Workflow'
+                      : 'Add Workflow'),
+          body: BlocProvider<WorkflowFormBloc>(
+            create: (context) => WorkflowFormBloc(
+              appId,
+              formAction: formAction,
+            )..add((formAction == FormAction.updateAction
+                ? InitialiseWorkflowFormEvent(value: value)
+                : InitialiseNewWorkflowFormEvent())),
+            child: MyWorkflowForm(
+                app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
-
 
 class MyWorkflowForm extends StatefulWidget {
   final AppModel app;
@@ -94,9 +104,9 @@ class MyWorkflowForm extends StatefulWidget {
 
   MyWorkflowForm({required this.app, this.formAction, this.submitAction});
 
-  _MyWorkflowFormState createState() => _MyWorkflowFormState(this.formAction);
+  @override
+  State<MyWorkflowForm> createState() => _MyWorkflowFormState(formAction);
 }
-
 
 class _MyWorkflowFormState extends State<MyWorkflowForm> {
   final FormAction? formAction;
@@ -105,7 +115,6 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _appIdController = TextEditingController();
-
 
   _MyWorkflowFormState(this.formAction);
 
@@ -121,140 +130,185 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    return BlocBuilder<WorkflowFormBloc, WorkflowFormState>(builder: (context, state) {
-      if (state is WorkflowFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context),
-      );
+    return BlocBuilder<WorkflowFormBloc, WorkflowFormState>(
+        builder: (context, state) {
+      if (state is WorkflowFormUninitialized) {
+        return Center(
+          child: StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminListStyle()
+              .progressIndicator(widget.app, context),
+        );
+      }
 
       if (state is WorkflowFormLoaded) {
-        if (state.value!.documentID != null)
-          _documentIDController.text = state.value!.documentID.toString();
-        else
-          _documentIDController.text = "";
-        if (state.value!.name != null)
-          _nameController.text = state.value!.name.toString();
-        else
-          _nameController.text = "";
-        if (state.value!.appId != null)
-          _appIdController.text = state.value!.appId.toString();
-        else
-          _appIdController.text = "";
+        _documentIDController.text = state.value!.documentID.toString();
+        _nameController.text = state.value!.name.toString();
+        _appIdController.text = state.value!.appId.toString();
       }
       if (state is WorkflowFormInitialized) {
         List<Widget> children = [];
-         children.add(Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'General')
-                ));
+        children.add(Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            child: StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminFormStyle()
+                .groupTitle(widget.app, context, 'General')));
 
-        children.add(
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .textFormField(widget.app, context,
+                labelText: 'Name',
+                icon: Icons.text_format,
+                readOnly: _readOnly(accessState, state),
+                textEditingController: _nameController,
+                keyboardType: TextInputType.text,
+                validator: (_) =>
+                    state is NameWorkflowFormError ? state.message : null,
+                hintText: null));
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Name', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _nameController, keyboardType: TextInputType.text, validator: (_) => state is NameWorkflowFormError ? state.message : null, hintText: null)
-          );
-
-        children.add(
-
-                new Container(
-                    height: (fullScreenHeight(context) / 2.5), 
-                    child: workflowTasksList(widget.app, context, state.value!.workflowTask, _onWorkflowTaskChanged)
-                )
-          );
-
-
-        children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
-
-
-         children.add(Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'General')
-                ));
-
-        children.add(
-
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Document ID', icon: Icons.vpn_key, readOnly: (formAction == FormAction.UpdateAction), textEditingController: _documentIDController, keyboardType: TextInputType.text, validator: (_) => state is DocumentIDWorkflowFormError ? state.message : null, hintText: null)
-          );
-
-        children.add(
-
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'App Identifier', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _appIdController, keyboardType: TextInputType.text, validator: (_) => state is AppIdWorkflowFormError ? state.message : null, hintText: 'field.remark')
-          );
-
+        children.add(Container(
+            height: (fullScreenHeight(context) / 2.5),
+            child: workflowTasksList(widget.app, context,
+                state.value!.workflowTask, _onWorkflowTaskChanged)));
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .divider(widget.app, context));
 
+        children.add(Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            child: StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminFormStyle()
+                .groupTitle(widget.app, context, 'General')));
 
-        if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app, context, label: 'Submit',
-                  onPressed: _readOnly(accessState, state) ? null : () {
-                    if (state is WorkflowFormError) {
-                      return null;
-                    } else {
-                      if (formAction == FormAction.UpdateAction) {
-                        BlocProvider.of<WorkflowListBloc>(context).add(
-                          UpdateWorkflowList(value: state.value!.copyWith(
-                              documentID: state.value!.documentID, 
-                              name: state.value!.name, 
-                              workflowTask: state.value!.workflowTask, 
-                              appId: state.value!.appId, 
-                        )));
-                      } else {
-                        BlocProvider.of<WorkflowListBloc>(context).add(
-                          AddWorkflowList(value: WorkflowModel(
-                              documentID: state.value!.documentID, 
-                              name: state.value!.name, 
-                              workflowTask: state.value!.workflowTask, 
-                              appId: state.value!.appId, 
-                          )));
-                      }
-                      if (widget.submitAction != null) {
-                        eliudrouter.Router.navigateTo(context, widget.submitAction!);
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    }
-                  },
-                ));
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .textFormField(widget.app, context,
+                labelText: 'Document ID',
+                icon: Icons.vpn_key,
+                readOnly: (formAction == FormAction.updateAction),
+                textEditingController: _documentIDController,
+                keyboardType: TextInputType.text,
+                validator: (_) =>
+                    state is DocumentIDWorkflowFormError ? state.message : null,
+                hintText: null));
 
-        return StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().container(widget.app, context, Form(
-            child: ListView(
-              padding: const EdgeInsets.all(8),
-              physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
-              shrinkWrap: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)),
-              children: children
-            ),
-          ), formAction!
-        );
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .textFormField(widget.app, context,
+                labelText: 'App Identifier',
+                icon: Icons.text_format,
+                readOnly: _readOnly(accessState, state),
+                textEditingController: _appIdController,
+                keyboardType: TextInputType.text,
+                validator: (_) =>
+                    state is AppIdWorkflowFormError ? state.message : null,
+                hintText: 'field.remark'));
+
+        children.add(Container(height: 20.0));
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .divider(widget.app, context));
+
+        if ((formAction != FormAction.showData) &&
+            (formAction != FormAction.showPreloadedData)) {
+          children.add(StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminFormStyle()
+              .button(
+                widget.app,
+                context,
+                label: 'Submit',
+                onPressed: _readOnly(accessState, state)
+                    ? null
+                    : () {
+                        if (state is WorkflowFormError) {
+                          return;
+                        } else {
+                          if (formAction == FormAction.updateAction) {
+                            BlocProvider.of<WorkflowListBloc>(context)
+                                .add(UpdateWorkflowList(
+                                    value: state.value!.copyWith(
+                              documentID: state.value!.documentID,
+                              name: state.value!.name,
+                              workflowTask: state.value!.workflowTask,
+                              appId: state.value!.appId,
+                            )));
+                          } else {
+                            BlocProvider.of<WorkflowListBloc>(context)
+                                .add(AddWorkflowList(
+                                    value: WorkflowModel(
+                              documentID: state.value!.documentID,
+                              name: state.value!.name,
+                              workflowTask: state.value!.workflowTask,
+                              appId: state.value!.appId,
+                            )));
+                          }
+                          if (widget.submitAction != null) {
+                            eliudrouter.Router.navigateTo(
+                                context, widget.submitAction!);
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+              ));
+        }
+
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .container(
+                widget.app,
+                context,
+                Form(
+                  child: ListView(
+                      padding: const EdgeInsets.all(8),
+                      physics: ((formAction == FormAction.showData) ||
+                              (formAction == FormAction.showPreloadedData))
+                          ? NeverScrollableScrollPhysics()
+                          : null,
+                      shrinkWrap: ((formAction == FormAction.showData) ||
+                          (formAction == FormAction.showPreloadedData)),
+                      children: children),
+                ),
+                formAction!);
       } else {
-        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .progressIndicator(widget.app, context);
       }
     });
   }
 
   void _onDocumentIDChanged() {
-    _myFormBloc.add(ChangedWorkflowDocumentID(value: _documentIDController.text));
+    _myFormBloc
+        .add(ChangedWorkflowDocumentID(value: _documentIDController.text));
   }
-
 
   void _onNameChanged() {
     _myFormBloc.add(ChangedWorkflowName(value: _nameController.text));
   }
-
 
   void _onWorkflowTaskChanged(value) {
     _myFormBloc.add(ChangedWorkflowWorkflowTask(value: value));
     setState(() {});
   }
 
-
   void _onAppIdChanged() {
     _myFormBloc.add(ChangedWorkflowAppId(value: _appIdController.text));
   }
-
-
 
   @override
   void dispose() {
@@ -264,12 +318,10 @@ class _MyWorkflowFormState extends State<MyWorkflowForm> {
     super.dispose();
   }
 
+  /// Is the form read-only?
   bool _readOnly(AccessState accessState, WorkflowFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID));
+    return (formAction == FormAction.showData) ||
+        (formAction == FormAction.showPreloadedData) ||
+        (!accessState.memberIsOwner(widget.app.documentID));
   }
-  
-
 }
-
-
-

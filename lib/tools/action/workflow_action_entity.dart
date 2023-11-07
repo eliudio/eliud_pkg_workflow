@@ -6,15 +6,22 @@ class WorkflowActionEntity extends ActionEntity {
   static const String label = "Workflow";
   final String? workflowId;
 
-  const WorkflowActionEntity({String? appId, DisplayConditionsEntity? conditions, this.workflowId}) : super(appId, conditions: conditions, actionType : label);
+  const WorkflowActionEntity(
+      {String? appId, DisplayConditionsEntity? conditions, this.workflowId})
+      : super(appId, conditions: conditions, actionType: label);
 
+  @override
   Map<String, Object?> toDocument() {
     Map<String, Object?> theDocument = HashMap();
     theDocument["appID"] = appID;
     theDocument["actionType"] = actionType;
-    if (workflowId != null) theDocument["workflowId"] = workflowId;
-    else theDocument["workflowId"] = null;
-    theDocument['conditions'] = conditions == null ? null : conditions!.toDocument();
+    if (workflowId != null) {
+      theDocument["workflowId"] = workflowId;
+    } else {
+      theDocument["workflowId"] = null;
+    }
+    theDocument['conditions'] =
+        conditions == null ? null : conditions!.toDocument();
 
     return theDocument;
   }
@@ -29,7 +36,13 @@ class WorkflowActionEntity extends ActionEntity {
   }
 
   @override
-  WorkflowActionEntity copyWith({String? appId, DisplayConditionsEntity? conditions, String? workflowId }) {
-    return WorkflowActionEntity(appId: appId ?? this.appID, conditions : conditions ?? this.conditions, workflowId: workflowId ?? this.workflowId);
+  WorkflowActionEntity copyWith(
+      {String? appId,
+      DisplayConditionsEntity? conditions,
+      String? workflowId}) {
+    return WorkflowActionEntity(
+        appId: appId ?? appID,
+        conditions: conditions ?? this.conditions,
+        workflowId: workflowId ?? this.workflowId);
   }
 }

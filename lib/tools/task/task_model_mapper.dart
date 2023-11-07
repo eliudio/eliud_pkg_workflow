@@ -6,4 +6,3 @@ abstract class TaskModelMapper {
   TaskModel fromEntityPlus(TaskEntity entity);
   TaskEntity fromMap(Map snap);
 }
-

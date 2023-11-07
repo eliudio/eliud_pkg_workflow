@@ -18,7 +18,6 @@ import 'package:meta/meta.dart';
 import 'package:eliud_core/model/model_export.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 
-
 @immutable
 abstract class AssignmentViewFormEvent extends Equatable {
   const AssignmentViewFormEvent();
@@ -27,15 +26,13 @@ abstract class AssignmentViewFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewAssignmentViewFormEvent extends AssignmentViewFormEvent {
-}
-
+class InitialiseNewAssignmentViewFormEvent extends AssignmentViewFormEvent {}
 
 class InitialiseAssignmentViewFormEvent extends AssignmentViewFormEvent {
   final AssignmentViewModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseAssignmentViewFormEvent({this.value});
 }
@@ -44,7 +41,7 @@ class InitialiseAssignmentViewFormNoLoadEvent extends AssignmentViewFormEvent {
   final AssignmentViewModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseAssignmentViewFormNoLoadEvent({this.value});
 }
@@ -55,7 +52,7 @@ class ChangedAssignmentViewDocumentID extends AssignmentViewFormEvent {
   ChangedAssignmentViewDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentViewDocumentID{ value: $value }';
@@ -67,7 +64,7 @@ class ChangedAssignmentViewAppId extends AssignmentViewFormEvent {
   ChangedAssignmentViewAppId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentViewAppId{ value: $value }';
@@ -79,7 +76,7 @@ class ChangedAssignmentViewTitle extends AssignmentViewFormEvent {
   ChangedAssignmentViewTitle({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentViewTitle{ value: $value }';
@@ -91,7 +88,7 @@ class ChangedAssignmentViewDescription extends AssignmentViewFormEvent {
   ChangedAssignmentViewDescription({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentViewDescription{ value: $value }';
@@ -103,9 +100,8 @@ class ChangedAssignmentViewConditions extends AssignmentViewFormEvent {
   ChangedAssignmentViewConditions({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentViewConditions{ value: $value }';
 }
-

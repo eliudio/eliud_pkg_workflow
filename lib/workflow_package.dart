@@ -28,21 +28,22 @@ import 'model/assignment_model.dart';
 import 'wizards/assignment_dashboard_dialog_wizard.dart';
 
 import 'package:eliud_pkg_workflow/workflow_package_stub.dart'
-if (dart.library.io) 'workflow_mobile_package.dart'
-if (dart.library.html) 'workflow_web_package.dart';
+    if (dart.library.io) 'workflow_mobile_package.dart'
+    if (dart.library.html) 'workflow_web_package.dart';
 
 abstract class WorkflowPackage extends Package {
   WorkflowPackage() : super('eliud_pkg_workflow');
 
-  Map<String, StreamSubscription<List<AssignmentModel?>>> subscription = {};
-  Map<String, bool?> stateCONDITION_MUST_HAVE_ASSIGNMENTS = {};
-  static final String CONDITION_MUST_HAVE_ASSIGNMENTS = 'MustHaveAssignments';
+  final Map<String, StreamSubscription<List<AssignmentModel?>>> subscription =
+      {};
+  final Map<String, bool?> stateConditionMustHaveAssignments = {};
+  static final String conditionMustHaveAssignments = 'MustHaveAssignments';
 
   static EliudQuery getOpenAssignmentsQuery(String appId, String assigneeId) {
     return EliudQuery(theConditions: [
       EliudQueryCondition('assigneeId', isEqualTo: assigneeId),
       EliudQueryCondition('appId', isEqualTo: appId),
-      EliudQueryCondition('status', isEqualTo: AssignmentStatus.Open.index)
+      EliudQueryCondition('status', isEqualTo: AssignmentStatus.open.index)
     ]);
   }
 
@@ -61,40 +62,39 @@ abstract class WorkflowPackage extends Package {
       subscription[appId] = assignmentRepository(appId: appId)!.listen((list) {
         // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
         // then we must inform the AccessBloc, so that it can refresh the state
-        var value = list.length > 0;
+        var value = list.isNotEmpty;
         if (!c.isCompleted) {
           // the first time we get this trigger, it's upon entry of the getAndSubscribe. Now we simply return the value
-          stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = value;
+          stateConditionMustHaveAssignments[appId] = value;
           c.complete([
             PackageConditionDetails(
                 packageName: packageName,
-                conditionName: CONDITION_MUST_HAVE_ASSIGNMENTS,
+                conditionName: conditionMustHaveAssignments,
                 value: value)
           ]);
         } else {
           // subsequent calls we get this trigger, it's when the date has changed. Now add the event to the bloc
-          if (value != stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId]) {
-            stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = value;
+          if (value != stateConditionMustHaveAssignments[appId]) {
+            stateConditionMustHaveAssignments[appId] = value;
             accessBloc.add(UpdatePackageConditionEvent(
-                app, this, CONDITION_MUST_HAVE_ASSIGNMENTS, value));
+                app, this, conditionMustHaveAssignments, value));
           }
         }
       }, eliudQuery: getOpenAssignmentsQuery(appId, member.documentID));
       return c.future;
     } else {
-      stateCONDITION_MUST_HAVE_ASSIGNMENTS[appId] = false;
+      stateConditionMustHaveAssignments[appId] = false;
       return Future.value([
         PackageConditionDetails(
             packageName: packageName,
-            conditionName: CONDITION_MUST_HAVE_ASSIGNMENTS,
+            conditionName: conditionMustHaveAssignments,
             value: false)
       ]);
     }
   }
 
   @override
-  List<String> retrieveAllPackageConditions() =>
-      [CONDITION_MUST_HAVE_ASSIGNMENTS];
+  List<String> retrieveAllPackageConditions() => [conditionMustHaveAssignments];
 
   @override
   void init() {
@@ -117,7 +117,8 @@ abstract class WorkflowPackage extends Package {
     TaskModelRegistry.registry()!.addTask(
         identifier: ExampleTaskModel1.label,
         definition: ExampleTaskModel1.definition,
-        editor: (app, model) => ExampleTaskModel1EditorWidget(app: app, model: model),
+        editor: (app, model) =>
+            ExampleTaskModel1EditorWidget(app: app, model: model),
         createNewInstance: () => ExampleTaskModel1(
             identifier: ExampleTaskModel1.label,
             description: 'new example task model 1',
@@ -134,6 +135,7 @@ abstract class WorkflowPackage extends Package {
   /*
    * Register depending packages
    */
+  @override
   void registerDependencies(Eliud eliud) {
     eliud.registerPackage(CorePackage.instance());
     eliud.registerPackage(NotificationsPackage.instance());

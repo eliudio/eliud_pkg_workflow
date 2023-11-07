@@ -41,9 +41,9 @@ class WorkflowFormInitialized extends WorkflowFormState {
   final WorkflowModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
-  const WorkflowFormInitialized({ this.value });
+  const WorkflowFormInitialized({this.value});
 }
 
 // Menu has been initialised and hence a menu is available
@@ -51,9 +51,9 @@ abstract class WorkflowFormError extends WorkflowFormInitialized {
   final String? message;
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
-  const WorkflowFormError({this.message, WorkflowModel? value }) : super(value: value);
+  const WorkflowFormError({this.message, super.value});
 
   @override
   String toString() {
@@ -63,11 +63,12 @@ abstract class WorkflowFormError extends WorkflowFormInitialized {
     }''';
   }
 }
-class DocumentIDWorkflowFormError extends WorkflowFormError { 
-  const DocumentIDWorkflowFormError({ String? message, WorkflowModel? value }): super(message: message, value: value);
+
+class DocumentIDWorkflowFormError extends WorkflowFormError {
+  const DocumentIDWorkflowFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -78,12 +79,11 @@ class DocumentIDWorkflowFormError extends WorkflowFormError {
   }
 }
 
-
-class NameWorkflowFormError extends WorkflowFormError { 
-  const NameWorkflowFormError({ String? message, WorkflowModel? value }): super(message: message, value: value);
+class NameWorkflowFormError extends WorkflowFormError {
+  const NameWorkflowFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -94,12 +94,11 @@ class NameWorkflowFormError extends WorkflowFormError {
   }
 }
 
-
-class WorkflowTaskWorkflowFormError extends WorkflowFormError { 
-  const WorkflowTaskWorkflowFormError({ String? message, WorkflowModel? value }): super(message: message, value: value);
+class WorkflowTaskWorkflowFormError extends WorkflowFormError {
+  const WorkflowTaskWorkflowFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -110,12 +109,11 @@ class WorkflowTaskWorkflowFormError extends WorkflowFormError {
   }
 }
 
-
-class AppIdWorkflowFormError extends WorkflowFormError { 
-  const AppIdWorkflowFormError({ String? message, WorkflowModel? value }): super(message: message, value: value);
+class AppIdWorkflowFormError extends WorkflowFormError {
+  const AppIdWorkflowFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -126,12 +124,11 @@ class AppIdWorkflowFormError extends WorkflowFormError {
   }
 }
 
-
-class WorkflowFormLoaded extends WorkflowFormInitialized { 
-  const WorkflowFormLoaded({ WorkflowModel? value }): super(value: value);
+class WorkflowFormLoaded extends WorkflowFormInitialized {
+  const WorkflowFormLoaded({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -141,12 +138,11 @@ class WorkflowFormLoaded extends WorkflowFormInitialized {
   }
 }
 
-
-class SubmittableWorkflowForm extends WorkflowFormInitialized { 
-  const SubmittableWorkflowForm({ WorkflowModel? value }): super(value: value);
+class SubmittableWorkflowForm extends WorkflowFormInitialized {
+  const SubmittableWorkflowForm({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -155,5 +151,3 @@ class SubmittableWorkflowForm extends WorkflowFormInitialized {
     }''';
   }
 }
-
-

@@ -20,24 +20,27 @@ import 'package:eliud_pkg_workflow/model/assignment_view_component_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_component_state.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
 
-class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, AssignmentViewComponentState> {
+class AssignmentViewComponentBloc
+    extends Bloc<AssignmentViewComponentEvent, AssignmentViewComponentState> {
   final AssignmentViewRepository? assignmentViewRepository;
   StreamSubscription? _assignmentViewSubscription;
 
   void _mapLoadAssignmentViewComponentUpdateToState(String documentId) {
     _assignmentViewSubscription?.cancel();
-    _assignmentViewSubscription = assignmentViewRepository!.listenTo(documentId, (value) {
+    _assignmentViewSubscription =
+        assignmentViewRepository!.listenTo(documentId, (value) {
       if (value != null) {
         add(AssignmentViewComponentUpdated(value: value));
       }
     });
   }
 
-  AssignmentViewComponentBloc({ this.assignmentViewRepository }): super(AssignmentViewComponentUninitialized()) {
-    on <FetchAssignmentViewComponent> ((event, emit) {
+  AssignmentViewComponentBloc({this.assignmentViewRepository})
+      : super(AssignmentViewComponentUninitialized()) {
+    on<FetchAssignmentViewComponent>((event, emit) {
       _mapLoadAssignmentViewComponentUpdateToState(event.id!);
     });
-    on <AssignmentViewComponentUpdated> ((event, emit) {
+    on<AssignmentViewComponentUpdated>((event, emit) {
       emit(AssignmentViewComponentLoaded(value: event.value));
     });
   }
@@ -47,6 +50,4 @@ class AssignmentViewComponentBloc extends Bloc<AssignmentViewComponentEvent, Ass
     _assignmentViewSubscription?.cancel();
     return super.close();
   }
-
 }
-

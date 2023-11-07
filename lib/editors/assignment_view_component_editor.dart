@@ -44,7 +44,7 @@ class AssignmentViewComponentEditorConstructor
           description: 'Assignment View',
           conditions: StorageConditionsModel(
               privilegeLevelRequired:
-              PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),
+                  PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple),
         ),
         feedback);
   }
@@ -53,11 +53,11 @@ class AssignmentViewComponentEditorConstructor
   void updateComponentWithID(AppModel app, BuildContext context, String id,
       EditorFeedback feedback) async {
     var assignmentView =
-    await assignmentViewRepository(appId: app.documentID)!.get(id);
+        await assignmentViewRepository(appId: app.documentID)!.get(id);
     if (assignmentView != null) {
       _openIt(app, context, false, assignmentView, feedback);
     } else {
-      openErrorDialog(app, context, app.documentID + '/_error',
+      openErrorDialog(app, context, '${app.documentID}/_error',
           title: 'Error',
           errorMessage: 'Cannot find notification dashboard with id $id');
     }
@@ -68,7 +68,7 @@ class AssignmentViewComponentEditorConstructor
     openComplexDialog(
       app,
       context,
-      app.documentID + '/notificationdashboard',
+      '${app.documentID}/notificationdashboard',
       title: create
           ? 'Create Notification Dashboard'
           : 'Update Notification Dashboard',
@@ -76,11 +76,11 @@ class AssignmentViewComponentEditorConstructor
       widthFraction: .9,
       child: BlocProvider<AssignmentViewBloc>(
           create: (context) => AssignmentViewBloc(
-            app.documentID,
-            /*create,
+                app.documentID,
+                /*create,
             */
-            feedback,
-          )..add(EditorBaseInitialise<AssignmentViewModel>(model)),
+                feedback,
+              )..add(EditorBaseInitialise<AssignmentViewModel>(model)),
           child: AssignmentViewComponentEditor(
             app: app,
           )),
@@ -92,13 +92,12 @@ class AssignmentViewComponentEditor extends StatefulWidget {
   final AppModel app;
 
   const AssignmentViewComponentEditor({
-    Key? key,
+    super.key,
     required this.app,
-  }) : super(key: key);
+  });
 
   @override
-  State<StatefulWidget> createState() =>
-      _AssignmentViewComponentEditorState();
+  State<StatefulWidget> createState() => _AssignmentViewComponentEditorState();
 }
 
 class _AssignmentViewComponentEditorState
@@ -107,88 +106,90 @@ class _AssignmentViewComponentEditorState
   Widget build(BuildContext context) {
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (aContext, accessState) {
-          if (accessState is AccessDetermined) {
-            return BlocBuilder<AssignmentViewBloc, EditorBaseState<AssignmentViewModel>>(
-                builder: (ppContext, assignmentViewState) {
-                  if (assignmentViewState is EditorBaseInitialised<AssignmentViewModel>) {
-                    return ListView(
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        children: [
-                          HeaderWidget(
-                            app: widget.app,
-                            title: 'AssignmentView',
-                            okAction: () async {
-                              await BlocProvider.of<AssignmentViewBloc>(context)
-                                  .save(EditorBaseApplyChanges<AssignmentViewModel>(
-                                  model: assignmentViewState.model));
-                              return true;
-                            },
-                            cancelAction: () async {
-                              return true;
-                            },
-                          ),
-                          topicContainer(widget.app, context,
-                              title: 'General',
-                              collapsible: true,
-                              collapsed: true,
-                              children: [
-                                getListTile(context, widget.app,
-                                    leading: Icon(Icons.vpn_key),
-                                    title: text(widget.app, context,
-                                        assignmentViewState.model.documentID)),
-                                getListTile(context, widget.app,
-                                    leading: Icon(Icons.description),
-                                    title: dialogField(
-                                      widget.app,
-                                      context,
-                                      initialValue: assignmentViewState.model.description,
-                                      valueChanged: (value) {
-                                        assignmentViewState.model.description = value;
-                                      },
-                                      maxLines: 1,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Description',
-                                        labelText: 'Description',
-                                      ),
-                                    )),
-                                getListTile(context, widget.app,
-                                    leading: Icon(Icons.description),
-                                    title: dialogField(
-                                      widget.app,
-                                      context,
-                                      initialValue: assignmentViewState.model.title,
-                                      valueChanged: (value) {
-                                        assignmentViewState.model.title = value;
-                                      },
-                                      maxLines: 1,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Title',
-                                        labelText: 'Title',
-                                      ),
-                                    )),
-                              ]),
-                          topicContainer(widget.app, context,
-                              title: 'Condition',
-                              collapsible: true,
-                              collapsed: true,
-                              children: [
-                                getListTile(context, widget.app,
-                                    leading: Icon(Icons.security),
-                                    title: ConditionsSimpleWidget(
-                                      app: widget.app,
-                                      value: assignmentViewState.model.conditions!,
-                                    )),
-                              ]),
-                        ]);
-                  } else {
-                    return progressIndicator(widget.app, context);
-                  }
-                });
+      if (accessState is AccessDetermined) {
+        return BlocBuilder<AssignmentViewBloc,
+                EditorBaseState<AssignmentViewModel>>(
+            builder: (ppContext, assignmentViewState) {
+          if (assignmentViewState
+              is EditorBaseInitialised<AssignmentViewModel>) {
+            return ListView(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                children: [
+                  HeaderWidget(
+                    app: widget.app,
+                    title: 'AssignmentView',
+                    okAction: () async {
+                      await BlocProvider.of<AssignmentViewBloc>(context).save(
+                          EditorBaseApplyChanges<AssignmentViewModel>(
+                              model: assignmentViewState.model));
+                      return true;
+                    },
+                    cancelAction: () async {
+                      return true;
+                    },
+                  ),
+                  topicContainer(widget.app, context,
+                      title: 'General',
+                      collapsible: true,
+                      collapsed: true,
+                      children: [
+                        getListTile(context, widget.app,
+                            leading: Icon(Icons.vpn_key),
+                            title: text(widget.app, context,
+                                assignmentViewState.model.documentID)),
+                        getListTile(context, widget.app,
+                            leading: Icon(Icons.description),
+                            title: dialogField(
+                              widget.app,
+                              context,
+                              initialValue:
+                                  assignmentViewState.model.description,
+                              valueChanged: (value) {
+                                assignmentViewState.model.description = value;
+                              },
+                              maxLines: 1,
+                              decoration: const InputDecoration(
+                                hintText: 'Description',
+                                labelText: 'Description',
+                              ),
+                            )),
+                        getListTile(context, widget.app,
+                            leading: Icon(Icons.description),
+                            title: dialogField(
+                              widget.app,
+                              context,
+                              initialValue: assignmentViewState.model.title,
+                              valueChanged: (value) {
+                                assignmentViewState.model.title = value;
+                              },
+                              maxLines: 1,
+                              decoration: const InputDecoration(
+                                hintText: 'Title',
+                                labelText: 'Title',
+                              ),
+                            )),
+                      ]),
+                  topicContainer(widget.app, context,
+                      title: 'Condition',
+                      collapsible: true,
+                      collapsed: true,
+                      children: [
+                        getListTile(context, widget.app,
+                            leading: Icon(Icons.security),
+                            title: ConditionsSimpleWidget(
+                              app: widget.app,
+                              value: assignmentViewState.model.conditions!,
+                            )),
+                      ]),
+                ]);
           } else {
             return progressIndicator(widget.app, context);
           }
         });
+      } else {
+        return progressIndicator(widget.app, context);
+      }
+    });
   }
-
 }

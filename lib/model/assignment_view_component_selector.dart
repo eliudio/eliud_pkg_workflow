@@ -33,20 +33,20 @@ import 'assignment_view_model.dart';
 
 class AssignmentViewComponentSelector extends ComponentSelector {
   @override
-  Widget createSelectWidget(BuildContext context, AppModel app, int privilegeLevel, double height,
-      SelectComponent selected, editorConstructor) {
+  Widget createSelectWidget(BuildContext context, AppModel app,
+      int privilegeLevel, double height, SelectComponent selected, editor) {
     var appId = app.documentID;
     return BlocProvider<AssignmentViewListBloc>(
-          create: (context) => AssignmentViewListBloc(
-          eliudQuery: getComponentSelectorQuery(0, app.documentID),
-          assignmentViewRepository:
-              assignmentViewRepository(appId: appId)!,
-          )..add(LoadAssignmentViewList()),
-      child: SelectAssignmentViewWidget(app: app,
+      create: (context) => AssignmentViewListBloc(
+        eliudQuery: getComponentSelectorQuery(0, app.documentID),
+        assignmentViewRepository: assignmentViewRepository(appId: appId)!,
+      )..add(LoadAssignmentViewList()),
+      child: SelectAssignmentViewWidget(
+          app: app,
           height: height,
           containerPrivilege: privilegeLevel,
           selected: selected,
-          editorConstructor: editorConstructor),
+          editorConstructor: editor),
     );
   }
 }
@@ -59,21 +59,21 @@ class SelectAssignmentViewWidget extends StatefulWidget {
   final ComponentEditorConstructor editorConstructor;
 
   const SelectAssignmentViewWidget(
-      {Key? key,
+      {super.key,
       required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
-      required this.editorConstructor})
-      : super(key: key);
+      required this.editorConstructor});
 
   @override
-  _SelectAssignmentViewWidgetState createState() {
+  State<SelectAssignmentViewWidget> createState() {
     return _SelectAssignmentViewWidgetState();
   }
 }
 
-class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget> with TickerProviderStateMixin {
+class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
+    with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];
   final int _initialPrivilege = 0;
@@ -81,9 +81,9 @@ class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
 
   @override
   void initState() {
-    var _privilegeASize = _privilegeItems.length;
+    var privilegeASize = _privilegeItems.length;
     _privilegeTabController =
-        TabController(vsync: this, length: _privilegeASize);
+        TabController(vsync: this, length: privilegeASize);
     _privilegeTabController!.addListener(_handlePrivilegeTabSelection);
     _privilegeTabController!.index = _initialPrivilege;
 
@@ -101,14 +101,16 @@ class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
   void _handlePrivilegeTabSelection() {
     if ((_privilegeTabController != null) &&
         (_privilegeTabController!.indexIsChanging)) {
-        _currentPrivilege = _privilegeTabController!.index;
-        BlocProvider.of<AssignmentViewListBloc>(context).add(
-            AssignmentViewChangeQuery(newQuery: getComponentSelectorQuery(_currentPrivilege, widget.app.documentID)));
+      _currentPrivilege = _privilegeTabController!.index;
+      BlocProvider.of<AssignmentViewListBloc>(context).add(
+          AssignmentViewChangeQuery(
+              newQuery: getComponentSelectorQuery(
+                  _currentPrivilege, widget.app.documentID)));
     }
   }
 
   Widget theList(BuildContext context, List<AssignmentViewModel?> values) {
-    var app = widget.app; 
+    var app = widget.app;
     return ListView.builder(
         shrinkWrap: true,
         physics: ScrollPhysics(),
@@ -136,10 +138,13 @@ class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
                     if (selectedValue == 1) {
                       widget.selected(value.documentID);
                     } else if (selectedValue == 2) {
-                      widget.editorConstructor.updateComponent(widget.app, context, value, (_, __) {});
+                      widget.editorConstructor.updateComponent(
+                          widget.app, context, value, (_, __) {});
                     }
                   }),
-              title: value.description != null ? Center(child: text(app, context, value.description!)) : value.documentID != null ? Center(child: text(app, context, value.documentID)) : Container(),
+              title: value.description != null
+                  ? Center(child: text(app, context, value.description!))
+                  : Center(child: text(app, context, value.documentID)),
               subtitle: null,
             );
           } else {
@@ -156,7 +161,13 @@ class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
       var newPrivilegeItems = <Widget>[];
       int i = 0;
       for (var privilegeItem in _privilegeItems) {
-        newPrivilegeItems.add(Wrap(children: [(i <= widget.containerPrivilege) ? Icon(Icons.check) : Icon(Icons.close), Container(width: 2), text(widget.app, context, privilegeItem)]));
+        newPrivilegeItems.add(Wrap(children: [
+          (i <= widget.containerPrivilege)
+              ? Icon(Icons.check)
+              : Icon(Icons.close),
+          Container(width: 2),
+          text(widget.app, context, privilegeItem)
+        ]));
         i++;
       }
       children.add(tabBar2(widget.app, context,
@@ -170,16 +181,18 @@ class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
             )));
       } else {
         children.add(Container(
-            height: max(30, widget.height - 101),
-            ));
+          height: max(30, widget.height - 101),
+        ));
       }
       children.add(Column(children: [
         divider(widget.app, context),
         Center(
-            child: iconButton(widget.app, 
+            child: iconButton(
+          widget.app,
           context,
           onPressed: () {
-            widget.editorConstructor.createNewComponent(widget.app, context, (_, __) {});
+            widget.editorConstructor
+                .createNewComponent(widget.app, context, (_, __) {});
           },
           icon: Icon(Icons.add),
         ))
@@ -189,6 +202,3 @@ class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
     });
   }
 }
-
-
-

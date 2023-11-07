@@ -21,34 +21,55 @@ class WorkflowNotificationEntity implements EntityBase {
   final String? message;
   final int? addressee;
 
-  WorkflowNotificationEntity({this.message, this.addressee, });
+  WorkflowNotificationEntity({
+    this.message,
+    this.addressee,
+  });
 
-  WorkflowNotificationEntity copyWith({String? message, int? addressee, }) {
-    return WorkflowNotificationEntity(message : message ?? this.message, addressee : addressee ?? this.addressee, );
+  WorkflowNotificationEntity copyWith({
+    String? message,
+    int? addressee,
+  }) {
+    return WorkflowNotificationEntity(
+      message: message ?? this.message,
+      addressee: addressee ?? this.addressee,
+    );
   }
-  List<Object?> get props => [message, addressee, ];
+
+  List<Object?> get props => [
+        message,
+        addressee,
+      ];
 
   @override
   String toString() {
     return 'WorkflowNotificationEntity{message: $message, addressee: $addressee}';
   }
 
-  static WorkflowNotificationEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+  static WorkflowNotificationEntity? fromMap(Object? o,
+      {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
     return WorkflowNotificationEntity(
-      message: map['message'], 
-      addressee: map['addressee'], 
+      message: map['message'],
+      addressee: map['addressee'],
     );
   }
 
+  @override
   Map<String, Object?> toDocument() {
     Map<String, Object?> theDocument = HashMap();
-    if (message != null) theDocument["message"] = message;
-      else theDocument["message"] = null;
-    if (addressee != null) theDocument["addressee"] = addressee;
-      else theDocument["addressee"] = null;
+    if (message != null) {
+      theDocument["message"] = message;
+    } else {
+      theDocument["message"] = null;
+    }
+    if (addressee != null) {
+      theDocument["addressee"] = addressee;
+    } else {
+      theDocument["addressee"] = null;
+    }
     return theDocument;
   }
 
@@ -58,7 +79,8 @@ class WorkflowNotificationEntity implements EntityBase {
     return newEntity;
   }
 
-  static WorkflowNotificationEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
+  static WorkflowNotificationEntity? fromJsonString(String json,
+      {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
@@ -67,9 +89,9 @@ class WorkflowNotificationEntity implements EntityBase {
     return jsonEncode(toDocument());
   }
 
-  Future<Map<String, Object?>> enrichedDocument(Map<String, Object?> theDocument) async {
+  @override
+  Future<Map<String, Object?>> enrichedDocument(
+      Map<String, Object?> theDocument) async {
     return theDocument;
   }
-
 }
-

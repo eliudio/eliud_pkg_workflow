@@ -30,10 +30,10 @@ class NewPage extends WorkflowTaskListEvent {}
 class AddWorkflowTaskList extends WorkflowTaskListEvent {
   final WorkflowTaskModel? value;
 
-  const AddWorkflowTaskList({ this.value });
+  const AddWorkflowTaskList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddWorkflowTaskList{ value: $value }';
@@ -42,10 +42,10 @@ class AddWorkflowTaskList extends WorkflowTaskListEvent {
 class UpdateWorkflowTaskList extends WorkflowTaskListEvent {
   final WorkflowTaskModel? value;
 
-  const UpdateWorkflowTaskList({ this.value });
+  const UpdateWorkflowTaskList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateWorkflowTaskList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateWorkflowTaskList extends WorkflowTaskListEvent {
 class DeleteWorkflowTaskList extends WorkflowTaskListEvent {
   final WorkflowTaskModel? value;
 
-  const DeleteWorkflowTaskList({ this.value });
+  const DeleteWorkflowTaskList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteWorkflowTaskList{ value: $value }';
@@ -67,24 +67,24 @@ class WorkflowTaskListUpdated extends WorkflowTaskListEvent {
   final List<WorkflowTaskModel?>? value;
   final bool? mightHaveMore;
 
-  const WorkflowTaskListUpdated({ this.value, this.mightHaveMore });
+  const WorkflowTaskListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'WorkflowTaskListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'WorkflowTaskListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class WorkflowTaskChangeQuery extends WorkflowTaskListEvent {
   final EliudQuery? newQuery;
 
-  const WorkflowTaskChangeQuery({ required this.newQuery });
+  const WorkflowTaskChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'WorkflowTaskChangeQuery{ value: $newQuery }';
 }
-

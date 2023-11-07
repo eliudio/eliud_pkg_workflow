@@ -84,7 +84,7 @@
       "fieldName": "status",
       "fieldType": "enum",
       "enumName": "AssignmentStatus",
-      "enumValues" : [ "Success", "Declined", "Open" ]
+      "enumValues" : [ "success", "declined", "open" ]
     },
     {
       "fieldName": "resultsCurrent",
@@ -146,7 +146,7 @@
     }
   ],
   "listFields": {
-    "title": "value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID)) : Container()"
+    "title": "Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID))"
   },
   "depends": ["eliud_core"]
 }

@@ -30,10 +30,10 @@ class NewPage extends AssignmentResultListEvent {}
 class AddAssignmentResultList extends AssignmentResultListEvent {
   final AssignmentResultModel? value;
 
-  const AddAssignmentResultList({ this.value });
+  const AddAssignmentResultList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddAssignmentResultList{ value: $value }';
@@ -42,10 +42,10 @@ class AddAssignmentResultList extends AssignmentResultListEvent {
 class UpdateAssignmentResultList extends AssignmentResultListEvent {
   final AssignmentResultModel? value;
 
-  const UpdateAssignmentResultList({ this.value });
+  const UpdateAssignmentResultList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateAssignmentResultList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateAssignmentResultList extends AssignmentResultListEvent {
 class DeleteAssignmentResultList extends AssignmentResultListEvent {
   final AssignmentResultModel? value;
 
-  const DeleteAssignmentResultList({ this.value });
+  const DeleteAssignmentResultList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteAssignmentResultList{ value: $value }';
@@ -67,24 +67,24 @@ class AssignmentResultListUpdated extends AssignmentResultListEvent {
   final List<AssignmentResultModel?>? value;
   final bool? mightHaveMore;
 
-  const AssignmentResultListUpdated({ this.value, this.mightHaveMore });
+  const AssignmentResultListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'AssignmentResultListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'AssignmentResultListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class AssignmentResultChangeQuery extends AssignmentResultListEvent {
   final EliudQuery? newQuery;
 
-  const AssignmentResultChangeQuery({ required this.newQuery });
+  const AssignmentResultChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'AssignmentResultChangeQuery{ value: $newQuery }';
 }
-

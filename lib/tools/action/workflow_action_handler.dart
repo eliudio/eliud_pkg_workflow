@@ -5,17 +5,18 @@ import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:eliud_core/tools/random.dart';
+import 'package:flutter/cupertino.dart';
 
 class WorkflowActionHandler extends PackageActionHandler {
-  static String FINALISE_WORKFLOW = 'finaliseworkflow';
+  static String finaliseWorkflow = 'finaliseworkflow';
 
   @override
-  Future<void> navigateTo(BuildContext context, ActionModel action, {Map<String, dynamic>? parameters}) async {
+  Future<void> navigateTo(BuildContext context, ActionModel action,
+      {Map<String, dynamic>? parameters}) async {
     if (action is WorkflowActionModel) {
       if (parameters != null) {
-        var something = parameters[FINALISE_WORKFLOW];
+        var something = parameters[finaliseWorkflow];
         if (something is FinaliseWorkflow) {
           executeWorkflow(context, action, finaliseWorkflow: something);
         } else {
@@ -27,7 +28,8 @@ class WorkflowActionHandler extends PackageActionHandler {
     }
   }
 
-  static void executeWorkflow(BuildContext context, WorkflowActionModel action, {FinaliseWorkflow? finaliseWorkflow}) {
+  static void executeWorkflow(BuildContext context, WorkflowActionModel action,
+      {FinaliseWorkflow? finaliseWorkflow}) {
     var app = action.app;
     var accessState = AccessBloc.getState(context);
     if (accessState is AccessDetermined) {
@@ -36,7 +38,7 @@ class WorkflowActionHandler extends PackageActionHandler {
       if (member != null) {
         var memberId = member.documentID;
         if ((workflowModel.workflowTask != null) &&
-            (workflowModel.workflowTask!.length > 0)) {
+            (workflowModel.workflowTask!.isNotEmpty)) {
           var firstWorkflowTask = workflowModel.workflowTask![0];
           var firstTask = firstWorkflowTask.task!;
           var assignment = AssignmentModel(
@@ -52,10 +54,10 @@ class WorkflowActionHandler extends PackageActionHandler {
             resultsPrevious: null,
             confirmMessage: firstWorkflowTask.confirmMessage,
             rejectMessage: firstWorkflowTask.rejectMessage,
-            status: AssignmentStatus.Open,
+            status: AssignmentStatus.open,
           );
-          firstTask.callExecute(
-              app, context, memberId, assignment, true, finaliseWorkflow: finaliseWorkflow);
+          firstTask.callExecute(app, context, memberId, assignment, true,
+              finaliseWorkflow: finaliseWorkflow);
         } else {
           throw Exception("No tasks in workflow");
         }
@@ -63,10 +65,8 @@ class WorkflowActionHandler extends PackageActionHandler {
         throw Exception("No member logged on. Can't execute workflow");
       }
     } else {
-      throw Exception("AccessState is not AccessDetermined. Can't execute workflow");
+      throw Exception(
+          "AccessState is not AccessDetermined. Can't execute workflow");
     }
-
   }
 }
-
-

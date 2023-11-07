@@ -17,7 +17,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 
-
 @immutable
 abstract class WorkflowFormEvent extends Equatable {
   const WorkflowFormEvent();
@@ -26,15 +25,13 @@ abstract class WorkflowFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewWorkflowFormEvent extends WorkflowFormEvent {
-}
-
+class InitialiseNewWorkflowFormEvent extends WorkflowFormEvent {}
 
 class InitialiseWorkflowFormEvent extends WorkflowFormEvent {
   final WorkflowModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseWorkflowFormEvent({this.value});
 }
@@ -43,7 +40,7 @@ class InitialiseWorkflowFormNoLoadEvent extends WorkflowFormEvent {
   final WorkflowModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseWorkflowFormNoLoadEvent({this.value});
 }
@@ -54,7 +51,7 @@ class ChangedWorkflowDocumentID extends WorkflowFormEvent {
   ChangedWorkflowDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowDocumentID{ value: $value }';
@@ -66,7 +63,7 @@ class ChangedWorkflowName extends WorkflowFormEvent {
   ChangedWorkflowName({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowName{ value: $value }';
@@ -78,7 +75,7 @@ class ChangedWorkflowWorkflowTask extends WorkflowFormEvent {
   ChangedWorkflowWorkflowTask({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowWorkflowTask{ value: $value }';
@@ -90,9 +87,8 @@ class ChangedWorkflowAppId extends WorkflowFormEvent {
   ChangedWorkflowAppId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowAppId{ value: $value }';
 }
-

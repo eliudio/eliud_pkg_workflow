@@ -30,10 +30,10 @@ class NewPage extends AssignmentListEvent {}
 class AddAssignmentList extends AssignmentListEvent {
   final AssignmentModel? value;
 
-  const AddAssignmentList({ this.value });
+  const AddAssignmentList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddAssignmentList{ value: $value }';
@@ -42,10 +42,10 @@ class AddAssignmentList extends AssignmentListEvent {
 class UpdateAssignmentList extends AssignmentListEvent {
   final AssignmentModel? value;
 
-  const UpdateAssignmentList({ this.value });
+  const UpdateAssignmentList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateAssignmentList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateAssignmentList extends AssignmentListEvent {
 class DeleteAssignmentList extends AssignmentListEvent {
   final AssignmentModel? value;
 
-  const DeleteAssignmentList({ this.value });
+  const DeleteAssignmentList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteAssignmentList{ value: $value }';
@@ -67,24 +67,24 @@ class AssignmentListUpdated extends AssignmentListEvent {
   final List<AssignmentModel?>? value;
   final bool? mightHaveMore;
 
-  const AssignmentListUpdated({ this.value, this.mightHaveMore });
+  const AssignmentListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'AssignmentListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'AssignmentListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class AssignmentChangeQuery extends AssignmentListEvent {
   final EliudQuery? newQuery;
 
-  const AssignmentChangeQuery({ required this.newQuery });
+  const AssignmentChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'AssignmentChangeQuery{ value: $newQuery }';
 }
-

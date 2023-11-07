@@ -5,47 +5,77 @@ import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_notification_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 
-
-
-enum Responsible {
-  CurrentMember, Owner, First, Previous
-}
+enum Responsible { currentMember, owner, first, previous }
 
 class DetermineMemberHelper {
-  static Future<String?> determineMemberWithWorkflowNotificationAddressee(WorkflowNotificationAddressee? responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
+  static Future<String?> determineMemberWithWorkflowNotificationAddressee(
+      WorkflowNotificationAddressee? responsible,
+      AppModel app,
+      MemberModel member,
+      AssignmentModel currentAssignment) async {
     Responsible? newResponsible;
     switch (responsible) {
-      case WorkflowNotificationAddressee.CurrentMember: newResponsible = Responsible.CurrentMember; break;
-      case WorkflowNotificationAddressee.Owner: newResponsible = Responsible.Owner; break;
-      case WorkflowNotificationAddressee.First: newResponsible = Responsible.First; break;
-      case WorkflowNotificationAddressee.Previous: newResponsible = Responsible.Previous; break;
+      case WorkflowNotificationAddressee.currentMember:
+        newResponsible = Responsible.currentMember;
+        break;
+      case WorkflowNotificationAddressee.owner:
+        newResponsible = Responsible.owner;
+        break;
+      case WorkflowNotificationAddressee.first:
+        newResponsible = Responsible.first;
+        break;
+      case WorkflowNotificationAddressee.previous:
+        newResponsible = Responsible.previous;
+        break;
+      case WorkflowNotificationAddressee.unknown:
+        break;
+      case null:
+        break;
     }
     return determineMember(newResponsible, app, member, currentAssignment);
   }
 
-  static Future<String?> determineMemberWithWorkflowTaskResponsible(WorkflowTaskResponsible? responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
+  static Future<String?> determineMemberWithWorkflowTaskResponsible(
+      WorkflowTaskResponsible? responsible,
+      AppModel app,
+      MemberModel member,
+      AssignmentModel currentAssignment) async {
     Responsible? newResponsible;
     switch (responsible) {
-      case WorkflowTaskResponsible.CurrentMember: newResponsible = Responsible.CurrentMember; break;
-      case WorkflowTaskResponsible.Owner: newResponsible = Responsible.Owner; break;
-      case WorkflowTaskResponsible.First: newResponsible = Responsible.First; break;
-      case WorkflowTaskResponsible.Previous: newResponsible = Responsible.Previous; break;
+      case WorkflowTaskResponsible.currentMember:
+        newResponsible = Responsible.currentMember;
+        break;
+      case WorkflowTaskResponsible.owner:
+        newResponsible = Responsible.owner;
+        break;
+      case WorkflowTaskResponsible.first:
+        newResponsible = Responsible.first;
+        break;
+      case WorkflowTaskResponsible.previous:
+        newResponsible = Responsible.previous;
+        break;
+      case WorkflowTaskResponsible.unknown:
+        break;
+      case null:
+        break;
     }
     return determineMember(newResponsible, app, member, currentAssignment);
   }
 
-  static Future<String?> determineMember(Responsible? responsible, AppModel app, MemberModel member, AssignmentModel currentAssignment) async {
+  static Future<String?> determineMember(Responsible? responsible, AppModel app,
+      MemberModel member, AssignmentModel currentAssignment) async {
     switch (responsible) {
-      case Responsible.CurrentMember:
+      case Responsible.currentMember:
         return member.documentID;
-      case Responsible.Owner:
+      case Responsible.owner:
         return app.ownerID;
-      case Responsible.First:
+      case Responsible.first:
         var findAssignment = currentAssignment;
-        var assigneeId;
+        String? assigneeId;
         while (findAssignment.triggeredById != null) {
           assigneeId = findAssignment.assigneeId;
-          var found = await (assignmentRepository(appId: app.documentID)!.get(findAssignment.triggeredById));
+          var found = await (assignmentRepository(appId: app.documentID)!
+              .get(findAssignment.triggeredById));
           if (found != null) {
             findAssignment = found;
           } else {
@@ -53,15 +83,18 @@ class DetermineMemberHelper {
           }
         }
         return assigneeId;
-      case Responsible.Previous:
+      case Responsible.previous:
         if (currentAssignment.triggeredById != null) {
-          var triggeredBy = await (assignmentRepository(appId: app.documentID)!.get(currentAssignment.triggeredById));
+          var triggeredBy = await (assignmentRepository(appId: app.documentID)!
+              .get(currentAssignment.triggeredById));
           if (triggeredBy != null) {
             return triggeredBy.assigneeId;
           } else {
             return null;
           }
         }
+        break;
+      case null:
         break;
     }
     return null;

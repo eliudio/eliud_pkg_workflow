@@ -24,49 +24,85 @@ class AssignmentViewEntity implements EntityBase {
   final String? description;
   final StorageConditionsEntity? conditions;
 
-  AssignmentViewEntity({required this.appId, this.title, this.description, this.conditions, });
+  AssignmentViewEntity({
+    required this.appId,
+    this.title,
+    this.description,
+    this.conditions,
+  });
 
-  AssignmentViewEntity copyWith({String? documentID, String? appId, String? title, String? description, StorageConditionsEntity? conditions, }) {
-    return AssignmentViewEntity(appId : appId ?? this.appId, title : title ?? this.title, description : description ?? this.description, conditions : conditions ?? this.conditions, );
+  AssignmentViewEntity copyWith({
+    String? documentID,
+    String? appId,
+    String? title,
+    String? description,
+    StorageConditionsEntity? conditions,
+  }) {
+    return AssignmentViewEntity(
+      appId: appId ?? this.appId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      conditions: conditions ?? this.conditions,
+    );
   }
-  List<Object?> get props => [appId, title, description, conditions, ];
+
+  List<Object?> get props => [
+        appId,
+        title,
+        description,
+        conditions,
+      ];
 
   @override
   String toString() {
     return 'AssignmentViewEntity{appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
-  static AssignmentViewEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+  static AssignmentViewEntity? fromMap(Object? o,
+      {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
-    var conditionsFromMap;
-    conditionsFromMap = map['conditions'];
-    if (conditionsFromMap != null)
-      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap, newDocumentIds: newDocumentIds);
+    var conditionsFromMap = map['conditions'];
+    if (conditionsFromMap != null) {
+      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap,
+          newDocumentIds: newDocumentIds);
+    }
 
     return AssignmentViewEntity(
-      appId: map['appId'], 
-      title: map['title'], 
-      description: map['description'], 
-      conditions: conditionsFromMap, 
+      appId: map['appId'],
+      title: map['title'],
+      description: map['description'],
+      conditions: conditionsFromMap,
     );
   }
 
+  @override
   Map<String, Object?> toDocument() {
-    final Map<String, dynamic>? conditionsMap = conditions != null 
-        ? conditions!.toDocument()
-        : null;
+    final Map<String, dynamic>? conditionsMap =
+        conditions != null ? conditions!.toDocument() : null;
 
     Map<String, Object?> theDocument = HashMap();
-    if (appId != null) theDocument["appId"] = appId;
-      else theDocument["appId"] = null;
-    if (title != null) theDocument["title"] = title;
-      else theDocument["title"] = null;
-    if (description != null) theDocument["description"] = description;
-      else theDocument["description"] = null;
-    if (conditions != null) theDocument["conditions"] = conditionsMap;
-      else theDocument["conditions"] = null;
+    if (appId != null) {
+      theDocument["appId"] = appId;
+    } else {
+      theDocument["appId"] = null;
+    }
+    if (title != null) {
+      theDocument["title"] = title;
+    } else {
+      theDocument["title"] = null;
+    }
+    if (description != null) {
+      theDocument["description"] = description;
+    } else {
+      theDocument["description"] = null;
+    }
+    if (conditions != null) {
+      theDocument["conditions"] = conditionsMap;
+    } else {
+      theDocument["conditions"] = null;
+    }
     return theDocument;
   }
 
@@ -76,7 +112,8 @@ class AssignmentViewEntity implements EntityBase {
     return newEntity;
   }
 
-  static AssignmentViewEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
+  static AssignmentViewEntity? fromJsonString(String json,
+      {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
@@ -85,9 +122,9 @@ class AssignmentViewEntity implements EntityBase {
     return jsonEncode(toDocument());
   }
 
-  Future<Map<String, Object?>> enrichedDocument(Map<String, Object?> theDocument) async {
+  @override
+  Future<Map<String, Object?>> enrichedDocument(
+      Map<String, Object?> theDocument) async {
     return theDocument;
   }
-
 }
-

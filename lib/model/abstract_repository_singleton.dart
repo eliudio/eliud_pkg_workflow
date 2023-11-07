@@ -18,9 +18,12 @@ import '../model/assignment_view_repository.dart';
 import '../model/workflow_repository.dart';
 import 'package:eliud_core/package/package.dart';
 
-AssignmentRepository? assignmentRepository({ String? appId }) => AbstractRepositorySingleton.singleton.assignmentRepository(appId);
-AssignmentViewRepository? assignmentViewRepository({ String? appId }) => AbstractRepositorySingleton.singleton.assignmentViewRepository(appId);
-WorkflowRepository? workflowRepository({ String? appId }) => AbstractRepositorySingleton.singleton.workflowRepository(appId);
+AssignmentRepository? assignmentRepository({String? appId}) =>
+    AbstractRepositorySingleton.singleton.assignmentRepository(appId);
+AssignmentViewRepository? assignmentViewRepository({String? appId}) =>
+    AbstractRepositorySingleton.singleton.assignmentViewRepository(appId);
+WorkflowRepository? workflowRepository({String? appId}) =>
+    AbstractRepositorySingleton.singleton.workflowRepository(appId);
 
 abstract class AbstractRepositorySingleton {
   static List<MemberCollectionInfo> collections = [

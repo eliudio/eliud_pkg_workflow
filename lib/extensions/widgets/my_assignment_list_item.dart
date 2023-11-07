@@ -13,29 +13,34 @@ class MyAssignmentListItem extends StatelessWidget {
   final AssignmentModel value;
 
   MyAssignmentListItem({
-    Key? key,
+    super.key,
     required this.app,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     var member = AccessBloc.member(context);
-    var style = /*((value.read == null) || (value.read)) ? null : */new TextStyle(fontWeight: FontWeight.bold);
+    var style = /*((value.read == null) || (value.read)) ? null : */
+        TextStyle(fontWeight: FontWeight.bold);
     return Dismissible(
-      key: Key('_Assignment_item_${value.documentID}'),
-      onDismissed: (_) {
-        BlocProvider.of<AssignmentListBloc>(context)
-            .add(DeleteAssignmentList(value: value));
-      },
-      child: ListTile(
-        onTap: () async {
-          var valueWithRelations = await assignmentRepository(appId: app.documentID)!.get(value.documentID);
-          value.task!.callExecute(
-              app, context, member == null ? null : member.documentID, valueWithRelations, false);
+        key: Key('_Assignment_item_${value.documentID}'),
+        onDismissed: (_) {
+          BlocProvider.of<AssignmentListBloc>(context)
+              .add(DeleteAssignmentList(value: value));
         },
-        trailing: Text(formatFullPrecision(value.timestamp), style: style),
-        title: Text(value.task!.description == null ? "?" : value.task!.description, style: style,))
-      );
+        child: ListTile(
+            onTap: () async {
+              var valueWithRelations =
+                  await assignmentRepository(appId: app.documentID)!
+                      .get(value.documentID);
+              value.task!.callExecute(
+                  app, context, member?.documentID, valueWithRelations, false);
+            },
+            trailing: Text(formatFullPrecision(value.timestamp), style: style),
+            title: Text(
+              value.task!.description,
+              style: style,
+            )));
   }
 }

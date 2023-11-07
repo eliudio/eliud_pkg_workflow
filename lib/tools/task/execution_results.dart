@@ -8,4 +8,3 @@ class ExecutionResults {
 
   ExecutionResults(this.status, {this.results});
 }
-

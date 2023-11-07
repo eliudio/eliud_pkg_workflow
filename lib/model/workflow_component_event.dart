@@ -24,13 +24,11 @@ abstract class WorkflowComponentEvent extends Equatable {
 class FetchWorkflowComponent extends WorkflowComponentEvent {
   final String? id;
 
-  FetchWorkflowComponent({ this.id });
+  FetchWorkflowComponent({this.id});
 }
 
 class WorkflowComponentUpdated extends WorkflowComponentEvent {
   final WorkflowModel value;
 
-  WorkflowComponentUpdated({ required this.value });
+  WorkflowComponentUpdated({required this.value});
 }
-
-

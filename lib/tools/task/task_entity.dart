@@ -5,7 +5,10 @@ abstract class TaskEntity {
   final String description;
   final bool executeInstantly;
 
-  const TaskEntity( { required this.identifier, required this.description, required this.executeInstantly });
+  const TaskEntity(
+      {required this.identifier,
+      required this.description,
+      required this.executeInstantly});
 
   Map<String, Object?> toDocument();
 

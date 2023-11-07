@@ -41,9 +41,9 @@ class WorkflowTaskFormInitialized extends WorkflowTaskFormState {
   final WorkflowTaskModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
-  const WorkflowTaskFormInitialized({ this.value });
+  const WorkflowTaskFormInitialized({this.value});
 }
 
 // Menu has been initialised and hence a menu is available
@@ -51,9 +51,9 @@ abstract class WorkflowTaskFormError extends WorkflowTaskFormInitialized {
   final String? message;
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
-  const WorkflowTaskFormError({this.message, WorkflowTaskModel? value }) : super(value: value);
+  const WorkflowTaskFormError({this.message, super.value});
 
   @override
   String toString() {
@@ -63,11 +63,12 @@ abstract class WorkflowTaskFormError extends WorkflowTaskFormInitialized {
     }''';
   }
 }
-class DocumentIDWorkflowTaskFormError extends WorkflowTaskFormError { 
-  const DocumentIDWorkflowTaskFormError({ String? message, WorkflowTaskModel? value }): super(message: message, value: value);
+
+class DocumentIDWorkflowTaskFormError extends WorkflowTaskFormError {
+  const DocumentIDWorkflowTaskFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -78,12 +79,11 @@ class DocumentIDWorkflowTaskFormError extends WorkflowTaskFormError {
   }
 }
 
-
-class SeqNumberWorkflowTaskFormError extends WorkflowTaskFormError { 
-  const SeqNumberWorkflowTaskFormError({ String? message, WorkflowTaskModel? value }): super(message: message, value: value);
+class SeqNumberWorkflowTaskFormError extends WorkflowTaskFormError {
+  const SeqNumberWorkflowTaskFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -94,12 +94,11 @@ class SeqNumberWorkflowTaskFormError extends WorkflowTaskFormError {
   }
 }
 
-
-class TaskWorkflowTaskFormError extends WorkflowTaskFormError { 
-  const TaskWorkflowTaskFormError({ String? message, WorkflowTaskModel? value }): super(message: message, value: value);
+class TaskWorkflowTaskFormError extends WorkflowTaskFormError {
+  const TaskWorkflowTaskFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -110,12 +109,11 @@ class TaskWorkflowTaskFormError extends WorkflowTaskFormError {
   }
 }
 
-
-class ConfirmMessageWorkflowTaskFormError extends WorkflowTaskFormError { 
-  const ConfirmMessageWorkflowTaskFormError({ String? message, WorkflowTaskModel? value }): super(message: message, value: value);
+class ConfirmMessageWorkflowTaskFormError extends WorkflowTaskFormError {
+  const ConfirmMessageWorkflowTaskFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -126,12 +124,11 @@ class ConfirmMessageWorkflowTaskFormError extends WorkflowTaskFormError {
   }
 }
 
-
-class RejectMessageWorkflowTaskFormError extends WorkflowTaskFormError { 
-  const RejectMessageWorkflowTaskFormError({ String? message, WorkflowTaskModel? value }): super(message: message, value: value);
+class RejectMessageWorkflowTaskFormError extends WorkflowTaskFormError {
+  const RejectMessageWorkflowTaskFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -142,12 +139,11 @@ class RejectMessageWorkflowTaskFormError extends WorkflowTaskFormError {
   }
 }
 
-
-class ResponsibleWorkflowTaskFormError extends WorkflowTaskFormError { 
-  const ResponsibleWorkflowTaskFormError({ String? message, WorkflowTaskModel? value }): super(message: message, value: value);
+class ResponsibleWorkflowTaskFormError extends WorkflowTaskFormError {
+  const ResponsibleWorkflowTaskFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -158,12 +154,11 @@ class ResponsibleWorkflowTaskFormError extends WorkflowTaskFormError {
   }
 }
 
-
-class WorkflowTaskFormLoaded extends WorkflowTaskFormInitialized { 
-  const WorkflowTaskFormLoaded({ WorkflowTaskModel? value }): super(value: value);
+class WorkflowTaskFormLoaded extends WorkflowTaskFormInitialized {
+  const WorkflowTaskFormLoaded({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -173,12 +168,11 @@ class WorkflowTaskFormLoaded extends WorkflowTaskFormInitialized {
   }
 }
 
-
-class SubmittableWorkflowTaskForm extends WorkflowTaskFormInitialized { 
-  const SubmittableWorkflowTaskForm({ WorkflowTaskModel? value }): super(value: value);
+class SubmittableWorkflowTaskForm extends WorkflowTaskFormInitialized {
+  const SubmittableWorkflowTaskForm({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -187,5 +181,3 @@ class SubmittableWorkflowTaskForm extends WorkflowTaskFormInitialized {
     }''';
   }
 }
-
-

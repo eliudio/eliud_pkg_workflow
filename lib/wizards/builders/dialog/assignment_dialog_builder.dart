@@ -1,4 +1,4 @@
-import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
+import 'package:eliud_core/core/wizards/tools/document_identifier.dart';
 import 'package:eliud_core/core/wizards/builders/dialog_builder.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart'
     as corerepo;
@@ -8,9 +8,7 @@ import 'package:eliud_pkg_workflow/model/assignment_view_component.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_model.dart';
 
 class AssignmentDialogBuilder extends DialogBuilder {
-  AssignmentDialogBuilder(
-      String uniqueId, AppModel app, String dialogDocumentId)
-      : super(uniqueId, app, dialogDocumentId);
+  AssignmentDialogBuilder(super.uniqueId, super.app, super.dialogDocumentId);
 
   Future<DialogModel> _setupDialog() async {
     return await corerepo.AbstractRepositorySingleton.singleton
@@ -23,29 +21,32 @@ class AssignmentDialogBuilder extends DialogBuilder {
     components.add(BodyComponentModel(
         documentID: "1",
         componentName: AbstractAssignmentViewComponent.componentName,
-        componentId: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId)));
+        componentId: constructDocumentId(
+            uniqueId: uniqueId, documentId: dialogDocumentId)));
 
     return DialogModel(
-        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
+        documentID: constructDocumentId(
+            uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID,
         title: "Assignments",
         description: "Assignments",
-        layout: DialogLayout.ListView,
+        layout: DialogLayout.listView,
         conditions: StorageConditionsModel(
           privilegeLevelRequired:
-              PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple,
+              PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple,
         ),
         bodyComponents: components);
   }
 
   AssignmentViewModel _assignmentViewModel() {
     return AssignmentViewModel(
-      documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
+      documentID:
+          constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
       appId: app.documentID,
       description: "My Assignments",
       conditions: StorageConditionsModel(
           privilegeLevelRequired:
-              PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),
+              PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple),
     );
   }
 

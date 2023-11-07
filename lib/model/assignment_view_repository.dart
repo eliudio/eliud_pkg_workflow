@@ -13,45 +13,106 @@
 
 */
 
-
-
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
-
 
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/core/base/repository_base.dart';
 
-typedef AssignmentViewModelTrigger(List<AssignmentViewModel?> list);
-typedef AssignmentViewChanged(AssignmentViewModel? value);
-typedef AssignmentViewErrorHandler(o, e);
+typedef AssignmentViewModelTrigger = Function(List<AssignmentViewModel?> list);
+typedef AssignmentViewChanged = Function(AssignmentViewModel? value);
+typedef AssignmentViewErrorHandler = Function(dynamic o, dynamic e);
 
-abstract class AssignmentViewRepository extends RepositoryBase<AssignmentViewModel, AssignmentViewEntity> {
-  Future<AssignmentViewEntity> addEntity(String documentID, AssignmentViewEntity value);
-  Future<AssignmentViewEntity> updateEntity(String documentID, AssignmentViewEntity value);
+abstract class AssignmentViewRepository
+    extends RepositoryBase<AssignmentViewModel, AssignmentViewEntity> {
+  @override
+  Future<AssignmentViewEntity> addEntity(
+      String documentID, AssignmentViewEntity value);
+  @override
+  Future<AssignmentViewEntity> updateEntity(
+      String documentID, AssignmentViewEntity value);
+  @override
   Future<AssignmentViewModel> add(AssignmentViewModel value);
+  @override
   Future<void> delete(AssignmentViewModel value);
-  Future<AssignmentViewModel?> get(String? id, { Function(Exception)? onError });
+  @override
+  Future<AssignmentViewModel?> get(String? id, {Function(Exception)? onError});
+  @override
   Future<AssignmentViewModel> update(AssignmentViewModel value);
 
-  Stream<List<AssignmentViewModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Stream<List<AssignmentViewModel?>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Future<List<AssignmentViewModel?>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Future<List<AssignmentViewModel?>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  @override
+  Stream<List<AssignmentViewModel?>> values(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Stream<List<AssignmentViewModel?>> valuesWithDetails(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Future<List<AssignmentViewModel?>> valuesList(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Future<List<AssignmentViewModel?>> valuesListWithDetails(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
 
-  StreamSubscription<List<AssignmentViewModel?>> listen(AssignmentViewModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<List<AssignmentViewModel?>> listenWithDetails(AssignmentViewModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<AssignmentViewModel?> listenTo(String documentId, AssignmentViewChanged changed, {AssignmentViewErrorHandler? errorHandler});
+  @override
+  StreamSubscription<List<AssignmentViewModel?>> listen(
+      AssignmentViewModelTrigger trigger,
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  StreamSubscription<List<AssignmentViewModel?>> listenWithDetails(
+      AssignmentViewModelTrigger trigger,
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  StreamSubscription<AssignmentViewModel?> listenTo(
+      String documentId, AssignmentViewChanged changed,
+      {AssignmentViewErrorHandler? errorHandler});
+  @override
   void flush();
-  
+
+  @override
   String? timeStampToString(dynamic timeStamp);
 
+  @override
   dynamic getSubCollection(String documentId, String name);
-  Future<AssignmentViewModel?> changeValue(String documentId, String fieldName, num changeByThisValue);
+  @override
+  Future<AssignmentViewModel?> changeValue(
+      String documentId, String fieldName, num changeByThisValue);
 
+  @override
   Future<void> deleteAll();
 }
-
-

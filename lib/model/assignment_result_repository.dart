@@ -13,45 +13,108 @@
 
 */
 
-
-
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
-
 
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/core/base/repository_base.dart';
 
-typedef AssignmentResultModelTrigger(List<AssignmentResultModel?> list);
-typedef AssignmentResultChanged(AssignmentResultModel? value);
-typedef AssignmentResultErrorHandler(o, e);
+typedef AssignmentResultModelTrigger = Function(
+    List<AssignmentResultModel?> list);
+typedef AssignmentResultChanged = Function(AssignmentResultModel? value);
+typedef AssignmentResultErrorHandler = Function(dynamic o, dynamic e);
 
-abstract class AssignmentResultRepository extends RepositoryBase<AssignmentResultModel, AssignmentResultEntity> {
-  Future<AssignmentResultEntity> addEntity(String documentID, AssignmentResultEntity value);
-  Future<AssignmentResultEntity> updateEntity(String documentID, AssignmentResultEntity value);
+abstract class AssignmentResultRepository
+    extends RepositoryBase<AssignmentResultModel, AssignmentResultEntity> {
+  @override
+  Future<AssignmentResultEntity> addEntity(
+      String documentID, AssignmentResultEntity value);
+  @override
+  Future<AssignmentResultEntity> updateEntity(
+      String documentID, AssignmentResultEntity value);
+  @override
   Future<AssignmentResultModel> add(AssignmentResultModel value);
+  @override
   Future<void> delete(AssignmentResultModel value);
-  Future<AssignmentResultModel?> get(String? id, { Function(Exception)? onError });
+  @override
+  Future<AssignmentResultModel?> get(String? id,
+      {Function(Exception)? onError});
+  @override
   Future<AssignmentResultModel> update(AssignmentResultModel value);
 
-  Stream<List<AssignmentResultModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Stream<List<AssignmentResultModel?>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Future<List<AssignmentResultModel?>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Future<List<AssignmentResultModel?>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  @override
+  Stream<List<AssignmentResultModel?>> values(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Stream<List<AssignmentResultModel?>> valuesWithDetails(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Future<List<AssignmentResultModel?>> valuesList(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Future<List<AssignmentResultModel?>> valuesListWithDetails(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
 
-  StreamSubscription<List<AssignmentResultModel?>> listen(AssignmentResultModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<List<AssignmentResultModel?>> listenWithDetails(AssignmentResultModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<AssignmentResultModel?> listenTo(String documentId, AssignmentResultChanged changed, {AssignmentResultErrorHandler? errorHandler});
+  @override
+  StreamSubscription<List<AssignmentResultModel?>> listen(
+      AssignmentResultModelTrigger trigger,
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  StreamSubscription<List<AssignmentResultModel?>> listenWithDetails(
+      AssignmentResultModelTrigger trigger,
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  StreamSubscription<AssignmentResultModel?> listenTo(
+      String documentId, AssignmentResultChanged changed,
+      {AssignmentResultErrorHandler? errorHandler});
+  @override
   void flush();
-  
+
+  @override
   String? timeStampToString(dynamic timeStamp);
 
+  @override
   dynamic getSubCollection(String documentId, String name);
-  Future<AssignmentResultModel?> changeValue(String documentId, String fieldName, num changeByThisValue);
+  @override
+  Future<AssignmentResultModel?> changeValue(
+      String documentId, String fieldName, num changeByThisValue);
 
+  @override
   Future<void> deleteAll();
 }
-
-

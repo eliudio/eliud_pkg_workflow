@@ -20,7 +20,8 @@ import 'package:eliud_pkg_workflow/model/workflow_component_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_state.dart';
 import 'package:eliud_pkg_workflow/model/workflow_repository.dart';
 
-class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowComponentState> {
+class WorkflowComponentBloc
+    extends Bloc<WorkflowComponentEvent, WorkflowComponentState> {
   final WorkflowRepository? workflowRepository;
   StreamSubscription? _workflowSubscription;
 
@@ -33,11 +34,12 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
     });
   }
 
-  WorkflowComponentBloc({ this.workflowRepository }): super(WorkflowComponentUninitialized()) {
-    on <FetchWorkflowComponent> ((event, emit) {
+  WorkflowComponentBloc({this.workflowRepository})
+      : super(WorkflowComponentUninitialized()) {
+    on<FetchWorkflowComponent>((event, emit) {
       _mapLoadWorkflowComponentUpdateToState(event.id!);
     });
-    on <WorkflowComponentUpdated> ((event, emit) {
+    on<WorkflowComponentUpdated>((event, emit) {
       emit(WorkflowComponentLoaded(value: event.value));
     });
   }
@@ -47,6 +49,4 @@ class WorkflowComponentBloc extends Bloc<WorkflowComponentEvent, WorkflowCompone
     _workflowSubscription?.cancel();
     return super.close();
   }
-
 }
-

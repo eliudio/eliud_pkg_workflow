@@ -18,7 +18,7 @@ class DialogWithAssignmentResults {
       widgets.add(Text(message));
       for (int i = 0; i < resultsPrevious.length; i++) {
         var result = resultsPrevious[i];
-        widgets.add(Text(result.key! + ": " + result.value!));
+        widgets.add(Text("${result.key!}: ${result.value!}"));
       }
     }
 
@@ -26,31 +26,32 @@ class DialogWithAssignmentResults {
       widgets.addAll(extraFields);
     }
 
-    var contents;
-    if (widgets.length > 0) {
+    Widget contents;
+    if (widgets.isNotEmpty) {
       contents = Column(children: widgets);
     } else {
       contents = Text(message);
     }
 
     return flexibleDialog(app, context,
-            title: title,
-            child: contents,
-            buttons: dialogButtons(app, context,
-                    labels: buttonLabels, functions: functions));
+        title: title,
+        child: contents,
+        buttons: dialogButtons(app, context,
+            labels: buttonLabels, functions: functions));
   }
 }
 
 class YesNoDialogWithAssignmentResults {
   static Widget get(AppModel app, BuildContext context,
-      {
-      required String title,
+      {required String title,
       required String message,
       List<AssignmentResultModel>? resultsPrevious,
       required VoidCallback yesFunction,
       required VoidCallback noFunction,
       List<Widget>? extraFields}) {
-    return DialogWithAssignmentResults.get(app, context,
+    return DialogWithAssignmentResults.get(
+      app,
+      context,
       title: title,
       message: message,
       resultsPrevious: resultsPrevious,
@@ -65,28 +66,24 @@ class YesNoIgnoreDialogWithAssignmentResults {
   static Widget get(AppModel app, BuildContext context,
       {required String title,
       required String message,
-        List<AssignmentResultModel>? resultsPrevious,
+      List<AssignmentResultModel>? resultsPrevious,
       required VoidCallback yesFunction,
       required VoidCallback noFunction,
-        List<Widget>? extraFields,
+      List<Widget>? extraFields,
       String? yesLabel,
-        String? noLabel}) {
+      String? noLabel}) {
     return DialogWithAssignmentResults.get(app, context,
         title: title,
         message: message,
         resultsPrevious: resultsPrevious,
-        buttonLabels: [
-          'Later',
-          noLabel != null ? noLabel : 'Cancel',
-          yesLabel != null ? yesLabel : 'Continue'
-        ],
+        buttonLabels: ['Later', noLabel ?? 'Cancel', yesLabel ?? 'Continue'],
         functions: [
-              () => Navigator.pop(context),
-              () {
+          () => Navigator.pop(context),
+          () {
             noFunction();
             Navigator.pop(context);
           },
-              () {
+          () {
             yesFunction();
             Navigator.pop(context);
           },

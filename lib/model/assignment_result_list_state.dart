@@ -30,21 +30,24 @@ class AssignmentResultListLoaded extends AssignmentResultListState {
   final List<AssignmentResultModel?>? values;
   final bool? mightHaveMore;
 
-  const AssignmentResultListLoaded({this.mightHaveMore, this.values = const []});
+  const AssignmentResultListLoaded(
+      {this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object?> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [values, mightHaveMore];
 
   @override
   String toString() => 'AssignmentResultListLoaded { values: $values }';
 
   @override
-  bool operator ==(Object other) => 
-          other is AssignmentResultListLoaded &&
-              runtimeType == other.runtimeType &&
-              ListEquality().equals(values, other.values) &&
-              mightHaveMore == other.mightHaveMore;
+  bool operator ==(Object other) =>
+      other is AssignmentResultListLoaded &&
+      runtimeType == other.runtimeType &&
+      ListEquality().equals(values, other.values) &&
+      mightHaveMore == other.mightHaveMore;
+
+  @override
+  int get hashCode => values.hashCode ^ mightHaveMore.hashCode;
 }
 
 class AssignmentResultNotLoaded extends AssignmentResultListState {}
-

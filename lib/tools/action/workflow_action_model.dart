@@ -12,26 +12,35 @@ import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
 class WorkflowActionModel extends ActionModel {
   final WorkflowModel? workflow;
 
-  WorkflowActionModel(AppModel app, { this.workflow, DisplayConditionsModel? conditions} ) : super(app, actionType: WorkflowActionEntity.label, conditions: conditions);
+  WorkflowActionModel(super.app, {this.workflow, super.conditions})
+      : super(actionType: WorkflowActionEntity.label);
 
   @override
   WorkflowActionEntity toEntity({String? appId}) {
     return WorkflowActionEntity(
         workflowId: (workflow != null) ? workflow!.documentID : null,
-        conditions: (conditions != null) ? conditions!.toEntity(): null,
+        conditions: (conditions != null) ? conditions!.toEntity() : null,
         appId: appId);
   }
 
   @override
-  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+  Future<List<ModelReference>> collectReferences({
+    String? appId,
+  }) async {
     List<ModelReference> referencesCollector = [];
-    if (workflow != null) referencesCollector.add(ModelReference(WorkflowModel.packageName, WorkflowModel.id, workflow!));
+    if (workflow != null) {
+      referencesCollector.add(ModelReference(
+          WorkflowModel.packageName, WorkflowModel.id, workflow!));
+    }
     return referencesCollector;
   }
 
-  static Future<WorkflowActionModel?> fromEntity(WorkflowActionEntity? entity) async {
+  static Future<WorkflowActionModel?> fromEntity(
+      WorkflowActionEntity? entity) async {
     if (entity == null) return null;
-    if (entity.appID == null) throw Exception('entity WorkflowActionModel.appID is null');
+    if (entity.appID == null) {
+      throw Exception('entity WorkflowActionModel.appID is null');
+    }
     var app = await appRepository()!.get(entity.appID);
     if (app != null) {
       return WorkflowActionModel(
@@ -39,17 +48,23 @@ class WorkflowActionModel extends ActionModel {
         conditions: await DisplayConditionsModel.fromEntity(entity.conditions),
       );
     } else {
-      throw Exception('App with ' + entity.appID! + ' not found');
+      throw Exception('App with ${entity.appID!} not found');
     }
   }
 
-  static Future<WorkflowActionModel?> fromEntityPlus(WorkflowActionEntity? entity, {String? appId}) async {
+  static Future<WorkflowActionModel?> fromEntityPlus(
+      WorkflowActionEntity? entity,
+      {String? appId}) async {
     if (entity == null) return null;
-    if (entity.appID == null) throw Exception('entity WorkflowActionModel.appID is null');
+    if (entity.appID == null) {
+      throw Exception('entity WorkflowActionModel.appID is null');
+    }
     WorkflowModel? workFlowModel;
     if (entity.workflowId != null) {
       try {
-        await workflowRepository(appId: entity.appID)!.get(entity.workflowId).then((val) {
+        await workflowRepository(appId: entity.appID)!
+            .get(entity.workflowId)
+            .then((val) {
           workFlowModel = val;
         }).catchError((error) {});
       } catch (_) {}
@@ -57,17 +72,16 @@ class WorkflowActionModel extends ActionModel {
 
     var app = await appRepository()!.get(entity.appID);
     if (app != null) {
-      return WorkflowActionModel(
-          app,
-          conditions: await DisplayConditionsModel.fromEntity(
-              entity.conditions),
-          workflow: workFlowModel
-      );
+      return WorkflowActionModel(app,
+          conditions:
+              await DisplayConditionsModel.fromEntity(entity.conditions),
+          workflow: workFlowModel);
     } else {
-      throw Exception('App with ' + entity.appID! + ' not found');
+      throw Exception('App with ${entity.appID!} not found');
     }
   }
 
+  @override
   String message() {
     return "Workflow";
   }
@@ -77,7 +91,7 @@ class WorkflowActionModel extends ActionModel {
     if (workflow == null) {
       return 'Incorrect workflow';
     } else {
-      return 'Run workflow '  + (workflow!.documentID);
+      return 'Run workflow ${workflow!.documentID}';
     }
   }
 
@@ -91,10 +105,12 @@ class WorkflowActionModel extends ActionModel {
 
 class WorkflowActionMapper implements ActionModelMapper {
   @override
-  Future<ActionModel?> fromEntity(AppModel app, ActionEntity entity) => WorkflowActionModel.fromEntity(entity as WorkflowActionEntity);
+  Future<ActionModel?> fromEntity(AppModel app, ActionEntity entity) =>
+      WorkflowActionModel.fromEntity(entity as WorkflowActionEntity);
 
   @override
-  Future<ActionModel?> fromEntityPlus(AppModel app, ActionEntity entity) => WorkflowActionModel.fromEntityPlus(entity as WorkflowActionEntity);
+  Future<ActionModel?> fromEntityPlus(AppModel app, ActionEntity entity) =>
+      WorkflowActionModel.fromEntityPlus(entity as WorkflowActionEntity);
 
   @override
   ActionEntity? fromMap(Map map) => WorkflowActionEntity.fromMap(map);

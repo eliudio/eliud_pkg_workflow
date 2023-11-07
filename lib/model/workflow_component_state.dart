@@ -27,7 +27,7 @@ class WorkflowComponentUninitialized extends WorkflowComponentState {}
 
 class WorkflowComponentError extends WorkflowComponentState {
   final String? message;
-  WorkflowComponentError({ this.message });
+  WorkflowComponentError({this.message});
 }
 
 class WorkflowComponentPermissionDenied extends WorkflowComponentState {
@@ -37,10 +37,10 @@ class WorkflowComponentPermissionDenied extends WorkflowComponentState {
 class WorkflowComponentLoaded extends WorkflowComponentState {
   final WorkflowModel value;
 
-  const WorkflowComponentLoaded({ required this.value });
+  const WorkflowComponentLoaded({required this.value});
 
-  WorkflowComponentLoaded copyWith({ WorkflowModel? copyThis }) {
-    return WorkflowComponentLoaded(value: copyThis ?? this.value);
+  WorkflowComponentLoaded copyWith({WorkflowModel? copyThis}) {
+    return WorkflowComponentLoaded(value: copyThis ?? value);
   }
 
   @override
@@ -49,4 +49,3 @@ class WorkflowComponentLoaded extends WorkflowComponentState {
   @override
   String toString() => 'WorkflowComponentLoaded { value: $value }';
 }
-

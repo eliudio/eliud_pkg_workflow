@@ -17,7 +17,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 
-
 @immutable
 abstract class AssignmentResultFormEvent extends Equatable {
   const AssignmentResultFormEvent();
@@ -26,24 +25,24 @@ abstract class AssignmentResultFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewAssignmentResultFormEvent extends AssignmentResultFormEvent {
-}
-
+class InitialiseNewAssignmentResultFormEvent
+    extends AssignmentResultFormEvent {}
 
 class InitialiseAssignmentResultFormEvent extends AssignmentResultFormEvent {
   final AssignmentResultModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseAssignmentResultFormEvent({this.value});
 }
 
-class InitialiseAssignmentResultFormNoLoadEvent extends AssignmentResultFormEvent {
+class InitialiseAssignmentResultFormNoLoadEvent
+    extends AssignmentResultFormEvent {
   final AssignmentResultModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseAssignmentResultFormNoLoadEvent({this.value});
 }
@@ -54,7 +53,7 @@ class ChangedAssignmentResultDocumentID extends AssignmentResultFormEvent {
   ChangedAssignmentResultDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentResultDocumentID{ value: $value }';
@@ -66,7 +65,7 @@ class ChangedAssignmentResultKey extends AssignmentResultFormEvent {
   ChangedAssignmentResultKey({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentResultKey{ value: $value }';
@@ -78,9 +77,8 @@ class ChangedAssignmentResultValue extends AssignmentResultFormEvent {
   ChangedAssignmentResultValue({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentResultValue{ value: $value }';
 }
-

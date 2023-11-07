@@ -4,17 +4,19 @@ import 'package:flutter/foundation.dart';
 WorkflowPackage getWorkflowPackage() => WorkflowMobilePackage();
 
 class WorkflowMobilePackage extends WorkflowPackage {
-
   @override
   List<Object?> get props => [
-    stateCONDITION_MUST_HAVE_ASSIGNMENTS,
-  ];
+        stateConditionMustHaveAssignments,
+      ];
 
   @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is WorkflowMobilePackage &&
-              runtimeType == other.runtimeType &&
-              mapEquals(stateCONDITION_MUST_HAVE_ASSIGNMENTS, other.stateCONDITION_MUST_HAVE_ASSIGNMENTS);
+      other is WorkflowMobilePackage &&
+          runtimeType == other.runtimeType &&
+          mapEquals(stateConditionMustHaveAssignments,
+              other.stateConditionMustHaveAssignments);
 
+  @override
+  int get hashCode => stateConditionMustHaveAssignments.hashCode;
 }

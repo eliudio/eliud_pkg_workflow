@@ -30,7 +30,7 @@
       "fieldType": "enum",
       "enumName": "WorkflowNotificationAddressee",
       "remark": "Who's to be notified after completing the  to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment",
-      "enumValues" : [ "CurrentMember", "Owner", "First", "Previous" ]
+      "enumValues" : [ "currentMember", "owner", "first", "previous" ]
     }
   ],
   "groups": [

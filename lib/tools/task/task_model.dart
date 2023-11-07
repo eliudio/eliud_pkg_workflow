@@ -16,17 +16,22 @@ import 'package:flutter/cupertino.dart';
 
 import 'execution_results.dart';
 
-typedef void FinaliseWorkflow(bool success, AssignmentModel assignmentModel);
+typedef FinaliseWorkflow = void Function(
+    BuildContext context, bool success, AssignmentModel assignmentModel);
 
 abstract class TaskModel {
   final String identifier;
   String description;
-  bool executeInstantly; // Execute instantly? When a triggering assignment has been finalised by a member and when the next assignment is also assigned to this member, then it will be executed instantly when set",
+  bool
+      executeInstantly; // Execute instantly? When a triggering assignment has been finalised by a member and when the next assignment is also assigned to this member, then it will be executed instantly when set",
 
   bool? _isNewAssignment;
   FinaliseWorkflow? _finaliseWorkflow;
 
-    TaskModel({required this.identifier, required this.description, required this.executeInstantly});
+  TaskModel(
+      {required this.identifier,
+      required this.description,
+      required this.executeInstantly});
 
   TaskEntity toEntity({String? appId});
 
@@ -58,14 +63,19 @@ abstract class TaskModel {
   /*
    * Execute the task. Implement this method in your task
    */
-  Future<void> startTask(AppModel app, BuildContext context, String? memberId, AssignmentModel? assignmentModel);
+  Future<void> startTask(AppModel app, BuildContext context, String? memberId,
+      AssignmentModel? assignmentModel);
 
   /*
    * Finalise the task. Call this method from your execute upon success. This pattern, rather than a simple return value from your execute is
    * to allow asynchronous execution of your task(s).
    */
-  Future<void> finishTask(AppModel app, BuildContext context, AssignmentModel assignmentModel,
-      ExecutionResults executionResult, String? feedback) async {
+  Future<void> finishTask(
+      AppModel app,
+      BuildContext context,
+      AssignmentModel assignmentModel,
+      ExecutionResults executionResult,
+      String? feedback) async {
     var state = AccessBloc.getState(context);
     if (state is AccessDetermined) {
       await _handleCurrentAssignment(
@@ -74,36 +84,50 @@ abstract class TaskModel {
         var member = state.getMember();
         if (member != null) {
           if (executionResult.status == ExecutionStatus.success) {
-            await _sendMessage(app.documentID, member.documentID, assignmentModel.confirmMessage, app,
-                member, assignmentModel, feedback);
+            await _sendMessage(
+                app.documentID,
+                member.documentID,
+                assignmentModel.confirmMessage,
+                app,
+                member,
+                assignmentModel,
+                feedback);
             var nextAssignment = await _nextAssignment(
                 context, assignmentModel, executionResult, member, app);
             if (nextAssignment != null) {
               // if the next assignment is assigned to the currently logged in member, then present it instantly:
-              MemberModel? currentMember = AccessBloc.getState(context).getMember();
+              MemberModel? currentMember =
+                  AccessBloc.getState(context).getMember();
               if ((currentMember != null) &&
                   (nextAssignment.assigneeId == currentMember.documentID) &&
                   nextAssignment.task!.executeInstantly) {
-                nextAssignment.task!.callExecute(app, context, currentMember.documentID, nextAssignment, false,
+                nextAssignment.task!.callExecute(app, context,
+                    currentMember.documentID, nextAssignment, false,
                     finaliseWorkflow: _finaliseWorkflow);
               }
             }
           } else {
-            await _sendMessage(app.documentID, member.documentID, assignmentModel.rejectMessage, app,
-                member, assignmentModel, feedback);
+            await _sendMessage(
+                app.documentID,
+                member.documentID,
+                assignmentModel.rejectMessage,
+                app,
+                member,
+                assignmentModel,
+                feedback);
           }
         }
       }
     }
     if ((_finaliseWorkflow != null)) {
-      _finaliseWorkflow!(
+      _finaliseWorkflow!(context,
           executionResult.status == ExecutionStatus.success, assignmentModel);
     }
   }
 
   /* This method is called by the workflow framework */
-  void callExecute(AppModel app, BuildContext context, String? memberId, AssignmentModel? assignmentModel,
-      bool isNewAssignment,
+  void callExecute(AppModel app, BuildContext context, String? memberId,
+      AssignmentModel? assignmentModel, bool isNewAssignment,
       {FinaliseWorkflow? finaliseWorkflow}) {
     _isNewAssignment = isNewAssignment;
     _finaliseWorkflow = finaliseWorkflow;
@@ -116,27 +140,29 @@ abstract class TaskModel {
       AssignmentModel assignmentModel,
       bool? isNewAssignment,
       ExecutionResults executionResult) async {
-    var assignmentStatus;
+    AssignmentStatus? assignmentStatus;
     switch (executionResult.status) {
       case ExecutionStatus.success:
-        assignmentStatus = AssignmentStatus.Success;
+        assignmentStatus = AssignmentStatus.success;
         break;
       case ExecutionStatus.decline:
-        assignmentStatus = AssignmentStatus.Declined;
+        assignmentStatus = AssignmentStatus.declined;
+        break;
+      case ExecutionStatus.failure:
+        break;
+      case ExecutionStatus.delay:
         break;
     }
     assignmentModel.resultsCurrent = executionResult.results;
-    if (assignmentStatus != null) {
-      assignmentModel.status = assignmentStatus;
-      if (isNewAssignment!) {
-        await AbstractRepositorySingleton.singleton
-            .assignmentRepository(assignmentModel.appId)!
-            .add(assignmentModel);
-      } else {
-        await AbstractRepositorySingleton.singleton
-            .assignmentRepository(assignmentModel.appId)!
-            .update(assignmentModel);
-      }
+    assignmentModel.status = assignmentStatus;
+    if (isNewAssignment!) {
+      await AbstractRepositorySingleton.singleton
+          .assignmentRepository(assignmentModel.appId)!
+          .add(assignmentModel);
+    } else {
+      await AbstractRepositorySingleton.singleton
+          .assignmentRepository(assignmentModel.appId)!
+          .update(assignmentModel);
     }
   }
 
@@ -151,16 +177,17 @@ abstract class TaskModel {
     if (workflowNotificationModel != null) {
       var message = workflowNotificationModel.message;
       if (feedback != null) {
-        message = message! + " " + feedback;
+        message = "${message!} $feedback";
       }
       var addressee = workflowNotificationModel.addressee;
       String? to = await (DetermineMemberHelper
           .determineMemberWithWorkflowNotificationAddressee(
               addressee, app, member, currentAssignment));
       if (to == null) {
-        print("error can't determing addressee to send message");
+        print("error can't determine addressee to send message");
       } else {
-        await AbstractNotificationPlatform.platform!.sendMessage(app, memberId, to, message!);
+        await AbstractNotificationPlatform.platform!
+            .sendMessage(app, memberId, to, message!);
       }
     }
   }
@@ -194,7 +221,7 @@ abstract class TaskModel {
                     nextTask.responsible, app, member, currentAssignment),
             task: nextTask.task,
             workflow: currentAssignment.workflow,
-            status: AssignmentStatus.Open,
+            status: AssignmentStatus.open,
             triggeredById: currentAssignment.documentID,
             workflowTaskSeqNumber: workflowTaskModel.seqNumber,
             confirmMessage: workflowTaskModel.confirmMessage,

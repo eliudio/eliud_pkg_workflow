@@ -19,86 +19,91 @@ import 'package:bloc/bloc.dart';
 
 import 'package:eliud_core/tools/enums.dart';
 
-
-
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 
 import 'package:eliud_pkg_workflow/model/assignment_view_form_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_form_state.dart';
 
-class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentViewFormState> {
+class AssignmentViewFormBloc
+    extends Bloc<AssignmentViewFormEvent, AssignmentViewFormState> {
   final FormAction? formAction;
   final String? appId;
 
-  AssignmentViewFormBloc(this.appId, { this.formAction }): super(AssignmentViewFormUninitialized()) {
-      on <InitialiseNewAssignmentViewFormEvent> ((event, emit) {
-        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: AssignmentViewModel(
-                                               documentID: "",
-                                 appId: "",
-                                 title: "",
-                                 description: "",
+  AssignmentViewFormBloc(this.appId, {this.formAction})
+      : super(AssignmentViewFormUninitialized()) {
+    on<InitialiseNewAssignmentViewFormEvent>((event, emit) {
+      AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(
+          value: AssignmentViewModel(
+        documentID: "",
+        appId: "",
+        title: "",
+        description: "",
+      ));
+      emit(loaded);
+    });
 
-        ));
-        emit(loaded);
-      });
-
-
-      on <InitialiseAssignmentViewFormEvent> ((event, emit) async {
-        // Need to re-retrieve the document from the repository so that I get all associated types
-        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: await assignmentViewRepository(appId: appId)!.get(event.value!.documentID));
-        emit(loaded);
-      });
-      on <InitialiseAssignmentViewFormNoLoadEvent> ((event, emit) async {
-        AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(value: event.value);
-        emit(loaded);
-      });
-      AssignmentViewModel? newValue;
-      on <ChangedAssignmentViewDocumentID> ((event, emit) async {
+    on<InitialiseAssignmentViewFormEvent>((event, emit) async {
+      // Need to re-retrieve the document from the repository so that I get all associated types
+      AssignmentViewFormLoaded loaded = AssignmentViewFormLoaded(
+          value: await assignmentViewRepository(appId: appId)!
+              .get(event.value!.documentID));
+      emit(loaded);
+    });
+    on<InitialiseAssignmentViewFormNoLoadEvent>((event, emit) async {
+      AssignmentViewFormLoaded loaded =
+          AssignmentViewFormLoaded(value: event.value);
+      emit(loaded);
+    });
+    AssignmentViewModel? newValue;
+    on<ChangedAssignmentViewDocumentID>((event, emit) async {
       if (state is AssignmentViewFormInitialized) {
         final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(documentID: event.value);
-        if (formAction == FormAction.AddAction) {
+        if (formAction == FormAction.addAction) {
           emit(await _isDocumentIDValid(event.value, newValue!));
         } else {
           emit(SubmittableAssignmentViewForm(value: newValue));
         }
-
       }
-      });
-      on <ChangedAssignmentViewTitle> ((event, emit) async {
+    });
+    on<ChangedAssignmentViewTitle>((event, emit) async {
       if (state is AssignmentViewFormInitialized) {
         final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(title: event.value);
         emit(SubmittableAssignmentViewForm(value: newValue));
-
       }
-      });
-      on <ChangedAssignmentViewDescription> ((event, emit) async {
+    });
+    on<ChangedAssignmentViewDescription>((event, emit) async {
       if (state is AssignmentViewFormInitialized) {
         final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(description: event.value);
         emit(SubmittableAssignmentViewForm(value: newValue));
-
       }
-      });
-      on <ChangedAssignmentViewConditions> ((event, emit) async {
+    });
+    on<ChangedAssignmentViewConditions>((event, emit) async {
       if (state is AssignmentViewFormInitialized) {
         final currentState = state as AssignmentViewFormInitialized;
         newValue = currentState.value!.copyWith(conditions: event.value);
         emit(SubmittableAssignmentViewForm(value: newValue));
-
       }
-      });
+    });
   }
 
+  DocumentIDAssignmentViewFormError error(
+          String message, AssignmentViewModel newValue) =>
+      DocumentIDAssignmentViewFormError(message: message, value: newValue);
 
-  DocumentIDAssignmentViewFormError error(String message, AssignmentViewModel newValue) => DocumentIDAssignmentViewFormError(message: message, value: newValue);
-
-  Future<AssignmentViewFormState> _isDocumentIDValid(String? value, AssignmentViewModel newValue) async {
-    if (value == null) return Future.value(error("Provide value for documentID", newValue));
-    if (value.length == 0) return Future.value(error("Provide value for documentID", newValue));
-    Future<AssignmentViewModel?> findDocument = assignmentViewRepository(appId: appId)!.get(value);
+  Future<AssignmentViewFormState> _isDocumentIDValid(
+      String? value, AssignmentViewModel newValue) async {
+    if (value == null) {
+      return Future.value(error("Provide value for documentID", newValue));
+    }
+    if (value.isEmpty) {
+      return Future.value(error("Provide value for documentID", newValue));
+    }
+    Future<AssignmentViewModel?> findDocument =
+        assignmentViewRepository(appId: appId)!.get(value);
     return await findDocument.then((documentFound) {
       if (documentFound == null) {
         return SubmittableAssignmentViewForm(value: newValue);
@@ -107,7 +112,4 @@ class AssignmentViewFormBloc extends Bloc<AssignmentViewFormEvent, AssignmentVie
       }
     });
   }
-
-
 }
-

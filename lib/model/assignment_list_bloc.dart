@@ -23,11 +23,11 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 
 import 'assignment_model.dart';
 
-typedef List<AssignmentModel?> FilterAssignmentModels(List<AssignmentModel?> values);
+typedef FilterAssignmentModels = List<AssignmentModel?> Function(
+    List<AssignmentModel?> values);
 
-
-
-class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> {
+class AssignmentListBloc
+    extends Bloc<AssignmentListEvent, AssignmentListState> {
   final FilterAssignmentModels? filter;
   final AssignmentRepository _assignmentRepository;
   StreamSubscription? _assignmentsListSubscription;
@@ -39,23 +39,32 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
   final bool? detailed;
   final int assignmentLimit;
 
-  AssignmentListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required AssignmentRepository assignmentRepository, this.assignmentLimit = 5})
+  AssignmentListBloc(
+      {this.filter,
+      this.paged,
+      this.orderBy,
+      this.descending,
+      this.detailed,
+      this.eliudQuery,
+      required AssignmentRepository assignmentRepository,
+      this.assignmentLimit = 5})
       : _assignmentRepository = assignmentRepository,
         super(AssignmentListLoading()) {
-    on <LoadAssignmentList> ((event, emit) {
+    on<LoadAssignmentList>((event, emit) {
       if ((detailed == null) || (!detailed!)) {
         _mapLoadAssignmentListToState();
       } else {
         _mapLoadAssignmentListWithDetailsToState();
       }
     });
-    
-    on <NewPage> ((event, emit) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+
+    on<NewPage>((event, emit) {
+      pages = pages +
+          1; // it doesn't matter so much if we increase pages beyond the end
       _mapLoadAssignmentListWithDetailsToState();
     });
-    
-    on <AssignmentChangeQuery> ((event, emit) {
+
+    on<AssignmentChangeQuery>((event, emit) {
       eliudQuery = event.newQuery;
       if ((detailed == null) || (!detailed!)) {
         _mapLoadAssignmentListToState();
@@ -63,20 +72,20 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
         _mapLoadAssignmentListWithDetailsToState();
       }
     });
-      
-    on <AddAssignmentList> ((event, emit) async {
+
+    on<AddAssignmentList>((event, emit) async {
       await _mapAddAssignmentListToState(event);
     });
-    
-    on <UpdateAssignmentList> ((event, emit) async {
+
+    on<UpdateAssignmentList>((event, emit) async {
       await _mapUpdateAssignmentListToState(event);
     });
-    
-    on <DeleteAssignmentList> ((event, emit) async {
+
+    on<DeleteAssignmentList>((event, emit) async {
       await _mapDeleteAssignmentListToState(event);
     });
-    
-    on <AssignmentListUpdated> ((event, emit) {
+
+    on<AssignmentListUpdated>((event, emit) {
       emit(_mapAssignmentListUpdatedToState(event));
     });
   }
@@ -90,27 +99,31 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
   }
 
   Future<void> _mapLoadAssignmentListToState() async {
-    int amountNow =  (state is AssignmentListLoaded) ? (state as AssignmentListLoaded).values!.length : 0;
+    int amountNow = (state is AssignmentListLoaded)
+        ? (state as AssignmentListLoaded).values!.length
+        : 0;
     _assignmentsListSubscription?.cancel();
     _assignmentsListSubscription = _assignmentRepository.listen(
-          (list) => add(AssignmentListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
-      orderBy: orderBy,
-      descending: descending,
-      eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * assignmentLimit : null
-    );
-  }
-
-  Future<void> _mapLoadAssignmentListWithDetailsToState() async {
-    int amountNow =  (state is AssignmentListLoaded) ? (state as AssignmentListLoaded).values!.length : 0;
-    _assignmentsListSubscription?.cancel();
-    _assignmentsListSubscription = _assignmentRepository.listenWithDetails(
-            (list) => add(AssignmentListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
+        (list) => add(AssignmentListUpdated(
+            value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * assignmentLimit : null
-    );
+        limit: ((paged != null) && paged!) ? pages * assignmentLimit : null);
+  }
+
+  Future<void> _mapLoadAssignmentListWithDetailsToState() async {
+    int amountNow = (state is AssignmentListLoaded)
+        ? (state as AssignmentListLoaded).values!.length
+        : 0;
+    _assignmentsListSubscription?.cancel();
+    _assignmentsListSubscription = _assignmentRepository.listenWithDetails(
+        (list) => add(AssignmentListUpdated(
+            value: _filter(list), mightHaveMore: amountNow != list.length)),
+        orderBy: orderBy,
+        descending: descending,
+        eliudQuery: eliudQuery,
+        limit: ((paged != null) && paged!) ? pages * assignmentLimit : null);
   }
 
   Future<void> _mapAddAssignmentListToState(AddAssignmentList event) async {
@@ -120,14 +133,16 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
     }
   }
 
-  Future<void> _mapUpdateAssignmentListToState(UpdateAssignmentList event) async {
+  Future<void> _mapUpdateAssignmentListToState(
+      UpdateAssignmentList event) async {
     var value = event.value;
     if (value != null) {
       await _assignmentRepository.update(value);
     }
   }
 
-  Future<void> _mapDeleteAssignmentListToState(DeleteAssignmentList event) async {
+  Future<void> _mapDeleteAssignmentListToState(
+      DeleteAssignmentList event) async {
     var value = event.value;
     if (value != null) {
       await _assignmentRepository.delete(value);
@@ -135,7 +150,9 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
   }
 
   AssignmentListLoaded _mapAssignmentListUpdatedToState(
-      AssignmentListUpdated event) => AssignmentListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
+          AssignmentListUpdated event) =>
+      AssignmentListLoaded(
+          values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {
@@ -143,5 +160,3 @@ class AssignmentListBloc extends Bloc<AssignmentListEvent, AssignmentListState> 
     return super.close();
   }
 }
-
-

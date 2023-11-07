@@ -22,10 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/style/style_registry.dart';
 
-
-
-
-
 import 'package:eliud_core/tools/enums.dart';
 
 import 'package:eliud_pkg_workflow/model/model_export.dart';
@@ -37,69 +33,82 @@ import 'package:eliud_pkg_workflow/model/assignment_result_form_bloc.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_form_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_form_state.dart';
 
-
 class AssignmentResultForm extends StatelessWidget {
   final AppModel app;
-  FormAction formAction;
-  AssignmentResultModel? value;
-  ActionModel? submitAction;
+  final FormAction formAction;
+  final AssignmentResultModel? value;
+  final ActionModel? submitAction;
 
-  AssignmentResultForm({Key? key, required this.app, required this.formAction, required this.value, this.submitAction}) : super(key: key);
+  AssignmentResultForm(
+      {super.key,
+      required this.app,
+      required this.formAction,
+      required this.value,
+      this.submitAction});
 
+  /// Build the AssignmentResultForm
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
+    //var accessState = AccessBloc.getState(context);
     var appId = app.documentID;
-    if (formAction == FormAction.ShowData) {
-      return BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(appId,
-                                       
-                                                )..add(InitialiseAssignmentResultFormEvent(value: value)),
-  
-        child: MyAssignmentResultForm(app:app, submitAction: submitAction, formAction: formAction),
-          );
-    } if (formAction == FormAction.ShowPreloadedData) {
-      return BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(appId,
-                                       
-                                                )..add(InitialiseAssignmentResultFormNoLoadEvent(value: value)),
-  
-        child: MyAssignmentResultForm(app:app, submitAction: submitAction, formAction: formAction),
-          );
+    if (formAction == FormAction.showData) {
+      return BlocProvider<AssignmentResultFormBloc>(
+        create: (context) => AssignmentResultFormBloc(
+          appId,
+        )..add(InitialiseAssignmentResultFormEvent(value: value)),
+        child: MyAssignmentResultForm(
+            app: app, submitAction: submitAction, formAction: formAction),
+      );
+    }
+    if (formAction == FormAction.showPreloadedData) {
+      return BlocProvider<AssignmentResultFormBloc>(
+        create: (context) => AssignmentResultFormBloc(
+          appId,
+        )..add(InitialiseAssignmentResultFormNoLoadEvent(value: value)),
+        child: MyAssignmentResultForm(
+            app: app, submitAction: submitAction, formAction: formAction),
+      );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithApp(app).adminFormStyle().appBarWithString(app, context, title: formAction == FormAction.UpdateAction ? 'Update AssignmentResult' : 'Add AssignmentResult'),
-        body: BlocProvider<AssignmentResultFormBloc >(
-            create: (context) => AssignmentResultFormBloc(appId,
-                                       
-                                                )..add((formAction == FormAction.UpdateAction ? InitialiseAssignmentResultFormEvent(value: value) : InitialiseNewAssignmentResultFormEvent())),
-  
-        child: MyAssignmentResultForm(app: app, submitAction: submitAction, formAction: formAction),
+          appBar: StyleRegistry.registry()
+              .styleWithApp(app)
+              .adminFormStyle()
+              .appBarWithString(app, context,
+                  title: formAction == FormAction.updateAction
+                      ? 'Update AssignmentResult'
+                      : 'Add AssignmentResult'),
+          body: BlocProvider<AssignmentResultFormBloc>(
+            create: (context) => AssignmentResultFormBloc(
+              appId,
+            )..add((formAction == FormAction.updateAction
+                ? InitialiseAssignmentResultFormEvent(value: value)
+                : InitialiseNewAssignmentResultFormEvent())),
+            child: MyAssignmentResultForm(
+                app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
-
 
 class MyAssignmentResultForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyAssignmentResultForm({required this.app, this.formAction, this.submitAction});
+  MyAssignmentResultForm(
+      {required this.app, this.formAction, this.submitAction});
 
-  _MyAssignmentResultFormState createState() => _MyAssignmentResultFormState(this.formAction);
+  @override
+  State<MyAssignmentResultForm> createState() =>
+      _MyAssignmentResultFormState(formAction);
 }
-
 
 class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
   final FormAction? formAction;
   late AssignmentResultFormBloc _myFormBloc;
 
-  final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _keyController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
-
 
   _MyAssignmentResultFormState(this.formAction);
 
@@ -107,7 +116,6 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
   void initState() {
     super.initState();
     _myFormBloc = BlocProvider.of<AssignmentResultFormBloc>(context);
-    _documentIDController.addListener(_onDocumentIDChanged);
     _keyController.addListener(_onKeyChanged);
     _valueController.addListener(_onValueChanged);
   }
@@ -115,113 +123,141 @@ class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    return BlocBuilder<AssignmentResultFormBloc, AssignmentResultFormState>(builder: (context, state) {
-      if (state is AssignmentResultFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context),
-      );
+    return BlocBuilder<AssignmentResultFormBloc, AssignmentResultFormState>(
+        builder: (context, state) {
+      if (state is AssignmentResultFormUninitialized) {
+        return Center(
+          child: StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminListStyle()
+              .progressIndicator(widget.app, context),
+        );
+      }
 
       if (state is AssignmentResultFormLoaded) {
-        if (state.value!.documentID != null)
-          _documentIDController.text = state.value!.documentID.toString();
-        else
-          _documentIDController.text = "";
-        if (state.value!.key != null)
-          _keyController.text = state.value!.key.toString();
-        else
-          _keyController.text = "";
-        if (state.value!.value != null)
-          _valueController.text = state.value!.value.toString();
-        else
-          _valueController.text = "";
+        _keyController.text = state.value!.key.toString();
+        _valueController.text = state.value!.value.toString();
       }
       if (state is AssignmentResultFormInitialized) {
         List<Widget> children = [];
-        children.add(
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .textFormField(widget.app, context,
+                labelText: 'Key',
+                icon: Icons.text_format,
+                readOnly: _readOnly(accessState, state),
+                textEditingController: _keyController,
+                keyboardType: TextInputType.text,
+                validator: (_) => state is KeyAssignmentResultFormError
+                    ? state.message
+                    : null,
+                hintText: null));
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Key', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _keyController, keyboardType: TextInputType.text, validator: (_) => state is KeyAssignmentResultFormError ? state.message : null, hintText: null)
-          );
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .textFormField(widget.app, context,
+                labelText: 'Value',
+                icon: Icons.text_format,
+                readOnly: _readOnly(accessState, state),
+                textEditingController: _valueController,
+                keyboardType: TextInputType.text,
+                validator: (_) => state is ValueAssignmentResultFormError
+                    ? state.message
+                    : null,
+                hintText: null));
 
-        children.add(
+        if ((formAction != FormAction.showData) &&
+            (formAction != FormAction.showPreloadedData)) {
+          children.add(StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminFormStyle()
+              .button(
+                widget.app,
+                context,
+                label: 'Submit',
+                onPressed: _readOnly(accessState, state)
+                    ? null
+                    : () {
+                        if (state is AssignmentResultFormError) {
+                          return;
+                        } else {
+                          if (formAction == FormAction.updateAction) {
+                            BlocProvider.of<AssignmentResultListBloc>(context)
+                                .add(UpdateAssignmentResultList(
+                                    value: state.value!.copyWith(
+                              documentID: state.value!.documentID,
+                              key: state.value!.key,
+                              value: state.value!.value,
+                            )));
+                          } else {
+                            BlocProvider.of<AssignmentResultListBloc>(context)
+                                .add(AddAssignmentResultList(
+                                    value: AssignmentResultModel(
+                              documentID: state.value!.documentID,
+                              key: state.value!.key,
+                              value: state.value!.value,
+                            )));
+                          }
+                          if (widget.submitAction != null) {
+                            eliudrouter.Router.navigateTo(
+                                context, widget.submitAction!);
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+              ));
+        }
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Value', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _valueController, keyboardType: TextInputType.text, validator: (_) => state is ValueAssignmentResultFormError ? state.message : null, hintText: null)
-          );
-
-
-        if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app, context, label: 'Submit',
-                  onPressed: _readOnly(accessState, state) ? null : () {
-                    if (state is AssignmentResultFormError) {
-                      return null;
-                    } else {
-                      if (formAction == FormAction.UpdateAction) {
-                        BlocProvider.of<AssignmentResultListBloc>(context).add(
-                          UpdateAssignmentResultList(value: state.value!.copyWith(
-                              documentID: state.value!.documentID, 
-                              key: state.value!.key, 
-                              value: state.value!.value, 
-                        )));
-                      } else {
-                        BlocProvider.of<AssignmentResultListBloc>(context).add(
-                          AddAssignmentResultList(value: AssignmentResultModel(
-                              documentID: state.value!.documentID, 
-                              key: state.value!.key, 
-                              value: state.value!.value, 
-                          )));
-                      }
-                      if (widget.submitAction != null) {
-                        eliudrouter.Router.navigateTo(context, widget.submitAction!);
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    }
-                  },
-                ));
-
-        return StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().container(widget.app, context, Form(
-            child: ListView(
-              padding: const EdgeInsets.all(8),
-              physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
-              shrinkWrap: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)),
-              children: children
-            ),
-          ), formAction!
-        );
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .container(
+                widget.app,
+                context,
+                Form(
+                  child: ListView(
+                      padding: const EdgeInsets.all(8),
+                      physics: ((formAction == FormAction.showData) ||
+                              (formAction == FormAction.showPreloadedData))
+                          ? NeverScrollableScrollPhysics()
+                          : null,
+                      shrinkWrap: ((formAction == FormAction.showData) ||
+                          (formAction == FormAction.showPreloadedData)),
+                      children: children),
+                ),
+                formAction!);
       } else {
-        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .progressIndicator(widget.app, context);
       }
     });
   }
-
-  void _onDocumentIDChanged() {
-    _myFormBloc.add(ChangedAssignmentResultDocumentID(value: _documentIDController.text));
-  }
-
 
   void _onKeyChanged() {
     _myFormBloc.add(ChangedAssignmentResultKey(value: _keyController.text));
   }
 
-
   void _onValueChanged() {
     _myFormBloc.add(ChangedAssignmentResultValue(value: _valueController.text));
   }
 
-
-
   @override
   void dispose() {
-    _documentIDController.dispose();
     _keyController.dispose();
     _valueController.dispose();
     super.dispose();
   }
 
-  bool _readOnly(AccessState accessState, AssignmentResultFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID));
+  /// Is the form read-only?
+  bool _readOnly(
+      AccessState accessState, AssignmentResultFormInitialized state) {
+    return (formAction == FormAction.showData) ||
+        (formAction == FormAction.showPreloadedData) ||
+        (!accessState.memberIsOwner(widget.app.documentID));
   }
-  
-
 }
-
-
-

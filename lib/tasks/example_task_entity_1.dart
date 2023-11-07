@@ -7,13 +7,11 @@ class ExampleTaskEntity1 extends TaskEntity {
 
   ExampleTaskEntity1(
       {this.extraParameter,
-      required String description,
-      required bool executeInstantly})
-      : super(
-            identifier: ExampleTaskModel1.label,
-            description: description,
-            executeInstantly: executeInstantly);
+      required super.description,
+      required super.executeInstantly})
+      : super(identifier: ExampleTaskModel1.label);
 
+  @override
   Map<String, Object?> toDocument() {
     return {
       "identifier": identifier,

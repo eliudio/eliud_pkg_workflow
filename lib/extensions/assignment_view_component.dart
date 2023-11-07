@@ -20,6 +20,7 @@ import '../workflow_package.dart';
 
 class AssignmentViewComponentConstructorDefault
     implements ComponentConstructor {
+  @override
   Widget createNew(
       {Key? key,
       required AppModel app,
@@ -35,11 +36,11 @@ class AssignmentViewComponentConstructorDefault
 
 class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
   AssignmentViewComponentImpl(
-      {Key? key, required AppModel app, required String id})
-      : super(key: key, app: app, assignmentViewId: id);
+      {super.key, required super.app, required String id})
+      : super(assignmentViewId: id);
 
   @override
-  Widget yourWidget(BuildContext context, AssignmentViewModel? view) {
+  Widget yourWidget(BuildContext context, AssignmentViewModel? value) {
     //theInstance = context;
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (context, accessState) {
@@ -47,13 +48,11 @@ class AssignmentViewComponentImpl extends AbstractAssignmentViewComponent {
         return BlocProvider<AssignmentListBloc>(
           create: (context) => AssignmentListBloc(
             eliudQuery: WorkflowPackage.getOpenAssignmentsQuery(
-                app.documentID,
-                accessState.getMember()!.documentID),
-            assignmentRepository:
-                assignmentRepository(appId: app.documentID)!,
+                app.documentID, accessState.getMember()!.documentID),
+            assignmentRepository: assignmentRepository(appId: app.documentID)!,
           )..add(LoadAssignmentList()),
           child: AssignmentListWidget(
-            app: app,
+              app: app,
               readOnly: true,
               widgetProvider: widgetProvider,
               listBackground: BackgroundModel()),

@@ -58,7 +58,7 @@
       "fieldType": "enum",
       "enumName": "WorkflowTaskResponsible",
       "remark": "Who's responsible to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment",
-      "enumValues" : [ "CurrentMember", "Owner", "First", "Previous" ]
+      "enumValues" : [ "currentMember", "owner", "first", "previous" ]
     }
   ],
   "groups": [
@@ -72,6 +72,6 @@
     }
   ],
   "listFields": {
-    "title": "value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID)) : Container()"
+    "title": "Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID))"
   }
 }

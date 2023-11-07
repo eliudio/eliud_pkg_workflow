@@ -18,7 +18,6 @@ import 'package:meta/meta.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 
-
 @immutable
 abstract class AssignmentFormEvent extends Equatable {
   const AssignmentFormEvent();
@@ -27,15 +26,13 @@ abstract class AssignmentFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewAssignmentFormEvent extends AssignmentFormEvent {
-}
-
+class InitialiseNewAssignmentFormEvent extends AssignmentFormEvent {}
 
 class InitialiseAssignmentFormEvent extends AssignmentFormEvent {
   final AssignmentModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseAssignmentFormEvent({this.value});
 }
@@ -44,7 +41,7 @@ class InitialiseAssignmentFormNoLoadEvent extends AssignmentFormEvent {
   final AssignmentModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseAssignmentFormNoLoadEvent({this.value});
 }
@@ -55,7 +52,7 @@ class ChangedAssignmentDocumentID extends AssignmentFormEvent {
   ChangedAssignmentDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentDocumentID{ value: $value }';
@@ -67,7 +64,7 @@ class ChangedAssignmentAppId extends AssignmentFormEvent {
   ChangedAssignmentAppId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentAppId{ value: $value }';
@@ -79,7 +76,7 @@ class ChangedAssignmentReporterId extends AssignmentFormEvent {
   ChangedAssignmentReporterId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentReporterId{ value: $value }';
@@ -91,7 +88,7 @@ class ChangedAssignmentAssigneeId extends AssignmentFormEvent {
   ChangedAssignmentAssigneeId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentAssigneeId{ value: $value }';
@@ -103,7 +100,7 @@ class ChangedAssignmentTask extends AssignmentFormEvent {
   ChangedAssignmentTask({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentTask{ value: $value }';
@@ -115,7 +112,7 @@ class ChangedAssignmentWorkflow extends AssignmentFormEvent {
   ChangedAssignmentWorkflow({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentWorkflow{ value: $value }';
@@ -127,10 +124,11 @@ class ChangedAssignmentWorkflowTaskSeqNumber extends AssignmentFormEvent {
   ChangedAssignmentWorkflowTaskSeqNumber({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedAssignmentWorkflowTaskSeqNumber{ value: $value }';
+  String toString() =>
+      'ChangedAssignmentWorkflowTaskSeqNumber{ value: $value }';
 }
 
 class ChangedAssignmentTimestamp extends AssignmentFormEvent {
@@ -139,7 +137,7 @@ class ChangedAssignmentTimestamp extends AssignmentFormEvent {
   ChangedAssignmentTimestamp({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentTimestamp{ value: $value }';
@@ -151,7 +149,7 @@ class ChangedAssignmentStatus extends AssignmentFormEvent {
   ChangedAssignmentStatus({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentStatus{ value: $value }';
@@ -163,7 +161,7 @@ class ChangedAssignmentResultsCurrent extends AssignmentFormEvent {
   ChangedAssignmentResultsCurrent({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentResultsCurrent{ value: $value }';
@@ -175,7 +173,7 @@ class ChangedAssignmentResultsPrevious extends AssignmentFormEvent {
   ChangedAssignmentResultsPrevious({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentResultsPrevious{ value: $value }';
@@ -187,7 +185,7 @@ class ChangedAssignmentTriggeredById extends AssignmentFormEvent {
   ChangedAssignmentTriggeredById({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentTriggeredById{ value: $value }';
@@ -199,7 +197,7 @@ class ChangedAssignmentConfirmMessage extends AssignmentFormEvent {
   ChangedAssignmentConfirmMessage({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentConfirmMessage{ value: $value }';
@@ -211,9 +209,8 @@ class ChangedAssignmentRejectMessage extends AssignmentFormEvent {
   ChangedAssignmentRejectMessage({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedAssignmentRejectMessage{ value: $value }';
 }
-

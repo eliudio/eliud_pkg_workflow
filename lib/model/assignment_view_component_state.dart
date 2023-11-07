@@ -23,24 +23,26 @@ abstract class AssignmentViewComponentState extends Equatable {
   List<Object?> get props => [];
 }
 
-class AssignmentViewComponentUninitialized extends AssignmentViewComponentState {}
+class AssignmentViewComponentUninitialized
+    extends AssignmentViewComponentState {}
 
 class AssignmentViewComponentError extends AssignmentViewComponentState {
   final String? message;
-  AssignmentViewComponentError({ this.message });
+  AssignmentViewComponentError({this.message});
 }
 
-class AssignmentViewComponentPermissionDenied extends AssignmentViewComponentState {
+class AssignmentViewComponentPermissionDenied
+    extends AssignmentViewComponentState {
   AssignmentViewComponentPermissionDenied();
 }
 
 class AssignmentViewComponentLoaded extends AssignmentViewComponentState {
   final AssignmentViewModel value;
 
-  const AssignmentViewComponentLoaded({ required this.value });
+  const AssignmentViewComponentLoaded({required this.value});
 
-  AssignmentViewComponentLoaded copyWith({ AssignmentViewModel? copyThis }) {
-    return AssignmentViewComponentLoaded(value: copyThis ?? this.value);
+  AssignmentViewComponentLoaded copyWith({AssignmentViewModel? copyThis}) {
+    return AssignmentViewComponentLoaded(value: copyThis ?? value);
   }
 
   @override
@@ -49,4 +51,3 @@ class AssignmentViewComponentLoaded extends AssignmentViewComponentState {
   @override
   String toString() => 'AssignmentViewComponentLoaded { value: $value }';
 }
-

@@ -30,10 +30,10 @@ class NewPage extends WorkflowListEvent {}
 class AddWorkflowList extends WorkflowListEvent {
   final WorkflowModel? value;
 
-  const AddWorkflowList({ this.value });
+  const AddWorkflowList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddWorkflowList{ value: $value }';
@@ -42,10 +42,10 @@ class AddWorkflowList extends WorkflowListEvent {
 class UpdateWorkflowList extends WorkflowListEvent {
   final WorkflowModel? value;
 
-  const UpdateWorkflowList({ this.value });
+  const UpdateWorkflowList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateWorkflowList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateWorkflowList extends WorkflowListEvent {
 class DeleteWorkflowList extends WorkflowListEvent {
   final WorkflowModel? value;
 
-  const DeleteWorkflowList({ this.value });
+  const DeleteWorkflowList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteWorkflowList{ value: $value }';
@@ -67,24 +67,24 @@ class WorkflowListUpdated extends WorkflowListEvent {
   final List<WorkflowModel?>? value;
   final bool? mightHaveMore;
 
-  const WorkflowListUpdated({ this.value, this.mightHaveMore });
+  const WorkflowListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'WorkflowListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'WorkflowListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class WorkflowChangeQuery extends WorkflowListEvent {
   final EliudQuery? newQuery;
 
-  const WorkflowChangeQuery({ required this.newQuery });
+  const WorkflowChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'WorkflowChangeQuery{ value: $newQuery }';
 }
-

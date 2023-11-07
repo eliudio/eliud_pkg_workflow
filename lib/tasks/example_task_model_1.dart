@@ -9,13 +9,16 @@ import 'example_task_entity_1.dart';
 
 class ExampleTaskModel1 extends TaskModel {
   static String label = "EXAMPLE_TASK_1";
-  static String definition = "An example task 1, for illustration purposes only";
+  static String definition =
+      "An example task 1, for illustration purposes only";
 
   String? extraParameter;
 
   ExampleTaskModel1(
-      {required String identifier, this.extraParameter, required String description, required bool executeInstantly})
-      : super(identifier: identifier, description: description, executeInstantly: executeInstantly);
+      {required super.identifier,
+      this.extraParameter,
+      required super.description,
+      required super.executeInstantly});
 
   @override
   TaskEntity toEntity({String? appId}) {
@@ -35,14 +38,15 @@ class ExampleTaskModel1 extends TaskModel {
       executeInstantly: snap["executeInstantly"]);
 
   @override
-  Future<void> startTask(AppModel app,
-      BuildContext context, String? memberId, AssignmentModel? assignmentModel) {
+  Future<void> startTask(AppModel app, BuildContext context, String? memberId,
+      AssignmentModel? assignmentModel) {
     throw UnimplementedError();
   }
 
   @override
-  Future<List<ModelReference>> collectReferences({String? appId, }) async {
+  Future<List<ModelReference>> collectReferences({
+    String? appId,
+  }) async {
     return [];
   }
 }
-

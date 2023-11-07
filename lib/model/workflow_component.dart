@@ -13,7 +13,6 @@
 
 */
 
-
 import 'package:eliud_pkg_workflow/model/workflow_component_bloc.dart';
 import 'package:eliud_pkg_workflow/model/workflow_component_event.dart';
 import 'package:eliud_pkg_workflow/model/workflow_model.dart';
@@ -31,20 +30,22 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
   final AppModel app;
   final String workflowId;
 
-  AbstractWorkflowComponent({Key? key, required this.app, required this.workflowId}): super(key: key);
+  AbstractWorkflowComponent(
+      {super.key, required this.app, required this.workflowId});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<WorkflowComponentBloc> (
-          create: (context) => WorkflowComponentBloc(
-            workflowRepository: workflowRepository(appId: app.documentID)!)
+    return BlocProvider<WorkflowComponentBloc>(
+      create: (context) => WorkflowComponentBloc(
+          workflowRepository: workflowRepository(appId: app.documentID)!)
         ..add(FetchWorkflowComponent(id: workflowId)),
       child: _workflowBlockBuilder(context),
     );
   }
 
   Widget _workflowBlockBuilder(BuildContext context) {
-    return BlocBuilder<WorkflowComponentBloc, WorkflowComponentState>(builder: (context, state) {
+    return BlocBuilder<WorkflowComponentBloc, WorkflowComponentState>(
+        builder: (context, state) {
       if (state is WorkflowComponentLoaded) {
         return yourWidget(context, state.value);
       } else if (state is WorkflowComponentPermissionDenied) {
@@ -57,7 +58,11 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
         return AlertWidget(app: app, title: 'Error', content: state.message);
       } else {
         return Center(
-          child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().progressIndicatorStyle().progressIndicator(app, context),
+          child: StyleRegistry.registry()
+              .styleWithApp(app)
+              .frontEndStyle()
+              .progressIndicatorStyle()
+              .progressIndicator(app, context),
         );
       }
     });
@@ -65,4 +70,3 @@ abstract class AbstractWorkflowComponent extends StatelessWidget {
 
   Widget yourWidget(BuildContext context, WorkflowModel value);
 }
-

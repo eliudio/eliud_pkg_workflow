@@ -17,25 +17,29 @@ import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
-
 import 'package:eliud_pkg_workflow/model/workflow_notification_entity.dart';
 
-
 enum WorkflowNotificationAddressee {
-  CurrentMember, Owner, First, Previous, Unknown
+  currentMember,
+  owner,
+  first,
+  previous,
+  unknown
 }
-
 
 WorkflowNotificationAddressee toWorkflowNotificationAddressee(int? index) {
   switch (index) {
-    case 0: return WorkflowNotificationAddressee.CurrentMember;
-    case 1: return WorkflowNotificationAddressee.Owner;
-    case 2: return WorkflowNotificationAddressee.First;
-    case 3: return WorkflowNotificationAddressee.Previous;
+    case 0:
+      return WorkflowNotificationAddressee.currentMember;
+    case 1:
+      return WorkflowNotificationAddressee.owner;
+    case 2:
+      return WorkflowNotificationAddressee.first;
+    case 3:
+      return WorkflowNotificationAddressee.previous;
   }
-  return WorkflowNotificationAddressee.Unknown;
+  return WorkflowNotificationAddressee.unknown;
 }
-
 
 class WorkflowNotificationModel {
   static const String packageName = 'eliud_pkg_workflow';
@@ -46,10 +50,19 @@ class WorkflowNotificationModel {
   // Who's to be notified after completing the  to do this task? The workflow logic will use the current member, the owner of the app, or the initiator of the workflow as the assignee of the assignment
   WorkflowNotificationAddressee? addressee;
 
-  WorkflowNotificationModel({this.message, this.addressee, });
+  WorkflowNotificationModel({
+    this.message,
+    this.addressee,
+  });
 
-  WorkflowNotificationModel copyWith({String? message, WorkflowNotificationAddressee? addressee, }) {
-    return WorkflowNotificationModel(message: message ?? this.message, addressee: addressee ?? this.addressee, );
+  WorkflowNotificationModel copyWith({
+    String? message,
+    WorkflowNotificationAddressee? addressee,
+  }) {
+    return WorkflowNotificationModel(
+      message: message ?? this.message,
+      addressee: addressee ?? this.addressee,
+    );
   }
 
   @override
@@ -57,9 +70,9 @@ class WorkflowNotificationModel {
 
   @override
   bool operator ==(Object other) =>
-          identical(this, other) ||
-          other is WorkflowNotificationModel &&
-          runtimeType == other.runtimeType && 
+      identical(this, other) ||
+      other is WorkflowNotificationModel &&
+          runtimeType == other.runtimeType &&
           message == other.message &&
           addressee == other.addressee;
 
@@ -75,29 +88,28 @@ class WorkflowNotificationModel {
 
   WorkflowNotificationEntity toEntity({String? appId}) {
     return WorkflowNotificationEntity(
-          message: (message != null) ? message : null, 
-          addressee: (addressee != null) ? addressee!.index : null, 
+      message: (message != null) ? message : null,
+      addressee: (addressee != null) ? addressee!.index : null,
     );
   }
 
-  static Future<WorkflowNotificationModel?> fromEntity(WorkflowNotificationEntity? entity) async {
+  static Future<WorkflowNotificationModel?> fromEntity(
+      WorkflowNotificationEntity? entity) async {
     if (entity == null) return null;
-    var counter = 0;
     return WorkflowNotificationModel(
-          message: entity.message, 
-          addressee: toWorkflowNotificationAddressee(entity.addressee), 
+      message: entity.message,
+      addressee: toWorkflowNotificationAddressee(entity.addressee),
     );
   }
 
-  static Future<WorkflowNotificationModel?> fromEntityPlus(WorkflowNotificationEntity? entity, { String? appId}) async {
+  static Future<WorkflowNotificationModel?> fromEntityPlus(
+      WorkflowNotificationEntity? entity,
+      {String? appId}) async {
     if (entity == null) return null;
 
-    var counter = 0;
     return WorkflowNotificationModel(
-          message: entity.message, 
-          addressee: toWorkflowNotificationAddressee(entity.addressee), 
+      message: entity.message,
+      addressee: toWorkflowNotificationAddressee(entity.addressee),
     );
   }
-
 }
-

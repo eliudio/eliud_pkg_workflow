@@ -18,36 +18,58 @@ import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_core/model/model_export.dart';
 import 'package:eliud_pkg_workflow/model/entity_export.dart';
 
-
 import 'package:eliud_pkg_workflow/model/assignment_view_entity.dart';
-
-
-
 
 class AssignmentViewModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_workflow';
   static const String id = 'assignmentViews';
 
+  @override
   String documentID;
+  @override
   String appId;
   String? title;
   String? description;
   StorageConditionsModel? conditions;
 
-  AssignmentViewModel({required this.documentID, required this.appId, this.title, this.description, this.conditions, });
+  AssignmentViewModel({
+    required this.documentID,
+    required this.appId,
+    this.title,
+    this.description,
+    this.conditions,
+  });
 
-  AssignmentViewModel copyWith({String? documentID, String? appId, String? title, String? description, StorageConditionsModel? conditions, }) {
-    return AssignmentViewModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, title: title ?? this.title, description: description ?? this.description, conditions: conditions ?? this.conditions, );
+  @override
+  AssignmentViewModel copyWith({
+    String? documentID,
+    String? appId,
+    String? title,
+    String? description,
+    StorageConditionsModel? conditions,
+  }) {
+    return AssignmentViewModel(
+      documentID: documentID ?? this.documentID,
+      appId: appId ?? this.appId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      conditions: conditions ?? this.conditions,
+    );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ title.hashCode ^ description.hashCode ^ conditions.hashCode;
+  int get hashCode =>
+      documentID.hashCode ^
+      appId.hashCode ^
+      title.hashCode ^
+      description.hashCode ^
+      conditions.hashCode;
 
   @override
   bool operator ==(Object other) =>
-          identical(this, other) ||
-          other is AssignmentViewModel &&
-          runtimeType == other.runtimeType && 
+      identical(this, other) ||
+      other is AssignmentViewModel &&
+          runtimeType == other.runtimeType &&
           documentID == other.documentID &&
           appId == other.appId &&
           title == other.title &&
@@ -59,47 +81,51 @@ class AssignmentViewModel implements ModelBase, WithAppId {
     return 'AssignmentViewModel{documentID: $documentID, appId: $appId, title: $title, description: $description, conditions: $conditions}';
   }
 
+  @override
   Future<List<ModelReference>> collectReferences({String? appId}) async {
     List<ModelReference> referencesCollector = [];
-    if (conditions != null) referencesCollector.addAll(await conditions!.collectReferences(appId: appId));
+    if (conditions != null) {
+      referencesCollector
+          .addAll(await conditions!.collectReferences(appId: appId));
+    }
     return referencesCollector;
   }
 
+  @override
   AssignmentViewEntity toEntity({String? appId}) {
     return AssignmentViewEntity(
-          appId: (appId != null) ? appId : null, 
-          title: (title != null) ? title : null, 
-          description: (description != null) ? description : null, 
-          conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
+      appId: appId,
+      title: (title != null) ? title : null,
+      description: (description != null) ? description : null,
+      conditions:
+          (conditions != null) ? conditions!.toEntity(appId: appId) : null,
     );
   }
 
-  static Future<AssignmentViewModel?> fromEntity(String documentID, AssignmentViewEntity? entity) async {
+  static Future<AssignmentViewModel?> fromEntity(
+      String documentID, AssignmentViewEntity? entity) async {
     if (entity == null) return null;
-    var counter = 0;
     return AssignmentViewModel(
-          documentID: documentID, 
-          appId: entity.appId ?? '', 
-          title: entity.title, 
-          description: entity.description, 
-          conditions: 
-            await StorageConditionsModel.fromEntity(entity.conditions), 
+      documentID: documentID,
+      appId: entity.appId ?? '',
+      title: entity.title,
+      description: entity.description,
+      conditions: await StorageConditionsModel.fromEntity(entity.conditions),
     );
   }
 
-  static Future<AssignmentViewModel?> fromEntityPlus(String documentID, AssignmentViewEntity? entity, { String? appId}) async {
+  static Future<AssignmentViewModel?> fromEntityPlus(
+      String documentID, AssignmentViewEntity? entity,
+      {String? appId}) async {
     if (entity == null) return null;
 
-    var counter = 0;
     return AssignmentViewModel(
-          documentID: documentID, 
-          appId: entity.appId ?? '', 
-          title: entity.title, 
-          description: entity.description, 
-          conditions: 
-            await StorageConditionsModel.fromEntityPlus(entity.conditions, appId: appId), 
+      documentID: documentID,
+      appId: entity.appId ?? '',
+      title: entity.title,
+      description: entity.description,
+      conditions: await StorageConditionsModel.fromEntityPlus(entity.conditions,
+          appId: appId),
     );
   }
-
 }
-

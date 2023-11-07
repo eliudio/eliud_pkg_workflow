@@ -24,13 +24,11 @@ abstract class AssignmentViewComponentEvent extends Equatable {
 class FetchAssignmentViewComponent extends AssignmentViewComponentEvent {
   final String? id;
 
-  FetchAssignmentViewComponent({ this.id });
+  FetchAssignmentViewComponent({this.id});
 }
 
 class AssignmentViewComponentUpdated extends AssignmentViewComponentEvent {
   final AssignmentViewModel value;
 
-  AssignmentViewComponentUpdated({ required this.value });
+  AssignmentViewComponentUpdated({required this.value});
 }
-
-

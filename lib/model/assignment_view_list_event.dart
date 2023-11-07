@@ -30,10 +30,10 @@ class NewPage extends AssignmentViewListEvent {}
 class AddAssignmentViewList extends AssignmentViewListEvent {
   final AssignmentViewModel? value;
 
-  const AddAssignmentViewList({ this.value });
+  const AddAssignmentViewList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddAssignmentViewList{ value: $value }';
@@ -42,10 +42,10 @@ class AddAssignmentViewList extends AssignmentViewListEvent {
 class UpdateAssignmentViewList extends AssignmentViewListEvent {
   final AssignmentViewModel? value;
 
-  const UpdateAssignmentViewList({ this.value });
+  const UpdateAssignmentViewList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateAssignmentViewList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateAssignmentViewList extends AssignmentViewListEvent {
 class DeleteAssignmentViewList extends AssignmentViewListEvent {
   final AssignmentViewModel? value;
 
-  const DeleteAssignmentViewList({ this.value });
+  const DeleteAssignmentViewList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteAssignmentViewList{ value: $value }';
@@ -67,24 +67,24 @@ class AssignmentViewListUpdated extends AssignmentViewListEvent {
   final List<AssignmentViewModel?>? value;
   final bool? mightHaveMore;
 
-  const AssignmentViewListUpdated({ this.value, this.mightHaveMore });
+  const AssignmentViewListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'AssignmentViewListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'AssignmentViewListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class AssignmentViewChangeQuery extends AssignmentViewListEvent {
   final EliudQuery? newQuery;
 
-  const AssignmentViewChangeQuery({ required this.newQuery });
+  const AssignmentViewChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'AssignmentViewChangeQuery{ value: $newQuery }';
 }
-

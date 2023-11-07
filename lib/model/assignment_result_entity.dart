@@ -21,34 +21,56 @@ class AssignmentResultEntity implements EntityBase {
   final String? key;
   final String? value;
 
-  AssignmentResultEntity({this.key, this.value, });
+  AssignmentResultEntity({
+    this.key,
+    this.value,
+  });
 
-  AssignmentResultEntity copyWith({String? documentID, String? key, String? value, }) {
-    return AssignmentResultEntity(key : key ?? this.key, value : value ?? this.value, );
+  AssignmentResultEntity copyWith({
+    String? documentID,
+    String? key,
+    String? value,
+  }) {
+    return AssignmentResultEntity(
+      key: key ?? this.key,
+      value: value ?? this.value,
+    );
   }
-  List<Object?> get props => [key, value, ];
+
+  List<Object?> get props => [
+        key,
+        value,
+      ];
 
   @override
   String toString() {
     return 'AssignmentResultEntity{key: $key, value: $value}';
   }
 
-  static AssignmentResultEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+  static AssignmentResultEntity? fromMap(Object? o,
+      {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
     return AssignmentResultEntity(
-      key: map['key'], 
-      value: map['value'], 
+      key: map['key'],
+      value: map['value'],
     );
   }
 
+  @override
   Map<String, Object?> toDocument() {
     Map<String, Object?> theDocument = HashMap();
-    if (key != null) theDocument["key"] = key;
-      else theDocument["key"] = null;
-    if (value != null) theDocument["value"] = value;
-      else theDocument["value"] = null;
+    if (key != null) {
+      theDocument["key"] = key;
+    } else {
+      theDocument["key"] = null;
+    }
+    if (value != null) {
+      theDocument["value"] = value;
+    } else {
+      theDocument["value"] = null;
+    }
     return theDocument;
   }
 
@@ -58,7 +80,8 @@ class AssignmentResultEntity implements EntityBase {
     return newEntity;
   }
 
-  static AssignmentResultEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
+  static AssignmentResultEntity? fromJsonString(String json,
+      {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
@@ -67,9 +90,9 @@ class AssignmentResultEntity implements EntityBase {
     return jsonEncode(toDocument());
   }
 
-  Future<Map<String, Object?>> enrichedDocument(Map<String, Object?> theDocument) async {
+  @override
+  Future<Map<String, Object?>> enrichedDocument(
+      Map<String, Object?> theDocument) async {
     return theDocument;
   }
-
 }
-

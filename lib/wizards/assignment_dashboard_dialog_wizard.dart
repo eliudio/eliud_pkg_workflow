@@ -1,4 +1,4 @@
-import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
+import 'package:eliud_core/core/wizards/tools/document_identifier.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
 import 'package:eliud_core/core/wizards/widgets/action_specification_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -26,7 +26,7 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
   NewAppWizardParameters newAppWizardParameters() =>
       JoinActionSpecificationParameters(
         requiresAccessToLocalFileSystem: false,
-        paymentType: JoinPaymentType.Manual,
+        paymentType: JoinPaymentType.manual,
         availableInLeftDrawer: false,
         availableInRightDrawer: false,
         availableInAppBar: true,
@@ -43,13 +43,16 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
                 codePoint: Icons.playlist_add_check.codePoint,
                 fontFamily: Icons.notifications.fontFamily),
             action: OpenDialog(app,
-                dialogID: constructDocumentId(uniqueId: uniqueId, documentId: assignmentDashboardDialogId),
+                dialogID: constructDocumentId(
+                    uniqueId: uniqueId,
+                    documentId: assignmentDashboardDialogId),
                 conditions: DisplayConditionsModel(
-                    privilegeLevelRequired: PrivilegeLevelRequired.NoPrivilegeRequired,
+                    privilegeLevelRequired:
+                        PrivilegeLevelRequired.noPrivilegeRequired,
                     packageCondition:
-                        WorkflowPackage.CONDITION_MUST_HAVE_ASSIGNMENTS,
+                        WorkflowPackage.conditionMustHaveAssignments,
                     conditionOverride: ConditionOverride
-                        .InclusiveForBlockedMembers // allow blocked members to see
+                        .inclusiveForBlockedMembers // allow blocked members to see
                     )))
       ];
 
@@ -70,14 +73,14 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("Assignment Dialog");
-          await AssignmentDialogBuilder(uniqueId, app, assignmentDashboardDialogId)
+          await AssignmentDialogBuilder(
+                  uniqueId, app, assignmentDashboardDialogId)
               .create();
         });
         return tasks;
       }
     } else {
-      throw Exception(
-          'Unexpected class for parameters: ' + parameters.toString());
+      throw Exception('Unexpected class for parameters: $parameters');
     }
     return null;
   }
@@ -112,8 +115,7 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
         return getThoseMenuItems(uniqueId, app);
       }
     } else {
-      throw Exception(
-          'Unexpected class for parameters: ' + parameters.toString());
+      throw Exception('Unexpected class for parameters: $parameters');
     }
     return null;
   }
@@ -127,11 +129,12 @@ class AssignmentDashboardDialogWizard extends NewAppWizardInfo {
           actionSpecification: parameters.joinActionSpecifications,
           label: 'Generate a default Assignment Dialog');
     } else {
-      return text(app, context,
-          'Unexpected class for parameters: ' + parameters.toString());
+      return text(app, context, 'Unexpected class for parameters: $parameters');
     }
   }
 
   @override
-  PublicMediumModel? getPublicMediumModel(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
+  PublicMediumModel? getPublicMediumModel(String uniqueId,
+          NewAppWizardParameters parameters, String mediumType) =>
+      null;
 }

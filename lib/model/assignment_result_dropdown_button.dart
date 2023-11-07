@@ -23,35 +23,43 @@ import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/component/update_component.dart';
 
-
 import 'package:eliud_pkg_workflow/model/assignment_result_list_bloc.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_list_state.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_list_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_result_model.dart';
 
-
-
-typedef AssignmentResultChanged(String? value, int? privilegeLevel,);
+typedef AssignmentResultChanged = Function(
+  String? value,
+  int? privilegeLevel,
+);
 
 class AssignmentResultDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
-  int? privilegeLevel;
-  String? value;
+  final int? privilegeLevel;
+  final String? value;
   final AssignmentResultChanged? trigger;
   final bool? optional;
 
-  AssignmentResultDropdownButtonWidget({ required this.app, this.privilegeLevel, this.value, this.trigger, this.optional, Key? key }): super(key: key);
+  AssignmentResultDropdownButtonWidget(
+      {required this.app,
+      this.privilegeLevel,
+      this.value,
+      this.trigger,
+      this.optional,
+      super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return AssignmentResultDropdownButtonWidgetState();
+    return AssignmentResultDropdownButtonWidgetState(value);
   }
 }
 
-class AssignmentResultDropdownButtonWidgetState extends State<AssignmentResultDropdownButtonWidget> {
+class AssignmentResultDropdownButtonWidgetState
+    extends State<AssignmentResultDropdownButtonWidget> {
   AssignmentResultListBloc? bloc;
+  String? value;
 
-  AssignmentResultDropdownButtonWidgetState();
+  AssignmentResultDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -65,64 +73,78 @@ class AssignmentResultDropdownButtonWidgetState extends State<AssignmentResultDr
     super.dispose();
   }
 
-List<Widget> widgets(AssignmentResultModel value) {
-var app = widget.app;
-var widgets = <Widget>[];
-widgets.add(value.key != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.key!)) : Container());
-widgets.add(value.value != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.value!)) : Container());
-return widgets;
-}
-
+  List<Widget> widgets(AssignmentResultModel value) {
+    var app = widget.app;
+    var widgets = <Widget>[];
+    widgets.add(value.key != null
+        ? Center(
+            child: StyleRegistry.registry()
+                .styleWithApp(app)
+                .frontEndStyle()
+                .textStyle()
+                .text(app, context, value.key!))
+        : Container());
+    widgets.add(value.value != null
+        ? Center(
+            child: StyleRegistry.registry()
+                .styleWithApp(app)
+                .frontEndStyle()
+                .textStyle()
+                .text(app, context, value.value!))
+        : Container());
+    return widgets;
+  }
 
   @override
   Widget build(BuildContext context) {
     //var accessState = AccessBloc.getState(context);
-    return BlocBuilder<AssignmentResultListBloc, AssignmentResultListState>(builder: (context, state) {
+    return BlocBuilder<AssignmentResultListBloc, AssignmentResultListState>(
+        builder: (context, state) {
       if (state is AssignmentResultListLoading) {
-        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .progressIndicator(widget.app, context);
       } else if (state is AssignmentResultListLoaded) {
         int? privilegeChosen = widget.privilegeLevel;
-        if ((widget.value != null) && (privilegeChosen == null)) {
+        if ((value != null) && (privilegeChosen == null)) {
           if (state.values != null) {
-            var selectedValue = state.values!.firstWhere((v) => (v!.documentID == widget.value), orElse: () => null);
             privilegeChosen = 0;
           }
         }
-          
-        final values = state.values;
+
+//        final values = state.values;
         final items = <DropdownMenuItem<String>>[];
         if (state.values!.isNotEmpty) {
           if (widget.optional != null && widget.optional!) {
-            items.add(new DropdownMenuItem<String>(
+            items.add(DropdownMenuItem<String>(
                 value: null,
-                child: new Container(
+                child: Container(
                   padding: const EdgeInsets.only(bottom: 5.0),
                   height: 100.0,
-                  child: new Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget> [ new Text("None") ],
+                    children: <Widget>[Text("None")],
                   ),
                 )));
           }
-          state.values!.forEach((element) {
-            items.add(new DropdownMenuItem<String>(
+          for (var element in state.values!) {
+            items.add(DropdownMenuItem<String>(
                 value: element!.documentID,
-                child: new Container(
+                child: Container(
                   padding: const EdgeInsets.only(bottom: 5.0),
                   height: 100.0,
-                  child: new Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: widgets(element),
                   ),
                 )));
-          });
+          }
         }
-        return ListView(
-            physics: ScrollPhysics(),
-            shrinkWrap: true,
-            children: [
+        return ListView(physics: ScrollPhysics(), shrinkWrap: true, children: [
           dropdownButton<int>(
-            widget.app, context,
+            widget.app,
+            context,
             isDense: false,
             isExpanded: false,
             items: [
@@ -147,49 +169,60 @@ return widgets;
             hint: text(widget.app, context, 'Select a privilege'),
             onChanged: _onPrivilegeLevelChange,
           ),
-          Row(children: [(false)
-            ? Container(
-                height: 48, 
-                child: dropdownButton<String>(
-                      widget.app, context,
+          Row(children: [
+            ((false) == true)
+                ? Container(
+                    height: 48,
+                    child: dropdownButton<String>(
+                      widget.app,
+                      context,
                       isDense: false,
                       isExpanded: false,
                       items: items,
-                      value: widget.value,
-                      hint: text(widget.app, context, 'Select a assignmentResult'),
+                      value: value,
+                      hint: text(
+                          widget.app, context, 'Select a assignmentResult'),
                       onChanged: _onValueChange,
-                    )
-                ) 
-            : dropdownButton<String>(
-                widget.app, context,
-                isDense: false,
-                isExpanded: false,
-                items: items,
-                value: widget.value,
-                hint: text(widget.app, context, 'Select a assignmentResult'),
-                onChanged: _onValueChange,
-              ),
-          if (widget.value != null) Spacer(),
-          if (widget.value != null) 
-            Align(alignment: Alignment.topRight, child: button(
-              widget.app,
-              context,
-              icon: Icon(
-                Icons.edit,
-              ),
-              label: 'Update',
-              onPressed: () {
-                updateComponent(context, widget.app, 'assignmentResults', widget.value, (newValue, _) {
-                  setState(() {
-                    widget.value = widget.value;
-                  });
-                });
-              },
-            ))
+                    ))
+                : dropdownButton<String>(
+                    widget.app,
+                    context,
+                    isDense: false,
+                    isExpanded: false,
+                    items: items,
+                    value: value,
+                    hint:
+                        text(widget.app, context, 'Select a assignmentResult'),
+                    onChanged: _onValueChange,
+                  ),
+            if (value != null) Spacer(),
+            if (value != null)
+              Align(
+                  alignment: Alignment.topRight,
+                  child: button(
+                    widget.app,
+                    context,
+                    icon: Icon(
+                      Icons.edit,
+                    ),
+                    label: 'Update',
+                    onPressed: () {
+                      updateComponent(
+                          context, widget.app, 'assignmentResults', value,
+                          (newValue, _) {
+                        setState(() {
+                          value = value;
+                        });
+                      });
+                    },
+                  ))
           ])
         ]);
       } else {
-        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .progressIndicator(widget.app, context);
       }
     });
   }
@@ -199,13 +232,14 @@ return widgets;
   }
 
   void _onPrivilegeLevelChange(int? value) {
-    BlocProvider.of<AssignmentResultListBloc>(context).add(AssignmentResultChangeQuery(
-       newQuery: EliudQuery(theConditions: [
-         EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: value ?? 0),
-         EliudQueryCondition('appId', isEqualTo: widget.app.documentID),]
-       ),
-     ));
-     widget.trigger!(null, value);
+    BlocProvider.of<AssignmentResultListBloc>(context)
+        .add(AssignmentResultChangeQuery(
+      newQuery: EliudQuery(theConditions: [
+        EliudQueryCondition('conditions.privilegeLevelRequired',
+            isEqualTo: value ?? 0),
+        EliudQueryCondition('appId', isEqualTo: widget.app.documentID),
+      ]),
+    ));
+    widget.trigger!(null, value);
   }
 }
-

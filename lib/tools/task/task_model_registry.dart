@@ -3,8 +3,8 @@ import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_mapper.dart';
 import 'package:flutter/cupertino.dart';
 
-typedef Widget TaskEditor(AppModel app, model);
-typedef dynamic CreateNewInstance();
+typedef TaskEditor = Widget Function(AppModel app, dynamic model);
+typedef CreateNewInstance = dynamic Function();
 
 class TaskDetails {
   final String identifier;
@@ -13,10 +13,15 @@ class TaskDetails {
   final CreateNewInstance createNewInstance;
   final TaskModelMapper mapper;
 
-  TaskDetails({required this.identifier, required this.definition, this.editor, required this.mapper, required this.createNewInstance});
+  TaskDetails(
+      {required this.identifier,
+      required this.definition,
+      this.editor,
+      required this.mapper,
+      required this.createNewInstance});
 }
 
-typedef void TaskEditorFeedback(bool status); // true is ok
+typedef TaskEditorFeedback = void Function(bool status); // true is ok
 
 /*
 abstract class TaskEditor {
@@ -36,8 +41,18 @@ class TaskModelRegistry {
     return _instance;
   }
 
-  void addTask({required String identifier, required String definition, TaskEditor? editor, required TaskModelMapper mapper, required CreateNewInstance createNewInstance}) {
-    tasks[identifier] = TaskDetails(identifier: identifier, definition: definition, editor: editor, mapper: mapper, createNewInstance: createNewInstance);
+  void addTask(
+      {required String identifier,
+      required String definition,
+      TaskEditor? editor,
+      required TaskModelMapper mapper,
+      required CreateNewInstance createNewInstance}) {
+    tasks[identifier] = TaskDetails(
+        identifier: identifier,
+        definition: definition,
+        editor: editor,
+        mapper: mapper,
+        createNewInstance: createNewInstance);
   }
 
   TaskDetails? getDetails(String identifier) {
@@ -53,4 +68,3 @@ class TaskModelRegistry {
     return taskDetails.mapper;
   }
 }
-

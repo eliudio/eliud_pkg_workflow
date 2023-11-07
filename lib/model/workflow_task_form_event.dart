@@ -18,7 +18,6 @@ import 'package:meta/meta.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_workflow/model/model_export.dart';
 
-
 @immutable
 abstract class WorkflowTaskFormEvent extends Equatable {
   const WorkflowTaskFormEvent();
@@ -27,15 +26,13 @@ abstract class WorkflowTaskFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewWorkflowTaskFormEvent extends WorkflowTaskFormEvent {
-}
-
+class InitialiseNewWorkflowTaskFormEvent extends WorkflowTaskFormEvent {}
 
 class InitialiseWorkflowTaskFormEvent extends WorkflowTaskFormEvent {
   final WorkflowTaskModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseWorkflowTaskFormEvent({this.value});
 }
@@ -44,7 +41,7 @@ class InitialiseWorkflowTaskFormNoLoadEvent extends WorkflowTaskFormEvent {
   final WorkflowTaskModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseWorkflowTaskFormNoLoadEvent({this.value});
 }
@@ -55,7 +52,7 @@ class ChangedWorkflowTaskDocumentID extends WorkflowTaskFormEvent {
   ChangedWorkflowTaskDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowTaskDocumentID{ value: $value }';
@@ -67,7 +64,7 @@ class ChangedWorkflowTaskSeqNumber extends WorkflowTaskFormEvent {
   ChangedWorkflowTaskSeqNumber({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowTaskSeqNumber{ value: $value }';
@@ -79,7 +76,7 @@ class ChangedWorkflowTaskTask extends WorkflowTaskFormEvent {
   ChangedWorkflowTaskTask({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowTaskTask{ value: $value }';
@@ -91,7 +88,7 @@ class ChangedWorkflowTaskConfirmMessage extends WorkflowTaskFormEvent {
   ChangedWorkflowTaskConfirmMessage({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowTaskConfirmMessage{ value: $value }';
@@ -103,7 +100,7 @@ class ChangedWorkflowTaskRejectMessage extends WorkflowTaskFormEvent {
   ChangedWorkflowTaskRejectMessage({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowTaskRejectMessage{ value: $value }';
@@ -115,9 +112,8 @@ class ChangedWorkflowTaskResponsible extends WorkflowTaskFormEvent {
   ChangedWorkflowTaskResponsible({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedWorkflowTaskResponsible{ value: $value }';
 }
-
