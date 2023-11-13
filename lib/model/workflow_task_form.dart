@@ -56,7 +56,7 @@ class WorkflowTaskForm extends StatelessWidget {
         create: (context) => WorkflowTaskFormBloc(
           appId,
         )..add(InitialiseWorkflowTaskFormEvent(value: value)),
-        child: MyWorkflowTaskForm(
+        child: _MyWorkflowTaskForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     }
@@ -65,7 +65,7 @@ class WorkflowTaskForm extends StatelessWidget {
         create: (context) => WorkflowTaskFormBloc(
           appId,
         )..add(InitialiseWorkflowTaskFormNoLoadEvent(value: value)),
-        child: MyWorkflowTaskForm(
+        child: _MyWorkflowTaskForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     } else {
@@ -83,26 +83,26 @@ class WorkflowTaskForm extends StatelessWidget {
             )..add((formAction == FormAction.updateAction
                 ? InitialiseWorkflowTaskFormEvent(value: value)
                 : InitialiseNewWorkflowTaskFormEvent())),
-            child: MyWorkflowTaskForm(
+            child: _MyWorkflowTaskForm(
                 app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
-class MyWorkflowTaskForm extends StatefulWidget {
+class _MyWorkflowTaskForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyWorkflowTaskForm({required this.app, this.formAction, this.submitAction});
+  _MyWorkflowTaskForm({required this.app, this.formAction, this.submitAction});
 
   @override
-  State<MyWorkflowTaskForm> createState() =>
+  State<_MyWorkflowTaskForm> createState() =>
       _MyWorkflowTaskFormState(formAction);
 }
 
-class _MyWorkflowTaskFormState extends State<MyWorkflowTaskForm> {
+class _MyWorkflowTaskFormState extends State<_MyWorkflowTaskForm> {
   final FormAction? formAction;
   late WorkflowTaskFormBloc _myFormBloc;
 

@@ -33,6 +33,9 @@ typedef AssignmentResultChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * AssignmentResultDropdownButtonWidget is the drop down widget to allow to select an instance of AssignmentResult
+ */
 class AssignmentResultDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class AssignmentResultDropdownButtonWidget extends StatefulWidget {
   final AssignmentResultChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a AssignmentResultDropdownButtonWidget
+   */
   AssignmentResultDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class AssignmentResultDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of AssignmentResultDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return AssignmentResultDropdownButtonWidgetState(value);
+    return _AssignmentResultDropdownButtonWidgetState(value);
   }
 }
 
-class AssignmentResultDropdownButtonWidgetState
+class _AssignmentResultDropdownButtonWidgetState
     extends State<AssignmentResultDropdownButtonWidget> {
   AssignmentResultListBloc? bloc;
   String? value;
 
-  AssignmentResultDropdownButtonWidgetState(this.value);
+  _AssignmentResultDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class AssignmentResultDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(AssignmentResultModel value) {
+  List<Widget> _widgets(AssignmentResultModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(value.key != null
@@ -136,7 +145,7 @@ class AssignmentResultDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

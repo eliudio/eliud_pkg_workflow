@@ -56,7 +56,7 @@ class AssignmentResultForm extends StatelessWidget {
         create: (context) => AssignmentResultFormBloc(
           appId,
         )..add(InitialiseAssignmentResultFormEvent(value: value)),
-        child: MyAssignmentResultForm(
+        child: _MyAssignmentResultForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     }
@@ -65,7 +65,7 @@ class AssignmentResultForm extends StatelessWidget {
         create: (context) => AssignmentResultFormBloc(
           appId,
         )..add(InitialiseAssignmentResultFormNoLoadEvent(value: value)),
-        child: MyAssignmentResultForm(
+        child: _MyAssignmentResultForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     } else {
@@ -83,27 +83,27 @@ class AssignmentResultForm extends StatelessWidget {
             )..add((formAction == FormAction.updateAction
                 ? InitialiseAssignmentResultFormEvent(value: value)
                 : InitialiseNewAssignmentResultFormEvent())),
-            child: MyAssignmentResultForm(
+            child: _MyAssignmentResultForm(
                 app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
-class MyAssignmentResultForm extends StatefulWidget {
+class _MyAssignmentResultForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyAssignmentResultForm(
+  _MyAssignmentResultForm(
       {required this.app, this.formAction, this.submitAction});
 
   @override
-  State<MyAssignmentResultForm> createState() =>
+  State<_MyAssignmentResultForm> createState() =>
       _MyAssignmentResultFormState(formAction);
 }
 
-class _MyAssignmentResultFormState extends State<MyAssignmentResultForm> {
+class _MyAssignmentResultFormState extends State<_MyAssignmentResultForm> {
   final FormAction? formAction;
   late AssignmentResultFormBloc _myFormBloc;
 

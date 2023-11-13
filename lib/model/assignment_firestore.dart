@@ -25,12 +25,21 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
+/* 
+ * AssignmentFirestore is the firestore implementation of AssignmentRepository
+ */
 class AssignmentFirestore implements AssignmentRepository {
+  /* 
+   * transform a map into an entity
+   */
   @override
   AssignmentEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     return AssignmentEntity.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
+  /* 
+   * add an entity to the repository
+   */
   @override
   Future<AssignmentEntity> addEntity(
       String documentID, AssignmentEntity value) {
@@ -48,6 +57,9 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
+  /* 
+   * Update an entity
+   */
   @override
   Future<AssignmentEntity> updateEntity(
       String documentID, AssignmentEntity value) {
@@ -65,6 +77,9 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
+  /* 
+   * Add a model to the repository
+   */
   @override
   Future<AssignmentModel> add(AssignmentModel value) {
     return assignmentCollection
@@ -86,11 +101,17 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
+  /* 
+   * Delete a model
+   */
   @override
   Future<void> delete(AssignmentModel value) {
     return assignmentCollection.doc(value.documentID).delete();
   }
 
+  /* 
+   * Update a model
+   */
   @override
   Future<AssignmentModel> update(AssignmentModel value) {
     return assignmentCollection
@@ -123,6 +144,9 @@ class AssignmentFirestore implements AssignmentRepository {
         appId: appId);
   }
 
+  /* 
+   * Retrieve an entity from the repository with id
+   */
   @override
   Future<AssignmentEntity?> getEntity(String? id,
       {Function(Exception)? onError}) async {
@@ -141,6 +165,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return null;
   }
 
+  /* 
+   * Retrieve an model from the repository with id
+   */
   @override
   Future<AssignmentModel?> get(String? id,
       {Function(Exception)? onError}) async {
@@ -159,6 +186,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return null;
   }
 
+  /* 
+   * Listen to the repository using a query. Retrieve models
+   */
   @override
   StreamSubscription<List<AssignmentModel?>> listen(
       AssignmentModelTrigger trigger,
@@ -190,6 +220,9 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
+  /* 
+   * Listen to the repository using a query. Retrieve models and linked models
+   */
   @override
   StreamSubscription<List<AssignmentModel?>> listenWithDetails(
       AssignmentModelTrigger trigger,
@@ -221,6 +254,9 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
+  /* 
+   * Listen to 1 document in the repository
+   */
   @override
   StreamSubscription<AssignmentModel?> listenTo(
       String documentId, AssignmentChanged changed,
@@ -240,6 +276,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return theStream;
   }
 
+  /* 
+   * Retrieve values/models from the repository
+   */
   @override
   Stream<List<AssignmentModel?>> values(
       {String? orderBy,
@@ -269,6 +308,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return values;
   }
 
+  /* 
+   * Retrieve values/models, including linked models, from the repository
+   */
   @override
   Stream<List<AssignmentModel?>> valuesWithDetails(
       {String? orderBy,
@@ -298,6 +340,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return values;
   }
 
+  /* 
+   * Retrieve values/models from the repository
+   */
   @override
   Future<List<AssignmentModel?>> valuesList(
       {String? orderBy,
@@ -328,6 +373,9 @@ class AssignmentFirestore implements AssignmentRepository {
     return values;
   }
 
+  /* 
+   * Retrieve values/models, including linked models, from the repository
+   */
   @override
   Future<List<AssignmentModel?>> valuesListWithDetails(
       {String? orderBy,
@@ -358,9 +406,15 @@ class AssignmentFirestore implements AssignmentRepository {
     return values;
   }
 
+  /* 
+   * Flush the repository
+   */
   @override
   void flush() {}
 
+  /* 
+   * Delete all entries in the repository
+   */
   @override
   Future<void> deleteAll() {
     return assignmentCollection.get().then((snapshot) {
@@ -370,16 +424,25 @@ class AssignmentFirestore implements AssignmentRepository {
     });
   }
 
+  /* 
+   * Retrieve the subcollection of this repository
+   */
   @override
   dynamic getSubCollection(String documentId, String name) {
     return assignmentCollection.doc(documentId).collection(name);
   }
 
+  /* 
+   * Retrieve a timestamp
+   */
   @override
   String? timeStampToString(dynamic timeStamp) {
     return firestoreTimeStampToString(timeStamp);
   }
 
+  /* 
+   * change 1 a fieldvalue for 1 document  
+   */
   @override
   Future<AssignmentModel?> changeValue(
       String documentId, String fieldName, num changeByThisValue) {

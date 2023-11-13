@@ -33,6 +33,9 @@ typedef WorkflowTaskChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * WorkflowTaskDropdownButtonWidget is the drop down widget to allow to select an instance of WorkflowTask
+ */
 class WorkflowTaskDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class WorkflowTaskDropdownButtonWidget extends StatefulWidget {
   final WorkflowTaskChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a WorkflowTaskDropdownButtonWidget
+   */
   WorkflowTaskDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class WorkflowTaskDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of WorkflowTaskDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return WorkflowTaskDropdownButtonWidgetState(value);
+    return _WorkflowTaskDropdownButtonWidgetState(value);
   }
 }
 
-class WorkflowTaskDropdownButtonWidgetState
+class _WorkflowTaskDropdownButtonWidgetState
     extends State<WorkflowTaskDropdownButtonWidget> {
   WorkflowTaskListBloc? bloc;
   String? value;
 
-  WorkflowTaskDropdownButtonWidgetState(this.value);
+  _WorkflowTaskDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class WorkflowTaskDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(WorkflowTaskModel value) {
+  List<Widget> _widgets(WorkflowTaskModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(Center(
@@ -126,7 +135,7 @@ class WorkflowTaskDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

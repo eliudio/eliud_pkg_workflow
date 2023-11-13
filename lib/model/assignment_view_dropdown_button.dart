@@ -33,6 +33,9 @@ typedef AssignmentViewChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * AssignmentViewDropdownButtonWidget is the drop down widget to allow to select an instance of AssignmentView
+ */
 class AssignmentViewDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class AssignmentViewDropdownButtonWidget extends StatefulWidget {
   final AssignmentViewChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a AssignmentViewDropdownButtonWidget
+   */
   AssignmentViewDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class AssignmentViewDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of AssignmentViewDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return AssignmentViewDropdownButtonWidgetState(value);
+    return _AssignmentViewDropdownButtonWidgetState(value);
   }
 }
 
-class AssignmentViewDropdownButtonWidgetState
+class _AssignmentViewDropdownButtonWidgetState
     extends State<AssignmentViewDropdownButtonWidget> {
   AssignmentViewListBloc? bloc;
   String? value;
 
-  AssignmentViewDropdownButtonWidgetState(this.value);
+  _AssignmentViewDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class AssignmentViewDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(AssignmentViewModel value) {
+  List<Widget> _widgets(AssignmentViewModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(value.description != null
@@ -130,7 +139,7 @@ class AssignmentViewDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

@@ -34,6 +34,9 @@ class WorkflowComponentBloc
     });
   }
 
+  /*
+   * Construct WorkflowComponentBloc
+   */
   WorkflowComponentBloc({this.workflowRepository})
       : super(WorkflowComponentUninitialized()) {
     on<FetchWorkflowComponent>((event, emit) {
@@ -44,6 +47,9 @@ class WorkflowComponentBloc
     });
   }
 
+  /*
+   * Close the WorkflowComponentBloc
+   */
   @override
   Future<void> close() {
     _workflowSubscription?.cancel();

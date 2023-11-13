@@ -16,6 +16,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_workflow/model/workflow_model.dart';
 
+/* 
+ * WorkflowComponentState is the base class for state for WorkflowComponentBloc
+ */
 abstract class WorkflowComponentState extends Equatable {
   const WorkflowComponentState();
 
@@ -23,22 +26,40 @@ abstract class WorkflowComponentState extends Equatable {
   List<Object?> get props => [];
 }
 
+/* 
+ * WorkflowComponentUninitialized is the uninitialized state of the WorkflowComponentBloc 
+ */
 class WorkflowComponentUninitialized extends WorkflowComponentState {}
 
+/* 
+ * WorkflowComponentError is the error state of the WorkflowComponentBloc 
+ */
 class WorkflowComponentError extends WorkflowComponentState {
   final String? message;
   WorkflowComponentError({this.message});
 }
 
+/* 
+ * WorkflowComponentPermissionDenied is to indicate permission denied state of the WorkflowComponentBloc 
+ */
 class WorkflowComponentPermissionDenied extends WorkflowComponentState {
   WorkflowComponentPermissionDenied();
 }
 
+/* 
+ * WorkflowComponentLoaded is used to set the state of the WorkflowComponentBloc to the loaded state
+ */
 class WorkflowComponentLoaded extends WorkflowComponentState {
   final WorkflowModel value;
 
+  /* 
+   * construct WorkflowComponentLoaded
+   */
   const WorkflowComponentLoaded({required this.value});
 
+  /* 
+   * copy method
+   */
   WorkflowComponentLoaded copyWith({WorkflowModel? copyThis}) {
     return WorkflowComponentLoaded(value: copyThis ?? value);
   }

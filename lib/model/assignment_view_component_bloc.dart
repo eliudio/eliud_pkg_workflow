@@ -35,6 +35,9 @@ class AssignmentViewComponentBloc
     });
   }
 
+  /*
+   * Construct AssignmentViewComponentBloc
+   */
   AssignmentViewComponentBloc({this.assignmentViewRepository})
       : super(AssignmentViewComponentUninitialized()) {
     on<FetchAssignmentViewComponent>((event, emit) {
@@ -45,6 +48,9 @@ class AssignmentViewComponentBloc
     });
   }
 
+  /*
+   * Close the AssignmentViewComponentBloc
+   */
   @override
   Future<void> close() {
     _assignmentViewSubscription?.cancel();

@@ -33,6 +33,9 @@ typedef AssignmentChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * AssignmentDropdownButtonWidget is the drop down widget to allow to select an instance of Assignment
+ */
 class AssignmentDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class AssignmentDropdownButtonWidget extends StatefulWidget {
   final AssignmentChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a AssignmentDropdownButtonWidget
+   */
   AssignmentDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class AssignmentDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of AssignmentDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return AssignmentDropdownButtonWidgetState(value);
+    return _AssignmentDropdownButtonWidgetState(value);
   }
 }
 
-class AssignmentDropdownButtonWidgetState
+class _AssignmentDropdownButtonWidgetState
     extends State<AssignmentDropdownButtonWidget> {
   AssignmentListBloc? bloc;
   String? value;
 
-  AssignmentDropdownButtonWidgetState(this.value);
+  _AssignmentDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class AssignmentDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(AssignmentModel value) {
+  List<Widget> _widgets(AssignmentModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(Center(
@@ -126,7 +135,7 @@ class AssignmentDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

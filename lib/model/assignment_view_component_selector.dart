@@ -31,7 +31,13 @@ import 'assignment_view_list_event.dart';
 import 'assignment_view_list_state.dart';
 import 'assignment_view_model.dart';
 
+/* 
+ * AssignmentViewComponentSelector is a component selector for AssignmentView, allowing to select a AssignmentView component
+ */
 class AssignmentViewComponentSelector extends ComponentSelector {
+  /* 
+   * createSelectWidget creates the widget
+   */
   @override
   Widget createSelectWidget(BuildContext context, AppModel app,
       int privilegeLevel, double height, SelectComponent selected, editor) {
@@ -41,7 +47,7 @@ class AssignmentViewComponentSelector extends ComponentSelector {
         eliudQuery: getComponentSelectorQuery(0, app.documentID),
         assignmentViewRepository: assignmentViewRepository(appId: appId)!,
       )..add(LoadAssignmentViewList()),
-      child: SelectAssignmentViewWidget(
+      child: _SelectAssignmentViewWidget(
           app: app,
           height: height,
           containerPrivilege: privilegeLevel,
@@ -51,29 +57,31 @@ class AssignmentViewComponentSelector extends ComponentSelector {
   }
 }
 
-class SelectAssignmentViewWidget extends StatefulWidget {
+/* 
+ * _SelectAssignmentViewWidget 
+ */
+class _SelectAssignmentViewWidget extends StatefulWidget {
   final AppModel app;
   final double height;
   final SelectComponent selected;
   final int containerPrivilege;
   final ComponentEditorConstructor editorConstructor;
 
-  const SelectAssignmentViewWidget(
-      {super.key,
-      required this.app,
+  const _SelectAssignmentViewWidget(
+      {required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
       required this.editorConstructor});
 
   @override
-  State<SelectAssignmentViewWidget> createState() {
+  State<_SelectAssignmentViewWidget> createState() {
     return _SelectAssignmentViewWidgetState();
   }
 }
 
-class _SelectAssignmentViewWidgetState extends State<SelectAssignmentViewWidget>
-    with TickerProviderStateMixin {
+class _SelectAssignmentViewWidgetState
+    extends State<_SelectAssignmentViewWidget> with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];
   final int _initialPrivilege = 0;

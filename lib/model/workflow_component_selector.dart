@@ -32,7 +32,13 @@ import 'workflow_list_event.dart';
 import 'workflow_list_state.dart';
 import 'workflow_model.dart';
 
+/* 
+ * WorkflowComponentSelector is a component selector for Workflow, allowing to select a Workflow component
+ */
 class WorkflowComponentSelector extends ComponentSelector {
+  /* 
+   * createSelectWidget creates the widget
+   */
   @override
   Widget createSelectWidget(BuildContext context, AppModel app,
       int privilegeLevel, double height, SelectComponent selected, editor) {
@@ -42,7 +48,7 @@ class WorkflowComponentSelector extends ComponentSelector {
         eliudQuery: getComponentSelectorQuery(0, app.documentID),
         workflowRepository: workflowRepository(appId: appId)!,
       )..add(LoadWorkflowList()),
-      child: SelectWorkflowWidget(
+      child: _SelectWorkflowWidget(
           app: app,
           height: height,
           containerPrivilege: privilegeLevel,
@@ -52,28 +58,30 @@ class WorkflowComponentSelector extends ComponentSelector {
   }
 }
 
-class SelectWorkflowWidget extends StatefulWidget {
+/* 
+ * _SelectWorkflowWidget 
+ */
+class _SelectWorkflowWidget extends StatefulWidget {
   final AppModel app;
   final double height;
   final SelectComponent selected;
   final int containerPrivilege;
   final ComponentEditorConstructor editorConstructor;
 
-  const SelectWorkflowWidget(
-      {super.key,
-      required this.app,
+  const _SelectWorkflowWidget(
+      {required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
       required this.editorConstructor});
 
   @override
-  State<SelectWorkflowWidget> createState() {
+  State<_SelectWorkflowWidget> createState() {
     return _SelectWorkflowWidgetState();
   }
 }
 
-class _SelectWorkflowWidgetState extends State<SelectWorkflowWidget>
+class _SelectWorkflowWidgetState extends State<_SelectWorkflowWidget>
     with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];
