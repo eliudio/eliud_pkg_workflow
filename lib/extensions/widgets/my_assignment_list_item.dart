@@ -1,6 +1,6 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/model/app_model.dart';
-import 'package:eliud_core/tools/firestore/firestore_tools.dart';
+import 'package:eliud_core_model/model/app_model.dart';
+import 'package:eliud_core_model/tools/firestore/firestore_tools.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_bloc.dart';
 import 'package:eliud_pkg_workflow/model/assignment_list_event.dart';

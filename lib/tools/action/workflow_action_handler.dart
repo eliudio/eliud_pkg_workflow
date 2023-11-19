@@ -5,7 +5,7 @@ import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
-import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_core_model/tools/etc/random.dart';
 import 'package:flutter/cupertino.dart';
 
 class WorkflowActionHandler extends PackageActionHandler {

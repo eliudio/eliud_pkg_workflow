@@ -15,7 +15,7 @@
 
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
-import 'package:eliud_core/tools/component/component_spec.dart';
+import 'package:eliud_core_model/tools/component/component_spec.dart';
 import 'abstract_repository_singleton.dart';
 
 import '../extensions/assignment_view_component.dart';
@@ -30,21 +30,21 @@ class ComponentRegistry {
    * Initialise the component registry
    */
   void init() {
-    Registry.registry()!.addInternalComponents('eliud_pkg_workflow', [
+    Apis.apis().addInternalComponents('eliud_pkg_workflow', [
       "assignments",
       "assignmentViews",
       "workflows",
     ]);
 
-    Registry.registry()!.register(
+    Apis.apis().register(
         componentName: "eliud_pkg_workflow_internalWidgets",
         componentConstructor: ListComponentFactory());
-    Registry.registry()!.addDropDownSupporter(
+    Apis.apis().addDropDownSupporter(
         "assignmentViews", DropdownButtonComponentFactory());
-    Registry.registry()!.register(
+    Apis.apis().register(
         componentName: "assignmentViews",
         componentConstructor: AssignmentViewComponentConstructorDefault());
-    Registry.registry()!.addComponentSpec('eliud_pkg_workflow', 'workflow', [
+    Apis.apis().addComponentSpec('eliud_pkg_workflow', 'workflow', [
       ComponentSpec(
           'assignmentViews',
           AssignmentViewComponentConstructorDefault(),
@@ -52,15 +52,15 @@ class ComponentRegistry {
           AssignmentViewComponentEditorConstructor(),
           ({String? appId}) => assignmentViewRepository(appId: appId)!),
     ]);
-    Registry.registry()!.registerRetrieveRepository(
+    Apis.apis().registerRetrieveRepository(
         'eliud_pkg_workflow',
         'assignments',
         ({String? appId}) => assignmentRepository(appId: appId)!);
-    Registry.registry()!.registerRetrieveRepository(
+    Apis.apis().registerRetrieveRepository(
         'eliud_pkg_workflow',
         'assignmentViews',
         ({String? appId}) => assignmentViewRepository(appId: appId)!);
-    Registry.registry()!.registerRetrieveRepository('eliud_pkg_workflow',
+    Apis.apis().registerRetrieveRepository('eliud_pkg_workflow',
         'workflows', ({String? appId}) => workflowRepository(appId: appId)!);
   }
 }

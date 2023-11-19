@@ -14,7 +14,7 @@ abstract class TaskEntity {
 
   static TaskEntity? fromMap(Map snap, {Map<String, String>? newDocumentIds}) {
     String? identifier = snap["identifier"];
-    var mapper = TaskModelRegistry.registry()!.getMapper(identifier);
+    var mapper = TaskModelApis.apis().getMapper(identifier);
     if (mapper != null) {
       return mapper.fromMap(snap);
     }

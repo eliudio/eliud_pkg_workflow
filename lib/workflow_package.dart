@@ -3,10 +3,10 @@ import 'package:eliud_core/core/wizards/registry/registry.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core/model/access_model.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
-import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core_model/tools/query/query_tools.dart';
 import 'package:eliud_pkg_notifications/notifications_package.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/tasks/example_task_editor.dart';
@@ -114,7 +114,7 @@ abstract class WorkflowPackage extends Package {
         .addMapper(WorkflowActionEntity.label, WorkflowActionMapper());
 
     // Register a task
-    TaskModelRegistry.registry()!.addTask(
+    TaskModelApis.apis().addTask(
         identifier: ExampleTaskModel1.label,
         definition: ExampleTaskModel1.definition,
         editor: (app, model) =>

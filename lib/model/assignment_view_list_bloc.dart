@@ -19,7 +19,7 @@ import 'package:bloc/bloc.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_repository.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_list_event.dart';
 import 'package:eliud_pkg_workflow/model/assignment_view_list_state.dart';
-import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core_model/tools/query/query_tools.dart';
 
 import 'assignment_view_model.dart';
 

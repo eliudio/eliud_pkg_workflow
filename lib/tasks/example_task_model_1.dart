@@ -1,5 +1,5 @@
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model.dart';

@@ -2,9 +2,9 @@ import 'package:eliud_core/core/base/model_base.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_pkg_notifications/platform/platform.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
-import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_core_model/tools/etc/random.dart';
 import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_notification_model.dart';
@@ -40,7 +40,7 @@ abstract class TaskModel {
   static TaskModel? fromEntity(TaskEntity? entity) {
     if (entity == null) return null;
 
-    var mapper = TaskModelRegistry.registry()!.getMapper(entity.identifier);
+    var mapper = TaskModelApis.apis().getMapper(entity.identifier);
     if (mapper != null) {
       return mapper.fromEntity(entity);
     }
@@ -52,7 +52,7 @@ abstract class TaskModel {
       {String? appId}) async {
     if (entity == null) return null;
 
-    var mapper = TaskModelRegistry.registry()!.getMapper(entity.identifier);
+    var mapper = TaskModelApis.apis().getMapper(entity.identifier);
     if (mapper != null) {
       return mapper.fromEntityPlus(entity);
     }

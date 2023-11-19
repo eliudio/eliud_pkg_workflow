@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_pkg_workflow/tools/task/task_model_mapper.dart';
 import 'package:flutter/cupertino.dart';
 

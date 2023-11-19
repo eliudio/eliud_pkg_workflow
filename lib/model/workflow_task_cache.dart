@@ -14,7 +14,7 @@
 */
 
 import 'dart:async';
-import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core_model/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_model.dart';
 import 'package:eliud_pkg_workflow/model/workflow_task_repository.dart';
