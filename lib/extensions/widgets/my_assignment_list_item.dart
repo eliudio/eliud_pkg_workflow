@@ -1,10 +1,10 @@
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core_model/tools/firestore/firestore_tools.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_workflow/model/assignment_list_bloc.dart';
-import 'package:eliud_pkg_workflow/model/assignment_list_event.dart';
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
+import 'package:eliud_core/access/access_bloc.dart';
+import 'package:eliud_core_helpers/firestore/firestore_tools.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_pkg_workflow_model/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_list_event.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

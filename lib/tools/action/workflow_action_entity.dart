@@ -1,6 +1,6 @@
 import 'dart:collection';
-import 'package:eliud_core/model/display_conditions_entity.dart';
-import 'package:eliud_core/tools/action/action_entity.dart';
+import 'package:eliud_core_main/apis/action_api/action_entity.dart';
+import 'package:eliud_core_main/model/display_conditions_entity.dart';
 
 class WorkflowActionEntity extends ActionEntity {
   static const String label = "Workflow";

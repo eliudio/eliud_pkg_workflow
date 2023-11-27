@@ -1,8 +1,8 @@
-import 'package:eliud_core/core/base/model_base.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
+import 'package:eliud_core_helpers/base/model_base.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_entity.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'example_task_entity_1.dart';

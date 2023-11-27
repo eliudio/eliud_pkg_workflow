@@ -1,11 +1,11 @@
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
+import 'package:eliud_core/access/access_bloc.dart';
+import 'package:eliud_core/access/state/access_determined.dart';
 import 'package:eliud_core/core/navigate/router.dart';
-import 'package:eliud_core/tools/action/action_model.dart';
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
+import 'package:eliud_core_main/apis/action_api/action_model.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_model.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
-import 'package:eliud_pkg_workflow/tools/task/task_model.dart';
-import 'package:eliud_core_model/tools/etc/random.dart';
+import 'package:eliud_core_helpers/etc/random.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class WorkflowActionHandler extends PackageActionHandler {

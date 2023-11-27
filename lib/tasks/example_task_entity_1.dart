@@ -1,4 +1,4 @@
-import 'package:eliud_pkg_workflow/tools/task/task_entity.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_entity.dart';
 
 import 'example_task_model_1.dart';
 

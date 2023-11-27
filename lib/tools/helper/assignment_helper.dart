@@ -1,4 +1,4 @@
-import 'package:eliud_pkg_workflow/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_model.dart';
 
 class AssignmentHelper {
   static String? getResultFor(AssignmentModel assignmentModel, String key) {

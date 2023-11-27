@@ -1,30 +1,31 @@
 import 'dart:async';
-import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/access/access_event.dart';
+import 'package:eliud_core_helpers/query/query_tools.dart';
+import 'package:eliud_core_main/apis/action_api/actions/action_model_registry.dart';
+import 'package:eliud_core_main/apis/wizard_api/new_app_wizard_info.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
-import 'package:eliud_core/model/access_model.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/model/member_model.dart';
+import 'package:eliud_core_main/tools/etc/member_collection_info.dart';
+import 'package:eliud_core_model/model/access_model.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_core_main/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
-import 'package:eliud_core_model/tools/query/query_tools.dart';
+import 'package:eliud_pkg_workflow_model/model/repository_singleton.dart';
 import 'package:eliud_pkg_notifications/notifications_package.dart';
-import 'package:eliud_pkg_workflow/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_workflow/editors/assignment_view_component_editor.dart';
+import 'package:eliud_pkg_workflow/extensions/assignment_view_component.dart';
+import 'package:eliud_pkg_workflow_model/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_workflow/tasks/example_task_editor.dart';
 import 'package:eliud_pkg_workflow/tasks/example_task_model_1.dart';
 import 'package:eliud_pkg_workflow/tasks/example_task_model_1_mapper.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_entity.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_handler.dart';
 import 'package:eliud_pkg_workflow/tools/action/workflow_action_model.dart';
-import 'package:eliud_pkg_workflow/tools/bespoke_models.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliud_router;
-import 'package:eliud_pkg_workflow/tools/task/task_model_registry.dart';
-import 'model/repository_singleton.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/core/blocs/access/access_event.dart';
-
-import 'package:eliud_pkg_workflow/model/component_registry.dart';
-
-import 'model/assignment_model.dart';
+import 'package:eliud_core/access/access_bloc.dart';
+import 'package:eliud_pkg_workflow_model/model/assignment_model.dart';
+import 'package:eliud_pkg_workflow_model/model/component_registry.dart';
+import 'package:eliud_pkg_workflow_model/tools/task/task_model_registry.dart';
 import 'wizards/assignment_dashboard_dialog_wizard.dart';
 
 import 'package:eliud_pkg_workflow/workflow_package_stub.dart'
@@ -98,7 +99,10 @@ abstract class WorkflowPackage extends Package {
 
   @override
   void init() {
-    ComponentRegistry().init();
+    ComponentRegistry().init(
+      AssignmentViewComponentConstructorDefault(),
+      AssignmentViewComponentEditorConstructor(),
+    );
 
     // wizards
     NewAppWizardRegistry.registry().register(AssignmentDashboardDialogWizard());
@@ -114,7 +118,7 @@ abstract class WorkflowPackage extends Package {
         .addMapper(WorkflowActionEntity.label, WorkflowActionMapper());
 
     // Register a task
-    TaskModelApis.apis().addTask(
+    TaskModelRegistry.registry()!.addTask(
         identifier: ExampleTaskModel1.label,
         definition: ExampleTaskModel1.definition,
         editor: (app, model) =>
