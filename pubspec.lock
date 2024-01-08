@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "2.11.0"
   bloc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: bloc
       sha256: "3820f15f502372d979121de1f6b97bfcf1630ebff8fe1d52fb2b0bfa49be5b49"
@@ -298,60 +298,68 @@ packages:
     source: hosted
     version: "7.0.0"
   eliud_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "../eliud_core"
-      relative: true
-    source: path
-    version: "1.2.0"
+      name: eliud_core
+      sha256: f30edc4d72677d4ce882d87fc11e4456b45634fcf42ed5bfef2aaab0535d8351
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.6"
   eliud_core_helpers:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "../eliud_core_helpers"
-      relative: true
-    source: path
+      name: eliud_core_helpers
+      sha256: "5e6b6befc0378821cd881cdce75cb36e8777de7716a5fb416e9b4c5d1a023aef"
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.0"
   eliud_core_main:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "../eliud_core_main"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: eliud_core_main
+      sha256: ab13d855af761552240f808bcdb21790289d189acce2c7b16062dc7eb70a5254
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   eliud_core_model:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "../eliud_core_model"
-      relative: true
-    source: path
+      name: eliud_core_model
+      sha256: f78ad3b2e064cf963390a920e59ce6746be81288d5704465b4a153649dfc5657
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.0"
   eliud_generator:
     dependency: "direct dev"
     description:
-      path: "../eliud_generator"
-      relative: true
-    source: path
-    version: "1.1.6"
+      name: eliud_generator
+      sha256: "97b13a9d23e29493f1152d7e2863e5388d97f1ed205d589c4336fb3794dce635"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.7"
   eliud_pkg_notifications:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      path: "../eliud_pkg_notifications"
-      relative: true
-    source: path
-    version: "1.1.5+5"
+      name: eliud_pkg_notifications
+      sha256: "0a99a0476c96236d5a4d288f7e7b0e5d346f6e0a06180fe66227981c77f69b5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.6"
   eliud_pkg_notifications_model:
     dependency: transitive
     description:
-      path: "../eliud_pkg_notifications_model"
-      relative: true
-    source: path
+      name: eliud_pkg_notifications_model
+      sha256: f3efd59246a6c2c1f815ff9ac4cc8238eefa882ede1318c08f0aa5682982a555
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.0"
   eliud_pkg_workflow_model:
     dependency: "direct main"
     description:
-      path: "../eliud_pkg_workflow_model"
-      relative: true
-    source: path
+      name: eliud_pkg_workflow_model
+      sha256: f059978c74e647ac442162f3fa36b7c31ddc1dac3b4f77e75610c5283b4591d6
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.0"
   equatable:
     dependency: transitive
@@ -479,7 +487,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_bloc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_bloc
       sha256: e74efb89ee6945bcbce74a5b3a5a3376b088e5f21f55c263fc38cbdc6237faae
